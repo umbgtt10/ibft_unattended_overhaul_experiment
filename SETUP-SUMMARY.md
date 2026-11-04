@@ -1,6 +1,6 @@
 # IBFT unattended overhaul experiment -- setup summary
 
-Draft; frozen with `SETUP.md` at the run's start. Each
+Frozen with `SETUP.md`; the run starts at 2026-11-06T16:00:00Z. Each
 bullet is a measure, its value at the base of `etheram-ibft`'s branch, and the value predicted at
 the end. `RESULT-SUMMARY.md` answers them in the same order.
 

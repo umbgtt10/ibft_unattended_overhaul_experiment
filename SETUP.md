@@ -4,9 +4,9 @@
 
 ## Status
 
-**Draft, written from discussions with the owner**, and committed as drafts while it changes. It is
-frozen in a commit of its own when the run starts, its subject beginning `Freeze:`: from then on a prediction is
-never edited, only amended in a dated addendum that gives its reason.
+**Frozen.** Written from discussions with the owner and committed as drafts while it changed, then frozen in a
+commit of its own, its subject beginning `Freeze:`, which names the run's start: **2026-11-06T16:00:00Z**. From then
+on a prediction is never edited, only amended in a dated addendum that gives its reason.
 The six documents of the experiment are listed under *Reporting*.
 
 **Nothing in it starts before both of:**
@@ -249,8 +249,8 @@ cargo-twin4rust 0.7.0, cargo-iceberg4rust 0.4.0, slotgate 0.7.0, cargo-grip4rust
 - the model, `claude-opus-5-5`, Opus 5.5, at effort `xhigh`;
 - the harness, Claude Code 2.1.314, its version held for the run with automatic updates off, and its permission
   mode, `dontAsk`: a call no rule allows is refused without a prompt, and the settings that allow the rest are
-  recorded here word for word;
-- the starting prompt, word for word, in this repository;
+  recorded word for word in `SETTINGS.json`;
+- the starting prompt, word for word, in `PROMPT.md`;
 - the instructions in effect: `etheram-ibft`'s `CLAUDE.md`, the one the run reads -- there is no user's, and this
   repository has none -- its SHA-256 at the base
   `4288deff79e59f27fbb1372567dbc309176373c76fe0f85ee60d804b08ff100b`; and the agent's memory directory, empty at
@@ -934,6 +934,9 @@ Six documents, in this repository, outside `etheram-ibft`:
 | `QUESTIONS.md` | every question and open point the run raises: answered on the fly, with the answer, or left open; a security-relevant one only as a placeholder |
 | `RUN-STATE.md` | where the run is, for the agent to resume from: overwritten as it goes, committed and pushed with the record |
 | `RESULT-SUMMARY.md` | the same eighteen, each predicted against actual, with a verdict; each commit as re-derived from the history beside the record, and every mismatch; the questions raised, answered and open, listed; then the answers to the two questions |
+
+Beside them, word for word, what the run is started with: `PROMPT.md`, its starting prompt, and `SETTINGS.json`,
+the harness's settings.
 
 **Four principles keep the comparison clean:**
 
