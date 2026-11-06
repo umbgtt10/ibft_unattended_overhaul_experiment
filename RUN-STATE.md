@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `b455252` Point the node's and the system tests' readers at the block gas limit's file (row 85)
+- **Last commit:** `2aded31` Point validation's single-node tests at the block gas limit's file (row 86)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -63,11 +63,11 @@ pushed with the record at every commit.
   `BLOCK_GAS_LIMIT`, imported by 55 files -- in `execution-types/src/common_types/block_constants.rs` since
   `75d9503`, `block.rs` keeping `pub const BLOCK_GAS_LIMIT: Gas = SHARED_BLOCK_GAS_LIMIT;` (an alias, imported
   `as`) until the last reader moves. Done: execution-types, types, evm, node-infra, recovery/ibft (13,
-  `75d9503`); node and system-tests (16, `b455252`). Next, a `refactoring` with `block::BLOCK_GAS_LIMIT` ->
-  `block_constants::BLOCK_GAS_LIMIT`: validation/tests/single_node (17); then the rule-offence: validation/tests/cluster (6) and validation/src (3),
+  `75d9503`); node and system-tests (16, `b455252`); validation/tests/single_node (17, `2aded31`, a `tests`
+  commit, stages 1, 2). Next, the rule-offence: validation/tests/cluster (6) and validation/src (3),
   the alias out of `block.rs` (it imports the constant plainly for `Block::empty`), the baseline re-recorded.
   `DIAGNOSTIC_FIELDS` stays (Q31). The `c75-pending` scratch folder can go.
-- **Commits:** 85 on the branch; 4 past the threshold (3 planned, + `97225b7` for the dry4rust re-record); bug fixes
+- **Commits:** 86 on the branch; 4 past the threshold (3 planned, + `97225b7` for the dry4rust re-record); bug fixes
   1 (`eba863f`); the 80th ran all three stages, as every commit has; the 90th next
 - **Tests:** 3,440 at the base, 3,633 now (stage 5 463)
 - **Offences:** 117 as configured, 328 everything on, shear 0; Grip 642.59 / Braintax 4,502.09 (0.1427, the
@@ -103,7 +103,7 @@ pushed with the record at every commit.
   opcodes (`c931cfe`), the engine's re-export shim out (`e660a94`), the state's layout bytes (`8f01aff`), the
   beacon's byte bounds (`efd7ee5`), three singles and the test node's peer (`59b99a1`),
   the runtime-timer harness's wait budget (`a2ad8dd`), the block gas limit's first readers (`75d9503`),
-  its node and system-tests readers (`b455252`).
+  its node and system-tests readers (`b455252`), validation's single-node tests (`2aded31`).
 
 ## Next in line
 
