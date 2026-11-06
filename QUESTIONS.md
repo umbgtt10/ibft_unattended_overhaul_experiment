@@ -38,6 +38,7 @@ After the run the owner takes each open entry -- implement, discuss, discard, po
 | 18 | commit 52, Part A | five storage-codec assertions change with its failure type: four compared the refusal's text, one checked `is_err()` | answered | the four compare the failure itself, whose text its own tests pin; the fifth names it; two recorded duplicate pairs in the codec are removed, not re-recorded |
 | 19 | commit 54, Part A | the cluster config's eight refusal tests compared the `String` it failed with to a text | answered | each compares the failure's text, through `to_string()`, to the same text -- the same words checked the same way |
 | 20 | commit 55, Part A | xtask's gate sequence fails with a `StageFailure`; its two failure tests compared a `String` | answered | one compares the same text through `to_string()`, the other the failure's three parts, whose text the new type's own test pins -- the same claim both |
+| 21 | commit 56, Part A | the gate tests' 32 assertions on a gate's failure compared the `String` it failed with, ahead of the gates' failure type | answered | each compares the failure's text, through `to_string()`, to the same words -- the same check of a `String` today and of the failure type, whose text is the old one |
 
 ## Interventions
 
@@ -430,3 +431,19 @@ the course the slice took and the run's recommendation; after the run, the owner
   type, top-down, as entry 13 onwards did for the node. `main.rs`, which printed the `String`, prints the failure's
   text.
 - **Commit:** 55.
+
+### 21. The gate tests read a failure through its text
+
+- **Raised:** commit 56, Part A, a failure type per concern -- the first of three commits that give `Gate::run` a
+  failure type.
+- **What:** `Gate::run` has ten implementations, and their tests compared the `String` each fails with. Changing the
+  trait changes all ten at once; with their tests it is some thirty files, past the threshold, so the tests go
+  first, alone. Of the 32 assertions, 24 compare `result.map_err(|failure| failure.to_string())` to the same
+  `Err(String::from(..))` they compared `result` to, and eight read `error.to_string()` where they read `error` in
+  `is_err_and`. A 33rd test, the long-output CRAP one, takes its failure's text before its three assertions,
+  unchanged, read it.
+- **Status:** answered.
+- **Answer:** every claim is unchanged: the same words, compared the same way. `to_string()` of a `String` is the
+  string itself; of the failure type to come it is its `Display`, which prints the old text word for word
+  (constraint 7). No test is added, removed or renamed; 3,580 before and after.
+- **Commit:** 56.
