@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `2aded31` Point validation's single-node tests at the block gas limit's file (row 86)
+- **Last commit:** `8fd7429` Take the block gas limit's alias out of block.rs (row 87)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -42,35 +42,27 @@ pushed with the record at every commit.
   prefix); a directory holds 20 files at most (`directory-file-count`) -- room is made by a move of its own, as
   a move counts every line twice; a record whose list is printed keeps the old text with a hand-written `Debug`,
   pinned by a test; run stern before `--write-baseline`, never after a refusal.
-- **Slice in progress:** Part A slice 6, constants given one home -- shared-constants 2 left (`Chosen-By:
-  fastest-feedback`; started 22:33:20Z). The rule, as its corrections read (full list:
+  Part A slice 6, constants given one home -- 12 commits, rows 76 to 87 (`8727d28` to `8fd7429`);
+  shared-constants 91 to 1 both ways, the 1 `DIAGNOSTIC_FIELDS` (Q31, staying). The rule's corrections (full list:
   `overhaul-scratch/shared-constants.txt`, from `--rule shared-constants --baseline <empty> --offence-threshold
   0`): a public constant nothing else reads goes private; one a single other file reads moves into that file,
-  private -- even out of a constants-only file (probed); one several files read moves to a constants file,
-  "imports, constants, statics and type aliases only", named `<topic>_constants.rs`. Never drop a test's access
-  (CLAUDE.md): a constant a test reads goes to a constants file. Done: the 3 nobody else reads (`8727d28`);
-  gas (`57b4222`): 27 private in `tiny_evm_ops.rs`, 6 in `evm/src/tiny_evm/gas_constants.rs`; the 33 opcodes
-  to `opcode_constants.rs` (`c931cfe`); the engine's `pub use` shim out (`e660a94`, a `refactoring`, Q30): stern
-  counts a re-export as a reader, so 9 opcodes went private into `tiny_evm_opcode.rs` and `OPCODE_PUSH2` into
-  `tiny_evm_engine_tests.rs`; the WAL magic and tags and `HARD_STATE_VERSION` to `types/src/state/wal_constants.rs`
-  and `hard_state_constants.rs` (`8f01aff`); the beacon's three byte bounds to
-  `node/src/observer/diagnostic_constants.rs` (`efd7ee5`) -- `DIAGNOSTIC_FIELDS` stays in the baseline (Q31: a
-  constants file's own reads do not count, so stern would send the table into its test); `RETAINED_SLOTS`,
-  `PENDING_TX_POOL_CAPACITY`, `INLINE_SIGNATURE_BYTES` to constants files, validation's `PEER_ID` private (stern
-  had matched a node test's own `PEER_ID` by name) (`59b99a1`); the runtime-timer harness's
-  `EVENTUAL_TIMEOUT`/`EVENTUAL_POLL_INTERVAL` private -- the client harness has its own pair, matched by name
-  (`a2ad8dd`). Stern matches readers by name: check an import exists before moving. In progress: (d)
-  `BLOCK_GAS_LIMIT`, imported by 55 files -- in `execution-types/src/common_types/block_constants.rs` since
-  `75d9503`, `block.rs` keeping `pub const BLOCK_GAS_LIMIT: Gas = SHARED_BLOCK_GAS_LIMIT;` (an alias, imported
-  `as`) until the last reader moves. Done: execution-types, types, evm, node-infra, recovery/ibft (13,
-  `75d9503`); node and system-tests (16, `b455252`); validation/tests/single_node (17, `2aded31`, a `tests`
-  commit, stages 1, 2). Next, the rule-offence: validation/tests/cluster (6) and validation/src (3),
-  the alias out of `block.rs` (it imports the constant plainly for `Block::empty`), the baseline re-recorded.
-  `DIAGNOSTIC_FIELDS` stays (Q31). The `c75-pending` scratch folder can go.
-- **Commits:** 86 on the branch; 4 past the threshold (3 planned, + `97225b7` for the dry4rust re-record); bug fixes
+  private -- even out of a constants-only file; one several files read moves to a constants file, "imports,
+  constants, statics and type aliases only", `<topic>_constants.rs`. Homes made: `evm/src/tiny_evm/gas_constants.rs`
+  and `opcode_constants.rs`, `types/src/state/wal_constants.rs` and `hard_state_constants.rs`,
+  `types/src/signature_constants.rs`, `node/src/observer/diagnostic_constants.rs`,
+  `node/src/ibft/buffers/bounded_buffer/bounded_buffer_constants.rs`,
+  `node-infra/src/implementations/pending_pool_constants.rs`, `execution-types/src/common_types/block_constants.rs`;
+  the EVM engine's `pub use` shim gone (Q30). Lessons: stern counts a re-export as a reader, and matches readers
+  by name -- two "readers" were same-named private constants elsewhere (check an import exists); a constants
+  file's own reads do not count (Q31); a constant read by 58 files goes a module at a time behind a one-source
+  alias (`pub const X: T = SHARED_X;`, imported `as`), the count paid when the alias goes; grep for grouped
+  imports (`block::{Block, X}`) as well as single ones.
+- **Slice next:** Part A slice 7, a trait-typed field only from a constructor parameter -- injected-dependencies 5
+  (`Chosen-By: no-scaffolding`), not yet surveyed. The `c75-pending` scratch folder can go.
+- **Commits:** 87 on the branch; 4 past the threshold (3 planned, + `97225b7` for the dry4rust re-record); bug fixes
   1 (`eba863f`); the 80th ran all three stages, as every commit has; the 90th next
 - **Tests:** 3,440 at the base, 3,633 now (stage 5 463)
-- **Offences:** 117 as configured, 328 everything on, shear 0; Grip 642.59 / Braintax 4,502.09 (0.1427, the
+- **Offences:** 116 as configured, 327 everything on, shear 0; Grip 642.59 / Braintax 4,502.09 (0.1427, the
   first move: execution-types 64.14 to 56.14 at `069fd4c`); dry4rust
   baseline 210 groups (re-recorded at `b954ec4`, Q26), 209 matching -- the civil-date pair paid at `7ee8472`
 - **Questions:** 29 answered, 2 open (9, 25). **Interventions:** 0. **Waits:** 0.
@@ -103,7 +95,8 @@ pushed with the record at every commit.
   opcodes (`c931cfe`), the engine's re-export shim out (`e660a94`), the state's layout bytes (`8f01aff`), the
   beacon's byte bounds (`efd7ee5`), three singles and the test node's peer (`59b99a1`),
   the runtime-timer harness's wait budget (`a2ad8dd`), the block gas limit's first readers (`75d9503`),
-  its node and system-tests readers (`b455252`), validation's single-node tests (`2aded31`).
+  its node and system-tests readers (`b455252`), validation's single-node tests (`2aded31`), the alias out
+  (`8fd7429`), the slice's last.
 
 ## Next in line
 
@@ -116,7 +109,7 @@ Part A's slices, in order, with the criterion that put each there (`SETUP.md`, *
 | 3 | one file per implemented type (with the protocol's and control's fields) -- waits on Q25, open | implemented-in-one-file 2 | risk |
 | 4 | ~~`pub` or private, each made `pub` with tests~~ -- done at `24d718d`, 5 commits | public-or-private 30 | fastest-feedback |
 | 5 | ~~named values for tuples~~ -- done at `abe8d70`, 7 commits | distinct-tuple-elements 11 | fastest-feedback |
-| 6 | constants given one home | shared-constants 91 | fastest-feedback |
+| 6 | ~~constants given one home~~ -- done at `8fd7429`, 12 commits; `DIAGNOSTIC_FIELDS` left (Q31) | shared-constants 91 | fastest-feedback |
 | 7 | a trait-typed field only from a constructor parameter | injected-dependencies 5 | no-scaffolding |
 | 8 | records and objects, a module at a time | records-and-objects 51 | no-scaffolding (last) |
 | 9 | each record in the module of what uses it | record-home 23 | no-scaffolding (last) |
