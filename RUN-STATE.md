@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `59b99a1` Give three single constants their files; keep the test node's peer private (row 82)
+- **Last commit:** `a2ad8dd` Keep the runtime-timer harness's eventual-wait budget private (row 83)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -42,7 +42,7 @@ pushed with the record at every commit.
   prefix); a directory holds 20 files at most (`directory-file-count`) -- room is made by a move of its own, as
   a move counts every line twice; a record whose list is printed keeps the old text with a hand-written `Debug`,
   pinned by a test; run stern before `--write-baseline`, never after a refusal.
-- **Slice in progress:** Part A slice 6, constants given one home -- shared-constants 4 left (`Chosen-By:
+- **Slice in progress:** Part A slice 6, constants given one home -- shared-constants 2 left (`Chosen-By:
   fastest-feedback`; started 22:33:20Z). The rule, as its corrections read (full list:
   `overhaul-scratch/shared-constants.txt`, from `--rule shared-constants --baseline <empty> --offence-threshold
   0`): a public constant nothing else reads goes private; one a single other file reads moves into that file,
@@ -57,13 +57,14 @@ pushed with the record at every commit.
   `node/src/observer/diagnostic_constants.rs` (`efd7ee5`) -- `DIAGNOSTIC_FIELDS` stays in the baseline (Q31: a
   constants file's own reads do not count, so stern would send the table into its test); `RETAINED_SLOTS`,
   `PENDING_TX_POOL_CAPACITY`, `INLINE_SIGNATURE_BYTES` to constants files, validation's `PEER_ID` private (stern
-  had matched a node test's own `PEER_ID` by name) (`59b99a1`). Next: (c) the harness's
-  `EVENTUAL_TIMEOUT`/`EVENTUAL_POLL_INTERVAL` (`system-tests/src` is at 20 files again: room first); (d)
+  had matched a node test's own `PEER_ID` by name) (`59b99a1`); the runtime-timer harness's
+  `EVENTUAL_TIMEOUT`/`EVENTUAL_POLL_INTERVAL` private -- the client harness has its own pair, matched by name
+  (`a2ad8dd`). Stern matches readers by name: check an import exists before moving. Left: (d)
   `BLOCK_GAS_LIMIT`, read by 58 files -- batches. The `c75-pending` scratch folder can go.
-- **Commits:** 82 on the branch; 4 past the threshold (3 planned, + `97225b7` for the dry4rust re-record); bug fixes
+- **Commits:** 83 on the branch; 4 past the threshold (3 planned, + `97225b7` for the dry4rust re-record); bug fixes
   1 (`eba863f`); the 80th ran all three stages, as every commit has; the 90th next
 - **Tests:** 3,440 at the base, 3,633 now (stage 5 463)
-- **Offences:** 119 as configured, 330 everything on, shear 0; Grip 642.59 / Braintax 4,502.09 (0.1427, the
+- **Offences:** 117 as configured, 328 everything on, shear 0; Grip 642.59 / Braintax 4,502.09 (0.1427, the
   first move: execution-types 64.14 to 56.14 at `069fd4c`); dry4rust
   baseline 210 groups (re-recorded at `b954ec4`, Q26), 209 matching -- the civil-date pair paid at `7ee8472`
 - **Questions:** 29 answered, 2 open (9, 25). **Interventions:** 0. **Waits:** 0.
@@ -94,7 +95,8 @@ pushed with the record at every commit.
   `Sha3Window` (`72ac407`); `WaitProgress` to `cluster_wait/` (`1f0b856`), `NodeHeight` (`abe8d70`), the slice's
   last; constants: the three nobody else reads, private (`8727d28`), the gas costs (`57b4222`), the
   opcodes (`c931cfe`), the engine's re-export shim out (`e660a94`), the state's layout bytes (`8f01aff`), the
-  beacon's byte bounds (`efd7ee5`), three singles and the test node's peer (`59b99a1`).
+  beacon's byte bounds (`efd7ee5`), three singles and the test node's peer (`59b99a1`),
+  the runtime-timer harness's wait budget (`a2ad8dd`).
 
 ## Next in line
 
