@@ -6,13 +6,8 @@ pushed with the record at every commit.
 
 ## In progress
 
-- **Part, step, slice:** Part 0, the tooling -- the five conflict tests detection does not explain yet (QUESTIONS
-  entry 4), one `tests` commit each; check each fails with detection disabled (`VolatileState::
-  record_pre_prepare_observation_and_check_conflict` returning `false` first, working tree only, reverted)
-- **Last commit:** `dfab36a` Give round one its honest view changes, so the malicious vote is what is missing (workbook row 22)
-- **The five fixes:** the final file is `overhaul-scratch/pending/malicious_block_tests_final.rs` (all five, each
-  checked failing with detection disabled and passing with it); landed one at a time: (a) stall done; (b) round
-  zero done; (c) recovery done; (d) cannot help done; (e) view change -- a view change from 3 too, a round-1 timeout, `queued_view_change_rounds` empty.
+- **Part, step, slice:** Part 0, the tooling -- the coverage baseline per module
+- **Last commit:** `bc68c24` Show that the conflicting leader's view change cannot move a follower's round (workbook row 23)
 - **Owed later:** `RuntimeTimerHarness::next_port` has no test (everything-on `tested-public-api`): its slice.
 - **Stage 2 now:** stern4rust, cargo-shear, dry4rust, crap4rust per package, twin4rust, iceberg4rust.
 - **Traces before the driver lands:** `checkout-index -a -f --prefix=overhaul-scratch/replay/` (the a1460ca driver
@@ -28,7 +23,6 @@ slice*).
 
 | # | slice | kind | `Chosen-By` |
 |---|---|---|---|
-| 6 | the three conflict-detection tests | tests | safety-net |
 | 7 | the coverage baseline per module | support | measurement |
 | 8 | the reference-traces driver landed, last (past the threshold, planned) | tests | (plan: last) |
 
@@ -42,9 +36,9 @@ slice*).
 - **Questions:** 4 answered, 0 open.
 - **Interventions:** 0.
 - **Waits:** 0, 0 hours in all.
-- **Commits:** 22 on the branch, 1 past the threshold (the dry4rust baseline, planned); the 30th runs all three
+- **Commits:** 23 on the branch, 1 past the threshold (the dry4rust baseline, planned); the 30th runs all three
   stages, and the end of Part 0.
-- **Tests:** 3,440 at the base, 3,519 at `dfab36a` (stage 5 now 401). **Shear:** 0 since `1663af1`.
+- **Tests:** 3,440 at the base, 3,519 at `bc68c24` (stage 5 now 401). **Shear:** 0 since `1663af1`.
 - **xtask gate tests:** a test helper building a gate with four strings duplicates the build gate test's; build
   it from consts in one line (dry4rust caught it twice).
 

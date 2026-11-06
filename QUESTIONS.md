@@ -116,4 +116,11 @@ the course the slice took and the run's recommendation; after the run, the owner
   could supply, so that ignoring it decides the outcome -- or an assertion only detection explains, such as the
   prepare node 1 must not broadcast for the conflicting block, read from what it queued for its peers. Each fix is
   run with detection disabled too, and must then fail. The commits are listed here as they land.
-- **Commits:** 18 (the blocks made valid); the five fixes to follow.
+- **Commits:** 18 (the blocks made valid); then, one fix each, every one seen failing with detection disabled:
+  19 `conflicted_node_stalls_while_other_nodes_finalize` -- `drain_all` had run node 1 before nodes 2 and 3 voted,
+  and node 0's votes were refused as replays, so nodes 2 and 3 now hand it their votes directly; 20
+  `conflict_in_round_zero_...` and 21 `conflict_recovery_...` -- honest round-zero prepares for the first block,
+  which without detection lock node 1 on it; 22 `malicious_sender_cannot_help_...` -- the honest view changes that
+  start round one, so node 0's votes are the missing ones; 23 `malicious_sender_view_change_does_not_unlock_...` --
+  an honest view change beside node 0's, a round-one timeout, and no view change queued: the one assertion added,
+  the height assertion kept.
