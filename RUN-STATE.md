@@ -8,11 +8,12 @@ pushed with the record at every commit.
 
 - **Part, step, slice:** Part A, the rules block -- the harness: waits that fail on stalled progress; the
   cargo-build fallback behind a trait, the five tests back
-- **Last commit:** `d2cbd53` Name where the cargo fallback leaves the node binary: CargoNodeBinaryBuild::binary_path
-  (workbook row 29)
-- **The harness slice, next:** (1) done; (2) `bug-fix`: `binary_path` hardcodes `.exe` -- a test asserting the name
-  ends with `system-tests{EXE_SUFFIX}`, run red on the parent in a scratch worktree, then `EXE_SUFFIX`;
-  (3) waits failing on stalled progress (a stall window beside the 120 s cap; `heights_settle` keeps its cap only),
+- **Last commit:** `eba863f` Hand back the node binary under its own platform's name when the fallback builds it
+  (workbook row 30)
+- **Bug-fix check:** `git worktree add --detach overhaul-scratch/wt-parent HEAD`, copy the test file in, `cargo test
+  --manifest-path wt-parent/Cargo.toml --target-dir overhaul-scratch/wt-target ...` must compile and fail; then
+  `git worktree remove --force` and `cargo clean --target-dir overhaul-scratch/wt-target`.
+- **The harness slice, next:** (3) waits failing on stalled progress (a stall window beside the 120 s cap; `heights_settle` keeps its cap only),
   a QUESTIONS entry for the time bound.
 - **Started (UTC):** 2026-11-06T16:02:08Z; branch `unattended-overhaul` created from `8a775a2`
 - **Part 0:** 25 commits, 16:09 to 17:50; 2 past the threshold (the dry4rust baseline, the driver), both planned.
@@ -47,9 +48,9 @@ Owed: `RuntimeTimerHarness::next_port` has no test (everything-on `tested-public
 - **Questions:** 5 answered, 0 open.
 - **Interventions:** 0.
 - **Waits:** 0, 0 hours in all.
-- **Commits:** 29 on the branch, 3 past the threshold (planned: dry4rust baseline, driver, `--fix`); the 30th runs
-  all three stages.
-- **Tests:** 3,440 at the base, 3,528 at `d2cbd53` (stage 5 408).
+- **Commits:** 30 on the branch, 3 past the threshold (planned: dry4rust baseline, driver, `--fix`); the 40th runs
+  all three stages. Bug fixes: 1 (`eba863f`).
+- **Tests:** 3,440 at the base, 3,529 at `eba863f` (stage 5 409).
 - **Offences:** 359 as configured, 571 everything on, shear 0; Grip 642.59 / Braintax 4,510.09 (0.1425).
 - **Living documents owed:** `stern4rust.toml`'s and `CLAUDE.md`'s "483" (the baseline is 359 now); stage 2's
   gates (shear, dry4rust) in `CLAUDE.md` and the justfile's comments; the dry4rust baseline (216 of 217).
