@@ -6,8 +6,11 @@ pushed with the record at every commit.
 
 ## In progress
 
-- **Part, step, slice:** Part 0, the tooling -- the coverage baseline per module
-- **Last commit:** `bc68c24` Show that the conflicting leader's view change cannot move a follower's round (workbook row 23)
+- **Part, step, slice:** Part 0, the tooling -- the reference-traces driver landed, last (past the threshold, planned)
+- **Last commit:** `f93abe2` Fold cargo llvm-cov's per-file summary into modules: cargo xtask coverage-by-module (workbook row 24)
+- **Coverage baseline:** `COVERAGE-BASE.md`, from `overhaul-scratch/coverage-base-summary.json` (the base export).
+- **dry4rust:** 216 of the baseline's 217 groups still match (a duplicate went with `next_port`, commit 17): re-record
+  with the living documents at Part A's end.
 - **Owed later:** `RuntimeTimerHarness::next_port` has no test (everything-on `tested-public-api`): its slice.
 - **Stage 2 now:** stern4rust, cargo-shear, dry4rust, crap4rust per package, twin4rust, iceberg4rust.
 - **Traces before the driver lands:** `checkout-index -a -f --prefix=overhaul-scratch/replay/` (the a1460ca driver
@@ -23,7 +26,6 @@ slice*).
 
 | # | slice | kind | `Chosen-By` |
 |---|---|---|---|
-| 7 | the coverage baseline per module | support | measurement |
 | 8 | the reference-traces driver landed, last (past the threshold, planned) | tests | (plan: last) |
 
 ## Parked
@@ -36,9 +38,9 @@ slice*).
 - **Questions:** 4 answered, 0 open.
 - **Interventions:** 0.
 - **Waits:** 0, 0 hours in all.
-- **Commits:** 23 on the branch, 1 past the threshold (the dry4rust baseline, planned); the 30th runs all three
+- **Commits:** 24 on the branch, 1 past the threshold (the dry4rust baseline, planned); the 30th runs all three
   stages, and the end of Part 0.
-- **Tests:** 3,440 at the base, 3,519 at `bc68c24` (stage 5 now 401). **Shear:** 0 since `1663af1`.
+- **Tests:** 3,440 at the base, 3,521 at `f93abe2` (stage 5 now 401). **Shear:** 0 since `1663af1`.
 - **xtask gate tests:** a test helper building a gate with four strings duplicates the build gate test's; build
   it from consts in one line (dry4rust caught it twice).
 
