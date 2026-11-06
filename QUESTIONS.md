@@ -31,6 +31,7 @@ After the run the owner takes each open entry -- implement, discuss, discard, po
 | 11 | commit 43, Part A | five fixed delays in single-node tests -- 20, 100, 120 (three times) and 250 ms -- have no event to wait for in their place, and move onto the sleeper port unchanged | answered | the tests compose real time and sleep through `PollingWait::sleep`, as long as before; the rule stops seeing them, the delay does not go -- each is named, so a later change can replace it with the event it stands for |
 | 12 | commit 44, Part A | the cluster tests' last four waits move onto `PollingWait`: two deadline loops now take their last look just after the deadline rather than just before, and a 3 s partition settle goes through the sleeper | answered | each window grows by at most one poll -- 200 ms and 100 ms in 60 s; the settle is as long as before, as entry 11 |
 | 13 | commit 45, Part A | six factories that cannot fail returned `Result<_, String>`; returning what they build leaves their tests' `is_ok()` with nothing to check | answered | five tests now check what was built; the observer's, whose observer returns nothing a test can read, hands each observer an event -- its `is_ok()` became the signature, mapped here; the two client-interface factories' recorded duplicate is re-recorded, as entry 7 |
+| 14 | commit 47, Part A | two assertions change with the transport's failure type: the transport-choosing outgoing factory cannot fail either, and the node failure's `Debug` test named a `String` the transport no longer returns | answered | the factory's test checks a send instead of `is_ok()`, as entry 13; the `Debug` test checks the same quoting on a transport failure that exists -- the same contract |
 
 ## Interventions
 
@@ -312,3 +313,20 @@ the course the slice took and the run's recommendation; after the run, the owner
   the pair goes out under `d654de7c2f38ef52` and comes in under `fcde559ae97fd319`. The two groups paid in commits
   38 and 42 drop, none is added, 215 to 213.
 - **Commit:** 45.
+
+### 14. Two assertions move with the transport's failure type
+
+- **Raised:** commit 47, Part A, a failure type per concern.
+- **What:** the gRPC transport's three failures -- two poisoned locks and a server thread that would not spawn --
+  become `TransportFailure`. Two existing assertions change with them:
+  - `transport_factory::build_transport_outgoing`, the factory that picks the local or the gRPC transport, never
+    failed either. It now returns what it builds, as entry 13's six do, and its test,
+    `build_transport_outgoing_on_the_local_backend_ignores_the_peer_addresses`, checks that a send to a peer it
+    was given an address for succeeds, where it checked `is_ok()`.
+  - `NodeFailure::Transport` now carries a `TransportFailure`, not a `String`.
+    `format_of_a_failure_debug_quotes_its_text_as_the_string_it_replaces_did` built one from the text "invalid
+    listen addr", and now builds it from a poisoned server-state lock, with the quoted text to match.
+- **Status:** answered.
+- **Answer:** the first says more than before, as in entry 13. The second checks the same thing, that the failure's
+  `Debug` is its text quoted, on a value that can still be built.
+- **Commit:** 47.
