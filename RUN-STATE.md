@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `c79dacc` Have the command runner fail with a LaunchFailure (row 60)
+- **Last commit:** `8ecd1d0` Have the Rust source tree fail with a SourceTreeFailure (row 61)
 - **Slice done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to `44db935`).
   injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6 alone (Q9,
   open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs, `SystemClock`; a
@@ -14,7 +14,7 @@ pushed with the record at every commit.
   (`TokioPause`, async). `PollingWait` (`src/polling_wait.rs`: `until(interval, timeout, probe)`, `sleep`,
   `elapsed_since`) is every harness and test wait; tests compose real time through `real_time_wait()` in
   `tests/polling_wait_tests.rs`.
-- **Slice in progress:** Part A slice 2, a failure type per concern, top-down -- typed-errors 3 left, all xtask
+- **Slice in progress:** Part A slice 2, a failure type per concern, top-down -- typed-errors 2 left, all xtask
   (system-tests done at `fa51f03`, `ClusterConfigFailure`; before it `ClientInterfaceFailure` (`d95a05c`),
   `ClientInterfaceCodecFailure` (`1f0a989`), `SledStorageFailure` (`1f59d35`), `StorageCodecFailure` (`52d7f53`),
   `ProtocolAssemblyFailure` (`dd886cc`); xtask: `StageFailure` (`ba9d113`, a record; `reason: Box<GateFailure>`
@@ -22,8 +22,9 @@ pushed with the record at every commit.
   Clone, PartialEq, Eq`, a variant per failure, `b3503c4`) returned by `Gate::run` at `dc44447`, after the gate
   tests read failures' text (`21b4b54`, Q21) and `CargoTool` (`src/gates/cargo_tool.rs`, `9190601`, handed to
   stern and twin, which dry4rust found 94% alike) -- Q22. `LaunchFailure` (`src/process/launch_failure.rs`, a
-  record `{program, reason}`) from `CommandRunner` at `c79dacc`, Q23, in the three `Launch` variants. Left 3,
-  top-down: `RustSourceTree::rust_files` (into `GateFailure::Tree(String)`);
+  record `{program, reason}`) from `CommandRunner` at `c79dacc`, Q23, in the three `Launch` variants;
+  `SourceTreeFailure` (`src/source/source_tree_failure.rs`) from `rust_files` at `8ecd1d0`, in
+  `GateFailure::Tree`. Left 2:
   `CrapReportParser::parse` (into `GateFailure::UnreadableReport.reason`); `RunLogDirectory::prepare` (`main.rs`
   alone). xtask's own failures derive `Debug` (nothing printed them with `{:?}`). A trait whose failure changes
   touches every implementor: split before it starts -- tests to a type-agnostic form, the type, then the trait.
@@ -35,10 +36,10 @@ pushed with the record at every commit.
   two-variant `Display` can near-duplicate xtask's `TreeFailure`'s (dry4rust): one type per concern. Pattern: `Display` = the old text word
   for word (constraint 7); `Debug` = that text quoted, as a `String`'s was, where `{:?}`/`expect` printed it.
   A recorded dry4rust duplicate reshaped alike: re-record as Q7 and Q13, checked fingerprint by fingerprint.
-- **Commits:** 60 on the branch; 4 past the threshold (3 planned, + `97225b7` for the dry4rust re-record); bug fixes
+- **Commits:** 61 on the branch; 4 past the threshold (3 planned, + `97225b7` for the dry4rust re-record); bug fixes
   1 (`eba863f`); the 70th runs all three stages
-- **Tests:** 3,440 at the base, 3,591 now (stage 5 459)
-- **Offences:** 250 as configured, 461 everything on, shear 0; Grip 642.59 / Braintax 4,510.09 (0.1425); dry4rust
+- **Tests:** 3,440 at the base, 3,593 now (stage 5 459)
+- **Offences:** 249 as configured, 460 everything on, shear 0; Grip 642.59 / Braintax 4,510.09 (0.1425); dry4rust
   baseline 213 groups (re-recorded at `85986a6`, Q13), 211 matching -- two storage-codec pairs paid at `52d7f53`
 - **Questions:** 22 answered, 1 open (9). **Interventions:** 0. **Waits:** 0.
 
@@ -59,7 +60,7 @@ pushed with the record at every commit.
   `StorageCodecFailure` (`52d7f53`), `ProtocolAssemblyFailure` (`dd886cc`),
   `ClusterConfigFailure` (`fa51f03`); xtask's `StageFailure` (`ba9d113`); the gate tests read failures' text
   (`21b4b54`); `GateFailure` (`b3503c4`); `CargoTool` for stern and twin (`9190601`); `Gate::run` typed
-  (`dc44447`); `LaunchFailure` (`c79dacc`).
+  (`dc44447`); `LaunchFailure` (`c79dacc`); `SourceTreeFailure` (`8ecd1d0`).
 
 ## Next in line
 
