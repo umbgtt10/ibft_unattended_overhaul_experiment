@@ -47,6 +47,7 @@ After the run the owner takes each open entry -- implement, discuss, discard, po
 | 27 | commit 71, Part A | `summarize_receipts` returns a `ReceiptSummary` where it returned four counts as a tuple; its two tests compared the tuple | answered | each compares the record with the same four counts, now named -- the same claim and the same check |
 | 28 | commit 73, Part A | the EVM's `sha3_range` returns a `Sha3Window` where it returned offset, size and end as a tuple; one test compared the tuple | answered | it compares the record with the same three values, now named -- the same claim and the same check |
 | 29 | commit 75, Part A | the cluster harness's waits return `NodeHeight` where they returned `(node, height)` pairs, which their log lines and one wait's panic text print, and one test read the pairs by position | answered | the record prints as the pair did, pinned by a new test, so no line and no panic text changes; the test reads the same values by name |
+| 30 | commit 79, Part A | the EVM engine's `pub use` re-exports of the opcodes and `TinyEvmOpcode` -- a shim CLAUDE.md forbids -- counted as a second reader of ten opcodes commit 78 moved to a constants file; without the shim each has one reader | answered | nine go private into `tiny_evm_opcode.rs`, which alone matches on them, and `OPCODE_PUSH2` into the one test that assembles it, as stern's corrections say; no count moves, no test changes but for its imports |
 
 ## Interventions
 
@@ -601,3 +602,21 @@ the course the slice took and the run's recommendation; after the run, the owner
   harness test reads `heights[0].node_id` and `reached.height` -- the same five checks of the same values, by name.
   The tests that build the limits by hand build `NodeHeight`s with the same numbers.
 - **Commit:** 75.
+
+### 30. Ten opcodes a re-export shim had counted as shared
+
+- **Raised:** commit 79, Part A, constants given one home.
+- **What:** commit 78 moved the 33 opcode bytes to `evm/src/tiny_evm/opcode_constants.rs` and paid their 33
+  `shared-constants` offences. `tiny_evm_engine.rs` re-exported every one by `pub use` -- a re-export shim, which
+  CLAUDE.md forbids -- and stern counts a re-export as a reader. Commit 79 takes the shim out and points its
+  fifty-odd test imports at `opcode_constants` and `tiny_evm_opcode`. With it gone, ten opcodes have one reader:
+  `OPCODE_MUL`, `DIV`, `LT`, `GT`, `EQ`, `ISZERO`, `OR`, `DUP16`, `SWAP16` are read by `tiny_evm_opcode.rs` alone,
+  which decodes and names them, and `OPCODE_PUSH2` by `tiny_evm_engine_tests.rs` alone, which assembles it --
+  production matches pushes as the range `PUSH1..=PUSH32`. Ten offences would come back.
+- **Status:** answered.
+- **Answer:** as stern's corrections say: the nine go private into `tiny_evm_opcode.rs`, and `OPCODE_PUSH2` into
+  `tiny_evm_engine_tests.rs` as a private constant with its byte, `0x61`. Every byte is the one it was, the
+  opcode table now lives where it is read, and no count moves: 137 as configured, 348 with everything on, the
+  stern baseline unchanged -- so commit 79 is a `refactoring`. Commit 78's 33 stand paid: ten of them only
+  because the shim read them, until this commit.
+- **Commit:** 79.
