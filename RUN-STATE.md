@@ -6,9 +6,8 @@ pushed with the record at every commit.
 
 ## In progress
 
-- **Part, step, slice:** Part 0, the tooling -- the harness waits' failure messages (the cluster harness: stage 5
-  three times); QUESTIONS.md entry 2 to answer for its kind
-- **Last commit:** `f5a0be9` Give slotgate's per-test timeout forty seconds over the harness's longest wait (workbook row 15)
+- **Part, step, slice:** Part 0, the tooling -- the single-node harnesses' ports from the slot's range
+- **Last commit:** `e61f584` Say what a cluster harness wait saw when it gives up (workbook row 16)
 - **Stage 2 now:** stern4rust, cargo-shear, dry4rust, crap4rust per package, twin4rust, iceberg4rust.
 - **Traces before the driver lands:** `checkout-index -a -f --prefix=overhaul-scratch/replay/` (the a1460ca driver
   already copied into its `validation/examples/reference_traces`), then `cargo run --release --manifest-path
@@ -23,7 +22,6 @@ slice*).
 
 | # | slice | kind | `Chosen-By` |
 |---|---|---|---|
-| 4 | the harness waits that give up say so; slotgate's timeout 120 -> 160 | -- | risk |
 | 5 | the single-node harnesses' ports from the slot's range, and `next_port` | -- | risk |
 | 6 | the three conflict-detection tests | tests | safety-net |
 | 7 | the coverage baseline per module | support | measurement |
@@ -36,12 +34,12 @@ slice*).
 
 ## Counts
 
-- **Questions:** 1 answered, 0 open.
+- **Questions:** 2 answered, 0 open.
 - **Interventions:** 0.
 - **Waits:** 0, 0 hours in all.
-- **Commits:** 15 on the branch, 1 past the threshold (the dry4rust baseline, planned); the 20th runs all three
+- **Commits:** 16 on the branch, 1 past the threshold (the dry4rust baseline, planned); the 20th runs all three
   stages.
-- **Tests:** 3,440 at the base, 3,516 at `f5a0be9`. **Shear:** 0 since `1663af1`.
+- **Tests:** 3,440 at the base, 3,519 at `e61f584` (stage 5 now 401). **Shear:** 0 since `1663af1`.
 - **xtask gate tests:** a test helper building a gate with four strings duplicates the build gate test's; build
   it from consts in one line (dry4rust caught it twice).
 
