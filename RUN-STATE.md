@@ -6,8 +6,9 @@ pushed with the record at every commit.
 
 ## In progress
 
-- **Part, step, slice:** Part 0, the tooling -- the harness waits that give up say so; slotgate 120 -> 160
-- **Last commit:** `37a9eeb` Gate the dependencies nothing uses: cargo-shear in stage 2, after stern4rust (workbook row 14)
+- **Part, step, slice:** Part 0, the tooling -- the harness waits' failure messages (the cluster harness: stage 5
+  three times); QUESTIONS.md entry 2 to answer for its kind
+- **Last commit:** `f5a0be9` Give slotgate's per-test timeout forty seconds over the harness's longest wait (workbook row 15)
 - **Stage 2 now:** stern4rust, cargo-shear, dry4rust, crap4rust per package, twin4rust, iceberg4rust.
 - **Traces before the driver lands:** `checkout-index -a -f --prefix=overhaul-scratch/replay/` (the a1460ca driver
   already copied into its `validation/examples/reference_traces`), then `cargo run --release --manifest-path
@@ -35,12 +36,12 @@ slice*).
 
 ## Counts
 
-- **Questions:** 0 answered, 0 open.
+- **Questions:** 1 answered, 0 open.
 - **Interventions:** 0.
 - **Waits:** 0, 0 hours in all.
-- **Commits:** 14 on the branch, 1 past the threshold (the dry4rust baseline, planned); the 20th runs all three
+- **Commits:** 15 on the branch, 1 past the threshold (the dry4rust baseline, planned); the 20th runs all three
   stages.
-- **Tests:** 3,440 at the base, 3,516 at `37a9eeb`. **Shear:** 0 since `1663af1`.
+- **Tests:** 3,440 at the base, 3,516 at `f5a0be9`. **Shear:** 0 since `1663af1`.
 - **xtask gate tests:** a test helper building a gate with four strings duplicates the build gate test's; build
   it from consts in one line (dry4rust caught it twice).
 
