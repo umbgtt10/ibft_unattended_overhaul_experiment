@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `85986a6` Return what the factories that cannot fail build (row 45)
+- **Last commit:** `86cb9f5` Give the nodes a failure type of their own (row 46)
 - **Slice done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to `44db935`).
   injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6 alone (Q9,
   open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs, `SystemClock`; a
@@ -14,20 +14,20 @@ pushed with the record at every commit.
   (`TokioPause`, async). `PollingWait` (`src/polling_wait.rs`: `until(interval, timeout, probe)`, `sleep`,
   `elapsed_since`) is every harness and test wait; tests compose real time through `real_time_wait()` in
   `tests/polling_wait_tests.rs`.
-- **Slice in progress:** Part A slice 2, a failure type per concern, top-down -- typed-errors 43 left
-  (system-tests 36: the node `EtheramGrpcNode` 2 and the malicious node 1 -- the top --, the transport 4
-  (`ensure_server_started`, `GrpcTransportIncoming::new`, `transport_factory` 2), partition control 3, the
-  client-interface bus 2 and codec 6, `SledStorage::new` and the storage codec 12, the context-builder and
-  protocol factories 2, `ClusterConfig` 3; xtask 7: `GateSequence::run` -> `Gate::run` -> `CommandRunner` 2,
-  `rust_files`, `crap_report_parser::parse`, `run_log_directory::prepare`). Done: the six factories that cannot
-  fail return their value (`85986a6`). Next: the node's failure type, its variants carrying today's `String`s,
-  each refined as the layer below gets its own. Pattern: xtask's `MeasureFailure`, `ScanFailure`, `TreeFailure`;
-  a `Display` printing the old text word for word (constraint 7); a `{error:?}` panic must keep its text too.
+- **Slice in progress:** Part A slice 2, a failure type per concern, top-down -- typed-errors 40 left
+  (system-tests 33: the transport 4 (`ensure_server_started`, `GrpcTransportIncoming::new`, `transport_factory`
+  2), partition control 3, the client-interface bus 2 and codec 6, `SledStorage::new` and the storage codec 12,
+  the context-builder and protocol factories 2, `ClusterConfig` 3; xtask 7: `GateSequence::run` -> `Gate::run` ->
+  `CommandRunner` 2, `rust_files`, `crap_report_parser::parse`, `run_log_directory::prepare`). Done: the six
+  factories that cannot fail (`85986a6`); `NodeFailure` (`src/node_failure.rs`, `86cb9f5`) -- its variants
+  `PartitionTable`, `Transport`, `Storage`, `ClientInterface`, `ContextBuilder`, `Protocol` still carry a
+  `String`, each to become the lower layer's type as that layer gets one. Pattern: `Display` = the old text word
+  for word (constraint 7); `Debug` = that text quoted, as a `String`'s was, where `{:?}`/`expect` printed it.
   A recorded dry4rust duplicate reshaped alike: re-record as Q7 and Q13, checked fingerprint by fingerprint.
-- **Commits:** 45 on the branch; 4 past the threshold (3 planned, + `97225b7` for the dry4rust re-record); bug fixes
+- **Commits:** 46 on the branch; 4 past the threshold (3 planned, + `97225b7` for the dry4rust re-record); bug fixes
   1 (`eba863f`); the 50th runs all three stages
-- **Tests:** 3,440 at the base, 3,540 now (stage 5 420)
-- **Offences:** 290 as configured, 501 everything on, shear 0; Grip 642.59 / Braintax 4,510.09 (0.1425); dry4rust
+- **Tests:** 3,440 at the base, 3,544 now (stage 5 424)
+- **Offences:** 287 as configured, 498 everything on, shear 0; Grip 642.59 / Braintax 4,510.09 (0.1425); dry4rust
   baseline 213 groups, all matching (re-recorded at `85986a6`, Q13)
 - **Questions:** 12 answered, 1 open (9). **Interventions:** 0. **Waits:** 0.
 
@@ -41,7 +41,8 @@ pushed with the record at every commit.
   (`1b0171b`), the sleeper (`3e9c051`), the client-interface bus
   and the pause (`1e0d986`), the runtime-timer harness and `PollingWait` (`3868a69`), the
   client harness (`9d848e2`), the runtime-timer harness handed its wait (`b8fbd48`), the wake
-  signal's report (`27580b9`), the infra tests' waits (`97ee66a`), the single-node tests' (`ffe821d`), the cluster tests' (`44db935`); typed errors: infallible factories (`85986a6`).
+  signal's report (`27580b9`), the infra tests' waits (`97ee66a`), the single-node tests' (`ffe821d`), the cluster tests' (`44db935`); typed errors: infallible factories (`85986a6`), `NodeFailure`
+  (`86cb9f5`).
 
 ## Next in line
 
