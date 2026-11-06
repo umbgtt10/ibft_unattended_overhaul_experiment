@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `57b4222` Give the EVM's gas costs one home each: gas_constants (row 77)
+- **Last commit:** `c931cfe` Give the EVM's opcodes a constants file: opcode_constants (row 78)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -42,25 +42,25 @@ pushed with the record at every commit.
   prefix); a directory holds 20 files at most (`directory-file-count`) -- room is made by a move of its own, as
   a move counts every line twice; a record whose list is printed keeps the old text with a hand-written `Debug`,
   pinned by a test; run stern before `--write-baseline`, never after a refusal.
-- **Slice in progress:** Part A slice 6, constants given one home -- shared-constants 55 left (`Chosen-By:
+- **Slice in progress:** Part A slice 6, constants given one home -- shared-constants 22 left (`Chosen-By:
   fastest-feedback`; started 22:33:20Z). The rule, as its corrections read (full list:
   `overhaul-scratch/shared-constants.txt`, from `--rule shared-constants --baseline <empty> --offence-threshold
   0`): a public constant nothing else reads goes private; one a single other file reads moves into that file,
   private -- even out of a constants-only file (probed); one several files read moves to a constants file,
   "imports, constants, statics and type aliases only", named `<topic>_constants.rs`. Never drop a test's access
   (CLAUDE.md): a constant a test reads goes to a constants file. Done: the 3 nobody else reads (`8727d28`);
-  gas (`57b4222`): 27 private in `tiny_evm_ops.rs`, 6 in `evm/src/tiny_evm/gas_constants.rs`. Plan, smallest
-  first: (b) the 33 opcodes to `opcode_constants.rs` -- `tiny_evm_engine.rs`
-  re-exports all 33 and `TinyEvmOpcode` by `pub use` (a shim, CLAUDE.md), about 60 test imports go through it:
-  first the constants with the shim repointed, then the shim out, its importers pointed at the source; (c)
+  gas (`57b4222`): 27 private in `tiny_evm_ops.rs`, 6 in `evm/src/tiny_evm/gas_constants.rs`; the 33 opcodes
+  to `opcode_constants.rs` (`c931cfe`), the engine's `pub use` shim repointed. Next, a `refactoring`: the shim
+  out of `tiny_evm_engine.rs` (33 opcodes and `TinyEvmOpcode`), its ~55 test imports in evm and validation
+  pointed at `opcode_constants` / `tiny_evm_opcode`. Then, smallest first: (c)
   singles: WAL tags 10 (`node/src/state/wal_record.rs`?), diagnostics 4, `HARD_STATE_VERSION`,
   `RETAINED_SLOTS`, `PENDING_TX_POOL_CAPACITY`, `INLINE_SIGNATURE_BYTES`, `PEER_ID`, the harness's
   `EVENTUAL_TIMEOUT`/`EVENTUAL_POLL_INTERVAL` (`system-tests/src` is at 20 files again: room first); (d)
   `BLOCK_GAS_LIMIT`, read by 58 files -- batches. The `c75-pending` scratch folder can go.
-- **Commits:** 77 on the branch; 4 past the threshold (3 planned, + `97225b7` for the dry4rust re-record); bug fixes
+- **Commits:** 78 on the branch; 4 past the threshold (3 planned, + `97225b7` for the dry4rust re-record); bug fixes
   1 (`eba863f`); the 80th runs all three stages
 - **Tests:** 3,440 at the base, 3,633 now (stage 5 463)
-- **Offences:** 170 as configured, 381 everything on, shear 0; Grip 642.59 / Braintax 4,502.09 (0.1427, the
+- **Offences:** 137 as configured, 348 everything on, shear 0; Grip 642.59 / Braintax 4,502.09 (0.1427, the
   first move: execution-types 64.14 to 56.14 at `069fd4c`); dry4rust
   baseline 210 groups (re-recorded at `b954ec4`, Q26), 209 matching -- the civil-date pair paid at `7ee8472`
 - **Questions:** 27 answered, 2 open (9, 25). **Interventions:** 0. **Waits:** 0.
@@ -89,7 +89,8 @@ pushed with the record at every commit.
   certificate verifier (`24d718d`), the slice's last; named tuples: `BlockCommitments` (`b954ec4`),
   `UtcTimestamp` and xtask's `CivilDate` (`7ee8472`), `ReceiptSummary` (`069fd4c`), `LocalCompletion` (`d5b9214`),
   `Sha3Window` (`72ac407`); `WaitProgress` to `cluster_wait/` (`1f0b856`), `NodeHeight` (`abe8d70`), the slice's
-  last; constants: the three nobody else reads, private (`8727d28`), the gas costs (`57b4222`).
+  last; constants: the three nobody else reads, private (`8727d28`), the gas costs (`57b4222`), the
+  opcodes (`c931cfe`).
 
 ## Next in line
 
