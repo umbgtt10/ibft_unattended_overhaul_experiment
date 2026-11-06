@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `abe8d70` Name the cluster harness's node heights: NodeHeight (row 75)
+- **Last commit:** `8727d28` Keep the three constants no other file reads private (row 76)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -42,12 +42,26 @@ pushed with the record at every commit.
   prefix); a directory holds 20 files at most (`directory-file-count`) -- room is made by a move of its own, as
   a move counts every line twice; a record whose list is printed keeps the old text with a hand-written `Debug`,
   pinned by a test; run stern before `--write-baseline`, never after a refusal.
-- **Slice next:** Part A slice 6, constants given one home -- shared-constants 91 (`Chosen-By:
-  fastest-feedback`), not yet surveyed. The `c75-pending` scratch folder can go.
-- **Commits:** 75 on the branch; 4 past the threshold (3 planned, + `97225b7` for the dry4rust re-record); bug fixes
+- **Slice in progress:** Part A slice 6, constants given one home -- shared-constants 88 left (`Chosen-By:
+  fastest-feedback`; started 22:33:20Z). The rule, as its corrections read (full list:
+  `overhaul-scratch/shared-constants.txt`, from `--rule shared-constants --baseline <empty> --offence-threshold
+  0`): a public constant nothing else reads goes private; one a single other file reads moves into that file,
+  private -- even out of a constants-only file (probed); one several files read moves to a constants file,
+  "imports, constants, statics and type aliases only", named `<topic>_constants.rs`. Never drop a test's access
+  (CLAUDE.md): a constant a test reads goes to a constants file. Done: the 3 nobody else reads (`8727d28`).
+  Plan, smallest first: (a) gas -- the 27 only `tiny_evm_ops.rs` reads move there private, the 6 shared
+  (`INTRINSIC_GAS`, `GAS_ADD`, `GAS_PUSH1`, `GAS_MLOAD_BASE`, `GAS_MSTORE_BASE`, `GAS_SSTORE_SET`) to
+  `evm/src/tiny_evm/gas_constants.rs`; (b) the 33 opcodes to `opcode_constants.rs` -- `tiny_evm_engine.rs`
+  re-exports all 33 and `TinyEvmOpcode` by `pub use` (a shim, CLAUDE.md), about 60 test imports go through it:
+  first the constants with the shim repointed, then the shim out, its importers pointed at the source; (c)
+  singles: WAL tags 10 (`node/src/state/wal_record.rs`?), diagnostics 4, `HARD_STATE_VERSION`,
+  `RETAINED_SLOTS`, `PENDING_TX_POOL_CAPACITY`, `INLINE_SIGNATURE_BYTES`, `PEER_ID`, the harness's
+  `EVENTUAL_TIMEOUT`/`EVENTUAL_POLL_INTERVAL` (`system-tests/src` is at 20 files again: room first); (d)
+  `BLOCK_GAS_LIMIT`, read by 58 files -- batches. The `c75-pending` scratch folder can go.
+- **Commits:** 76 on the branch; 4 past the threshold (3 planned, + `97225b7` for the dry4rust re-record); bug fixes
   1 (`eba863f`); the 80th runs all three stages
 - **Tests:** 3,440 at the base, 3,633 now (stage 5 463)
-- **Offences:** 206 as configured, 417 everything on, shear 0; Grip 642.59 / Braintax 4,502.09 (0.1427, the
+- **Offences:** 203 as configured, 414 everything on, shear 0; Grip 642.59 / Braintax 4,502.09 (0.1427, the
   first move: execution-types 64.14 to 56.14 at `069fd4c`); dry4rust
   baseline 210 groups (re-recorded at `b954ec4`, Q26), 209 matching -- the civil-date pair paid at `7ee8472`
 - **Questions:** 27 answered, 2 open (9, 25). **Interventions:** 0. **Waits:** 0.
@@ -76,7 +90,7 @@ pushed with the record at every commit.
   certificate verifier (`24d718d`), the slice's last; named tuples: `BlockCommitments` (`b954ec4`),
   `UtcTimestamp` and xtask's `CivilDate` (`7ee8472`), `ReceiptSummary` (`069fd4c`), `LocalCompletion` (`d5b9214`),
   `Sha3Window` (`72ac407`); `WaitProgress` to `cluster_wait/` (`1f0b856`), `NodeHeight` (`abe8d70`), the slice's
-  last.
+  last; constants: the three nobody else reads, private (`8727d28`).
 
 ## Next in line
 
