@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `09ecd8d` Make the protocol's recovery host steps pub, each tested (row 66)
+- **Last commit:** `f458322` Make three of consensus's steps pub, each tested (row 67)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -27,9 +27,10 @@ pushed with the record at every commit.
   (`paired-test-file` refuses an orphaned test file; probed on an export), runs to dozens of commits within the
   threshold, and iceberg would refuse the merged files. Both offences stay in the baseline.
 - **Slice in progress:** Part A slice 4, `pub` or private, each made `pub` with tests of its own --
-  public-or-private 6 left (`Chosen-By: fastest-feedback`), all `IbftProtocol`'s core: consensus 3
-  (`adopt_certified_block`, `round_entry_timers`, `try_buffer_unjustified_pre_prepare`), protocol 2
-  (`drain_recovery_outcome`, `observe_recovery`), validation 1 (`commit_certificate_verifier`). Done:
+  public-or-private 3 left (`Chosen-By: fastest-feedback`), all `IbftProtocol`'s: protocol 2
+  (`drain_recovery_outcome`, `observe_recovery` -- `pub` goes between `block_gas_limit` and `hard_state`, and
+  between `max_txs_per_block` and `propose_interval_ms`), validation 1 (`commit_certificate_verifier`, first of
+  the `pub` ones). Done: consensus 3 (`f458322`, moved whole among the `pub` functions);
   `RecoveryControl`'s 18 -- queries 4, verdicts 2, `announce_request` and `enqueue_next_recovery_request`
   (`48155f6`), message 5 and timer 5 (`4cd3941`); the protocol's recovery host 6 (`09ecd8d`). `Action` has no
   `PartialEq`: a test reading actions matches them by pattern (`matches!(.., [Action::..])`).
@@ -37,10 +38,10 @@ pushed with the record at every commit.
   method needs a test calling it; `ordered-impl-functions` wants constructors, then `pub`, then the rest, each
   alphabetical -- a method made `pub` moves up. A host still reads the control layer through `process` alone
   (the boundary gate); the direct tests sit beside the `process` ones, named `handle_*` and sorted first.
-- **Commits:** 66 on the branch; 4 past the threshold (3 planned, + `97225b7` for the dry4rust re-record); bug fixes
+- **Commits:** 67 on the branch; 4 past the threshold (3 planned, + `97225b7` for the dry4rust re-record); bug fixes
   1 (`eba863f`); the 70th runs all three stages
-- **Tests:** 3,440 at the base, 3,623 now (stage 5 459)
-- **Offences:** 223 as configured, 434 everything on, shear 0; Grip 642.59 / Braintax 4,510.09 (0.1425); dry4rust
+- **Tests:** 3,440 at the base, 3,626 now (stage 5 459)
+- **Offences:** 220 as configured, 431 everything on, shear 0; Grip 642.59 / Braintax 4,510.09 (0.1425); dry4rust
   baseline 213 groups (re-recorded at `85986a6`, Q13), 211 matching -- two storage-codec pairs paid at `52d7f53`
 - **Questions:** 23 answered, 2 open (9, 25). **Interventions:** 0. **Waits:** 0.
 
@@ -64,7 +65,7 @@ pushed with the record at every commit.
   (`dc44447`); `LaunchFailure` (`c79dacc`); `SourceTreeFailure` (`8ecd1d0`); `CrapReportFailure` (`a60063e`);
   `RunLogFailure` (`09ad8f1`), the slice's last; slice 3 waits on Q25; `pub` with tests: the control layer's
   queries, verdicts and request steps (`48155f6`), its message and timer handlers (`4cd3941`); the protocol's
-  recovery host steps (`09ecd8d`).
+  recovery host steps (`09ecd8d`); three of consensus's steps (`f458322`).
 
 ## Next in line
 
