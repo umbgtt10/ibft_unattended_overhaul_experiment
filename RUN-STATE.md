@@ -9,7 +9,11 @@ pushed with the record at every commit.
 - **Part, step, slice:** Part 0, the tooling -- the five conflict tests detection does not explain yet (QUESTIONS
   entry 4), one `tests` commit each; check each fails with detection disabled (`VolatileState::
   record_pre_prepare_observation_and_check_conflict` returning `false` first, working tree only, reverted)
-- **Last commit:** `529bb6f` Build the conflict tests' proposals on blocks valid but for the conflict (workbook row 18)
+- **Last commit:** `db8e4ba` Give the conflicted node the honest votes it must refuse to stall (workbook row 19)
+- **The five fixes:** the final file is `overhaul-scratch/pending/malicious_block_tests_final.rs` (all five, each
+  checked failing with detection disabled and passing with it); landed one at a time: (a) stall done; (b) round
+  zero, (c) recovery -- round-0 prepares from 2 and 3; (d) cannot help -- view changes from 2 and 3 after the
+  timeout; (e) view change -- a view change from 3 too, a round-1 timeout, `queued_view_change_rounds` empty.
 - **Owed later:** `RuntimeTimerHarness::next_port` has no test (everything-on `tested-public-api`): its slice.
 - **Stage 2 now:** stern4rust, cargo-shear, dry4rust, crap4rust per package, twin4rust, iceberg4rust.
 - **Traces before the driver lands:** `checkout-index -a -f --prefix=overhaul-scratch/replay/` (the a1460ca driver
@@ -39,9 +43,9 @@ slice*).
 - **Questions:** 4 answered, 0 open.
 - **Interventions:** 0.
 - **Waits:** 0, 0 hours in all.
-- **Commits:** 18 on the branch, 1 past the threshold (the dry4rust baseline, planned); the 20th runs all three
+- **Commits:** 19 on the branch, 1 past the threshold (the dry4rust baseline, planned); the 20th runs all three
   stages.
-- **Tests:** 3,440 at the base, 3,519 at `529bb6f` (stage 5 now 401). **Shear:** 0 since `1663af1`.
+- **Tests:** 3,440 at the base, 3,519 at `db8e4ba` (stage 5 now 401). **Shear:** 0 since `1663af1`.
 - **xtask gate tests:** a test helper building a gate with four strings duplicates the build gate test's; build
   it from consts in one line (dry4rust caught it twice).
 
