@@ -6,17 +6,19 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `1e0d986` Time the client-interface bus through the ports it is given (workbook row 37)
-- **Slice in progress:** Part A -- time behind ports, tests off the clock; left: injected-time 8 (client harness 5,
-  runtime-timer harness 3 -- its reopen retry and two waits), timeless-tests 28 (system-tests: wake signal 6, grpc
-  transport/bus/client interface 6, sled reopen, cluster 4, single node 10, ...). Ports so far, all in
-  `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs, `SystemClock`; returns a `Duration` since the
-  clock's origin), `WallClock` (`SystemWallClock`), `Sleeper` (`ThreadSleeper`), `Pause` (`TokioPause`, async).
-- **Commits:** 37 on the branch; 4 past the threshold (3 planned, + `97225b7` for the dry4rust re-record); bug fixes
+- **Last commit:** `3868a69` Wait in the runtime-timer harness through a polling wait it is given (workbook row 38)
+- **Slice in progress:** Part A -- time behind ports, tests off the clock; left: injected-time 5 (the client
+  harness: `connect_client`'s async retry, `shutdown_child`, the startup delay, two waits), timeless-tests 28
+  (system-tests: wake signal 6, grpc transport/bus/client interface 6, sled reopen, cluster 4, single node 10, ...).
+  Ports so far, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs, `SystemClock`; returns a
+  `Duration` since the clock's origin), `WallClock` (`SystemWallClock`), `Sleeper` (`ThreadSleeper`), `Pause`
+  (`TokioPause`, async). `PollingWait` (`src/polling_wait.rs`, clock + sleeper, `until(interval, timeout, probe)`)
+  is the harness loop; the harness constructors the tests call choose the system adapters.
+- **Commits:** 38 on the branch; 4 past the threshold (3 planned, + `97225b7` for the dry4rust re-record); bug fixes
   1 (`eba863f`); the 40th runs all three stages
-- **Tests:** 3,440 at the base, 3,532 now (stage 5 412)
-- **Offences:** 326 as configured, 538 everything on, shear 0; Grip 642.59 / Braintax 4,510.09 (0.1425); dry4rust
-  baseline 215 groups
+- **Tests:** 3,440 at the base, 3,538 now (stage 5 418)
+- **Offences:** 323 as configured, 534 everything on, shear 0; Grip 642.59 / Braintax 4,510.09 (0.1425); dry4rust
+  baseline 215 groups, 214 matching (the runtime-timer harness's two waits paid in `3868a69`)
 - **Questions:** 7 answered, 0 open. **Interventions:** 0. **Waits:** 0.
 
 ## The run so far
@@ -27,7 +29,7 @@ pushed with the record at every commit.
   trait (`41891d0`), its `.exe` bug (`d2cbd53`, `eba863f`), stall-based waits (`7f2fed8`); xtask's timeless tests
   (`4d52581`); time behind ports: scratch names (`e950eb0`), the log's wall clock (`97225b7`), the timer's clock
   (`1b0171b`), the sleeper (`3e9c051`), the client-interface bus
-  and the pause (`1e0d986`).
+  and the pause (`1e0d986`), the runtime-timer harness and `PollingWait` (`3868a69`).
 
 ## Next in line
 
@@ -46,7 +48,9 @@ Part A's slices, in order, with the criterion that put each there (`SETUP.md`, *
 | 9 | each record in the module of what uses it | record-home 23 | no-scaffolding (last) |
 | 10 | living documents; the dry4rust baseline re-recorded | -- | -- |
 
-Owed: `RuntimeTimerHarness::next_port` has no test (everything-on `tested-public-api`) -- Part B's slice.
+Owed: `RuntimeTimerHarness::next_port` has no test (everything-on `tested-public-api`) -- Part B's slice; nor has
+`RuntimeTimerHarness::new`, which the tool stopped reporting at `3868a69` only because it matches calls by name and
+arity (seven arguments, like some other `new` a test calls) -- Part B's slice must test it all the same.
 Living documents owed: `stern4rust.toml`'s and `CLAUDE.md`'s "483"; stage 2's new gates (shear, dry4rust) in
 `CLAUDE.md` and the justfile; the dry4rust baseline (216 of 217 groups match).
 
@@ -75,7 +79,13 @@ Living documents owed: `stern4rust.toml`'s and `CLAUDE.md`'s "483"; stage 2's ne
   --manifest-path wt-parent/Cargo.toml --target-dir overhaul-scratch/wt-target ...` compiles and fails; then
   `git worktree remove --force` and `cargo clean --target-dir overhaul-scratch/wt-target`.
 - the harness refuses `git switch -c` (deny `git * -c *`), `cp -r`, `awk`, `slotgate`: use `checkout -b`, single-file
-  `cp`; only `cargo xtask measure`, `git worktree remove` and `cargo clean` remove directories.
+  `cp`; only `cargo xtask measure`, `git worktree remove` and `cargo clean` remove directories -- an export made with
+  `git archive | tar -x` is removed by writing a `CACHEDIR.TAG` into it (`Signature:
+  8a477f597d28d172789f06886806bc55`) and `cargo clean --target-dir` on it. Older leftovers to clear that way:
+  `index-c1`, `replay`, `replay-target`, `pending`; `base-8a775a2` once Part C has no use for it.
+- everything-on detail for one rule: export the parent and `git write-tree`'s tree, copy
+  `overhaul-scratch/stern-all.toml` over each export's `stern4rust.toml`, run `cargo stern4rust --manifest-path
+  <export>/Cargo.toml --package <p> --rule <r> --offence-threshold 0` on both and compare.
 - stern baseline keys are package-relative paths: a moved file re-keys its entries.
 - dry4rust: helpers of five lines and more count, test functions do not; a reshaped recorded duplicate fails.
 - a test that newly calls an untested pub function lowers `tested-public-api` (everything on): not a `tests` commit.
