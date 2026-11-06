@@ -6,20 +6,18 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `9d848e2` Hand the client process harness the waits it uses (workbook row 39)
+- **Last commit:** `b8fbd48` Hand the runtime-timer harness its polling wait from the tests (workbook row 40)
 - **Slice in progress:** Part A -- time behind ports, tests off the clock; injected-time done but the cluster
   harness's 20 (decision 2); left: timeless-tests 28 (system-tests: wake signal 6, grpc transport/bus/client
   interface 6, sled reopen, cluster 4, single node 10, ...). Ports, all in `system-tests/src/infra` but `Clock`:
   `Clock` (timer_scheduler.rs, `SystemClock`; returns a `Duration` since the clock's origin), `WallClock`
   (`SystemWallClock`), `Sleeper` (`ThreadSleeper`), `Pause` (`TokioPause`, async). `PollingWait`
   (`src/polling_wait.rs`, clock + sleeper, `until(interval, timeout, probe)`, `sleep`, `elapsed_since`) is the
-  harness loop. The client harness takes its `PollingWait` and `Pause` from the tests (stern's
-  `injected-dependencies` refused it choosing a `TokioPause` itself); the runtime-timer harness still picks its own
-  `PollingWait` in `build_single_node`/`build_restart_from_db` -- the tool does not see through the concrete
-  wrapper; to bring it in line, its ~45 test call sites hand it one (a `refactoring`, moves no count).
-- **Next:** commit 40 runs all three stages.
-- **Commits:** 39 on the branch; 4 past the threshold (3 planned, + `97225b7` for the dry4rust re-record); bug fixes
-  1 (`eba863f`); the 40th runs all three stages
+  harness loop. Both harnesses take their `PollingWait` (and the client harness its `Pause`) from the tests, which
+  compose real time through `real_time_wait()` in `tests/polling_wait_tests.rs` -- stern's
+  `injected-dependencies` refused a harness choosing its own.
+- **Commits:** 40 on the branch; 4 past the threshold (3 planned, + `97225b7` for the dry4rust re-record); bug fixes
+  1 (`eba863f`); the 50th runs all three stages
 - **Tests:** 3,440 at the base, 3,538 now (stage 5 418)
 - **Offences:** 318 as configured, 529 everything on, shear 0; Grip 642.59 / Braintax 4,510.09 (0.1425); dry4rust
   baseline 215 groups, 214 matching (the runtime-timer harness's two waits paid in `3868a69`)
@@ -34,7 +32,7 @@ pushed with the record at every commit.
   (`4d52581`); time behind ports: scratch names (`e950eb0`), the log's wall clock (`97225b7`), the timer's clock
   (`1b0171b`), the sleeper (`3e9c051`), the client-interface bus
   and the pause (`1e0d986`), the runtime-timer harness and `PollingWait` (`3868a69`), the
-  client harness (`9d848e2`).
+  client harness (`9d848e2`), the runtime-timer harness handed its wait (`b8fbd48`).
 
 ## Next in line
 
