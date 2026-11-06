@@ -6,13 +6,15 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `4d52581` Name xtask's scratch directories by process and count, not by the clock (workbook row 32)
-- **Slice in progress:** Part A -- time behind ports, tests off the clock (injected-time, timeless-tests); next piece:
-  system-tests' unique names (test_config, cluster_config_file) without the wall clock
-- **Commits:** 32 on the branch; 3 past the threshold (planned: dry4rust baseline, driver, `--fix`); bug fixes 1
+- **Last commit:** `e950eb0` Name the system tests' temporary configs and databases without the wall clock (workbook
+  row 33)
+- **Slice in progress:** Part A -- time behind ports, tests off the clock; left: injected-time 16 (client harness 5,
+  runtime-timer harness 5, drifting clock, malicious node, grpc bus 2, grpc transport, structured log), timeless-tests
+  46 (system-tests)
+- **Commits:** 33 on the branch; 3 past the threshold (planned: dry4rust baseline, driver, `--fix`); bug fixes 1
   (`eba863f`); the 40th runs all three stages
 - **Tests:** 3,440 at the base, 3,531 now (stage 5 411)
-- **Offences:** 355 as configured, 567 everything on, shear 0; Grip 642.59 / Braintax 4,510.09 (0.1425)
+- **Offences:** 352 as configured, 564 everything on, shear 0; Grip 642.59 / Braintax 4,510.09 (0.1425)
 - **Questions:** 6 answered, 0 open. **Interventions:** 0. **Waits:** 0.
 
 ## The run so far
