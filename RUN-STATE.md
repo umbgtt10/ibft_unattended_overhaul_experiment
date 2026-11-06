@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `7ee8472` Read an instant as a UTC date and time in one place: UtcTimestamp (row 70)
+- **Last commit:** `069fd4c` Name the counts a block's receipts summarize to: ReceiptSummary (row 71)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -32,24 +32,25 @@ pushed with the record at every commit.
   question with no house default), measured before any commit: a merge carries each handler file's tests
   (`paired-test-file` refuses an orphaned test file; probed on an export), runs to dozens of commits within the
   threshold, and iceberg would refuse the merged files. Both offences stay in the baseline.
-- **Slice in progress:** Part A slice 5, named values for tuples -- distinct-tuple-elements 6 left (`Chosen-By:
+- **Slice in progress:** Part A slice 5, named values for tuples -- distinct-tuple-elements 5 left (`Chosen-By:
   fastest-feedback`). Done: `BlockCommitments` (`node/src/ibft/block_commitments.rs`) for the verifier's
   `compute` and `execute_and_compute_commitments` (`b954ec4`, Q26: the dry4rust baseline re-recorded with
   `--path .` from the repository root -- an absolute path writes absolute closure names); the civil date 3
   (`7ee8472`): `UtcTimestamp` (`system-tests/src/infra/utc_timestamp.rs`, `iso8601()`, `directory_name()`) for
-  the log and the harness, a private `CivilDate` record in xtask's `run_stamp.rs`. Left, by concept:
-  `execution-types` `transaction_receipt.rs::summarize_receipts`
-  (four counts); `node` `bootstrapper.rs::complete_local_participation` (two flags); `evm`
+  the log and the harness, a private `CivilDate` record in xtask's `run_stamp.rs`; `ReceiptSummary`
+  (`execution-types/src/execution/receipt_summary.rs`, `069fd4c`, Q27). Left, by concept:
+  `node` `bootstrapper.rs::complete_local_participation` (two flags); `evm`
   `tiny_evm_ops.rs::sha3_range` (offset, size, end); the cluster harness's `(node, height)` pairs 3 --
   `get_height_tolerating_in_flight_commit`, `get_heights_tolerating_in_flight_commit`,
   `wait_until_heights_settle` (a commit touching the harness runs stage 5 three times). A record used by one file
   stays private there (`record-home`); one used by several gets its own file and no test of its own.
-- **Commits:** 70 on the branch; 4 past the threshold (3 planned, + `97225b7` for the dry4rust re-record); bug fixes
+- **Commits:** 71 on the branch; 4 past the threshold (3 planned, + `97225b7` for the dry4rust re-record); bug fixes
   1 (`eba863f`); the 80th runs all three stages
 - **Tests:** 3,440 at the base, 3,632 now (stage 5 462)
-- **Offences:** 212 as configured, 423 everything on, shear 0; Grip 642.59 / Braintax 4,510.09 (0.1425); dry4rust
+- **Offences:** 211 as configured, 422 everything on, shear 0; Grip 642.59 / Braintax 4,502.09 (0.1427, the
+  first move: execution-types 64.14 to 56.14 at `069fd4c`); dry4rust
   baseline 210 groups (re-recorded at `b954ec4`, Q26), 209 matching -- the civil-date pair paid at `7ee8472`
-- **Questions:** 24 answered, 2 open (9, 25). **Interventions:** 0. **Waits:** 0.
+- **Questions:** 25 answered, 2 open (9, 25). **Interventions:** 0. **Waits:** 0.
 
 ## The run so far
 
@@ -73,7 +74,7 @@ pushed with the record at every commit.
   queries, verdicts and request steps (`48155f6`), its message and timer handlers (`4cd3941`); the protocol's
   recovery host steps (`09ecd8d`); three of consensus's steps (`f458322`); the protocol's recovery drain and
   certificate verifier (`24d718d`), the slice's last; named tuples: `BlockCommitments` (`b954ec4`),
-  `UtcTimestamp` and xtask's `CivilDate` (`7ee8472`).
+  `UtcTimestamp` and xtask's `CivilDate` (`7ee8472`), `ReceiptSummary` (`069fd4c`).
 
 ## Next in line
 

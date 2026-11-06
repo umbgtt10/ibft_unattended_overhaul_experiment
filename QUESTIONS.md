@@ -44,6 +44,7 @@ After the run the owner takes each open entry -- implement, discuss, discard, po
 | 24 | commit 62, Part A | the CRAP report parser's three failure tests read the `String` it failed with; it fails with a `CrapReportFailure` | answered | each reads the same words through `to_string()`; the new type's tests pin the whole text |
 | 25 | after commit 63, Part A, slice 3 | one file per implemented type: `IbftProtocol` (13 files, 4,857 lines) and `RecoveryControl` (5 files) -- merge every `impl` into the type's file, or split the type into types of their own? | open | the slice waits, both offences stay in the baseline, and the run goes on with slice 4; recommended: split, a type per concern, with the protocol's split taken into Part B's seams |
 | 26 | commit 69, Part A | a block's two commitment roots become a record, which reshapes three copies of `build_block_with_commitments` the dry4rust baseline records as one exact group | answered | re-recorded as entries 7 and 13 did, checked fingerprint by fingerprint: the group out under `f74317da987ed69e` and in under `40298922b91b8ae9`, three paid groups dropped, none added -- 213 to 210 |
+| 27 | commit 71, Part A | `summarize_receipts` returns a `ReceiptSummary` where it returned four counts as a tuple; its two tests compared the tuple | answered | each compares the record with the same four counts, now named -- the same claim and the same check |
 
 ## Interventions
 
@@ -553,3 +554,18 @@ the course the slice took and the run's recommendation; after the run, the owner
   absolute `--path` wrote closure names with the machine's absolute paths. It was restored and run again from the
   repository root, so the names keep their `./`.
 - **Commit:** 69.
+
+### 27. The receipt summary's two tests compare it by name
+
+- **Raised:** commit 71, Part A, named values for tuples.
+- **What:** `TransactionReceipt::summarize_receipts` returned `(usize, usize, usize, usize)` -- successes, out of
+  gas, reverted, invalid opcode, in that order. It returns `ReceiptSummary`, the four counts by name.
+  `summarize_receipts_counts_each_status_variant` compared the result with `(1, 1, 1, 1)` and
+  `summarize_receipts_empty_slice_returns_zero_counts` with `(0, 0, 0, 0)`. Each now compares it with a
+  `ReceiptSummary` holding the same four counts. The node's two callers and its two tests destructure the record
+  under the names they gave the tuple's elements, and their assertions are unchanged.
+- **Status:** answered.
+- **Answer:** the claims are the same counts, checked the same way, field for field. Both tests expect every count
+  equal (all one, all zero), so neither form could tell two counts swapped; the node's storage test, whose counts
+  differ (two successes), keeps its four assertions on the named values.
+- **Commit:** 71.
