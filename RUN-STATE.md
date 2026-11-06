@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `9190601` Hand the stern and twin gates the cargo tool they run: CargoTool (row 58)
+- **Last commit:** `dc44447` Have every gate fail with a GateFailure (row 59)
 - **Slice done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to `44db935`).
   injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6 alone (Q9,
   open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs, `SystemClock`; a
@@ -14,31 +14,21 @@ pushed with the record at every commit.
   (`TokioPause`, async). `PollingWait` (`src/polling_wait.rs`: `until(interval, timeout, probe)`, `sleep`,
   `elapsed_since`) is every harness and test wait; tests compose real time through `real_time_wait()` in
   `tests/polling_wait_tests.rs`.
-- **Slice in progress:** Part A slice 2, a failure type per concern, top-down -- typed-errors 6 left, all xtask
+- **Slice in progress:** Part A slice 2, a failure type per concern, top-down -- typed-errors 5 left, all xtask
   (system-tests done at `fa51f03`, `ClusterConfigFailure`; before it `ClientInterfaceFailure` (`d95a05c`),
   `ClientInterfaceCodecFailure` (`1f0a989`), `SledStorageFailure` (`1f59d35`), `StorageCodecFailure` (`52d7f53`),
-  `ProtocolAssemblyFailure` (`dd886cc`); xtask: `GateSequence::run` done at `ba9d113` (`StageFailure`, a record
-  -- records-and-objects refused a constructor; its `reason` is still the gate's `String`); left 6: `Gate::run`
-  (then `StageFailure.reason` takes its type) -> `CommandRunner` 2, `rust_files`, `crap_report_parser::parse`,
-  `run_log_directory::prepare`). xtask's own failures derive `Debug` (nothing printed them with `{:?}`).
-  `Gate::run` is split in three, each within the threshold (one commit is ~31 files): (1) `tests`, the gate tests
-  compare a failure's text, `to_string()` -- done, `21b4b54`, Q21; (2) `support`, `GateFailure`
-  (`src/gates/gate_failure.rs`, derives `Debug, Clone, PartialEq, Eq`; a variant per failure, each printing the
-  old text: `NotInstalled(&'static str)`, `Launch(String)` until `LaunchFailure`, `CouldNotRun`/`ExitCode`/
-  `SystemTestFailed(Option<i32>)`, `RuleBroken`, `DuplicationAdded`, `UnusedDependency`, `UnexplainedIgnores(Vec)`,
-  `UnreadableMetadata(MeasureFailure)`, `MissingTwins`, `AboveCeiling(String)`, `UnreadableReport{reason,
-  exit_code, stderr, stdout_tail}`, `CrappyFunctions(usize)`, `Tree(String)` until the tree's type,
-  `UnreadableFile{path, reason}`, `MissingTree(String)`, `NoRustFiles`, `LayoutFindings(usize)`,
-  `VocabularyFindings(usize)`) with 7 tests -- done, `b3503c4`; (3) `rule-offence`: the trait, the ten gates
-  (the CRAP gate's plural and its comment go: `GateFailure` has them), `StageFailure.reason: Box<GateFailure>`
-  (clippy's `result_large_err` refused it unboxed, 128 bytes), `CrappyFunctions(u32)` (the report's type),
-  `FakeGate::failing(label, GateFailure)`, the sequence's and the stage failure's tests, the baseline -- 18
-  files. Its first try found dry4rust's near duplicate of `SternGate::run`/`TwinGate::run` (94%), so it waits in
-  **`git stash` (stash@{0})** while (2b) `refactoring` `CargoTool` (`src/gates/cargo_tool.rs`: `new(runner,
-  binary, subcommand, manifest, packages)`, `stream() -> Result<Option<i32>, GateFailure>`) landed -- done,
-  `9190601`; stern and twin are handed it (`new(tool, label)`), `main.rs` names each tool. Next: `git stash pop`,
-  take stern's and twin's files as `9190601` has them with `run` returning `GateFailure` (`match
-  self.tool.stream()? {..}`, no `map_err`), re-run dry4rust, stern `--write-baseline`. Done: the six
+  `ProtocolAssemblyFailure` (`dd886cc`); xtask: `StageFailure` (`ba9d113`, a record; `reason: Box<GateFailure>`
+  -- clippy's `result_large_err` refused 128 bytes unboxed), `GateFailure` (`src/gates/gate_failure.rs`, `Debug,
+  Clone, PartialEq, Eq`, a variant per failure, `b3503c4`) returned by `Gate::run` at `dc44447`, after the gate
+  tests read failures' text (`21b4b54`, Q21) and `CargoTool` (`src/gates/cargo_tool.rs`, `9190601`, handed to
+  stern and twin, which dry4rust found 94% alike) -- Q22. Left 5, top-down: `CommandRunner::run_streaming` and
+  `run_capturing` -> `LaunchFailure` (into `GateFailure::Launch`, `TreeFailure::Launch`, `MeasureFailure::Launch`,
+  all `String` now, and `main.rs`'s `run_quietly`; the fakes in `tests/process/command_runner_tests.rs` and the
+  system runner's tests); `RustSourceTree::rust_files` (into `GateFailure::Tree(String)`);
+  `CrapReportParser::parse` (into `GateFailure::UnreadableReport.reason`); `RunLogDirectory::prepare` (`main.rs`
+  alone). xtask's own failures derive `Debug` (nothing printed them with `{:?}`). A trait whose failure changes
+  touches every implementor: split before it starts -- tests to a type-agnostic form, the type, then the trait.
+  Done: the six
   factories that cannot fail (`85986a6`); `NodeFailure` (`src/node_failure.rs`, `86cb9f5`); `TransportFailure`
   (`8650823`); `PartitionFailure` (`partitionable_transport/partition_failure.rs`, `c42e574`). `NodeFailure`'s
   variants all carry a type now. A new failure
@@ -46,12 +36,12 @@ pushed with the record at every commit.
   two-variant `Display` can near-duplicate xtask's `TreeFailure`'s (dry4rust): one type per concern. Pattern: `Display` = the old text word
   for word (constraint 7); `Debug` = that text quoted, as a `String`'s was, where `{:?}`/`expect` printed it.
   A recorded dry4rust duplicate reshaped alike: re-record as Q7 and Q13, checked fingerprint by fingerprint.
-- **Commits:** 58 on the branch; 4 past the threshold (3 planned, + `97225b7` for the dry4rust re-record); bug fixes
+- **Commits:** 59 on the branch; 4 past the threshold (3 planned, + `97225b7` for the dry4rust re-record); bug fixes
   1 (`eba863f`); the 60th runs all three stages
 - **Tests:** 3,440 at the base, 3,590 now (stage 5 459)
-- **Offences:** 253 as configured, 464 everything on, shear 0; Grip 642.59 / Braintax 4,510.09 (0.1425); dry4rust
+- **Offences:** 252 as configured, 463 everything on, shear 0; Grip 642.59 / Braintax 4,510.09 (0.1425); dry4rust
   baseline 213 groups (re-recorded at `85986a6`, Q13), 211 matching -- two storage-codec pairs paid at `52d7f53`
-- **Questions:** 20 answered, 1 open (9). **Interventions:** 0. **Waits:** 0.
+- **Questions:** 21 answered, 1 open (9). **Interventions:** 0. **Waits:** 0.
 
 ## The run so far
 
@@ -69,7 +59,8 @@ pushed with the record at every commit.
   `ClientInterfaceCodecFailure` (`1f0a989`), `SledStorageFailure` (`1f59d35`),
   `StorageCodecFailure` (`52d7f53`), `ProtocolAssemblyFailure` (`dd886cc`),
   `ClusterConfigFailure` (`fa51f03`); xtask's `StageFailure` (`ba9d113`); the gate tests read failures' text
-  (`21b4b54`); `GateFailure` (`b3503c4`); `CargoTool` for stern and twin (`9190601`).
+  (`21b4b54`); `GateFailure` (`b3503c4`); `CargoTool` for stern and twin (`9190601`); `Gate::run` typed
+  (`dc44447`).
 
 ## Next in line
 

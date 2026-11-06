@@ -39,6 +39,7 @@ After the run the owner takes each open entry -- implement, discuss, discard, po
 | 19 | commit 54, Part A | the cluster config's eight refusal tests compared the `String` it failed with to a text | answered | each compares the failure's text, through `to_string()`, to the same text -- the same words checked the same way |
 | 20 | commit 55, Part A | xtask's gate sequence fails with a `StageFailure`; its two failure tests compared a `String` | answered | one compares the same text through `to_string()`, the other the failure's three parts, whose text the new type's own test pins -- the same claim both |
 | 21 | commit 56, Part A | the gate tests' 32 assertions on a gate's failure compared the `String` it failed with, ahead of the gates' failure type | answered | each compares the failure's text, through `to_string()`, to the same words -- the same check of a `String` today and of the failure type, whose text is the old one |
+| 22 | commit 59, Part A | `Gate::run` fails with a `GateFailure`: the fake gate fails with one, not with free text, and three assertions name what it fails with | answered | each says what it said of the text it was given, now of a failure a gate gives; one expected text grows by the exit code the fake's failure carries |
 
 ## Interventions
 
@@ -447,3 +448,23 @@ the course the slice took and the run's recommendation; after the run, the owner
   string itself; of the failure type to come it is its `Display`, which prints the old text word for word
   (constraint 7). No test is added, removed or renamed; 3,580 before and after.
 - **Commit:** 56.
+
+### 22. The fake gate fails with a gate's failure
+
+- **Raised:** commit 59, Part A, a failure type per concern -- the third of the commits for `Gate::run`.
+- **What:** `FakeGate::failing` took a free text for its reason; a `GateFailure` has no variant for free text, so it
+  now takes the failure itself. Three assertions change with it:
+  `gate_tests::run_on_a_failing_gate_returns_its_reason` compares `Err(GateFailure::RuleBroken)` where it compared
+  `Err(String::from("because"))`;
+  `gate_sequence_tests::run_reports_the_sequence_label_the_failing_gates_label_and_the_reason` expects the stage
+  failure's reason to be `Box::new(GateFailure::RuleBroken)` where it was the text "a rule was broken";
+  `gate_sequence_tests::run_names_the_sequence_that_failed_rather_than_any_other` gives its fake
+  `SystemTestFailed(Some(1))` and expects "Stage 5 -- System tests (a system test failed, exit code Some(1))" where
+  it gave the text "a system test failed" and expected that text in the same place. The stage failure's own test
+  keeps its expected text: `RuleBroken` prints "a house coding rule was broken", the text it gave before.
+- **Status:** answered.
+- **Answer:** every claim is the same -- a failing gate returns what it failed with, and the stage names the stage,
+  the gate and that failure -- made of a failure a gate can give rather than of words no gate prints. The longer
+  expected text is the fake's failure printed whole; the stage's part of it is unchanged. The reason is boxed
+  because clippy's `result_large_err` refused a stage failure of 128 bytes.
+- **Commit:** 59.
