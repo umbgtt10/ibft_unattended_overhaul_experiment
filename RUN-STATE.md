@@ -6,22 +6,27 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `b8fbd48` Hand the runtime-timer harness its polling wait from the tests (workbook row 40)
+- **Last commit:** `27580b9` Have the wake signal report whether a notification ended its wait (workbook row 41)
 - **Slice in progress:** Part A -- time behind ports, tests off the clock; injected-time done but the cluster
-  harness's 20 (decision 2); left: timeless-tests 28 (system-tests: wake signal 6, grpc transport/bus/client
-  interface 6, sled reopen, cluster 4, single node 10, ...). Ports, all in `system-tests/src/infra` but `Clock`:
+  harness's 20 (decision 2); left: timeless-tests 26 -- the wake signal's 6 stay (Q9, open); to pay, 20: grpc
+  transport tests 4 (two `wait_for_*` helpers, two 40 ms sleeps), grpc client-interface tests 2 (`connect_client`,
+  `wait_for_polled_request`), sled `reopen_when_released`, single node 9 (client_eventual 1, client_interface 5,
+  discovery_handoff 1, restart `wait_for_db_unlock`, shutdown 1), cluster 4. The way: polling loops go through
+  `PollingWait::until` composed by `real_time_wait()`, bounds and intervals as they were -- a bound that moves is
+  named in QUESTIONS.md (*Reporting*); an assertion never says less to pay (constraint 6). Ports, all in
+  `system-tests/src/infra` but `Clock`:
   `Clock` (timer_scheduler.rs, `SystemClock`; returns a `Duration` since the clock's origin), `WallClock`
   (`SystemWallClock`), `Sleeper` (`ThreadSleeper`), `Pause` (`TokioPause`, async). `PollingWait`
   (`src/polling_wait.rs`, clock + sleeper, `until(interval, timeout, probe)`, `sleep`, `elapsed_since`) is the
   harness loop. Both harnesses take their `PollingWait` (and the client harness its `Pause`) from the tests, which
   compose real time through `real_time_wait()` in `tests/polling_wait_tests.rs` -- stern's
   `injected-dependencies` refused a harness choosing its own.
-- **Commits:** 40 on the branch; 4 past the threshold (3 planned, + `97225b7` for the dry4rust re-record); bug fixes
+- **Commits:** 41 on the branch; 4 past the threshold (3 planned, + `97225b7` for the dry4rust re-record); bug fixes
   1 (`eba863f`); the 50th runs all three stages
-- **Tests:** 3,440 at the base, 3,538 now (stage 5 418)
-- **Offences:** 318 as configured, 529 everything on, shear 0; Grip 642.59 / Braintax 4,510.09 (0.1425); dry4rust
+- **Tests:** 3,440 at the base, 3,540 now (stage 5 420)
+- **Offences:** 316 as configured, 527 everything on, shear 0; Grip 642.59 / Braintax 4,510.09 (0.1425); dry4rust
   baseline 215 groups, 214 matching (the runtime-timer harness's two waits paid in `3868a69`)
-- **Questions:** 7 answered, 0 open. **Interventions:** 0. **Waits:** 0.
+- **Questions:** 8 answered, 1 open (9). **Interventions:** 0. **Waits:** 0.
 
 ## The run so far
 
@@ -32,7 +37,8 @@ pushed with the record at every commit.
   (`4d52581`); time behind ports: scratch names (`e950eb0`), the log's wall clock (`97225b7`), the timer's clock
   (`1b0171b`), the sleeper (`3e9c051`), the client-interface bus
   and the pause (`1e0d986`), the runtime-timer harness and `PollingWait` (`3868a69`), the
-  client harness (`9d848e2`), the runtime-timer harness handed its wait (`b8fbd48`).
+  client harness (`9d848e2`), the runtime-timer harness handed its wait (`b8fbd48`), the wake
+  signal's report (`27580b9`).
 
 ## Next in line
 

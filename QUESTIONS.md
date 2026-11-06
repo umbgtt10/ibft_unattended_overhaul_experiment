@@ -25,6 +25,8 @@ After the run the owner takes each open entry -- implement, discuss, discard, po
 | 6 | commit 31, Part A | the cluster harness's eventual waits fail on 60 seconds without progress, beside their 120-second budget: a time bound added | answered | the plan's own change, `OPEN_POINTS.md`'s preferred option 1; the budget kept as the backstop below slotgate's kill; `refactoring`, as entry 2 |
 | 7 | commit 34, Part A | the logging observer's 74 one-line methods, a duplicate group the dry4rust baseline records, are reshaped by the clock they now pass, and the gate refuses the reshaped group | answered | re-record the dry4rust baseline: the same group under its new fingerprint, and the two groups paid since the base dropped -- 217 to 215, none added |
 | 5 | commit 27, Part A | the five harness tests restored lower a count -- `tested-public-api`, stood down in `system-tests` as configured -- so no `tests` commit can carry them | answered | `rule-offence`, `Rule: tested-public-api`: calling an untested public function from a test is the rule's own fix; the count falls with everything on and cannot move as configured, where the rule is stood down |
+| 8 | commit 41, Part A | the two gRPC buses' wake tests timed a wait to learn it was notified; they now assert the notification the wait reports | answered | the same contract -- the bus notified its signal -- stated directly; the wake signal's own promptness stays held by its timed tests (entry 9) |
+| 9 | commit 41, Part A | the wake signal's six tests time a timed wait -- promptness and duration are what they check -- and no timeless rewrite says as much | open | they stay in the stern baseline, `timeless-tests`; recommended: accept them beside decision 2's exception, the one place the subject under test is a timed wait |
 
 ## Interventions
 
@@ -178,3 +180,42 @@ the course the slice took and the run's recommendation; after the run, the owner
   only other changes are the two groups this branch has paid -- xtask's four `scratch_root` helpers (commit 32) and
   the three `next_port` helpers (commit 17) -- which go. 217 groups to 215, none added.
 - **Commit:** 34.
+
+### 8. The gRPC buses' wake tests assert the notification, not the time it saved
+
+- **Raised:** commit 41, Part A, time behind ports and timeless tests.
+- **What:** `new_with_wake_notifies_the_signal_when_a_message_is_enqueued` (the transport bus) and
+  `new_with_wake_notifies_the_signal_when_a_request_is_enqueued` (the client-interface bus) learned that the bus had
+  notified its wake signal by timing a wait on it: `wait_timeout(5 s)` had to return in under a second. Reading
+  `Instant::now()` for it was a `timeless-tests` offence each. `WakeSignal::wait_timeout` now reports whether it
+  returned on a notification, and both assertions read that instead: `assert!(wake.wait_timeout(5 s))`.
+- **Status:** answered.
+- **Answer:** an assertion changed, reported as constraint 6 asks, and judged not to say less. Each test's subject is
+  the bus, and its contract is that an enqueue notifies the signal. The old form fails when no notification came --
+  the wait runs its five seconds -- and so does the new; the new also names the reason the wait ended, where the old
+  inferred it from the time. The one case only the old form caught, a notification the signal took more than a
+  second to deliver, is the wake signal's own contract, which its timed tests keep (entry 9). The report comes with
+  two timeless tests of its own: `wait_timeout_after_a_notify_returns_true`,
+  `wait_timeout_without_a_notify_returns_false`.
+- **Commit:** 41.
+
+### 9. The wake signal's tests time a timed wait
+
+- **Raised:** commit 41, Part A, time behind ports and timeless tests.
+- **What:** `wake_signal_tests.rs`'s six tests each read `Instant::now()` -- six `timeless-tests` offences -- and
+  what they read it for is the wake signal's own contract: that a pending or arriving notification ends a wait at
+  once (`notify_before_wait_causes_immediate_return`, `notify_wakes_waiting_thread_immediately`,
+  `clone_shares_signal_state`, the first three waits of `multiple_notifies_before_wait_consumes_one_notification_per_wait`),
+  and that a wait with nothing pending lasts its timeout (`wait_timeout_returns_after_timeout_when_not_notified`,
+  `wait_timeout_clears_flag_after_return`, that test's fourth wait). The signal is a `Condvar` with a counter; its
+  waiting is the standard library's, and no clock the test drives reaches it. The notification the wait now reports
+  (entry 8) proves why a wait ended, but not that it ended promptly, nor that it lasted. Each timeless rewrite
+  therefore says less, and constraint 6 rules that out for paying an offence: "an offence left in the baseline is
+  always another way".
+- **Status:** open -- `SETUP.md`'s goal for Part B leaves nothing baselined but the cluster harness's time reads,
+  and these six cannot leave without an assertion saying less.
+- **Course taken:** the six stay as they are, in the stern baseline.
+- **Recommendation:** accept them beside decision 2's exception: as with the cluster harness, what they measure is
+  time itself. The alternative is to put the signal's waiting behind a port whose double reports the timeout it was
+  handed. That would test the plumbing around the `Condvar`, and leave the waiting itself, today's subject, with
+  no test.
