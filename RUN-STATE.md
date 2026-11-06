@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `1618598` Take the EVM engines' Default out; their callers compose them (row 90)
+- **Last commit:** `3505d8d` Give the bootstrapper's coordinator a factory: FactionCoordinatorFactory (row 91)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -65,12 +65,20 @@ pushed with the record at every commit.
   directory at a time, then the two `Default` impls out (the rule-offence). Done: evm tests, node-infra's two
   builders, node's consensus test (`e4de9df`); validation/src and validation/tests/single_node (`c576a8a`);
   validation/tests/cluster and the two `Default` impls out (`1618598`) -- group (1) paid. (2) `Bootstrapper::new`/`inactive` build `NoOpBootstrappingCoordinator`, and `init`
-  replaces it with `Faction::new(config, bridge)` built from runtime data -- needs a coordinator factory behind a
-  trait (SETUP: "the largest single piece, likely past the threshold"), ~40 constructions; surveyed, not begun.
+  replaces it with `Faction::new(config, bridge)` built from runtime data. Probed: stern flags *anything* but a
+  parameter assigned to the trait field, an injected factory's call included. Design: `BootstrappingCoordinatorFactory`
+  (`coordinator(local, validators, quorum_threshold, observer)`) and `FactionCoordinatorFactory` -- landed alone
+  (`3505d8d`, tested: accepts a member, `NonMemberIgnored` for a non-member). Next, the rule-offence (18 files,
+  ~320 lines): `Bootstrapper::new(config, coordinator, coordinator_factory)` and `inactive(coordinator,
+  coordinator_factory)`; a new `discovery_coordinator(local, validators, observer)` computing the threshold
+  (`required_count()` or `2n/3+1`, unchanged) and calling the factory; `init(coordinator)` only installs it;
+  `BootstrappingLifecycle` gets the same two methods; `peer_discovery.rs:175` builds then installs; the 46
+  constructions in 14 files pass `Box::new(NoOpBootstrappingCoordinator), Box::new(FactionCoordinatorFactory)`;
+  `bootstrapper_tests` and validation's `peer_discovery_proptest_tests` init in two steps.
   The `c75-pending` scratch folder can go.
-- **Commits:** 90 on the branch; 4 past the threshold (3 planned, + `97225b7` for the dry4rust re-record); bug fixes
+- **Commits:** 91 on the branch; 4 past the threshold (3 planned, + `97225b7` for the dry4rust re-record); bug fixes
   1 (`eba863f`); the 90th ran all three stages, as every commit has; the 100th next
-- **Tests:** 3,440 at the base, 3,633 now (stage 5 463)
+- **Tests:** 3,440 at the base, 3,635 now (stage 5 463)
 - **Offences:** 114 as configured, 325 everything on, shear 0; Grip 642.59 / Braintax 4,498.37 (0.1428;
   execution-types 64.14 to 56.14 at `069fd4c`, evm 503.97 to 500.25 at `1618598`); dry4rust
   baseline 210 groups (re-recorded at `b954ec4`, Q26), 209 matching -- the civil-date pair paid at `7ee8472`
@@ -106,7 +114,7 @@ pushed with the record at every commit.
   the runtime-timer harness's wait budget (`a2ad8dd`), the block gas limit's first readers (`75d9503`),
   its node and system-tests readers (`b455252`), validation's single-node tests (`2aded31`), the alias out
   (`8fd7429`), the slice's last; injected dependencies: the EVM engines composed in evm and node-infra
-  (`e4de9df`), and in validation's helpers and single-node tests (`c576a8a`), their `Default` out (`1618598`).
+  (`e4de9df`), and in validation's helpers and single-node tests (`c576a8a`), their `Default` out (`1618598`); the bootstrapper's coordinator factory (`3505d8d`).
 
 ## Next in line
 
