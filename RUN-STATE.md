@@ -6,9 +6,8 @@ pushed with the record at every commit.
 
 ## In progress
 
-- **Part, step, slice:** Part 0, the tooling -- the inventory's diff and the assertion comparison
-- **Last commit:** `e976cd0` Name what can happen to a test between a commit and its parent (workbook row 6)
-- **Pending in scratch:** `overhaul-scratch/pending/inventory_diff.rs` and `inventory_diff_tests.rs`, the next commit
+- **Part, step, slice:** Part 0, the tooling -- `cargo xtask measure`
+- **Last commit:** `1cf9fa3` Diff the tests of a commit against its parent: cargo xtask test-diff (workbook row 7)
 - **Started (UTC):** 2026-11-06T16:02:08Z; branch `unattended-overhaul` created from `8a775a2`
 
 ## Next in line
@@ -18,7 +17,6 @@ slice*).
 
 | # | slice | kind | `Chosen-By` |
 |---|---|---|---|
-| 3 | the inventory's diff and the assertion comparison, `Maps:` lines in the message | support | dependency |
 | 4 | `cargo xtask measure`: offences both ways rule by rule, shear, Grip and Braintax | support | dependency |
 | 5 | the dry4rust gate and its baseline (past the threshold, planned) | support | dependency |
 | 6 | the 13 unused dependencies, a few commits | rule-offence | dependency |
@@ -39,8 +37,9 @@ slice*).
 - **Questions:** 0 answered, 0 open.
 - **Interventions:** 0.
 - **Waits:** 0, 0 hours in all.
-- **Commits:** 6 on the branch; the tenth commit runs all three stages.
-- **Tests:** `cargo xtask test-inventory [<rev>]` -- 3,440 at the base, 3,478 at `e976cd0`.
+- **Commits:** 7 on the branch; the tenth commit runs all three stages.
+- **Tests:** `cargo xtask test-inventory [<rev>]` -- 3,440 at the base, 3,487 at `1cf9fa3`. Before every
+  commit: `cargo xtask test-diff HEAD --message <msg file>` over the staged index.
 
 ## How the checks are run (until `cargo xtask measure` and the inventory diff exist)
 
