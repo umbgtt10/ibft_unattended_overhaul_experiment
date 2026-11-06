@@ -34,6 +34,7 @@ After the run the owner takes each open entry -- implement, discuss, discard, po
 | 14 | commit 47, Part A | two assertions change with the transport's failure type: the transport-choosing outgoing factory cannot fail either, and the node failure's `Debug` test named a `String` the transport no longer returns | answered | the factory's test checks a send instead of `is_ok()`, as entry 13; the `Debug` test checks the same quoting on a transport failure that exists -- the same contract |
 | 15 | commit 48, Part A | five assertions change with partitioning's failure type: four read a failure's text through `to_string()`, one `is_err()` now names the failure | answered | the four check the same words as before; the fifth says more, as constraint 6 asks of an `is_err()` |
 | 16 | commit 50, Part A | the client-interface codec's four refusal tests checked `is_err()` alone | answered | each now names its failure -- the address length, the value and its parse error, the request and the response that did not match it -- the strengthening constraint 6 asks for |
+| 17 | commit 51, Part A | `NodeFailure::Storage` now carries the sled store's failure, so the node failure's test of a part's words builds one rather than a `String` | answered | the same contract, as entry 14: the node prints the part's own words, now those of a directory that could not be made |
 
 ## Interventions
 
@@ -367,3 +368,14 @@ the course the slice took and the run's recommendation; after the run, the owner
   constraint 6 asks for ("one that only checked `is_err()` names the error"). The gRPC handlers hand the
   failure's text to `Status` as they handed the `String`, so a client sees the same message.
 - **Commit:** 50.
+
+### 17. The node failure's words test builds a storage failure
+
+- **Raised:** commit 51, Part A, a failure type per concern.
+- **What:** `SledStorage::new` now fails with `SledStorageFailure`, and `NodeFailure::Storage` carries it.
+  `to_string_of_a_part_that_refused_in_words_is_those_words` built `NodeFailure::Storage` from the text "failed to
+  open sled db". It now builds it from a directory that could not be made, and expects that failure's words.
+- **Status:** answered.
+- **Answer:** the same contract, as in entry 14: a node failure prints the refusing part's own words, unchanged.
+  The value it is checked on is one the part can now produce.
+- **Commit:** 51.
