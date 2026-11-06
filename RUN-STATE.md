@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `52d7f53` Give the storage codec a failure type of its own (row 52)
+- **Last commit:** `dd886cc` Give the protocol's assembly a failure type, and the context limits theirs (row 53)
 - **Slice done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to `44db935`).
   injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6 alone (Q9,
   open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs, `SystemClock`; a
@@ -14,22 +14,22 @@ pushed with the record at every commit.
   (`TokioPause`, async). `PollingWait` (`src/polling_wait.rs`: `until(interval, timeout, probe)`, `sleep`,
   `elapsed_since`) is every harness and test wait; tests compose real time through `real_time_wait()` in
   `tests/polling_wait_tests.rs`.
-- **Slice in progress:** Part A slice 2, a failure type per concern, top-down -- typed-errors 12 left
-  (system-tests 5: the context-builder and protocol factories 2, `ClusterConfig` 3; done since:
+- **Slice in progress:** Part A slice 2, a failure type per concern, top-down -- typed-errors 10 left
+  (system-tests 3: `ClusterConfig` `find_node`, `load_from_path`, `validate`; done since:
   `ClientInterfaceFailure` (`d95a05c`), `ClientInterfaceCodecFailure` (`1f0a989`), `SledStorageFailure`
-  (`1f59d35`), `StorageCodecFailure` (`52d7f53`); xtask 7: `GateSequence::run` -> `Gate::run` ->
+  (`1f59d35`), `StorageCodecFailure` (`52d7f53`), `ProtocolAssemblyFailure` (`dd886cc`); xtask 7: `GateSequence::run` -> `Gate::run` ->
   `CommandRunner` 2, `rust_files`, `crap_report_parser::parse`, `run_log_directory::prepare`). Done: the six
   factories that cannot fail (`85986a6`); `NodeFailure` (`src/node_failure.rs`, `86cb9f5`); `TransportFailure`
   (`8650823`); `PartitionFailure` (`partitionable_transport/partition_failure.rs`, `c42e574`). `NodeFailure`'s
-  variants `ContextBuilder`, `Protocol` still carry a `String`. A new failure
+  variants all carry a type now. A new failure
   type's test file goes in the test folder mirroring its source's (paired-test-file, everything on). A
   two-variant `Display` can near-duplicate xtask's `TreeFailure`'s (dry4rust): one type per concern. Pattern: `Display` = the old text word
   for word (constraint 7); `Debug` = that text quoted, as a `String`'s was, where `{:?}`/`expect` printed it.
   A recorded dry4rust duplicate reshaped alike: re-record as Q7 and Q13, checked fingerprint by fingerprint.
-- **Commits:** 52 on the branch; 4 past the threshold (3 planned, + `97225b7` for the dry4rust re-record); bug fixes
+- **Commits:** 53 on the branch; 4 past the threshold (3 planned, + `97225b7` for the dry4rust re-record); bug fixes
   1 (`eba863f`); the 60th runs all three stages
-- **Tests:** 3,440 at the base, 3,571 now (stage 5 451)
-- **Offences:** 259 as configured, 470 everything on, shear 0; Grip 642.59 / Braintax 4,510.09 (0.1425); dry4rust
+- **Tests:** 3,440 at the base, 3,576 now (stage 5 456)
+- **Offences:** 257 as configured, 468 everything on, shear 0; Grip 642.59 / Braintax 4,510.09 (0.1425); dry4rust
   baseline 213 groups (re-recorded at `85986a6`, Q13), 211 matching -- two storage-codec pairs paid at `52d7f53`
 - **Questions:** 17 answered, 1 open (9). **Interventions:** 0. **Waits:** 0.
 
@@ -47,7 +47,7 @@ pushed with the record at every commit.
   (`86cb9f5`), `TransportFailure` (`8650823`),
   `PartitionFailure` (`c42e574`), `ClientInterfaceFailure` (`d95a05c`),
   `ClientInterfaceCodecFailure` (`1f0a989`), `SledStorageFailure` (`1f59d35`),
-  `StorageCodecFailure` (`52d7f53`).
+  `StorageCodecFailure` (`52d7f53`), `ProtocolAssemblyFailure` (`dd886cc`).
 
 ## Next in line
 
