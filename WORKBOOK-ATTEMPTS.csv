@@ -38,3 +38,4 @@ commit_n,attempt,kind,stages,start,finish,outcome,refused_by,files_added,files_r
 34,1,rule-offence,"1, 2",2026-11-06T18:29:48Z,2026-11-06T18:30:07Z,refused,"stage 2: dry4rust, the logging observer's 74-method duplicate group reshaped by the clock argument",2,0,9,225,74
 34,2,rule-offence,"2, 5 (1 stands from attempt 1: none of its inputs changed)",2026-11-06T18:30:49Z,2026-11-06T18:32:24Z,landed,,2,0,10,370,240
 35,1,rule-offence,"1, 2, 5",2026-11-06T18:39:28Z,2026-11-06T18:41:10Z,landed,,0,0,12,66,78
+36,1,rule-offence,"1, 2, 5",2026-11-06T18:45:05Z,2026-11-06T18:46:38Z,landed,,2,0,7,109,18
