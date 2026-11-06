@@ -33,6 +33,7 @@ After the run the owner takes each open entry -- implement, discuss, discard, po
 | 13 | commit 45, Part A | six factories that cannot fail returned `Result<_, String>`; returning what they build leaves their tests' `is_ok()` with nothing to check | answered | five tests now check what was built; the observer's, whose observer returns nothing a test can read, hands each observer an event -- its `is_ok()` became the signature, mapped here; the two client-interface factories' recorded duplicate is re-recorded, as entry 7 |
 | 14 | commit 47, Part A | two assertions change with the transport's failure type: the transport-choosing outgoing factory cannot fail either, and the node failure's `Debug` test named a `String` the transport no longer returns | answered | the factory's test checks a send instead of `is_ok()`, as entry 13; the `Debug` test checks the same quoting on a transport failure that exists -- the same contract |
 | 15 | commit 48, Part A | five assertions change with partitioning's failure type: four read a failure's text through `to_string()`, one `is_err()` now names the failure | answered | the four check the same words as before; the fifth says more, as constraint 6 asks of an `is_err()` |
+| 16 | commit 50, Part A | the client-interface codec's four refusal tests checked `is_err()` alone | answered | each now names its failure -- the address length, the value and its parse error, the request and the response that did not match it -- the strengthening constraint 6 asks for |
 
 ## Interventions
 
@@ -351,3 +352,18 @@ the course the slice took and the run's recommendation; after the run, the owner
   is all it was ever used for; that keeps the type comparable, so the three tests that compare `Ok(..)` stand
   unchanged.
 - **Commit:** 48.
+
+### 16. The client-interface codec's refusals named
+
+- **Raised:** commit 50, Part A, a failure type per concern.
+- **What:** the client-interface codec's six fallible functions failed with `String`s and now fail with
+  `ClientInterfaceCodecFailure`. Four of its tests checked a refusal with `is_err()` alone:
+  `decode_transaction_refuses_a_value_that_is_not_a_number`, `decode_transaction_refuses_an_address_of_the_wrong_width`,
+  `encode_balance_response_refuses_a_response_of_the_wrong_kind` and
+  `encode_height_response_refuses_a_response_of_the_wrong_kind`.
+- **Status:** answered.
+- **Answer:** each now asserts the failure itself. That is the value and the error it failed to parse with, the
+  address's length, and the request named with the response that did not match it. This is the strengthening
+  constraint 6 asks for ("one that only checked `is_err()` names the error"). The gRPC handlers hand the
+  failure's text to `Status` as they handed the `String`, so a client sees the same message.
+- **Commit:** 50.
