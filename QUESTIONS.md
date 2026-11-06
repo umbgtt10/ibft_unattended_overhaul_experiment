@@ -40,6 +40,7 @@ After the run the owner takes each open entry -- implement, discuss, discard, po
 | 20 | commit 55, Part A | xtask's gate sequence fails with a `StageFailure`; its two failure tests compared a `String` | answered | one compares the same text through `to_string()`, the other the failure's three parts, whose text the new type's own test pins -- the same claim both |
 | 21 | commit 56, Part A | the gate tests' 32 assertions on a gate's failure compared the `String` it failed with, ahead of the gates' failure type | answered | each compares the failure's text, through `to_string()`, to the same words -- the same check of a `String` today and of the failure type, whose text is the old one |
 | 22 | commit 59, Part A | `Gate::run` fails with a `GateFailure`: the fake gate fails with one, not with free text, and three assertions name what it fails with | answered | each says what it said of the text it was given, now of a failure a gate gives; one expected text grows by the exit code the fake's failure carries |
+| 23 | commit 60, Part A | the system runner's launch-failure test read the `String` it failed with; it fails with a `LaunchFailure` | answered | the same check -- the failure's text starts "failed to launch" -- read through `to_string()` |
 
 ## Interventions
 
@@ -468,3 +469,16 @@ the course the slice took and the run's recommendation; after the run, the owner
   expected text is the fake's failure printed whole; the stage's part of it is unchanged. The reason is boxed
   because clippy's `result_large_err` refused a stage failure of 128 bytes.
 - **Commit:** 59.
+
+### 23. The runner's launch failure, read through its text
+
+- **Raised:** commit 60, Part A, a failure type per concern -- `CommandRunner`'s two methods.
+- **What:** `run_capturing_a_program_that_does_not_exist_returns_a_launch_error` asserted
+  `result.is_err_and(|error| error.starts_with("failed to launch"))` of the `String` the runner failed with. The
+  runner fails with a `LaunchFailure` now, and the assertion reads `error.to_string().starts_with("failed to
+  launch")`. The three tests that built a `Launch` variant from a text -- the gate's, the tree's, the measure's --
+  build a `LaunchFailure` whose text is the one they gave, and their assertions are unchanged.
+- **Status:** answered.
+- **Answer:** the claim is the same -- a missing program is a launch failure, not an exit code -- and it is checked
+  the same way, on the same words. `LaunchFailure`'s own test pins the whole text.
+- **Commit:** 60.
