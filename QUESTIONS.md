@@ -37,6 +37,7 @@ After the run the owner takes each open entry -- implement, discuss, discard, po
 | 17 | commit 51, Part A | `NodeFailure::Storage` now carries the sled store's failure, so the node failure's test of a part's words builds one rather than a `String` | answered | the same contract, as entry 14: the node prints the part's own words, now those of a directory that could not be made |
 | 18 | commit 52, Part A | five storage-codec assertions change with its failure type: four compared the refusal's text, one checked `is_err()` | answered | the four compare the failure itself, whose text its own tests pin; the fifth names it; two recorded duplicate pairs in the codec are removed, not re-recorded |
 | 19 | commit 54, Part A | the cluster config's eight refusal tests compared the `String` it failed with to a text | answered | each compares the failure's text, through `to_string()`, to the same text -- the same words checked the same way |
+| 20 | commit 55, Part A | xtask's gate sequence fails with a `StageFailure`; its two failure tests compared a `String` | answered | one compares the same text through `to_string()`, the other the failure's three parts, whose text the new type's own test pins -- the same claim both |
 
 ## Interventions
 
@@ -414,3 +415,18 @@ the course the slice took and the run's recommendation; after the run, the owner
   now run in one loop over the fields, in the same order and with the same text. `main.rs`, which printed the
   `String`, prints the failure's text.
 - **Commit:** 54.
+
+### 20. The gate sequence's failure, and its two tests
+
+- **Raised:** commit 55, Part A, a failure type per concern -- xtask's first.
+- **What:** `GateSequence::run` failed with the `String` "{stage} -- {gate} ({reason})". It now fails with
+  `StageFailure`, a record of the three. stern's `records-and-objects` refused it as a type with a constructor and
+  accessors' worth of behaviour, so it is built by literal. `run_names_the_sequence_that_failed_rather_than_any_other`
+  now compares the same text through `to_string()`. `run_reports_the_sequence_label_the_failing_gates_label_and_the_reason`
+  now compares the failure's three parts, and `to_string_names_the_stage_the_gate_and_the_reason` pins the text
+  they make.
+- **Status:** answered.
+- **Answer:** both claims are unchanged. The reason a gate gives is still text until the gates get their own failure
+  type, top-down, as entry 13 onwards did for the node. `main.rs`, which printed the `String`, prints the failure's
+  text.
+- **Commit:** 55.
