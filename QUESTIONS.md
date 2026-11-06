@@ -20,6 +20,7 @@ After the run the owner takes each open entry -- implement, discuss, discard, po
 |---|---|---|---|---|
 | 1 | commit 15, Part 0 | slotgate's per-test timeout, 120 -> 160 seconds: a harness time bound moved | answered | the plan's own change, named here as *Reporting* asks; no wait's budget moves |
 | 2 | commit 16, Part 0 | which kind carries the cluster harness's richer wait-failure message, which the plan asks for and no kind fits exactly | answered | `refactoring`: no budget, poll, default or outcome moves, only the text a failing wait panics with; the new message type is tested |
+| 3 | commit 17, Part 0 | which kind carries the single-node harnesses' ports moving into the slot's range | answered | `refactoring`: a test's ports were arbitrary and stay arbitrary; under slotgate they now come from the slot's range, as the cluster harness's already did; outside it, the same port-0 fallback |
 
 ## Interventions
 
@@ -66,4 +67,24 @@ the course the slice took and the run's recommendation; after the run, the owner
   defaults, builders' choices and numbering the `refactoring` rule protects are untouched. The message is built by a
   new `WaitProgress` in `system-tests/src`, told the time rather than reading it, so it adds no time read and its
   format is pinned by three tests. The commit touches the cluster harness, so stage 5 runs three times.
+- **Commit:** the one this entry is raised at.
+
+### 3. The kind of the single-node harnesses' ports moving into the slot's range
+
+- **Raised:** commit 17, Part 0, the single-node ports.
+- **What:** `test_config.rs` and `runtime_timer_harness.rs` bound port 0, read the port and released it, and so
+  did the cluster harness's `next_port`, which 30 test call sites reach: a port taken outside slotgate's ranges,
+  which an outgoing connection of any node on the machine can take in between. Part 0 moves all three to
+  `ClusterProcessHarness::allocate_port`, which the cluster configuration already uses: a cursor over the slot's
+  `PORT_RANGE_BASE`/`PORT_RANGE_COUNT`, and outside slotgate the same port-0 fallback. As with entry 2, the change is
+  the harness's, under `system-tests/src`, and no test can be shown red on the parent for it -- the race it removes
+  is one no run has been seen to lose.
+- **Status:** answered.
+- **Answer:** `refactoring`. The port a test gets was arbitrary before and is arbitrary after; no node, default,
+  numbering or log line changes, and no test's assertions move -- the 30 call sites change the name they call and
+  nothing else. The cluster harness's `next_port` goes, its callers calling `allocate_port`. 
+  `RuntimeTimerHarness::next_port` stays, its body now `ClusterProcessHarness::allocate_port()`: no test calls it, so
+  with every rule on it is a `tested-public-api` offence, and removing it here would lower that count and make the
+  commit a `rule-offence` mixed into a `refactoring` -- measured, 696 to 695, and put back. It is left for
+  `tested-public-api`'s slice. Touching the cluster harness, stage 5 runs three times.
 - **Commit:** the one this entry is raised at.
