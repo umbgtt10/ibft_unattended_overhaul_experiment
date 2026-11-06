@@ -45,6 +45,7 @@ After the run the owner takes each open entry -- implement, discuss, discard, po
 | 25 | after commit 63, Part A, slice 3 | one file per implemented type: `IbftProtocol` (13 files, 4,857 lines) and `RecoveryControl` (5 files) -- merge every `impl` into the type's file, or split the type into types of their own? | open | the slice waits, both offences stay in the baseline, and the run goes on with slice 4; recommended: split, a type per concern, with the protocol's split taken into Part B's seams |
 | 26 | commit 69, Part A | a block's two commitment roots become a record, which reshapes three copies of `build_block_with_commitments` the dry4rust baseline records as one exact group | answered | re-recorded as entries 7 and 13 did, checked fingerprint by fingerprint: the group out under `f74317da987ed69e` and in under `40298922b91b8ae9`, three paid groups dropped, none added -- 213 to 210 |
 | 27 | commit 71, Part A | `summarize_receipts` returns a `ReceiptSummary` where it returned four counts as a tuple; its two tests compared the tuple | answered | each compares the record with the same four counts, now named -- the same claim and the same check |
+| 28 | commit 73, Part A | the EVM's `sha3_range` returns a `Sha3Window` where it returned offset, size and end as a tuple; one test compared the tuple | answered | it compares the record with the same three values, now named -- the same claim and the same check |
 
 ## Interventions
 
@@ -569,3 +570,15 @@ the course the slice took and the run's recommendation; after the run, the owner
   equal (all one, all zero), so neither form could tell two counts swapped; the node's storage test, whose counts
   differ (two successes), keeps its four assertions on the named values.
 - **Commit:** 71.
+
+### 28. The SHA3 window's test compares it by name
+
+- **Raised:** commit 73, Part A, named values for tuples.
+- **What:** the EVM's `sha3_range` returned `Option<(u64, u64, u64)>` -- the offset, the size and the end of the
+  memory SHA3 hashes, in that order. It returns `Option<Sha3Window>`, the three by name.
+  `sha3_range_returns_the_offset_size_and_end_of_the_window` compared the result with `Some((64, 4, 68))`; it now
+  compares it with `Some(Sha3Window { offset: 64, size: 4, end: 68 })`. The rejection test's `None` is unchanged.
+- **Status:** answered.
+- **Answer:** the same three values, checked the same way, field for field. They differ from one another, so the
+  tuple already told a swap apart, and the record does too.
+- **Commit:** 73.
