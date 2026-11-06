@@ -8,8 +8,13 @@ pushed with the record at every commit.
 
 - **Part, step, slice:** Part A, the rules block -- the harness: waits that fail on stalled progress; the
   cargo-build fallback behind a trait, the five tests back
-- **Last commit:** `03744d2` Order every inherent impl, and the one test file's imports, as stern4rust asks
-  (workbook row 26)
+- **Last commit:** `43ead85` Bring back the five harness tests dropped with the one that could not pass (workbook
+  row 27)
+- **The harness slice, next:** (1) `refactoring`: `NodeBinaryBuild` trait + `CargoNodeBinaryBuild` (keeping
+  `system-tests.exe` as it is), `node_process_binary_path` deciding through it, the sixth test with a fake build;
+  (2) `bug-fix`: the fallback's path hardcodes `.exe` -- `EXE_SUFFIX`, test-first through the trait's impl;
+  (3) waits failing on stalled progress (a stall window beside the 120 s cap; `heights_settle` keeps its cap only),
+  a QUESTIONS entry for the time bound.
 - **Started (UTC):** 2026-11-06T16:02:08Z; branch `unattended-overhaul` created from `8a775a2`
 - **Part 0:** 25 commits, 16:09 to 17:50; 2 past the threshold (the dry4rust baseline, the driver), both planned.
 
@@ -40,13 +45,13 @@ Owed: `RuntimeTimerHarness::next_port` has no test (everything-on `tested-public
 
 ## Counts
 
-- **Questions:** 4 answered, 0 open.
+- **Questions:** 5 answered, 0 open.
 - **Interventions:** 0.
 - **Waits:** 0, 0 hours in all.
-- **Commits:** 26 on the branch, 3 past the threshold (planned: dry4rust baseline, driver, `--fix`); the 30th runs
+- **Commits:** 27 on the branch, 3 past the threshold (planned: dry4rust baseline, driver, `--fix`); the 30th runs
   all three stages.
-- **Tests:** 3,440 at the base, 3,521 at `03744d2` (stage 5 401).
-- **Offences:** 359 as configured, 572 everything on, shear 0; Grip 642.59 / Braintax 4,510.09 (0.1425).
+- **Tests:** 3,440 at the base, 3,526 at `43ead85` (stage 5 406).
+- **Offences:** 359 as configured, 571 everything on, shear 0; Grip 642.59 / Braintax 4,510.09 (0.1425).
 - **Living documents owed:** `stern4rust.toml`'s and `CLAUDE.md`'s "483" (the baseline is 359 now); stage 2's
   gates (shear, dry4rust) in `CLAUDE.md` and the justfile's comments; the dry4rust baseline (216 of 217).
 

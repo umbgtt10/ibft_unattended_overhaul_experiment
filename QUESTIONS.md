@@ -22,6 +22,7 @@ After the run the owner takes each open entry -- implement, discuss, discard, po
 | 2 | commit 16, Part 0 | which kind carries the cluster harness's richer wait-failure message, which the plan asks for and no kind fits exactly | answered | `refactoring`: no budget, poll, default or outcome moves, only the text a failing wait panics with; the new message type is tested |
 | 3 | commit 17, Part 0 | which kind carries the single-node harnesses' ports moving into the slot's range | answered | `refactoring`: a test's ports were arbitrary and stay arbitrary; under slotgate they now come from the slot's range, as the cluster harness's already did; outside it, the same port-0 fallback |
 | 4 | commit 18, Part 0 | five conflict tests, their blocks now valid, still pass with conflict detection disabled | answered | each gets the setup or assertion that only detection explains, in `tests` commits of their own after this one; none failed with detection on, so no bug |
+| 5 | commit 27, Part A | the five harness tests restored lower a count -- `tested-public-api`, stood down in `system-tests` as configured -- so no `tests` commit can carry them | answered | `rule-offence`, `Rule: tested-public-api`: calling an untested public function from a test is the rule's own fix; the count falls with everything on and cannot move as configured, where the rule is stood down |
 
 ## Interventions
 
@@ -124,3 +125,18 @@ the course the slice took and the run's recommendation; after the run, the owner
   start round one, so node 0's votes are the missing ones; 23 `malicious_sender_view_change_does_not_unlock_...` --
   an honest view change beside node 0's, a round-one timeout, and no view change queued: the one assertion added,
   the height assertion kept.
+
+### 5. Restored tests that pay an offence: which kind
+
+- **Raised:** commit 27, Part A, the harness slice (`OPEN_POINTS.md`, *REMOVED: the harness helper tests, and the
+  coverage with them*).
+- **What:** the five passing tests deleted on 2026-08-22 come back -- `allocate_port`'s two,
+  `node_process_binary_path_prefers_an_override_that_exists` and `read_stderr_to_string`'s two, their child
+  processes now `cargo` itself rather than Windows' `cmd`. They change only `system-tests/tests`, which reads as a
+  `tests` commit, but one of the functions they call had no test: with every rule on, `tested-public-api` falls from
+  572 to 571, and a `tests` commit moves no count.
+- **Status:** answered.
+- **Answer:** `rule-offence`, `Rule: tested-public-api`. Calling the untested function from a test is the rule's
+  own fix, the one `CLAUDE.md` asks for. The rule is stood down in `system-tests` as configured, so that count
+  cannot move there; with everything on it falls by one and no other count rises.
+- **Commit:** 27.
