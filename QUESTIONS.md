@@ -42,6 +42,7 @@ After the run the owner takes each open entry -- implement, discuss, discard, po
 | 22 | commit 59, Part A | `Gate::run` fails with a `GateFailure`: the fake gate fails with one, not with free text, and three assertions name what it fails with | answered | each says what it said of the text it was given, now of a failure a gate gives; one expected text grows by the exit code the fake's failure carries |
 | 23 | commit 60, Part A | the system runner's launch-failure test read the `String` it failed with; it fails with a `LaunchFailure` | answered | the same check -- the failure's text starts "failed to launch" -- read through `to_string()` |
 | 24 | commit 62, Part A | the CRAP report parser's three failure tests read the `String` it failed with; it fails with a `CrapReportFailure` | answered | each reads the same words through `to_string()`; the new type's tests pin the whole text |
+| 25 | after commit 63, Part A, slice 3 | one file per implemented type: `IbftProtocol` (13 files, 4,857 lines) and `RecoveryControl` (5 files) -- merge every `impl` into the type's file, or split the type into types of their own? | open | the slice waits, both offences stay in the baseline, and the run goes on with slice 4; recommended: split, a type per concern, with the protocol's split taken into Part B's seams |
 
 ## Interventions
 
@@ -495,3 +496,39 @@ the course the slice took and the run's recommendation; after the run, the owner
 - **Answer:** the three claims are unchanged and checked the same way. The new type's two tests pin each variant's
   whole text, and the gate failure's report test builds a `NoReport`, its expected text unchanged.
 - **Commit:** 62.
+
+### 25. One file per implemented type: merge, or split?
+
+- **Raised:** after commit 63, Part A, slice 3, one file per implemented type -- before any of its commits.
+- **What:** `implemented-in-one-file` holds two offences. `IbftProtocol` is implemented in 13 files, 4,857 lines
+  (`consensus.rs` 1,447, `dispatch.rs` 873, `validation.rs` 664), and `RecoveryControl` in 5 (`recovery_control.rs`
+  and four handler files, about 700 lines). stern offers two fixes and prefers neither: "move every `impl` into the
+  type's file, or split the type into types of their own". *Known before starting* priced the slice at 3-6
+  commits. Measured before starting, a merge costs much more than that:
+  - **A merge carries the tests.** Each handler file has a test file named for it. With the source gone, stern's
+    `paired-test-file` refuses the test file ("named for src/process/query_handling.rs, which does not exist" --
+    probed on an export, not on the branch). Moving the tests first breaks `twin4rust` instead, so each piece of
+    source moves with its tests: about 700 lines of source and 1,400 of tests for `RecoveryControl`, into one file
+    each.
+  - **The threshold makes it long.** A move counts its lines twice. Moved a few handlers at a time, with their
+    tests, `RecoveryControl` alone is some 14 commits, and `IbftProtocol` -- some 4,500 lines of source and its
+    tests -- several dozen. The alternative is a handful of commits past the threshold, against a 5% allowance
+    four commits have already drawn on.
+  - **iceberg refuses the result.** It counts every non-`pub` method as private implementation. Merged with its
+    handlers private, `recovery_control.rs` scores about 19 against the ceiling of 20 (today's per-file scores
+    summed: 7.70, 4.42, 2.55, 1.96, 1.65, 0.99), and a merged `protocol.rs` would be many times over it.
+  - **The split is a redesign.** Every handler of `RecoveryControl` but the queries mutates the one coordinator, so
+    with no `&mut` parameters allowed (`returned-mutations`) a type of its own cannot borrow it. Only the queries
+    split off cleanly, as a type borrowing the coordinator and the facts. The others need the coordinator's
+    ownership redesigned. `IbftProtocol`'s split is the protocol's core, which Part B's seams reshape anyway --
+    execution, the bookkeepers, the observer.
+- **Status:** open -- a design question with no house default (*Questions raised*): the two fixes lead to
+  different code, and the cheaper one in commits leaves the worse code.
+- **Course taken:** the slice waits. Both offences stay in the stern baseline, and behaviour and tests are as they
+  are. The run goes on with slice 4, `pub` or private. All 30 of its offences are methods these two types keep
+  `pub(crate)` for their sibling files, and the plan's fix -- each made `pub`, with tests of its own -- holds
+  whichever answer this entry gets.
+- **Recommendation:** split. In `recovery-control`: the folded-in facts (its own id, the height, the membership)
+  become an object of their own, and the queries a type borrowing the coordinator and the facts; for the
+  handlers that mutate, the coordinator's ownership is decided first. `IbftProtocol` is split along the lines
+  Part B's seams already draw, slice by slice, each split taking its tests with it.

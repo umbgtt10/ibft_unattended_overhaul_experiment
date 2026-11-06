@@ -22,16 +22,22 @@ pushed with the record at every commit.
   the type, then the trait; a new failure type's test file mirrors its source's folder; two gates reduced to
   variants can turn into dry4rust duplicates -- share the part, hand it in; a recorded dry4rust duplicate
   reshaped alike is re-recorded as Q7 and Q13, fingerprint by fingerprint.
-- **Slice next:** Part A slice 3, one file per implemented type, with the protocol's and control's fields --
-  implemented-in-one-file 2 (`Chosen-By: risk`). SETUP *Known before starting*: the protocol's own type and
-  recovery's control type are implemented in 13 and 6 files and expose 27 and 5 fields; a private field is out of
-  reach of an implementation in a sibling file, so the two rules go together -- the upper end of the range.
+- **Slice waiting:** Part A slice 3, one file per implemented type -- open as Q25 (merge or split, a design
+  question with no house default), measured before any commit: a merge carries each handler file's tests
+  (`paired-test-file` refuses an orphaned test file; probed on an export), runs to dozens of commits within the
+  threshold, and iceberg would refuse the merged files. Both offences stay in the baseline.
+- **Slice next:** Part A slice 4, `pub` or private, each made `pub` with tests of its own -- public-or-private 30
+  (`Chosen-By: fastest-feedback`), all of them methods `IbftProtocol` (12: consensus 3, protocol 2,
+  recovery_admission 2, recovery_response_handling 1, recovery_routing 1, snapshot 2, validation 1) and
+  `RecoveryControl` (18: message 5, query 4, request 2, timer 5, verdict 2) keep `pub(crate)` for their sibling
+  files. `tested-public-api` applies as configured in both crates and matches calls by name and arity: each newly
+  `pub` method needs a test calling it.
 - **Commits:** 63 on the branch; 4 past the threshold (3 planned, + `97225b7` for the dry4rust re-record); bug fixes
   1 (`eba863f`); the 70th runs all three stages
 - **Tests:** 3,440 at the base, 3,599 now (stage 5 459)
 - **Offences:** 247 as configured, 458 everything on, shear 0; Grip 642.59 / Braintax 4,510.09 (0.1425); dry4rust
   baseline 213 groups (re-recorded at `85986a6`, Q13), 211 matching -- two storage-codec pairs paid at `52d7f53`
-- **Questions:** 23 answered, 1 open (9). **Interventions:** 0. **Waits:** 0.
+- **Questions:** 23 answered, 2 open (9, 25). **Interventions:** 0. **Waits:** 0.
 
 ## The run so far
 
@@ -61,7 +67,7 @@ Part A's slices, in order, with the criterion that put each there (`SETUP.md`, *
 |---|---|---|---|
 | 1 | ~~time behind ports, tests off the clock~~ -- done at `44db935`; left: the cluster harness's 20 (decision 2), the wake signal's 6 (Q9) | injected-time 19 to pay, timeless-tests 46 | risk |
 | 2 | ~~a failure type per concern, top-down~~ -- done at `09ad8f1`, 19 commits | typed-errors 49 | no-scaffolding |
-| 3 | one file per implemented type (with the protocol's and control's fields) | implemented-in-one-file 2 | risk |
+| 3 | one file per implemented type (with the protocol's and control's fields) -- waits on Q25, open | implemented-in-one-file 2 | risk |
 | 4 | `pub` or private, each made `pub` with tests | public-or-private 30 | fastest-feedback |
 | 5 | named values for tuples | distinct-tuple-elements 11 | fastest-feedback |
 | 6 | constants given one home | shared-constants 91 | fastest-feedback |
