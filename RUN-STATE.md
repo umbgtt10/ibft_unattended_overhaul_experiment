@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `09ad8f1` Have the run log directory fail with a RunLogFailure (row 63)
+- **Last commit:** `48155f6` Make the control layer's queries, verdicts and request steps pub, each tested (row 64)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -26,16 +26,19 @@ pushed with the record at every commit.
   question with no house default), measured before any commit: a merge carries each handler file's tests
   (`paired-test-file` refuses an orphaned test file; probed on an export), runs to dozens of commits within the
   threshold, and iceberg would refuse the merged files. Both offences stay in the baseline.
-- **Slice next:** Part A slice 4, `pub` or private, each made `pub` with tests of its own -- public-or-private 30
-  (`Chosen-By: fastest-feedback`), all of them methods `IbftProtocol` (12: consensus 3, protocol 2,
-  recovery_admission 2, recovery_response_handling 1, recovery_routing 1, snapshot 2, validation 1) and
-  `RecoveryControl` (18: message 5, query 4, request 2, timer 5, verdict 2) keep `pub(crate)` for their sibling
-  files. `tested-public-api` applies as configured in both crates and matches calls by name and arity: each newly
-  `pub` method needs a test calling it.
-- **Commits:** 63 on the branch; 4 past the threshold (3 planned, + `97225b7` for the dry4rust re-record); bug fixes
+- **Slice in progress:** Part A slice 4, `pub` or private, each made `pub` with tests of its own --
+  public-or-private 22 left (`Chosen-By: fastest-feedback`), all methods `IbftProtocol` (12: consensus 3,
+  protocol 2, recovery_admission 2, recovery_response_handling 1, recovery_routing 1, snapshot 2, validation 1)
+  and `RecoveryControl` (10 left: message 5, timer 5) keep `pub(crate)` for their sibling files. Done: the
+  control layer's queries 4, verdicts 2, `announce_request` and `enqueue_next_recovery_request` (`48155f6`).
+  `tested-public-api` applies as configured in both crates and matches calls by name and arity: each newly `pub`
+  method needs a test calling it; `ordered-impl-functions` wants constructors, then `pub`, then the rest, each
+  alphabetical -- a method made `pub` moves up. A host still reads the control layer through `process` alone
+  (the boundary gate); the direct tests sit beside the `process` ones, named `handle_*` and sorted first.
+- **Commits:** 64 on the branch; 4 past the threshold (3 planned, + `97225b7` for the dry4rust re-record); bug fixes
   1 (`eba863f`); the 70th runs all three stages
-- **Tests:** 3,440 at the base, 3,599 now (stage 5 459)
-- **Offences:** 247 as configured, 458 everything on, shear 0; Grip 642.59 / Braintax 4,510.09 (0.1425); dry4rust
+- **Tests:** 3,440 at the base, 3,607 now (stage 5 459)
+- **Offences:** 239 as configured, 450 everything on, shear 0; Grip 642.59 / Braintax 4,510.09 (0.1425); dry4rust
   baseline 213 groups (re-recorded at `85986a6`, Q13), 211 matching -- two storage-codec pairs paid at `52d7f53`
 - **Questions:** 23 answered, 2 open (9, 25). **Interventions:** 0. **Waits:** 0.
 
@@ -57,7 +60,8 @@ pushed with the record at every commit.
   `ClusterConfigFailure` (`fa51f03`); xtask's `StageFailure` (`ba9d113`); the gate tests read failures' text
   (`21b4b54`); `GateFailure` (`b3503c4`); `CargoTool` for stern and twin (`9190601`); `Gate::run` typed
   (`dc44447`); `LaunchFailure` (`c79dacc`); `SourceTreeFailure` (`8ecd1d0`); `CrapReportFailure` (`a60063e`);
-  `RunLogFailure` (`09ad8f1`), the slice's last.
+  `RunLogFailure` (`09ad8f1`), the slice's last; slice 3 waits on Q25; `pub` with tests: the control layer's
+  queries, verdicts and request steps (`48155f6`).
 
 ## Next in line
 
