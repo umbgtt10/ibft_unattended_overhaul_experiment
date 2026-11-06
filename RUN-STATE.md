@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `72ac407` Name the memory SHA3 hashes: Sha3Window (row 73)
+- **Last commit:** `1f0b856` Give the cluster harness's wait reports a folder: cluster_wait (row 74)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -42,9 +42,15 @@ pushed with the record at every commit.
   `bootstrapper.rs` (`d5b9214`); `Sha3Window` (`evm/src/tiny_evm/sha3_window.rs`, `72ac407`, Q28 -- stern's
   `named-subject` wants the file named after the type, without the folder's `tiny_evm_` prefix). Left: the cluster harness's `(node, height)` pairs 3 --
   `get_height_tolerating_in_flight_commit`, `get_heights_tolerating_in_flight_commit`,
-  `wait_until_heights_settle` (a commit touching the harness runs stage 5 three times). A record used by one file
-  stays private there (`record-home`); one used by several gets its own file and no test of its own.
-- **Commits:** 73 on the branch; 4 past the threshold (3 planned, + `97225b7` for the dry4rust re-record); bug fixes
+  `wait_until_heights_settle` (a commit touching the harness runs stage 5 three times). `system-tests/src` was
+  full (20 files, `directory-file-count`): `WaitProgress` moved to `src/cluster_wait/` first (`1f0b856`), split
+  off because the two together were 488 lines. Next: `NodeHeight { node_id, height }` in
+  `src/cluster_wait/node_height.rs`, its `Debug` hand-written to print `(1, 12)` as the tuple did, since the wait
+  lines and the `observing ...` panic text print the list; a test pins that; the finished files wait in
+  `overhaul-scratch/c75-pending/` (harness, two cluster test files, both `cluster_wait/mod.rs`, the record, its
+  test, the re-recorded stern baseline). A record used by one file stays private there (`record-home`); one used
+  by several gets its own file and no test of its own.
+- **Commits:** 74 on the branch; 4 past the threshold (3 planned, + `97225b7` for the dry4rust re-record); bug fixes
   1 (`eba863f`); the 80th runs all three stages
 - **Tests:** 3,440 at the base, 3,632 now (stage 5 462)
 - **Offences:** 209 as configured, 420 everything on, shear 0; Grip 642.59 / Braintax 4,502.09 (0.1427, the
@@ -75,7 +81,7 @@ pushed with the record at every commit.
   recovery host steps (`09ecd8d`); three of consensus's steps (`f458322`); the protocol's recovery drain and
   certificate verifier (`24d718d`), the slice's last; named tuples: `BlockCommitments` (`b954ec4`),
   `UtcTimestamp` and xtask's `CivilDate` (`7ee8472`), `ReceiptSummary` (`069fd4c`), `LocalCompletion` (`d5b9214`),
-  `Sha3Window` (`72ac407`).
+  `Sha3Window` (`72ac407`); `WaitProgress` to `cluster_wait/` (`1f0b856`).
 
 ## Next in line
 
