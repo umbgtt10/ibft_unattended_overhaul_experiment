@@ -6,15 +6,13 @@ pushed with the record at every commit.
 
 ## In progress
 
-- **Part, step, slice:** Part A, the rules block -- the harness: waits that fail on stalled progress; the
-  cargo-build fallback behind a trait, the five tests back
-- **Last commit:** `eba863f` Hand back the node binary under its own platform's name when the fallback builds it
-  (workbook row 30)
+- **Part, step, slice:** Part A, the rules block -- time behind ports, tests off the clock (injected-time,
+  timeless-tests); the cluster harness's own time reads stay baselined (decision 2)
+- **Last commit:** `7f2fed8` Let a cluster harness wait give up when nothing has changed for a minute (workbook
+  row 31) -- the harness slice done
 - **Bug-fix check:** `git worktree add --detach overhaul-scratch/wt-parent HEAD`, copy the test file in, `cargo test
   --manifest-path wt-parent/Cargo.toml --target-dir overhaul-scratch/wt-target ...` must compile and fail; then
   `git worktree remove --force` and `cargo clean --target-dir overhaul-scratch/wt-target`.
-- **The harness slice, next:** (3) waits failing on stalled progress (a stall window beside the 120 s cap; `heights_settle` keeps its cap only),
-  a QUESTIONS entry for the time bound.
 - **Started (UTC):** 2026-11-06T16:02:08Z; branch `unattended-overhaul` created from `8a775a2`
 - **Part 0:** 25 commits, 16:09 to 17:50; 2 past the threshold (the dry4rust baseline, the driver), both planned.
 
@@ -24,7 +22,6 @@ The slices of Part A, in order, each with the criterion that put it there (`SETU
 
 | # | slice | rules | `Chosen-By` |
 |---|---|---|---|
-| 2 | the harness: waits that fail on stalled progress; the cargo-build fallback behind a trait, the five tests back | -- | risk |
 | 3 | time behind ports, tests off the clock | injected-time 39, timeless-tests 50 | risk |
 | 4 | a failure type per concern, top-down | typed-errors 49 | no-scaffolding |
 | 5 | one file per implemented type (with the protocol's and control's fields) | implemented-in-one-file 2 | risk |
@@ -45,12 +42,12 @@ Owed: `RuntimeTimerHarness::next_port` has no test (everything-on `tested-public
 
 ## Counts
 
-- **Questions:** 5 answered, 0 open.
+- **Questions:** 6 answered, 0 open.
 - **Interventions:** 0.
 - **Waits:** 0, 0 hours in all.
-- **Commits:** 30 on the branch, 3 past the threshold (planned: dry4rust baseline, driver, `--fix`); the 40th runs
+- **Commits:** 31 on the branch, 3 past the threshold (planned: dry4rust baseline, driver, `--fix`); the 40th runs
   all three stages. Bug fixes: 1 (`eba863f`).
-- **Tests:** 3,440 at the base, 3,529 at `eba863f` (stage 5 409).
+- **Tests:** 3,440 at the base, 3,531 at `7f2fed8` (stage 5 411).
 - **Offences:** 359 as configured, 571 everything on, shear 0; Grip 642.59 / Braintax 4,510.09 (0.1425).
 - **Living documents owed:** `stern4rust.toml`'s and `CLAUDE.md`'s "483" (the baseline is 359 now); stage 2's
   gates (shear, dry4rust) in `CLAUDE.md` and the justfile's comments; the dry4rust baseline (216 of 217).

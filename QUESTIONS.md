@@ -22,6 +22,7 @@ After the run the owner takes each open entry -- implement, discuss, discard, po
 | 2 | commit 16, Part 0 | which kind carries the cluster harness's richer wait-failure message, which the plan asks for and no kind fits exactly | answered | `refactoring`: no budget, poll, default or outcome moves, only the text a failing wait panics with; the new message type is tested |
 | 3 | commit 17, Part 0 | which kind carries the single-node harnesses' ports moving into the slot's range | answered | `refactoring`: a test's ports were arbitrary and stay arbitrary; under slotgate they now come from the slot's range, as the cluster harness's already did; outside it, the same port-0 fallback |
 | 4 | commit 18, Part 0 | five conflict tests, their blocks now valid, still pass with conflict detection disabled | answered | each gets the setup or assertion that only detection explains, in `tests` commits of their own after this one; none failed with detection on, so no bug |
+| 6 | commit 31, Part A | the cluster harness's eventual waits fail on 60 seconds without progress, beside their 120-second budget: a time bound added | answered | the plan's own change, `OPEN_POINTS.md`'s preferred option 1; the budget kept as the backstop below slotgate's kill; `refactoring`, as entry 2 |
 | 5 | commit 27, Part A | the five harness tests restored lower a count -- `tested-public-api`, stood down in `system-tests` as configured -- so no `tests` commit can carry them | answered | `rule-offence`, `Rule: tested-public-api`: calling an untested public function from a test is the rule's own fix; the count falls with everything on and cannot move as configured, where the rule is stood down |
 
 ## Interventions
@@ -140,3 +141,22 @@ the course the slice took and the run's recommendation; after the run, the owner
   own fix, the one `CLAUDE.md` asks for. The rule is stood down in `system-tests` as configured, so that count
   cannot move there; with everything on it falls by one and no other count rises.
 - **Commit:** 27.
+
+### 6. The cluster harness's waits fail on stalled progress
+
+- **Raised:** commit 31, Part A, the harness slice (`OPEN_POINTS.md`, *The retention tests race a deadline they
+  barely beat*, option 1).
+- **What:** a time bound of the harness is added: `CLUSTER_STALL_TIMEOUT`, 60 seconds. The five waits that wait for
+  something to happen -- nodes at a height, every node at a height, convergence, one block at a height, every block
+  found -- now also give up once nothing they observe has changed for that long. `wait_until_heights_settle`, which
+  waits for nothing to change, keeps its budget alone.
+- **Status:** answered.
+- **Answer:** the plan's own change ("waits that fail on stalled progress rather than elapsed time"). A stopped
+  cluster now fails in 60 seconds rather than 120, with the message commit 16 gave it, its last progress showing it
+  stopped; a slow one keeps changing and runs on. The 120-second budget stays beside it, not raised: Part 0's
+  "each wait keeps its budget" and slotgate's 160-second kill above it mean a kill still says a test hung outside
+  every wait. So the retention tests' race is not ended by this commit -- a cluster still progressing at 120 seconds
+  still fails -- but it now reads as slow, not stopped. 60 is half the budget, chosen over 30 so that no wait that
+  passes today -- the longest passing tests run 25 to 33 seconds in all -- can stall into a failure. Kind
+  `refactoring`, for entry 2's reasons: no passing test's outcome moves, and the change is the harness's.
+- **Commit:** 31.
