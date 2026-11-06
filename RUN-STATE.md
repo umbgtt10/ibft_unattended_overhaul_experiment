@@ -6,8 +6,8 @@ pushed with the record at every commit.
 
 ## In progress
 
-- **Part, step, slice:** Part 0, the tooling -- the test inventory, fourth slice: `TestInventory` and the command
-- **Last commit:** `d9b32a0` Read the Rust files of a commit or of the index through git (workbook row 3)
+- **Part, step, slice:** Part 0, the tooling -- the inventory's diff and the assertion comparison
+- **Last commit:** `f901670` Count every test of a revision or of the index: cargo xtask test-inventory (workbook row 4)
 - **Started (UTC):** 2026-11-06T16:02:08Z; branch `unattended-overhaul` created from `8a775a2`
 
 ## Next in line
@@ -17,7 +17,6 @@ slice*).
 
 | # | slice | kind | `Chosen-By` |
 |---|---|---|---|
-| 2 | the inventory over a git tree or the index, and `cargo xtask test-inventory` | support | dependency |
 | 3 | the inventory's diff and the assertion comparison, `Maps:` lines in the message | support | dependency |
 | 4 | `cargo xtask measure`: offences both ways rule by rule, shear, Grip and Braintax | support | dependency |
 | 5 | the dry4rust gate and its baseline (past the threshold, planned) | support | dependency |
@@ -39,7 +38,8 @@ slice*).
 - **Questions:** 0 answered, 0 open.
 - **Interventions:** 0.
 - **Waits:** 0, 0 hours in all.
-- **Commits:** 3 on the branch; the tenth commit runs all three stages.
+- **Commits:** 4 on the branch; the tenth commit runs all three stages.
+- **Tests:** `cargo xtask test-inventory [<rev>]` -- 3,440 at the base, 3,464 at `f901670`.
 
 ## How the checks are run (until `cargo xtask measure` and the inventory diff exist)
 
