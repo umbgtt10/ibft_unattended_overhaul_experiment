@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `c42e574` Give partitioning a failure type of its own (row 48)
+- **Last commit:** `d95a05c` Give the client interface's server a failure type of its own (row 49)
 - **Slice done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to `44db935`).
   injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6 alone (Q9,
   open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs, `SystemClock`; a
@@ -14,21 +14,22 @@ pushed with the record at every commit.
   (`TokioPause`, async). `PollingWait` (`src/polling_wait.rs`: `until(interval, timeout, probe)`, `sleep`,
   `elapsed_since`) is every harness and test wait; tests compose real time through `real_time_wait()` in
   `tests/polling_wait_tests.rs`.
-- **Slice in progress:** Part A slice 2, a failure type per concern, top-down -- typed-errors 33 left
-  (system-tests 26: the client-interface bus 2 and codec 6, `SledStorage::new` and the storage codec 12, the
-  context-builder and protocol factories 2, `ClusterConfig` 3; xtask 7: `GateSequence::run` -> `Gate::run` ->
+- **Slice in progress:** Part A slice 2, a failure type per concern, top-down -- typed-errors 31 left
+  (system-tests 24: the client-interface codec 6, `SledStorage::new` and the storage codec 12, the
+  context-builder and protocol factories 2, `ClusterConfig` 3; done since: `ClientInterfaceFailure`
+  (`d95a05c`); xtask 7: `GateSequence::run` -> `Gate::run` ->
   `CommandRunner` 2, `rust_files`, `crap_report_parser::parse`, `run_log_directory::prepare`). Done: the six
   factories that cannot fail (`85986a6`); `NodeFailure` (`src/node_failure.rs`, `86cb9f5`); `TransportFailure`
   (`8650823`); `PartitionFailure` (`partitionable_transport/partition_failure.rs`, `c42e574`). `NodeFailure`'s
-  variants `Storage`, `ClientInterface`, `ContextBuilder`, `Protocol` still carry a `String`. A new failure
+  variants `Storage`, `ContextBuilder`, `Protocol` still carry a `String`. A new failure
   type's test file goes in the test folder mirroring its source's (paired-test-file, everything on). A
   two-variant `Display` can near-duplicate xtask's `TreeFailure`'s (dry4rust): one type per concern. Pattern: `Display` = the old text word
   for word (constraint 7); `Debug` = that text quoted, as a `String`'s was, where `{:?}`/`expect` printed it.
   A recorded dry4rust duplicate reshaped alike: re-record as Q7 and Q13, checked fingerprint by fingerprint.
-- **Commits:** 48 on the branch; 4 past the threshold (3 planned, + `97225b7` for the dry4rust re-record); bug fixes
+- **Commits:** 49 on the branch; 4 past the threshold (3 planned, + `97225b7` for the dry4rust re-record); bug fixes
   1 (`eba863f`); the 50th runs all three stages
-- **Tests:** 3,440 at the base, 3,555 now (stage 5 435)
-- **Offences:** 280 as configured, 491 everything on, shear 0; Grip 642.59 / Braintax 4,510.09 (0.1425); dry4rust
+- **Tests:** 3,440 at the base, 3,559 now (stage 5 439)
+- **Offences:** 278 as configured, 489 everything on, shear 0; Grip 642.59 / Braintax 4,510.09 (0.1425); dry4rust
   baseline 213 groups, all matching (re-recorded at `85986a6`, Q13)
 - **Questions:** 14 answered, 1 open (9). **Interventions:** 0. **Waits:** 0.
 
@@ -44,7 +45,7 @@ pushed with the record at every commit.
   client harness (`9d848e2`), the runtime-timer harness handed its wait (`b8fbd48`), the wake
   signal's report (`27580b9`), the infra tests' waits (`97ee66a`), the single-node tests' (`ffe821d`), the cluster tests' (`44db935`); typed errors: infallible factories (`85986a6`), `NodeFailure`
   (`86cb9f5`), `TransportFailure` (`8650823`),
-  `PartitionFailure` (`c42e574`).
+  `PartitionFailure` (`c42e574`), `ClientInterfaceFailure` (`d95a05c`).
 
 ## Next in line
 
