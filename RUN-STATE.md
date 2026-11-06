@@ -6,8 +6,8 @@ pushed with the record at every commit.
 
 ## In progress
 
-- **Part, step, slice:** Part 0, the tooling -- the test inventory, third slice: over a git tree, and the command
-- **Last commit:** `abe6438` List the assertions each inventoried test makes (workbook row 2)
+- **Part, step, slice:** Part 0, the tooling -- the test inventory, fourth slice: `TestInventory` and the command
+- **Last commit:** `d9b32a0` Read the Rust files of a commit or of the index through git (workbook row 3)
 - **Started (UTC):** 2026-11-06T16:02:08Z; branch `unattended-overhaul` created from `8a775a2`
 
 ## Next in line
@@ -39,7 +39,7 @@ slice*).
 - **Questions:** 0 answered, 0 open.
 - **Interventions:** 0.
 - **Waits:** 0, 0 hours in all.
-- **Commits:** 2 on the branch; the tenth commit runs all three stages.
+- **Commits:** 3 on the branch; the tenth commit runs all three stages.
 
 ## How the checks are run (until `cargo xtask measure` and the inventory diff exist)
 
