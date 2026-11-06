@@ -21,6 +21,7 @@ After the run the owner takes each open entry -- implement, discuss, discard, po
 | 1 | commit 15, Part 0 | slotgate's per-test timeout, 120 -> 160 seconds: a harness time bound moved | answered | the plan's own change, named here as *Reporting* asks; no wait's budget moves |
 | 2 | commit 16, Part 0 | which kind carries the cluster harness's richer wait-failure message, which the plan asks for and no kind fits exactly | answered | `refactoring`: no budget, poll, default or outcome moves, only the text a failing wait panics with; the new message type is tested |
 | 3 | commit 17, Part 0 | which kind carries the single-node harnesses' ports moving into the slot's range | answered | `refactoring`: a test's ports were arbitrary and stay arbitrary; under slotgate they now come from the slot's range, as the cluster harness's already did; outside it, the same port-0 fallback |
+| 4 | commit 18, Part 0 | five conflict tests, their blocks now valid, still pass with conflict detection disabled | answered | each gets the setup or assertion that only detection explains, in `tests` commits of their own after this one; none failed with detection on, so no bug |
 
 ## Interventions
 
@@ -88,3 +89,31 @@ the course the slice took and the run's recommendation; after the run, the owner
   commit a `rule-offence` mixed into a `refactoring` -- measured, 696 to 695, and put back. It is left for
   `tested-public-api`'s slice. Touching the cluster harness, stage 5 runs three times.
 - **Commit:** the one this entry is raised at.
+
+### 4. Five conflict tests still pass with conflict detection disabled
+
+- **Raised:** commit 18, Part 0, the conflict-detection tests (`OPEN_POINTS.md`, *Three conflict-detection tests
+  pass with blocks that are invalid anyway*).
+- **What:** commit 18 builds every conflicting proposal of `validation/tests/cluster/faults/
+  ibft_cluster_malicious_block_tests.rs` on a block valid but for the conflict -- `funded_block` over the funded
+  genesis, as the test corrected on 2026-10-10 already did --, the round-one blocks the same, so that detection, not
+  validation, meets them: `trackable_pre_prepare` only tracks a valid block. Every test passes with detection on,
+  so none points at a bug. Then each was run with detection disabled, in the working tree and not committed --
+  `VolatileState::record_pre_prepare_observation_and_check_conflict` returning `false` at once. Five fail, as they
+  should: `malicious_round_then_view_change_allows_next_honest_leader_progress`,
+  `malicious_sender_prepare_is_ignored_after_conflict_marking`,
+  `conflicting_pre_prepare_from_leader_same_height_round_is_ignored_by_follower`,
+  `duplicate_conflicting_pre_prepare_same_sequence_is_idempotent` and
+  `conflicting_pre_prepare_flood_does_not_reach_finalize`. Five still pass:
+  `conflict_in_round_zero_then_honest_round_one_same_leader_block_finalizes`,
+  `conflict_recovery_then_next_height_honest_path_still_progresses`,
+  `conflicted_node_stalls_while_other_nodes_finalize`,
+  `malicious_sender_cannot_help_round_one_finalize_after_timeout` and
+  `malicious_sender_view_change_does_not_unlock_round_one_pre_prepare`.
+- **Status:** answered.
+- **Answer:** as Part 0 plans, a clear fix for each of the five, landed as `tests` commits of their own after this
+  one, no assertion weakened: the setup that makes detection's effect visible -- a vote only the malicious sender
+  could supply, so that ignoring it decides the outcome -- or an assertion only detection explains, such as the
+  prepare node 1 must not broadcast for the conflicting block, read from what it queued for its peers. Each fix is
+  run with detection disabled too, and must then fail. The commits are listed here as they land.
+- **Commits:** 18 (the blocks made valid); the five fixes to follow.

@@ -6,8 +6,10 @@ pushed with the record at every commit.
 
 ## In progress
 
-- **Part, step, slice:** Part 0, the tooling -- the three conflict-detection tests (`tests`)
-- **Last commit:** `6769f9b` Take the single-node harnesses' ports from the slot's range (workbook row 17)
+- **Part, step, slice:** Part 0, the tooling -- the five conflict tests detection does not explain yet (QUESTIONS
+  entry 4), one `tests` commit each; check each fails with detection disabled (`VolatileState::
+  record_pre_prepare_observation_and_check_conflict` returning `false` first, working tree only, reverted)
+- **Last commit:** `529bb6f` Build the conflict tests' proposals on blocks valid but for the conflict (workbook row 18)
 - **Owed later:** `RuntimeTimerHarness::next_port` has no test (everything-on `tested-public-api`): its slice.
 - **Stage 2 now:** stern4rust, cargo-shear, dry4rust, crap4rust per package, twin4rust, iceberg4rust.
 - **Traces before the driver lands:** `checkout-index -a -f --prefix=overhaul-scratch/replay/` (the a1460ca driver
@@ -34,12 +36,12 @@ slice*).
 
 ## Counts
 
-- **Questions:** 3 answered, 0 open.
+- **Questions:** 4 answered, 0 open.
 - **Interventions:** 0.
 - **Waits:** 0, 0 hours in all.
-- **Commits:** 17 on the branch, 1 past the threshold (the dry4rust baseline, planned); the 20th runs all three
+- **Commits:** 18 on the branch, 1 past the threshold (the dry4rust baseline, planned); the 20th runs all three
   stages.
-- **Tests:** 3,440 at the base, 3,519 at `6769f9b` (stage 5 now 401). **Shear:** 0 since `1663af1`.
+- **Tests:** 3,440 at the base, 3,519 at `529bb6f` (stage 5 now 401). **Shear:** 0 since `1663af1`.
 - **xtask gate tests:** a test helper building a gate with four strings duplicates the build gate test's; build
   it from consts in one line (dry4rust caught it twice).
 
