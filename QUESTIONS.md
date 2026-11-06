@@ -27,6 +27,7 @@ After the run the owner takes each open entry -- implement, discuss, discard, po
 | 5 | commit 27, Part A | the five harness tests restored lower a count -- `tested-public-api`, stood down in `system-tests` as configured -- so no `tests` commit can carry them | answered | `rule-offence`, `Rule: tested-public-api`: calling an untested public function from a test is the rule's own fix; the count falls with everything on and cannot move as configured, where the rule is stood down |
 | 8 | commit 41, Part A | the two gRPC buses' wake tests timed a wait to learn it was notified; they now assert the notification the wait reports | answered | the same contract -- the bus notified its signal -- stated directly; the wake signal's own promptness stays held by its timed tests (entry 9) |
 | 9 | commit 41, Part A | the wake signal's six tests time a timed wait -- promptness and duration are what they check -- and no timeless rewrite says as much | open | they stay in the stern baseline, `timeless-tests`; recommended: accept them beside decision 2's exception, the one place the subject under test is a timed wait |
+| 10 | commit 42, Part A | three test waits change shape as they move onto `PollingWait`: a count of polls becomes a deadline, two fixed 40 ms sleeps become a wait for the server, forty connect attempts become one | answered | every ceiling kept or replaced by the event it stood for; no assertion moves |
 
 ## Interventions
 
@@ -219,3 +220,26 @@ the course the slice took and the run's recommendation; after the run, the owner
   time itself. The alternative is to put the signal's waiting behind a port whose double reports the timeout it was
   handed. That would test the plumbing around the `Condvar`, and leave the waiting itself, today's subject, with
   no test.
+
+### 10. Three test waits change shape on the way to `PollingWait`
+
+- **Raised:** commit 42, Part A, time behind ports and timeless tests.
+- **What:** the gRPC transport, client-interface and sled tests polled with `Instant::now()` and `thread::sleep`
+  of their own -- seven `timeless-tests` offences. Their loops now go through `PollingWait::until`, composed with
+  real time by the tests (`real_time_wait()`), the way the harnesses' waits already do. Four keep their interval
+  and their ceiling exactly. Three change shape, and *Reporting* asks that a moved time bound be named:
+  - `wait_for_message(retries, interval)` polled `retries` times, sleeping after each, the last sleep included.
+    It now polls every `interval` until `retries × interval` has passed, so the ceiling is the same, and the last
+    look comes at the ceiling instead of a sleep that looks at nothing.
+  - two tests -- a remote message, a remote recovery message -- slept a fixed 40 ms before sending, so that the
+    receiver's server, started without waiting, would be listening. They now wait for exactly that: until a TCP
+    connection to it succeeds, every 10 ms, up to 2 s, the client-interface bus's own readiness bound. The
+    neighbouring tests that send with no wait at all still cover the race this avoids.
+  - the client-interface tests' `connect_client` tried 40 times, 10 ms apart. The bus they connect to does not
+    return from its constructor until its server answers a TCP connection, so it now tries once and fails at
+    once if that ever breaks.
+- **Status:** answered.
+- **Answer:** no assertion changes, and no test is added or lost. Each ceiling is kept or replaced by the event it
+  stood in for, and a failing wait still fails. The two recorded near-duplicate `connect_client` helpers stop
+  matching, and dry4rust's baseline matches 213 of its 215 groups.
+- **Commit:** 42.
