@@ -6,14 +6,16 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `97225b7` Stamp the node's log lines from a wall clock it is given (workbook row 34)
-- **Slice in progress:** Part A -- time behind ports, tests off the clock; left: injected-time 15 (client harness 5,
-  runtime-timer harness 5, drifting clock, malicious node, grpc bus 2, grpc transport), timeless-tests 46
-  (system-tests). Ports so far: `Clock` (timer_scheduler.rs, `SystemClock`), `WallClock` (`SystemWallClock`).
-- **Commits:** 34 on the branch; 4 past the threshold (3 planned, + `97225b7` for the dry4rust re-record); bug fixes
+- **Last commit:** `1b0171b` Count the timer's time from its clock's origin, not from an Instant (workbook row 35)
+- **Slice in progress:** Part A -- time behind ports, tests off the clock; left: injected-time 12 (client harness 5,
+  runtime-timer harness 3 -- its reopen retry and two waits --, malicious node, grpc bus 2, grpc transport),
+  timeless-tests 28 (system-tests: wake signal 6, grpc transport/bus/client interface 6, sled reopen, cluster 4,
+  single node 10, ...). Ports so far: `Clock` (timer_scheduler.rs, `SystemClock`; returns a `Duration` since the
+  clock's origin), `WallClock` (`SystemWallClock`).
+- **Commits:** 35 on the branch; 4 past the threshold (3 planned, + `97225b7` for the dry4rust re-record); bug fixes
   1 (`eba863f`); the 40th runs all three stages
 - **Tests:** 3,440 at the base, 3,532 now (stage 5 412)
-- **Offences:** 351 as configured, 563 everything on, shear 0; Grip 642.59 / Braintax 4,510.09 (0.1425); dry4rust
+- **Offences:** 330 as configured, 542 everything on, shear 0; Grip 642.59 / Braintax 4,510.09 (0.1425); dry4rust
   baseline 215 groups
 - **Questions:** 7 answered, 0 open. **Interventions:** 0. **Waits:** 0.
 
@@ -23,7 +25,8 @@ pushed with the record at every commit.
 - **Part 0:** 25 commits, 16:09 to 17:50.
 - **Part A so far:** `--fix` (`03744d2`); the harness: five tests back (`43ead85`), the build fallback behind a
   trait (`41891d0`), its `.exe` bug (`d2cbd53`, `eba863f`), stall-based waits (`7f2fed8`); xtask's timeless tests
-  (`4d52581`).
+  (`4d52581`); time behind ports: scratch names (`e950eb0`), the log's wall clock (`97225b7`), the timer's clock
+  (`1b0171b`).
 
 ## Next in line
 
