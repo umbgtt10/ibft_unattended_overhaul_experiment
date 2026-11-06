@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `1f59d35` Give the sled store's opening a failure type of its own (row 51)
+- **Last commit:** `52d7f53` Give the storage codec a failure type of its own (row 52)
 - **Slice done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to `44db935`).
   injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6 alone (Q9,
   open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs, `SystemClock`; a
@@ -14,10 +14,10 @@ pushed with the record at every commit.
   (`TokioPause`, async). `PollingWait` (`src/polling_wait.rs`: `until(interval, timeout, probe)`, `sleep`,
   `elapsed_since`) is every harness and test wait; tests compose real time through `real_time_wait()` in
   `tests/polling_wait_tests.rs`.
-- **Slice in progress:** Part A slice 2, a failure type per concern, top-down -- typed-errors 24 left
-  (system-tests 17: the storage codec 12, the context-builder and protocol factories 2, `ClusterConfig` 3; done
-  since: `ClientInterfaceFailure` (`d95a05c`), `ClientInterfaceCodecFailure` (`1f0a989`), `SledStorageFailure`
-  (`1f59d35`); xtask 7: `GateSequence::run` -> `Gate::run` ->
+- **Slice in progress:** Part A slice 2, a failure type per concern, top-down -- typed-errors 12 left
+  (system-tests 5: the context-builder and protocol factories 2, `ClusterConfig` 3; done since:
+  `ClientInterfaceFailure` (`d95a05c`), `ClientInterfaceCodecFailure` (`1f0a989`), `SledStorageFailure`
+  (`1f59d35`), `StorageCodecFailure` (`52d7f53`); xtask 7: `GateSequence::run` -> `Gate::run` ->
   `CommandRunner` 2, `rust_files`, `crap_report_parser::parse`, `run_log_directory::prepare`). Done: the six
   factories that cannot fail (`85986a6`); `NodeFailure` (`src/node_failure.rs`, `86cb9f5`); `TransportFailure`
   (`8650823`); `PartitionFailure` (`partitionable_transport/partition_failure.rs`, `c42e574`). `NodeFailure`'s
@@ -26,12 +26,12 @@ pushed with the record at every commit.
   two-variant `Display` can near-duplicate xtask's `TreeFailure`'s (dry4rust): one type per concern. Pattern: `Display` = the old text word
   for word (constraint 7); `Debug` = that text quoted, as a `String`'s was, where `{:?}`/`expect` printed it.
   A recorded dry4rust duplicate reshaped alike: re-record as Q7 and Q13, checked fingerprint by fingerprint.
-- **Commits:** 51 on the branch; 4 past the threshold (3 planned, + `97225b7` for the dry4rust re-record); bug fixes
+- **Commits:** 52 on the branch; 4 past the threshold (3 planned, + `97225b7` for the dry4rust re-record); bug fixes
   1 (`eba863f`); the 60th runs all three stages
-- **Tests:** 3,440 at the base, 3,567 now (stage 5 447)
-- **Offences:** 271 as configured, 482 everything on, shear 0; Grip 642.59 / Braintax 4,510.09 (0.1425); dry4rust
-  baseline 213 groups, all matching (re-recorded at `85986a6`, Q13)
-- **Questions:** 16 answered, 1 open (9). **Interventions:** 0. **Waits:** 0.
+- **Tests:** 3,440 at the base, 3,571 now (stage 5 451)
+- **Offences:** 259 as configured, 470 everything on, shear 0; Grip 642.59 / Braintax 4,510.09 (0.1425); dry4rust
+  baseline 213 groups (re-recorded at `85986a6`, Q13), 211 matching -- two storage-codec pairs paid at `52d7f53`
+- **Questions:** 17 answered, 1 open (9). **Interventions:** 0. **Waits:** 0.
 
 ## The run so far
 
@@ -46,7 +46,8 @@ pushed with the record at every commit.
   signal's report (`27580b9`), the infra tests' waits (`97ee66a`), the single-node tests' (`ffe821d`), the cluster tests' (`44db935`); typed errors: infallible factories (`85986a6`), `NodeFailure`
   (`86cb9f5`), `TransportFailure` (`8650823`),
   `PartitionFailure` (`c42e574`), `ClientInterfaceFailure` (`d95a05c`),
-  `ClientInterfaceCodecFailure` (`1f0a989`), `SledStorageFailure` (`1f59d35`).
+  `ClientInterfaceCodecFailure` (`1f0a989`), `SledStorageFailure` (`1f59d35`),
+  `StorageCodecFailure` (`52d7f53`).
 
 ## Next in line
 

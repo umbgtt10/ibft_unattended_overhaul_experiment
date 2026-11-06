@@ -35,6 +35,7 @@ After the run the owner takes each open entry -- implement, discuss, discard, po
 | 15 | commit 48, Part A | five assertions change with partitioning's failure type: four read a failure's text through `to_string()`, one `is_err()` now names the failure | answered | the four check the same words as before; the fifth says more, as constraint 6 asks of an `is_err()` |
 | 16 | commit 50, Part A | the client-interface codec's four refusal tests checked `is_err()` alone | answered | each now names its failure -- the address length, the value and its parse error, the request and the response that did not match it -- the strengthening constraint 6 asks for |
 | 17 | commit 51, Part A | `NodeFailure::Storage` now carries the sled store's failure, so the node failure's test of a part's words builds one rather than a `String` | answered | the same contract, as entry 14: the node prints the part's own words, now those of a directory that could not be made |
+| 18 | commit 52, Part A | five storage-codec assertions change with its failure type: four compared the refusal's text, one checked `is_err()` | answered | the four compare the failure itself, whose text its own tests pin; the fifth names it; two recorded duplicate pairs in the codec are removed, not re-recorded |
 
 ## Interventions
 
@@ -379,3 +380,23 @@ the course the slice took and the run's recommendation; after the run, the owner
 - **Answer:** the same contract, as in entry 14: a node failure prints the refusing part's own words, unchanged.
   The value it is checked on is one the part can now produce.
 - **Commit:** 51.
+
+### 18. The storage codec's refusals compared as failures
+
+- **Raised:** commit 52, Part A, a failure type per concern.
+- **What:** the storage codec's twelve fallible functions failed with `String`s and now fail with
+  `StorageCodecFailure`: a value that would not decode, one that would not encode, or bytes of the wrong length,
+  each naming the value. Five assertions change. Four compared the refusal's text --
+  `Err("invalid address length: 21")`, and the same for a contract storage key, a hash and a height -- and now
+  compare the failure, `Err(StorageCodecFailure::InvalidLength("address", 21))`. The fifth,
+  `decode_block_refuses_bytes_that_are_not_a_block`, checked `is_err()`, and now checks that it is a block that
+  would not decode.
+- **Status:** answered.
+- **Answer:** the four check the same refusal. Its text, `invalid {what} length: {length}`, is pinned by the
+  failure's own tests, word for word as the codec printed it. The fifth is the strengthening constraint 6 asks for.
+  Typing the codec reshaped two duplicate pairs the dry4rust baseline records: `decode_address` with
+  `decode_hash`, and `decode_account` with `decode_commit_certificate`. dry4rust refuses a reshaped recorded
+  duplicate, so the duplication went: each pair now calls one private generic helper, a fixed-width read or a
+  wire type's decode. The baseline is not re-recorded. It matches 211 of its 213 groups, and the two it no longer
+  matches are paid.
+- **Commit:** 52.
