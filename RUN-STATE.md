@@ -6,39 +6,30 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `a60063e` Have the CRAP report parser fail with a CrapReportFailure (row 62)
-- **Slice done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to `44db935`).
-  injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6 alone (Q9,
-  open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs, `SystemClock`; a
-  `Duration` since the clock's origin), `WallClock` (`SystemWallClock`), `Sleeper` (`ThreadSleeper`), `Pause`
-  (`TokioPause`, async). `PollingWait` (`src/polling_wait.rs`: `until(interval, timeout, probe)`, `sleep`,
-  `elapsed_since`) is every harness and test wait; tests compose real time through `real_time_wait()` in
-  `tests/polling_wait_tests.rs`.
-- **Slice in progress:** Part A slice 2, a failure type per concern, top-down -- typed-errors 1 left, xtask's
-  (system-tests done at `fa51f03`, `ClusterConfigFailure`; before it `ClientInterfaceFailure` (`d95a05c`),
-  `ClientInterfaceCodecFailure` (`1f0a989`), `SledStorageFailure` (`1f59d35`), `StorageCodecFailure` (`52d7f53`),
-  `ProtocolAssemblyFailure` (`dd886cc`); xtask: `StageFailure` (`ba9d113`, a record; `reason: Box<GateFailure>`
-  -- clippy's `result_large_err` refused 128 bytes unboxed), `GateFailure` (`src/gates/gate_failure.rs`, `Debug,
-  Clone, PartialEq, Eq`, a variant per failure, `b3503c4`) returned by `Gate::run` at `dc44447`, after the gate
-  tests read failures' text (`21b4b54`, Q21) and `CargoTool` (`src/gates/cargo_tool.rs`, `9190601`, handed to
-  stern and twin, which dry4rust found 94% alike) -- Q22. `LaunchFailure` (`src/process/launch_failure.rs`, a
-  record `{program, reason}`) from `CommandRunner` at `c79dacc`, Q23, in the three `Launch` variants;
-  `SourceTreeFailure` (`src/source/source_tree_failure.rs`) from `rust_files` at `8ecd1d0`, in
-  `GateFailure::Tree`; `CrapReportFailure` (`src/crap/crap_report_failure.rs`) from `parse` at `a60063e`, Q24, in
-  `GateFailure::UnreadableReport.reason`. Left 1: `RunLogDirectory::prepare` (`main.rs` alone). xtask's own failures derive `Debug` (nothing printed them with `{:?}`). A trait whose failure changes
-  touches every implementor: split before it starts -- tests to a type-agnostic form, the type, then the trait.
-  Done: the six
-  factories that cannot fail (`85986a6`); `NodeFailure` (`src/node_failure.rs`, `86cb9f5`); `TransportFailure`
-  (`8650823`); `PartitionFailure` (`partitionable_transport/partition_failure.rs`, `c42e574`). `NodeFailure`'s
-  variants all carry a type now. A new failure
-  type's test file goes in the test folder mirroring its source's (paired-test-file, everything on). A
-  two-variant `Display` can near-duplicate xtask's `TreeFailure`'s (dry4rust): one type per concern. Pattern: `Display` = the old text word
-  for word (constraint 7); `Debug` = that text quoted, as a `String`'s was, where `{:?}`/`expect` printed it.
-  A recorded dry4rust duplicate reshaped alike: re-record as Q7 and Q13, checked fingerprint by fingerprint.
-- **Commits:** 62 on the branch; 4 past the threshold (3 planned, + `97225b7` for the dry4rust re-record); bug fixes
+- **Last commit:** `09ad8f1` Have the run log directory fail with a RunLogFailure (row 63)
+- **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
+  `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
+  alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
+  `SystemClock`), `WallClock`, `Sleeper`, `Pause` (async); `PollingWait` (`src/polling_wait.rs`) is every harness
+  and test wait; tests compose real time through `real_time_wait()` in `tests/polling_wait_tests.rs`.
+  Part A slice 2, a failure type per concern, top-down -- 19 commits, rows 45 to 63 (`85986a6` to `09ad8f1`);
+  typed-errors 0 both ways. system-tests: `NodeFailure` and one type per part, `ClusterConfigFailure` last
+  (`fa51f03`); `Display` = the old text word for word (constraint 7), `Debug` = that text quoted where
+  `{:?}`/`expect` printed it. xtask: `StageFailure` (a record, `reason: Box<GateFailure>` -- clippy's
+  `result_large_err`), `GateFailure`, `CargoTool` (`9190601`, handed to stern and twin), `LaunchFailure` (a
+  record), `SourceTreeFailure`, `CrapReportFailure`, `RunLogFailure`; xtask's failures derive `Debug`. Lessons: a
+  trait whose failure changes touches every implementor -- split before it starts: tests to a type-agnostic form,
+  the type, then the trait; a new failure type's test file mirrors its source's folder; two gates reduced to
+  variants can turn into dry4rust duplicates -- share the part, hand it in; a recorded dry4rust duplicate
+  reshaped alike is re-recorded as Q7 and Q13, fingerprint by fingerprint.
+- **Slice next:** Part A slice 3, one file per implemented type, with the protocol's and control's fields --
+  implemented-in-one-file 2 (`Chosen-By: risk`). SETUP *Known before starting*: the protocol's own type and
+  recovery's control type are implemented in 13 and 6 files and expose 27 and 5 fields; a private field is out of
+  reach of an implementation in a sibling file, so the two rules go together -- the upper end of the range.
+- **Commits:** 63 on the branch; 4 past the threshold (3 planned, + `97225b7` for the dry4rust re-record); bug fixes
   1 (`eba863f`); the 70th runs all three stages
-- **Tests:** 3,440 at the base, 3,595 now (stage 5 459)
-- **Offences:** 248 as configured, 459 everything on, shear 0; Grip 642.59 / Braintax 4,510.09 (0.1425); dry4rust
+- **Tests:** 3,440 at the base, 3,599 now (stage 5 459)
+- **Offences:** 247 as configured, 458 everything on, shear 0; Grip 642.59 / Braintax 4,510.09 (0.1425); dry4rust
   baseline 213 groups (re-recorded at `85986a6`, Q13), 211 matching -- two storage-codec pairs paid at `52d7f53`
 - **Questions:** 23 answered, 1 open (9). **Interventions:** 0. **Waits:** 0.
 
@@ -59,7 +50,8 @@ pushed with the record at every commit.
   `StorageCodecFailure` (`52d7f53`), `ProtocolAssemblyFailure` (`dd886cc`),
   `ClusterConfigFailure` (`fa51f03`); xtask's `StageFailure` (`ba9d113`); the gate tests read failures' text
   (`21b4b54`); `GateFailure` (`b3503c4`); `CargoTool` for stern and twin (`9190601`); `Gate::run` typed
-  (`dc44447`); `LaunchFailure` (`c79dacc`); `SourceTreeFailure` (`8ecd1d0`); `CrapReportFailure` (`a60063e`).
+  (`dc44447`); `LaunchFailure` (`c79dacc`); `SourceTreeFailure` (`8ecd1d0`); `CrapReportFailure` (`a60063e`);
+  `RunLogFailure` (`09ad8f1`), the slice's last.
 
 ## Next in line
 
@@ -68,7 +60,7 @@ Part A's slices, in order, with the criterion that put each there (`SETUP.md`, *
 | # | slice | rules | `Chosen-By` |
 |---|---|---|---|
 | 1 | ~~time behind ports, tests off the clock~~ -- done at `44db935`; left: the cluster harness's 20 (decision 2), the wake signal's 6 (Q9) | injected-time 19 to pay, timeless-tests 46 | risk |
-| 2 | a failure type per concern, top-down | typed-errors 49 | no-scaffolding |
+| 2 | ~~a failure type per concern, top-down~~ -- done at `09ad8f1`, 19 commits | typed-errors 49 | no-scaffolding |
 | 3 | one file per implemented type (with the protocol's and control's fields) | implemented-in-one-file 2 | risk |
 | 4 | `pub` or private, each made `pub` with tests | public-or-private 30 | fastest-feedback |
 | 5 | named values for tuples | distinct-tuple-elements 11 | fastest-feedback |
