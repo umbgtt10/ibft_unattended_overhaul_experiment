@@ -49,6 +49,7 @@ After the run the owner takes each open entry -- implement, discuss, discard, po
 | 29 | commit 75, Part A | the cluster harness's waits return `NodeHeight` where they returned `(node, height)` pairs, which their log lines and one wait's panic text print, and one test read the pairs by position | answered | the record prints as the pair did, pinned by a new test, so no line and no panic text changes; the test reads the same values by name |
 | 30 | commit 79, Part A | the EVM engine's `pub use` re-exports of the opcodes and `TinyEvmOpcode` -- a shim CLAUDE.md forbids -- counted as a second reader of ten opcodes commit 78 moved to a constants file; without the shim each has one reader | answered | nine go private into `tiny_evm_opcode.rs`, which alone matches on them, and `OPCODE_PUSH2` into the one test that assembles it, as stern's corrections say; no count moves, no test changes but for its imports |
 | 31 | commit 81, Part A | the diagnostic beacon's field table, `DIAGNOSTIC_FIELDS`: in a constants file, the only thing production reads it for -- `DIAGNOSTIC_MAX_BYTES` -- does not count, and stern's correction is to move the table into its test | answered | it stays beside `NodeDiagnostics`, its offence in the baseline as it was; the three byte bounds move to `diagnostic_constants.rs` and are paid |
+| 32 | commit 92, Part A | the bootstrapper's coordinator is built from what only peer discovery knows, and stern refuses anything but a parameter assigned to it, a factory's call included; the change reshapes seven recorded dry4rust groups | answered | `init` takes the coordinator; the bootstrapper's injected factory builds it, the protocol installs it; the dry4rust baseline re-recorded as entries 7, 13 and 26 did -- seven groups re-keyed, one paid group dropped, none added, 210 to 209 |
 
 ## Interventions
 
@@ -641,3 +642,32 @@ the course the slice took and the run's recommendation; after the run, the owner
   `node/src/observer/diagnostic_constants.rs`, read by the assertion and the test, and their three offences are
   paid. Left for whoever owns the rule: a constants file's own reads could count as readers.
 - **Commit:** 81.
+
+### 32. The bootstrapper is handed its coordinator
+
+- **Raised:** commit 92, Part A, a trait-typed field only from a constructor parameter.
+- **What:** `Bootstrapper`'s `coordinator` field, a `Box<dyn BootstrappingCoordinator>`, was filled in `new` and
+  `inactive` with a `NoOpBootstrappingCoordinator` they built, and replaced in `init` with a `Faction` built from
+  the local peer, the validators, the quorum threshold and the observer -- what only the start of peer discovery
+  knows. Three `injected-dependencies` offences. A probe on the working tree found that stern refuses any
+  non-parameter assigned to the field: `coordinator_factory.idle()` in a constructor and
+  `self.coordinator_factory.coordinator(..)` in `init` were both reported. The 46 constructions in 14 files and the
+  protocol's call change with it, and seven dry4rust groups -- six exact pairs of protocol helpers between
+  `node/tests/ibft/protocol_helpers.rs` and `validation/src/protocol_helpers.rs`, and one near pair inside the
+  first -- change alike and fail under new fingerprints.
+- **Status:** answered.
+- **Answer:** the coordinator is a parameter everywhere it is set. `new` and `inactive` take the idle coordinator
+  and a `BootstrappingCoordinatorFactory` (`FactionCoordinatorFactory`, commit 91); `BootstrappingLifecycle` gains
+  `discovery_coordinator(local, validators, observer)`, which works out the threshold as `init` did --
+  `required_count()`, else `2n/3 + 1` -- and asks the factory, and `init(coordinator)` installs what it is handed;
+  the protocol's peer discovery builds, then installs. Tests may now install any coordinator. The two tests that
+  called `init` with the old arguments build the coordinator in their Arrange and install it in their Act, their
+  assertions unchanged. The dry4rust baseline is re-recorded as entries 7, 13 and 26 did, checked fingerprint by
+  fingerprint: the seven groups out under `067d43e85cfa2e1a`, `2aa02f4328261bba`, `49e27685fbd6acea`,
+  `524833ce0120f1c2`, `622551247d01ce55`, `976d7f815d966e2f` and `19a281f662079260`, and in, the same members,
+  under `ba63aeb784810c83`, `cb09a6a75f1e5f01`, `0ab9c7fcd9432e87`, `1ff10db1564d649b`, `fea83b57040d54cc`,
+  `e060de14bcb416e6` and `30fa1cefabe768d5`; the civil-date pair commit 70 paid dropped; one closure's name moved a
+  line; none added -- 210 to 209. A new near duplicate the first try made -- the lifecycle impl's
+  `discovery_coordinator` delegating like `handle_retry` -- was removed instead: the trait impl holds the body.
+  SETUP named this piece "likely past the threshold", and it is: 19 files and 548 lines, 137 of them the baseline.
+- **Commit:** 92.
