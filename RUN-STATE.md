@@ -6,8 +6,8 @@ pushed with the record at every commit.
 
 ## In progress
 
-- **Part, step, slice:** Part 0, the tooling -- the test inventory, second slice: the assertions each test makes
-- **Last commit:** `9520fa2` Find the tests in a source file by its tokens, for the test inventory (workbook row 1)
+- **Part, step, slice:** Part 0, the tooling -- the test inventory, third slice: over a git tree, and the command
+- **Last commit:** `abe6438` List the assertions each inventoried test makes (workbook row 2)
 - **Started (UTC):** 2026-11-06T16:02:08Z; branch `unattended-overhaul` created from `8a775a2`
 
 ## Next in line
@@ -17,7 +17,6 @@ slice*).
 
 | # | slice | kind | `Chosen-By` |
 |---|---|---|---|
-| 1 | the assertions each test makes (`Assertion`, `should_panic`, asserting macros and helpers) | support | dependency |
 | 2 | the inventory over a git tree or the index, and `cargo xtask test-inventory` | support | dependency |
 | 3 | the inventory's diff and the assertion comparison, `Maps:` lines in the message | support | dependency |
 | 4 | `cargo xtask measure`: offences both ways rule by rule, shear, Grip and Braintax | support | dependency |
@@ -40,7 +39,7 @@ slice*).
 - **Questions:** 0 answered, 0 open.
 - **Interventions:** 0.
 - **Waits:** 0, 0 hours in all.
-- **Commits:** 1 on the branch; the tenth commit runs all three stages.
+- **Commits:** 2 on the branch; the tenth commit runs all three stages.
 
 ## How the checks are run (until `cargo xtask measure` and the inventory diff exist)
 
