@@ -46,6 +46,7 @@ After the run the owner takes each open entry -- implement, discuss, discard, po
 | 26 | commit 69, Part A | a block's two commitment roots become a record, which reshapes three copies of `build_block_with_commitments` the dry4rust baseline records as one exact group | answered | re-recorded as entries 7 and 13 did, checked fingerprint by fingerprint: the group out under `f74317da987ed69e` and in under `40298922b91b8ae9`, three paid groups dropped, none added -- 213 to 210 |
 | 27 | commit 71, Part A | `summarize_receipts` returns a `ReceiptSummary` where it returned four counts as a tuple; its two tests compared the tuple | answered | each compares the record with the same four counts, now named -- the same claim and the same check |
 | 28 | commit 73, Part A | the EVM's `sha3_range` returns a `Sha3Window` where it returned offset, size and end as a tuple; one test compared the tuple | answered | it compares the record with the same three values, now named -- the same claim and the same check |
+| 29 | commit 75, Part A | the cluster harness's waits return `NodeHeight` where they returned `(node, height)` pairs, which their log lines and one wait's panic text print, and one test read the pairs by position | answered | the record prints as the pair did, pinned by a new test, so no line and no panic text changes; the test reads the same values by name |
 
 ## Interventions
 
@@ -582,3 +583,21 @@ the course the slice took and the run's recommendation; after the run, the owner
 - **Answer:** the same three values, checked the same way, field for field. They differ from one another, so the
   tuple already told a swap apart, and the record does too.
 - **Commit:** 73.
+
+### 29. The cluster harness's node heights print as the pairs they were
+
+- **Raised:** commit 75, Part A, named values for tuples.
+- **What:** `get_height_tolerating_in_flight_commit`, `get_heights_tolerating_in_flight_commit` and
+  `wait_until_heights_settle` returned `Vec<(u64, u64)>` -- a node and a height, in that order -- and
+  `wait_until_all_nodes_height_stays_at_most` took one. They now return and take `Vec<NodeHeight>`
+  (`system-tests/src/cluster_wait/node_height.rs`). `wait_until_heights_settle` prints the list on its
+  `cluster_wait_heights_settle` lines and hands its `{:?}` to `WaitProgress`, whose failure text ends "observing"
+  it -- a panic text. A derived `Debug` would print `NodeHeight { node_id: 1, height: 12 }` where `(1, 12)` was
+  printed. `get_heights_tolerating_in_flight_commit_returns_entry_per_node` read `heights[0].0` and `(_, h)`.
+- **Status:** answered.
+- **Answer:** `NodeHeight`'s `Debug` is written by hand to print `(1, 12)`, so the log lines and the panic text
+  are the old ones word for word (constraint 7's reason, and the log lines `refactoring` keeps); a new test,
+  `fmt_a_list_prints_each_node_and_height_as_the_pair_it_replaced`, holds it to the tuple's own `{:?}`. The
+  harness test reads `heights[0].node_id` and `reached.height` -- the same five checks of the same values, by name.
+  The tests that build the limits by hand build `NodeHeight`s with the same numbers.
+- **Commit:** 75.

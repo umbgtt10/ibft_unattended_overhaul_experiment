@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `1f0b856` Give the cluster harness's wait reports a folder: cluster_wait (row 74)
+- **Last commit:** `abe8d70` Name the cluster harness's node heights: NodeHeight (row 75)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -32,31 +32,25 @@ pushed with the record at every commit.
   question with no house default), measured before any commit: a merge carries each handler file's tests
   (`paired-test-file` refuses an orphaned test file; probed on an export), runs to dozens of commits within the
   threshold, and iceberg would refuse the merged files. Both offences stay in the baseline.
-- **Slice in progress:** Part A slice 5, named values for tuples -- distinct-tuple-elements 3 left (`Chosen-By:
-  fastest-feedback`). Done: `BlockCommitments` (`node/src/ibft/block_commitments.rs`) for the verifier's
-  `compute` and `execute_and_compute_commitments` (`b954ec4`, Q26: the dry4rust baseline re-recorded with
-  `--path .` from the repository root -- an absolute path writes absolute closure names); the civil date 3
-  (`7ee8472`): `UtcTimestamp` (`system-tests/src/infra/utc_timestamp.rs`, `iso8601()`, `directory_name()`) for
-  the log and the harness, a private `CivilDate` record in xtask's `run_stamp.rs`; `ReceiptSummary`
-  (`execution-types/src/execution/receipt_summary.rs`, `069fd4c`, Q27); `LocalCompletion`, private in
-  `bootstrapper.rs` (`d5b9214`); `Sha3Window` (`evm/src/tiny_evm/sha3_window.rs`, `72ac407`, Q28 -- stern's
-  `named-subject` wants the file named after the type, without the folder's `tiny_evm_` prefix). Left: the cluster harness's `(node, height)` pairs 3 --
-  `get_height_tolerating_in_flight_commit`, `get_heights_tolerating_in_flight_commit`,
-  `wait_until_heights_settle` (a commit touching the harness runs stage 5 three times). `system-tests/src` was
-  full (20 files, `directory-file-count`): `WaitProgress` moved to `src/cluster_wait/` first (`1f0b856`), split
-  off because the two together were 488 lines. Next: `NodeHeight { node_id, height }` in
-  `src/cluster_wait/node_height.rs`, its `Debug` hand-written to print `(1, 12)` as the tuple did, since the wait
-  lines and the `observing ...` panic text print the list; a test pins that; the finished files wait in
-  `overhaul-scratch/c75-pending/` (harness, two cluster test files, both `cluster_wait/mod.rs`, the record, its
-  test, the re-recorded stern baseline). A record used by one file stays private there (`record-home`); one used
-  by several gets its own file and no test of its own.
-- **Commits:** 74 on the branch; 4 past the threshold (3 planned, + `97225b7` for the dry4rust re-record); bug fixes
+  Part A slice 5, named values for tuples -- 7 commits, rows 69 to 75, row 74 the move (`b954ec4` to `abe8d70`);
+  distinct-tuple-elements 0 both ways. `BlockCommitments` (`node/src/ibft/block_commitments.rs`, Q26),
+  `UtcTimestamp` (`system-tests/src/infra/utc_timestamp.rs`) and xtask's private `CivilDate`, `ReceiptSummary`
+  (`execution-types/src/execution/receipt_summary.rs`, Q27), `LocalCompletion` (private in `bootstrapper.rs`),
+  `Sha3Window` (`evm/src/tiny_evm/sha3_window.rs`, Q28), `NodeHeight` (`system-tests/src/cluster_wait/`, Q29,
+  after `WaitProgress` moved there at `1f0b856`). Lessons: a record used by one file stays private there
+  (`record-home`), one used by several gets its own file, named after the type (`named-subject` -- no folder
+  prefix); a directory holds 20 files at most (`directory-file-count`) -- room is made by a move of its own, as
+  a move counts every line twice; a record whose list is printed keeps the old text with a hand-written `Debug`,
+  pinned by a test; run stern before `--write-baseline`, never after a refusal.
+- **Slice next:** Part A slice 6, constants given one home -- shared-constants 91 (`Chosen-By:
+  fastest-feedback`), not yet surveyed. The `c75-pending` scratch folder can go.
+- **Commits:** 75 on the branch; 4 past the threshold (3 planned, + `97225b7` for the dry4rust re-record); bug fixes
   1 (`eba863f`); the 80th runs all three stages
-- **Tests:** 3,440 at the base, 3,632 now (stage 5 462)
-- **Offences:** 209 as configured, 420 everything on, shear 0; Grip 642.59 / Braintax 4,502.09 (0.1427, the
+- **Tests:** 3,440 at the base, 3,633 now (stage 5 463)
+- **Offences:** 206 as configured, 417 everything on, shear 0; Grip 642.59 / Braintax 4,502.09 (0.1427, the
   first move: execution-types 64.14 to 56.14 at `069fd4c`); dry4rust
   baseline 210 groups (re-recorded at `b954ec4`, Q26), 209 matching -- the civil-date pair paid at `7ee8472`
-- **Questions:** 26 answered, 2 open (9, 25). **Interventions:** 0. **Waits:** 0.
+- **Questions:** 27 answered, 2 open (9, 25). **Interventions:** 0. **Waits:** 0.
 
 ## The run so far
 
@@ -81,7 +75,8 @@ pushed with the record at every commit.
   recovery host steps (`09ecd8d`); three of consensus's steps (`f458322`); the protocol's recovery drain and
   certificate verifier (`24d718d`), the slice's last; named tuples: `BlockCommitments` (`b954ec4`),
   `UtcTimestamp` and xtask's `CivilDate` (`7ee8472`), `ReceiptSummary` (`069fd4c`), `LocalCompletion` (`d5b9214`),
-  `Sha3Window` (`72ac407`); `WaitProgress` to `cluster_wait/` (`1f0b856`).
+  `Sha3Window` (`72ac407`); `WaitProgress` to `cluster_wait/` (`1f0b856`), `NodeHeight` (`abe8d70`), the slice's
+  last.
 
 ## Next in line
 
@@ -93,7 +88,7 @@ Part A's slices, in order, with the criterion that put each there (`SETUP.md`, *
 | 2 | ~~a failure type per concern, top-down~~ -- done at `09ad8f1`, 19 commits | typed-errors 49 | no-scaffolding |
 | 3 | one file per implemented type (with the protocol's and control's fields) -- waits on Q25, open | implemented-in-one-file 2 | risk |
 | 4 | ~~`pub` or private, each made `pub` with tests~~ -- done at `24d718d`, 5 commits | public-or-private 30 | fastest-feedback |
-| 5 | named values for tuples | distinct-tuple-elements 11 | fastest-feedback |
+| 5 | ~~named values for tuples~~ -- done at `abe8d70`, 7 commits | distinct-tuple-elements 11 | fastest-feedback |
 | 6 | constants given one home | shared-constants 91 | fastest-feedback |
 | 7 | a trait-typed field only from a constructor parameter | injected-dependencies 5 | no-scaffolding |
 | 8 | records and objects, a module at a time | records-and-objects 51 | no-scaffolding (last) |
