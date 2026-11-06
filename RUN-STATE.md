@@ -6,10 +6,10 @@ pushed with the record at every commit.
 
 ## In progress
 
-- **Part, step, slice:** Part A, the rules block -- first slice: `--fix` (ordered-impl-functions,
-  leading-constants, test-file-structure)
-- **Last commit:** `046324a` Land the reference-traces driver, its first replay byte for byte (workbook row 25) --
-  Part 0's last
+- **Part, step, slice:** Part A, the rules block -- the harness: waits that fail on stalled progress; the
+  cargo-build fallback behind a trait, the five tests back
+- **Last commit:** `03744d2` Order every inherent impl, and the one test file's imports, as stern4rust asks
+  (workbook row 26)
 - **Started (UTC):** 2026-11-06T16:02:08Z; branch `unattended-overhaul` created from `8a775a2`
 - **Part 0:** 25 commits, 16:09 to 17:50; 2 past the threshold (the dry4rust baseline, the driver), both planned.
 
@@ -19,7 +19,6 @@ The slices of Part A, in order, each with the criterion that put it there (`SETU
 
 | # | slice | rules | `Chosen-By` |
 |---|---|---|---|
-| 1 | `--fix`, one commit or two, the rest of the workspace restored | ordered-impl-functions 122, leading-constants 1, test-file-structure 1 | measurement |
 | 2 | the harness: waits that fail on stalled progress; the cargo-build fallback behind a trait, the five tests back | -- | risk |
 | 3 | time behind ports, tests off the clock | injected-time 39, timeless-tests 50 | risk |
 | 4 | a failure type per concern, top-down | typed-errors 49 | no-scaffolding |
@@ -44,9 +43,12 @@ Owed: `RuntimeTimerHarness::next_port` has no test (everything-on `tested-public
 - **Questions:** 4 answered, 0 open.
 - **Interventions:** 0.
 - **Waits:** 0, 0 hours in all.
-- **Commits:** 25 on the branch, 2 past the threshold (planned); the 30th runs all three stages.
-- **Tests:** 3,440 at the base, 3,521 at `046324a` (stage 5 401).
-- **Offences:** 483 as configured, 696 everything on, shear 0; Grip 642.59 / Braintax 4,510.09 (0.1425).
+- **Commits:** 26 on the branch, 3 past the threshold (planned: dry4rust baseline, driver, `--fix`); the 30th runs
+  all three stages.
+- **Tests:** 3,440 at the base, 3,521 at `03744d2` (stage 5 401).
+- **Offences:** 359 as configured, 572 everything on, shear 0; Grip 642.59 / Braintax 4,510.09 (0.1425).
+- **Living documents owed:** `stern4rust.toml`'s and `CLAUDE.md`'s "483" (the baseline is 359 now); stage 2's
+  gates (shear, dry4rust) in `CLAUDE.md` and the justfile's comments; the dry4rust baseline (216 of 217).
 
 ## How the checks are run, each commit
 
