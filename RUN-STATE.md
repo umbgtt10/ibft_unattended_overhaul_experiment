@@ -6,8 +6,12 @@ pushed with the record at every commit.
 
 ## In progress
 
-- **Part, step, slice:** Part 0, the tooling -- the 13 unused dependencies (`rule-offence`), then the shear gate
-- **Last commit:** `2a82c02` Gate the duplication a change adds: dry4rust in stage 2, after stern4rust (workbook row 12)
+- **Part, step, slice:** Part 0, the tooling -- the cargo-shear gate
+- **Last commit:** `1663af1` Remove the thirteen dependencies nothing uses (workbook row 13)
+- **Traces before the driver lands:** `checkout-index -a -f --prefix=overhaul-scratch/replay/` (the a1460ca driver
+  already copied into its `validation/examples/reference_traces`), then `cargo run --release --manifest-path
+  overhaul-scratch/replay/Cargo.toml --target-dir overhaul-scratch/replay-target -p validation --example
+  reference_traces -- check overhaul-scratch/reference-traces-a1460ca/validation/examples/reference_traces/corpus`.
 - **Started (UTC):** 2026-11-06T16:02:08Z; branch `unattended-overhaul` created from `8a775a2`
 
 ## Next in line
@@ -17,7 +21,6 @@ slice*).
 
 | # | slice | kind | `Chosen-By` |
 |---|---|---|---|
-| 2 | the 13 unused dependencies, a few commits | rule-offence | dependency |
 | 3 | the `cargo-shear` gate, `ignored` entries refused without `reasons` | support | dependency |
 | 4 | the harness waits that give up say so; slotgate's timeout 120 -> 160 | -- | risk |
 | 5 | the single-node harnesses' ports from the slot's range, and `next_port` | -- | risk |
@@ -35,9 +38,9 @@ slice*).
 - **Questions:** 0 answered, 0 open.
 - **Interventions:** 0.
 - **Waits:** 0, 0 hours in all.
-- **Commits:** 12 on the branch, 1 past the threshold (the dry4rust baseline, planned); the 20th runs all three
+- **Commits:** 13 on the branch, 1 past the threshold (the dry4rust baseline, planned); the 20th runs all three
   stages.
-- **Tests:** 3,440 at the base, 3,509 at `2a82c02`.
+- **Tests:** 3,440 at the base, 3,509 at `1663af1`. **Shear:** 0 since `1663af1`.
 
 ## How the checks are run, each commit
 
