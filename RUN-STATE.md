@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `f458322` Make three of consensus's steps pub, each tested (row 67)
+- **Last commit:** `24d718d` Make the protocol's recovery drain and certificate verifier pub, each tested (row 68)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -22,26 +22,22 @@ pushed with the record at every commit.
   the type, then the trait; a new failure type's test file mirrors its source's folder; two gates reduced to
   variants can turn into dry4rust duplicates -- share the part, hand it in; a recorded dry4rust duplicate
   reshaped alike is re-recorded as Q7 and Q13, fingerprint by fingerprint.
+  Part A slice 4, `pub` or private, each made `pub` with tests -- 5 commits, rows 64 to 68 (`48155f6` to
+  `24d718d`); public-or-private 0 both ways: `RecoveryControl`'s 18 and `IbftProtocol`'s 12, all `pub(crate)`
+  or `pub(super)` for their types' sibling files, each now `pub` with a direct test. Lessons: `tested-public-api`
+  matches calls by name and arity, so each needs a test calling it; `ordered-impl-functions` moves a method made
+  `pub` up among the `pub` ones, which counts its lines twice; `Action` has no `PartialEq` -- match it by
+  pattern; a host still reads the control layer through `process` alone (the boundary gate).
 - **Slice waiting:** Part A slice 3, one file per implemented type -- open as Q25 (merge or split, a design
   question with no house default), measured before any commit: a merge carries each handler file's tests
   (`paired-test-file` refuses an orphaned test file; probed on an export), runs to dozens of commits within the
   threshold, and iceberg would refuse the merged files. Both offences stay in the baseline.
-- **Slice in progress:** Part A slice 4, `pub` or private, each made `pub` with tests of its own --
-  public-or-private 3 left (`Chosen-By: fastest-feedback`), all `IbftProtocol`'s: protocol 2
-  (`drain_recovery_outcome`, `observe_recovery` -- `pub` goes between `block_gas_limit` and `hard_state`, and
-  between `max_txs_per_block` and `propose_interval_ms`), validation 1 (`commit_certificate_verifier`, first of
-  the `pub` ones). Done: consensus 3 (`f458322`, moved whole among the `pub` functions);
-  `RecoveryControl`'s 18 -- queries 4, verdicts 2, `announce_request` and `enqueue_next_recovery_request`
-  (`48155f6`), message 5 and timer 5 (`4cd3941`); the protocol's recovery host 6 (`09ecd8d`). `Action` has no
-  `PartialEq`: a test reading actions matches them by pattern (`matches!(.., [Action::..])`).
-  `tested-public-api` applies as configured in both crates and matches calls by name and arity: each newly `pub`
-  method needs a test calling it; `ordered-impl-functions` wants constructors, then `pub`, then the rest, each
-  alphabetical -- a method made `pub` moves up. A host still reads the control layer through `process` alone
-  (the boundary gate); the direct tests sit beside the `process` ones, named `handle_*` and sorted first.
-- **Commits:** 67 on the branch; 4 past the threshold (3 planned, + `97225b7` for the dry4rust re-record); bug fixes
+- **Slice next:** Part A slice 5, named values for tuples -- distinct-tuple-elements 11 (`Chosen-By:
+  fastest-feedback`).
+- **Commits:** 68 on the branch; 4 past the threshold (3 planned, + `97225b7` for the dry4rust re-record); bug fixes
   1 (`eba863f`); the 70th runs all three stages
-- **Tests:** 3,440 at the base, 3,626 now (stage 5 459)
-- **Offences:** 220 as configured, 431 everything on, shear 0; Grip 642.59 / Braintax 4,510.09 (0.1425); dry4rust
+- **Tests:** 3,440 at the base, 3,629 now (stage 5 459)
+- **Offences:** 217 as configured, 428 everything on, shear 0; Grip 642.59 / Braintax 4,510.09 (0.1425); dry4rust
   baseline 213 groups (re-recorded at `85986a6`, Q13), 211 matching -- two storage-codec pairs paid at `52d7f53`
 - **Questions:** 23 answered, 2 open (9, 25). **Interventions:** 0. **Waits:** 0.
 
@@ -65,7 +61,8 @@ pushed with the record at every commit.
   (`dc44447`); `LaunchFailure` (`c79dacc`); `SourceTreeFailure` (`8ecd1d0`); `CrapReportFailure` (`a60063e`);
   `RunLogFailure` (`09ad8f1`), the slice's last; slice 3 waits on Q25; `pub` with tests: the control layer's
   queries, verdicts and request steps (`48155f6`), its message and timer handlers (`4cd3941`); the protocol's
-  recovery host steps (`09ecd8d`); three of consensus's steps (`f458322`).
+  recovery host steps (`09ecd8d`); three of consensus's steps (`f458322`); the protocol's recovery drain and
+  certificate verifier (`24d718d`), the slice's last.
 
 ## Next in line
 
@@ -76,7 +73,7 @@ Part A's slices, in order, with the criterion that put each there (`SETUP.md`, *
 | 1 | ~~time behind ports, tests off the clock~~ -- done at `44db935`; left: the cluster harness's 20 (decision 2), the wake signal's 6 (Q9) | injected-time 19 to pay, timeless-tests 46 | risk |
 | 2 | ~~a failure type per concern, top-down~~ -- done at `09ad8f1`, 19 commits | typed-errors 49 | no-scaffolding |
 | 3 | one file per implemented type (with the protocol's and control's fields) -- waits on Q25, open | implemented-in-one-file 2 | risk |
-| 4 | `pub` or private, each made `pub` with tests | public-or-private 30 | fastest-feedback |
+| 4 | ~~`pub` or private, each made `pub` with tests~~ -- done at `24d718d`, 5 commits | public-or-private 30 | fastest-feedback |
 | 5 | named values for tuples | distinct-tuple-elements 11 | fastest-feedback |
 | 6 | constants given one home | shared-constants 91 | fastest-feedback |
 | 7 | a trait-typed field only from a constructor parameter | injected-dependencies 5 | no-scaffolding |
