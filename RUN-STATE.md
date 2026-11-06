@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `e4de9df` Compose the EVM engines' value transfer where evm and node-infra build them (row 88)
+- **Last commit:** `c576a8a` Compose the EVM engines where validation's helpers and single-node tests build them (row 89)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -63,13 +63,12 @@ pushed with the record at every commit.
   `ValueTransferEngine::default` build `DefaultValueTransfer` (a unit struct): every `X::default()` becomes
   `X::new(Box::new(DefaultValueTransfer))` plus `use evm::default_value_transfer::DefaultValueTransfer;`, a
   directory at a time, then the two `Default` impls out (the rule-offence). Done: evm tests, node-infra's two
-  builders, node's consensus test (`e4de9df`). Next: validation/src (`ibft_test_node.rs`, `ibft_cluster_builder.rs`)
-  and validation/tests/single_node (6 files) -- a `refactoring`; then validation/tests/cluster (10 files) with the
-  `Default` impls out. (2) `Bootstrapper::new`/`inactive` build `NoOpBootstrappingCoordinator`, and `init`
+  builders, node's consensus test (`e4de9df`); validation/src and validation/tests/single_node (`c576a8a`). Next:
+  validation/tests/cluster (10 files) with the two `Default` impls out -- the rule-offence. (2) `Bootstrapper::new`/`inactive` build `NoOpBootstrappingCoordinator`, and `init`
   replaces it with `Faction::new(config, bridge)` built from runtime data -- needs a coordinator factory behind a
   trait (SETUP: "the largest single piece, likely past the threshold"), ~40 constructions; surveyed, not begun.
   The `c75-pending` scratch folder can go.
-- **Commits:** 88 on the branch; 4 past the threshold (3 planned, + `97225b7` for the dry4rust re-record); bug fixes
+- **Commits:** 89 on the branch; 4 past the threshold (3 planned, + `97225b7` for the dry4rust re-record); bug fixes
   1 (`eba863f`); the 80th ran all three stages, as every commit has; the 90th next
 - **Tests:** 3,440 at the base, 3,633 now (stage 5 463)
 - **Offences:** 116 as configured, 327 everything on, shear 0; Grip 642.59 / Braintax 4,502.09 (0.1427, the
@@ -107,7 +106,7 @@ pushed with the record at every commit.
   the runtime-timer harness's wait budget (`a2ad8dd`), the block gas limit's first readers (`75d9503`),
   its node and system-tests readers (`b455252`), validation's single-node tests (`2aded31`), the alias out
   (`8fd7429`), the slice's last; injected dependencies: the EVM engines composed in evm and node-infra
-  (`e4de9df`).
+  (`e4de9df`), and in validation's helpers and single-node tests (`c576a8a`).
 
 ## Next in line
 
