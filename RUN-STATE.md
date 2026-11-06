@@ -7,7 +7,9 @@ pushed with the record at every commit.
 ## In progress
 
 - **Part, step, slice:** Part 0, the tooling -- the dry4rust gate and its baseline
-- **Last commit:** `7bd2ad9` Print every figure a commit's row owes: cargo xtask measure (workbook row 10)
+- **Last commit:** `c137f45` Share one arguments helper between xtask's runner tests (workbook row 11)
+- **The dry4rust baseline:** recorded from the base's export, `overhaul-scratch/base-8a775a2/dry4rust-baseline.json`,
+  217 groups; the tree passes against it.
 - **Started (UTC):** 2026-11-06T16:02:08Z; branch `unattended-overhaul` created from `8a775a2`
 
 ## Next in line
@@ -36,8 +38,8 @@ slice*).
 - **Questions:** 0 answered, 0 open.
 - **Interventions:** 0.
 - **Waits:** 0, 0 hours in all.
-- **Commits:** 10 on the branch; the 20th runs all three stages.
-- **Tests:** 3,440 at the base, 3,503 at `7bd2ad9`.
+- **Commits:** 11 on the branch; the 20th runs all three stages.
+- **Tests:** 3,440 at the base, 3,503 at `c137f45`.
 
 ## How the checks are run, each commit
 
