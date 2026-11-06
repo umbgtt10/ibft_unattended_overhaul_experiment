@@ -7,7 +7,10 @@ pushed with the record at every commit.
 ## In progress
 
 - **Part, step, slice:** Part 0, the tooling -- `cargo xtask measure`
-- **Last commit:** `1cf9fa3` Diff the tests of a commit against its parent: cargo xtask test-diff (workbook row 7)
+- **Last commit:** `1f34878` Read a commit's figures out of the tools' JSON reports, for cargo xtask measure (workbook row 8)
+- **Next pieces of measure:** `Measurement` over an export (runner-driven, tested with the queued fake), then the
+  `measure` command in `main.rs`: export the index (`checkout-index`) or a revision (`archive` + `tar`), empty
+  baseline, everything-on config, shipped crates = members minus validation, system-tests, xtask, node-contracts.
 - **Started (UTC):** 2026-11-06T16:02:08Z; branch `unattended-overhaul` created from `8a775a2`
 
 ## Next in line
@@ -37,8 +40,8 @@ slice*).
 - **Questions:** 0 answered, 0 open.
 - **Interventions:** 0.
 - **Waits:** 0, 0 hours in all.
-- **Commits:** 7 on the branch; the tenth commit runs all three stages.
-- **Tests:** `cargo xtask test-inventory [<rev>]` -- 3,440 at the base, 3,487 at `1cf9fa3`. Before every
+- **Commits:** 8 on the branch; the tenth commit runs all three stages.
+- **Tests:** `cargo xtask test-inventory [<rev>]` -- 3,440 at the base, 3,498 at `1f34878`. Before every
   commit: `cargo xtask test-diff HEAD --message <msg file>` over the staged index.
 
 ## How the checks are run (until `cargo xtask measure` and the inventory diff exist)
