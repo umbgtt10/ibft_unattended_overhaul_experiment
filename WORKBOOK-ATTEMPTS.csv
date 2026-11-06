@@ -11,3 +11,5 @@ commit_n,attempt,kind,stages,start,finish,outcome,refused_by,files_added,files_r
 9,1,support,"1, 2, 5",2026-11-06T16:44:58Z,2026-11-06T16:46:18Z,landed,,3,0,2,266,0
 10,1,support,"1, 2, 5",2026-11-06T16:48:13Z,2026-11-06T16:49:34Z,landed,,0,0,1,126,1
 11,1,support,"1, 2, 5",2026-11-06T16:51:43Z,2026-11-06T16:53:04Z,landed,,0,0,3,10,14
+12,1,support,"1, 2",2026-11-06T16:54:48Z,2026-11-06T16:55:09Z,refused,"stage 2: dry4rust, the new gate test's helper duplicating the build gate test's",3,0,3,2414,1
+12,2,support,"1, 2, 5",2026-11-06T16:55:32Z,2026-11-06T16:57:02Z,landed,,3,0,3,2413,1

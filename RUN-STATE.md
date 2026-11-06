@@ -6,10 +6,8 @@ pushed with the record at every commit.
 
 ## In progress
 
-- **Part, step, slice:** Part 0, the tooling -- the dry4rust gate and its baseline
-- **Last commit:** `c137f45` Share one arguments helper between xtask's runner tests (workbook row 11)
-- **The dry4rust baseline:** recorded from the base's export, `overhaul-scratch/base-8a775a2/dry4rust-baseline.json`,
-  217 groups; the tree passes against it.
+- **Part, step, slice:** Part 0, the tooling -- the 13 unused dependencies (`rule-offence`), then the shear gate
+- **Last commit:** `2a82c02` Gate the duplication a change adds: dry4rust in stage 2, after stern4rust (workbook row 12)
 - **Started (UTC):** 2026-11-06T16:02:08Z; branch `unattended-overhaul` created from `8a775a2`
 
 ## Next in line
@@ -19,7 +17,6 @@ slice*).
 
 | # | slice | kind | `Chosen-By` |
 |---|---|---|---|
-| 1 | the dry4rust gate, its baseline recorded from the base's export (past the threshold, planned) | support | dependency |
 | 2 | the 13 unused dependencies, a few commits | rule-offence | dependency |
 | 3 | the `cargo-shear` gate, `ignored` entries refused without `reasons` | support | dependency |
 | 4 | the harness waits that give up say so; slotgate's timeout 120 -> 160 | -- | risk |
@@ -38,8 +35,9 @@ slice*).
 - **Questions:** 0 answered, 0 open.
 - **Interventions:** 0.
 - **Waits:** 0, 0 hours in all.
-- **Commits:** 11 on the branch; the 20th runs all three stages.
-- **Tests:** 3,440 at the base, 3,503 at `c137f45`.
+- **Commits:** 12 on the branch, 1 past the threshold (the dry4rust baseline, planned); the 20th runs all three
+  stages.
+- **Tests:** 3,440 at the base, 3,509 at `2a82c02`.
 
 ## How the checks are run, each commit
 
