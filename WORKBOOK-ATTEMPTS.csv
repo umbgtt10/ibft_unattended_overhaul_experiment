@@ -29,3 +29,4 @@ commit_n,attempt,kind,stages,start,finish,outcome,refused_by,files_added,files_r
 25,2,tests,"1, 2, 5",2026-11-06T17:48:24Z,2026-11-06T17:49:52Z,landed,,6,0,0,964,0
 26,1,rule-offence,"1, 2, 5, 5, 5",2026-11-06T17:52:29Z,2026-11-06T17:55:55Z,landed,,0,0,124,7686,7805
 27,1,rule-offence,"1, 2, 5",2026-11-06T17:58:51Z,2026-11-06T18:00:35Z,landed,,1,0,1,133,0
+28,1,refactoring,"1, 2, 5, 5, 5",2026-11-06T18:02:44Z,2026-11-06T18:06:04Z,landed,,2,0,3,106,20
