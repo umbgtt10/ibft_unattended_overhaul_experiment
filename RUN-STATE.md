@@ -2,13 +2,13 @@
 
 Where the run is, for the agent to resume from. Read after every compaction and at the start of every step;
 updated before every commit, the last-commit line included. Overwritten as the run goes, committed and
-pushed with the record at every commit. Before the run, this is its template.
+pushed with the record at every commit.
 
 ## In progress
 
-- **Part, step, slice:** --
-- **Last commit:** -- (workbook row --)
-- **Started (UTC):** --
+- **Part, step, slice:** Part 0, the tooling -- the test inventory, second slice: the assertions each test makes
+- **Last commit:** `9520fa2` Find the tests in a source file by its tokens, for the test inventory (workbook row 1)
+- **Started (UTC):** 2026-11-06T16:02:08Z; branch `unattended-overhaul` created from `8a775a2`
 
 ## Next in line
 
@@ -17,6 +17,18 @@ slice*).
 
 | # | slice | kind | `Chosen-By` |
 |---|---|---|---|
+| 1 | the assertions each test makes (`Assertion`, `should_panic`, asserting macros and helpers) | support | dependency |
+| 2 | the inventory over a git tree or the index, and `cargo xtask test-inventory` | support | dependency |
+| 3 | the inventory's diff and the assertion comparison, `Maps:` lines in the message | support | dependency |
+| 4 | `cargo xtask measure`: offences both ways rule by rule, shear, Grip and Braintax | support | dependency |
+| 5 | the dry4rust gate and its baseline (past the threshold, planned) | support | dependency |
+| 6 | the 13 unused dependencies, a few commits | rule-offence | dependency |
+| 7 | the `cargo-shear` gate, `ignored` entries refused without `reasons` | support | dependency |
+| 8 | the harness waits that give up say so; slotgate's timeout 120 -> 160 | -- | risk |
+| 9 | the single-node harnesses' ports from the slot's range, and `next_port` | -- | risk |
+| 10 | the three conflict-detection tests | tests | safety-net |
+| 11 | the coverage baseline per module | support | measurement |
+| 12 | the reference-traces driver landed, last (past the threshold, planned) | tests | (plan: last) |
 
 ## Parked
 
@@ -25,9 +37,20 @@ slice*).
 
 ## Counts
 
-- **Questions:** -- answered, -- open.
-- **Interventions:** --.
-- **Waits:** --, -- hours in all.
+- **Questions:** 0 answered, 0 open.
+- **Interventions:** 0.
+- **Waits:** 0, 0 hours in all.
+- **Commits:** 1 on the branch; the tenth commit runs all three stages.
+
+## How the checks are run (until `cargo xtask measure` and the inventory diff exist)
+
+- offences: `git checkout-index -a --prefix=<scratch>/index-cN/`, stern with `--baseline` the empty
+  `overhaul-scratch/empty-baseline.json` (as configured), then again with `overhaul-scratch/everything-on.toml`
+  copied over the export's `stern4rust.toml`; `cargo shear --locked --format json <export>`;
+- tests: stage 1's `test result` lines plus stage 5's slotgate summary (3,042 + 398 at the base);
+- times: `date -u` at the slice's choice, at each attempt's start and finish.
+- the harness refuses `git switch -c` (deny `git * -c *`), `cp -r`, `awk`, `;`-compound commands: use
+  `checkout -b`, single-file `cp`, `grep`.
 
 ## Easily forgotten
 
