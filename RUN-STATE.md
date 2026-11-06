@@ -6,11 +6,11 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `97ee66a` Wait in the transport, client-interface and sled tests through PollingWait (row 42)
+- **Last commit:** `ffe821d` Wait in the single-node tests through PollingWait and the pause (row 43)
 - **Slice in progress:** Part A -- time behind ports, tests off the clock; injected-time done but the cluster
-  harness's 20 (decision 2); left: timeless-tests 19 -- the wake signal's 6 stay (Q9, open); to pay, 13: single
-  node 9 (client_eventual 1, client_interface 5 -- its `connect_client` like Q10's --, discovery_handoff 1, restart
-  `wait_for_db_unlock`, shutdown 1), cluster 4. The way: polling loops go through
+  harness's 20 (decision 2); left: timeless-tests 10 -- the wake signal's 6 stay (Q9, open); to pay, 4: cluster
+  `block_transaction_bound` (a deadline loop), `clock_drift` `wait_until_every_node_passes`,
+  `future_round_coverage` (a sleep), `restart` `wait_until_the_transfer_lands`. The way: polling loops go through
   `PollingWait::until` composed by `real_time_wait()`, bounds and intervals as they were -- a bound that moves is
   named in QUESTIONS.md (*Reporting*); an assertion never says less to pay (constraint 6). Ports, all in
   `system-tests/src/infra` but `Clock`:
@@ -20,13 +20,13 @@ pushed with the record at every commit.
   harness loop. Both harnesses take their `PollingWait` (and the client harness its `Pause`) from the tests, which
   compose real time through `real_time_wait()` in `tests/polling_wait_tests.rs` -- stern's
   `injected-dependencies` refused a harness choosing its own.
-- **Commits:** 42 on the branch; 4 past the threshold (3 planned, + `97225b7` for the dry4rust re-record); bug fixes
+- **Commits:** 43 on the branch; 4 past the threshold (3 planned, + `97225b7` for the dry4rust re-record); bug fixes
   1 (`eba863f`); the 50th runs all three stages
 - **Tests:** 3,440 at the base, 3,540 now (stage 5 420)
-- **Offences:** 309 as configured, 520 everything on, shear 0; Grip 642.59 / Braintax 4,510.09 (0.1425); dry4rust
+- **Offences:** 300 as configured, 511 everything on, shear 0; Grip 642.59 / Braintax 4,510.09 (0.1425); dry4rust
   baseline 215 groups, 213 matching (paid: the runtime-timer harness's two waits `3868a69`, the two
   `connect_client` test helpers `97ee66a`)
-- **Questions:** 9 answered, 1 open (9). **Interventions:** 0. **Waits:** 0.
+- **Questions:** 10 answered, 1 open (9). **Interventions:** 0. **Waits:** 0.
 
 ## The run so far
 
@@ -38,7 +38,7 @@ pushed with the record at every commit.
   (`1b0171b`), the sleeper (`3e9c051`), the client-interface bus
   and the pause (`1e0d986`), the runtime-timer harness and `PollingWait` (`3868a69`), the
   client harness (`9d848e2`), the runtime-timer harness handed its wait (`b8fbd48`), the wake
-  signal's report (`27580b9`), the infra tests' waits (`97ee66a`).
+  signal's report (`27580b9`), the infra tests' waits (`97ee66a`), the single-node tests' (`ffe821d`).
 
 ## Next in line
 

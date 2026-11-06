@@ -28,6 +28,7 @@ After the run the owner takes each open entry -- implement, discuss, discard, po
 | 8 | commit 41, Part A | the two gRPC buses' wake tests timed a wait to learn it was notified; they now assert the notification the wait reports | answered | the same contract -- the bus notified its signal -- stated directly; the wake signal's own promptness stays held by its timed tests (entry 9) |
 | 9 | commit 41, Part A | the wake signal's six tests time a timed wait -- promptness and duration are what they check -- and no timeless rewrite says as much | open | they stay in the stern baseline, `timeless-tests`; recommended: accept them beside decision 2's exception, the one place the subject under test is a timed wait |
 | 10 | commit 42, Part A | three test waits change shape as they move onto `PollingWait`: a count of polls becomes a deadline, two fixed 40 ms sleeps become a wait for the server, forty connect attempts become one | answered | every ceiling kept or replaced by the event it stood for; no assertion moves |
+| 11 | commit 43, Part A | five fixed delays in single-node tests -- 20, 100, 120 (three times) and 250 ms -- have no event to wait for in their place, and move onto the sleeper port unchanged | answered | the tests compose real time and sleep through `PollingWait::sleep`, as long as before; the rule stops seeing them, the delay does not go -- each is named, so a later change can replace it with the event it stands for |
 
 ## Interventions
 
@@ -243,3 +244,24 @@ the course the slice took and the run's recommendation; after the run, the owner
   stood in for, and a failing wait still fails. The two recorded near-duplicate `connect_client` helpers stop
   matching, and dry4rust's baseline matches 213 of its 215 groups.
 - **Commit:** 42.
+
+### 11. Fixed delays in single-node tests go through the sleeper, unchanged
+
+- **Raised:** commit 43, Part A, time behind ports and timeless tests.
+- **What:** five single-node tests sleep a fixed time with `thread::sleep`, `timeless-tests` offences: 120 ms after
+  spawning the node in each of the three `client_interface_tests`, 100 ms after spawning it in `shutdown_tests`,
+  20 ms between steps in `discovery_handoff_tests`, and 250 ms in
+  `single_node_default_topology_does_not_report_committed_height_after_startup_progress`, where the wait is the
+  test: a node that cannot commit is given the time it would have needed. None of the first five stands in for
+  an event a test could wait on as readily as commit 42's two did. Behind three of them the client connect
+  retries for 1.2 s anyway, and behind the shutdown one the process reads a piped stdin. The 250 ms window has no
+  event at all.
+- **Status:** answered.
+- **Answer:** the tests compose real time (`real_time_wait()`) and sleep through `PollingWait::sleep`, each delay as
+  long as before; the polls beside them move onto `PollingWait::until`, and the async connect retry onto the
+  `Pause` port's `TokioPause`, with their intervals and ceilings unchanged. Plainly: the rule stops seeing these
+  delays, and the delays stay. That is the plan's model -- time reaches what uses it through ports -- applied to the
+  tests' own waits. What it buys is that every remaining delay is named in one place. Recommended after the run:
+  replace the three 120 ms sleeps and the 100 ms one with a wait for the node's client port to answer, which
+  would shorten them, and keep the 250 ms window, which is the test's subject.
+- **Commit:** 43.
