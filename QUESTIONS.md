@@ -32,6 +32,7 @@ After the run the owner takes each open entry -- implement, discuss, discard, po
 | 12 | commit 44, Part A | the cluster tests' last four waits move onto `PollingWait`: two deadline loops now take their last look just after the deadline rather than just before, and a 3 s partition settle goes through the sleeper | answered | each window grows by at most one poll -- 200 ms and 100 ms in 60 s; the settle is as long as before, as entry 11 |
 | 13 | commit 45, Part A | six factories that cannot fail returned `Result<_, String>`; returning what they build leaves their tests' `is_ok()` with nothing to check | answered | five tests now check what was built; the observer's, whose observer returns nothing a test can read, hands each observer an event -- its `is_ok()` became the signature, mapped here; the two client-interface factories' recorded duplicate is re-recorded, as entry 7 |
 | 14 | commit 47, Part A | two assertions change with the transport's failure type: the transport-choosing outgoing factory cannot fail either, and the node failure's `Debug` test named a `String` the transport no longer returns | answered | the factory's test checks a send instead of `is_ok()`, as entry 13; the `Debug` test checks the same quoting on a transport failure that exists -- the same contract |
+| 15 | commit 48, Part A | five assertions change with partitioning's failure type: four read a failure's text through `to_string()`, one `is_err()` now names the failure | answered | the four check the same words as before; the fifth says more, as constraint 6 asks of an `is_err()` |
 
 ## Interventions
 
@@ -330,3 +331,23 @@ the course the slice took and the run's recommendation; after the run, the owner
 - **Answer:** the first says more than before, as in entry 13. The second checks the same thing, that the failure's
   `Debug` is its text quoted, on a value that can still be built.
 - **Commit:** 47.
+
+### 15. Five assertions move with partitioning's failure type
+
+- **Raised:** commit 48, Part A, a failure type per concern.
+- **What:** the partition table's environment loading, and the partition control's lines and thread, failed with
+  `String`s. They now share `PartitionFailure`, one type for the partitionable transport's one concern. The first
+  try gave the two halves a type each. dry4rust then found the table's two-variant `Display` a near-duplicate of
+  xtask's `TreeFailure` `Display` at 93%: two unrelated enums, alike in shape. There was nothing shared to
+  extract across the two crates. The one type, six variants, is the better shape and resembles nothing else. Five
+  assertions change:
+  - four of `partition_control_tests` checked `result.unwrap_err().contains("...")` on the `String`, and now check
+    the same words in the failure's text, `result.unwrap_err().to_string().contains("...")`;
+  - `initialize_from_env_refuses_a_pair_that_is_not_two_numbers` checked `loaded.is_err()`, and now checks
+    `Err(PartitionFailure::InvalidPair("banana"))`: which pair, and why.
+- **Status:** answered.
+- **Answer:** the four say the same of the retyped failure; the fifth is the strengthening constraint 6 asks for --
+  "one that only checked `is_err()` names the error". A spawn failure keeps the system's reason as text, which
+  is all it was ever used for; that keeps the type comparable, so the three tests that compare `Ok(..)` stand
+  unchanged.
+- **Commit:** 48.
