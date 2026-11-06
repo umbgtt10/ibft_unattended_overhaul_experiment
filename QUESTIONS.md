@@ -30,6 +30,7 @@ After the run the owner takes each open entry -- implement, discuss, discard, po
 | 10 | commit 42, Part A | three test waits change shape as they move onto `PollingWait`: a count of polls becomes a deadline, two fixed 40 ms sleeps become a wait for the server, forty connect attempts become one | answered | every ceiling kept or replaced by the event it stood for; no assertion moves |
 | 11 | commit 43, Part A | five fixed delays in single-node tests -- 20, 100, 120 (three times) and 250 ms -- have no event to wait for in their place, and move onto the sleeper port unchanged | answered | the tests compose real time and sleep through `PollingWait::sleep`, as long as before; the rule stops seeing them, the delay does not go -- each is named, so a later change can replace it with the event it stands for |
 | 12 | commit 44, Part A | the cluster tests' last four waits move onto `PollingWait`: two deadline loops now take their last look just after the deadline rather than just before, and a 3 s partition settle goes through the sleeper | answered | each window grows by at most one poll -- 200 ms and 100 ms in 60 s; the settle is as long as before, as entry 11 |
+| 13 | commit 45, Part A | six factories that cannot fail returned `Result<_, String>`; returning what they build leaves their tests' `is_ok()` with nothing to check | answered | five tests now check what was built; the observer's, whose observer returns nothing a test can read, hands each observer an event -- its `is_ok()` became the signature, mapped here; the two client-interface factories' recorded duplicate is re-recorded, as entry 7 |
 
 ## Interventions
 
@@ -288,3 +289,26 @@ the course the slice took and the run's recommendation; after the run, the owner
   cluster that commits, or one that never does, can move. `timeless-tests` is left holding the wake signal's
   six alone (entry 9).
 - **Commit:** 44.
+
+### 13. Factories that cannot fail stop saying they might
+
+- **Raised:** commit 45, Part A, a failure type per concern -- its first commit.
+- **What:** `build_observer`, `build_partitioner`, `build_client_interface_incoming`,
+  `build_client_interface_outgoing`, and the local transport's `build_transport_incoming` and
+  `build_transport_outgoing` each returned `Result<_, String>` and only ever `Ok` -- six `typed-errors` offences
+  with no failure to type. They now return what they build. Each one's test asserted `is_ok()`, a check the
+  signature now makes at compile time.
+- **Status:** answered.
+- **Answer:** five tests now assert on what was built, each saying more than `is_ok()` did. The partitioner sorts a
+  cancelled timer into outputs. The incoming adapter hands on a request queued on its bus. The outgoing adapter
+  files a response on its bus. The local incoming transport receives nothing, and the local outgoing transport
+  accepts a send. The sixth, `build_observer_hands_back_an_observer_whatever_log_level_it_is_given`, cannot follow:
+  `ProtocolObserver`'s methods return nothing and the logging observer only prints. It now hands each observer, at
+  both log levels, an event, and its two `is_ok()` assertions go. The inventory reports it as saying less, two
+  assertions to none. The claim those assertions made, that the factory hands back an observer, is now the
+  function's signature, which no build can break. That is the test's mapping (constraint 6), and it is not a
+  relaxation of what is checked. The two client-interface factories were an exact-duplicate pair the dry4rust
+  baseline recorded, and dropping `Result` reshapes both alike, so the baseline is re-recorded as entry 7 did:
+  the pair goes out under `d654de7c2f38ef52` and comes in under `fcde559ae97fd319`. The two groups paid in commits
+  38 and 42 drop, none is added, 215 to 213.
+- **Commit:** 45.
