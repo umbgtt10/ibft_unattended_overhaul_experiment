@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `21b4b54` Have the gate tests compare a gate's failure by the text it prints (row 56)
+- **Last commit:** `b3503c4` Name every way a gate can fail: GateFailure, ahead of the trait (row 57)
 - **Slice done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to `44db935`).
   injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6 alone (Q9,
   open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs, `SystemClock`; a
@@ -26,11 +26,13 @@ pushed with the record at every commit.
   (`src/gates/gate_failure.rs`, derives `Debug, Clone, PartialEq, Eq`; a variant per failure, each printing the
   old text: `NotInstalled(&'static str)`, `Launch(String)` until `LaunchFailure`, `CouldNotRun`/`ExitCode`/
   `SystemTestFailed(Option<i32>)`, `RuleBroken`, `DuplicationAdded`, `UnusedDependency`, `UnexplainedIgnores(Vec)`,
-  `Metadata(MeasureFailure)`, `MissingTwins`, `AboveCeiling(String)`, `UnreadableReport{..}`,
-  `CrappyFunctions(usize)`, `Tree(String)` until the tree's type, `Read{path, reason}`, `MissingTree(String)`,
-  `NoRustFiles`, `LayoutFindings(usize)`, `VocabularyFindings(usize)`) with its tests -- 4 files; (3)
-  `rule-offence`: the trait, the ten gates, `StageFailure.reason: GateFailure`, `FakeGate`, the sequence's and the
-  stage failure's tests, the baseline -- 16 files. Done: the six
+  `UnreadableMetadata(MeasureFailure)`, `MissingTwins`, `AboveCeiling(String)`, `UnreadableReport{reason,
+  exit_code, stderr, stdout_tail}`, `CrappyFunctions(usize)`, `Tree(String)` until the tree's type,
+  `UnreadableFile{path, reason}`, `MissingTree(String)`, `NoRustFiles`, `LayoutFindings(usize)`,
+  `VocabularyFindings(usize)`) with 7 tests -- done, `b3503c4`; (3) `rule-offence`: the trait, the ten gates
+  (the CRAP gate's plural and its comment go: `GateFailure` has them), `StageFailure.reason: GateFailure`,
+  `FakeGate::failing(label, GateFailure)`, the sequence's and the stage failure's tests, the baseline -- 16
+  files. Done: the six
   factories that cannot fail (`85986a6`); `NodeFailure` (`src/node_failure.rs`, `86cb9f5`); `TransportFailure`
   (`8650823`); `PartitionFailure` (`partitionable_transport/partition_failure.rs`, `c42e574`). `NodeFailure`'s
   variants all carry a type now. A new failure
@@ -38,9 +40,9 @@ pushed with the record at every commit.
   two-variant `Display` can near-duplicate xtask's `TreeFailure`'s (dry4rust): one type per concern. Pattern: `Display` = the old text word
   for word (constraint 7); `Debug` = that text quoted, as a `String`'s was, where `{:?}`/`expect` printed it.
   A recorded dry4rust duplicate reshaped alike: re-record as Q7 and Q13, checked fingerprint by fingerprint.
-- **Commits:** 56 on the branch; 4 past the threshold (3 planned, + `97225b7` for the dry4rust re-record); bug fixes
+- **Commits:** 57 on the branch; 4 past the threshold (3 planned, + `97225b7` for the dry4rust re-record); bug fixes
   1 (`eba863f`); the 60th runs all three stages
-- **Tests:** 3,440 at the base, 3,580 now (stage 5 459)
+- **Tests:** 3,440 at the base, 3,587 now (stage 5 459)
 - **Offences:** 253 as configured, 464 everything on, shear 0; Grip 642.59 / Braintax 4,510.09 (0.1425); dry4rust
   baseline 213 groups (re-recorded at `85986a6`, Q13), 211 matching -- two storage-codec pairs paid at `52d7f53`
 - **Questions:** 20 answered, 1 open (9). **Interventions:** 0. **Waits:** 0.
@@ -61,7 +63,7 @@ pushed with the record at every commit.
   `ClientInterfaceCodecFailure` (`1f0a989`), `SledStorageFailure` (`1f59d35`),
   `StorageCodecFailure` (`52d7f53`), `ProtocolAssemblyFailure` (`dd886cc`),
   `ClusterConfigFailure` (`fa51f03`); xtask's `StageFailure` (`ba9d113`); the gate tests read failures' text
-  (`21b4b54`).
+  (`21b4b54`); `GateFailure` (`b3503c4`).
 
 ## Next in line
 
