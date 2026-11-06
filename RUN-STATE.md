@@ -7,7 +7,8 @@ pushed with the record at every commit.
 ## In progress
 
 - **Part, step, slice:** Part 0, the tooling -- the inventory's diff and the assertion comparison
-- **Last commit:** `77de5f3` Pair each test of a commit with its parent's, following moves and renames (workbook row 5)
+- **Last commit:** `e976cd0` Name what can happen to a test between a commit and its parent (workbook row 6)
+- **Pending in scratch:** `overhaul-scratch/pending/inventory_diff.rs` and `inventory_diff_tests.rs`, the next commit
 - **Started (UTC):** 2026-11-06T16:02:08Z; branch `unattended-overhaul` created from `8a775a2`
 
 ## Next in line
@@ -38,8 +39,8 @@ slice*).
 - **Questions:** 0 answered, 0 open.
 - **Interventions:** 0.
 - **Waits:** 0, 0 hours in all.
-- **Commits:** 5 on the branch; the tenth commit runs all three stages.
-- **Tests:** `cargo xtask test-inventory [<rev>]` -- 3,440 at the base, 3,471 at `77de5f3`.
+- **Commits:** 6 on the branch; the tenth commit runs all three stages.
+- **Tests:** `cargo xtask test-inventory [<rev>]` -- 3,440 at the base, 3,478 at `e976cd0`.
 
 ## How the checks are run (until `cargo xtask measure` and the inventory diff exist)
 
