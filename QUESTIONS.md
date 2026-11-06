@@ -43,6 +43,7 @@ After the run the owner takes each open entry -- implement, discuss, discard, po
 | 23 | commit 60, Part A | the system runner's launch-failure test read the `String` it failed with; it fails with a `LaunchFailure` | answered | the same check -- the failure's text starts "failed to launch" -- read through `to_string()` |
 | 24 | commit 62, Part A | the CRAP report parser's three failure tests read the `String` it failed with; it fails with a `CrapReportFailure` | answered | each reads the same words through `to_string()`; the new type's tests pin the whole text |
 | 25 | after commit 63, Part A, slice 3 | one file per implemented type: `IbftProtocol` (13 files, 4,857 lines) and `RecoveryControl` (5 files) -- merge every `impl` into the type's file, or split the type into types of their own? | open | the slice waits, both offences stay in the baseline, and the run goes on with slice 4; recommended: split, a type per concern, with the protocol's split taken into Part B's seams |
+| 26 | commit 69, Part A | a block's two commitment roots become a record, which reshapes three copies of `build_block_with_commitments` the dry4rust baseline records as one exact group | answered | re-recorded as entries 7 and 13 did, checked fingerprint by fingerprint: the group out under `f74317da987ed69e` and in under `40298922b91b8ae9`, three paid groups dropped, none added -- 213 to 210 |
 
 ## Interventions
 
@@ -532,3 +533,23 @@ the course the slice took and the run's recommendation; after the run, the owner
   become an object of their own, and the queries a type borrowing the coordinator and the facts; for the
   handlers that mutate, the coordinator's ownership is decided first. `IbftProtocol` is split along the lines
   Part B's seams already draw, slice by slice, each split taking its tests with it.
+
+### 26. A recorded duplicate reshaped: the three block builders with commitments
+
+- **Raised:** commit 69, Part A, named values for tuples -- its first commit.
+- **What:** `BlockCommitmentsVerifier::compute` and `IbftProtocol::execute_and_compute_commitments` returned
+  `(Hash, Hash)`, two `distinct-tuple-elements` offences; they now return `BlockCommitments`, the post-state and
+  receipts roots by name. `build_block_with_commitments` exists three times -- `node/tests/ibft/scenario_helpers.rs`,
+  `validation/src/scenario_helpers.rs` and `validation/src/ibft_cluster_test_helpers.rs` -- and the dry4rust
+  baseline records the three as one exact group, `f74317da987ed69e`. Each now destructures the record where it
+  destructured the tuple, so all three change alike, the group's fingerprint changes, and the gate reports it as
+  new. The duplication cannot be removed here: the node's tests cannot use the validation crate's helper.
+- **Status:** answered.
+- **Answer:** re-record the dry4rust baseline (`cargo dry4rust baseline --path . --exclude-tests --min-lines 5`),
+  as entries 7 and 13 did. Checked fingerprint by fingerprint: the group goes out under `f74317da987ed69e` and comes
+  in under `40298922b91b8ae9`, three members both times. The only other changes are the three groups this branch
+  has paid -- the storage codec's two at commit 52 and the stern and twin gates' pair at commit 58 -- which go, and
+  three closure names re-keyed to their shifted lines. 213 groups to 210, none added. A first re-record run with an
+  absolute `--path` wrote closure names with the machine's absolute paths. It was restored and run again from the
+  repository root, so the names keep their `./`.
+- **Commit:** 69.
