@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `8fd7429` Take the block gas limit's alias out of block.rs (row 87)
+- **Last commit:** `e4de9df` Compose the EVM engines' value transfer where evm and node-infra build them (row 88)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -57,9 +57,19 @@ pushed with the record at every commit.
   file's own reads do not count (Q31); a constant read by 58 files goes a module at a time behind a one-source
   alias (`pub const X: T = SHARED_X;`, imported `as`), the count paid when the alias goes; grep for grouped
   imports (`block::{Block, X}`) as well as single ones.
-- **Slice next:** Part A slice 7, a trait-typed field only from a constructor parameter -- injected-dependencies 5
-  (`Chosen-By: no-scaffolding`), not yet surveyed. The `c75-pending` scratch folder can go.
-- **Commits:** 87 on the branch; 4 past the threshold (3 planned, + `97225b7` for the dry4rust re-record); bug fixes
+- **Slice in progress:** Part A slice 7, a trait-typed field only from a constructor parameter --
+  injected-dependencies 5 (`Chosen-By: no-scaffolding`; started 23:23:32Z; list in
+  `overhaul-scratch/injected-dependencies.txt`). Two groups. (1) evm's `TinyEvmEngine::default` and
+  `ValueTransferEngine::default` build `DefaultValueTransfer` (a unit struct): every `X::default()` becomes
+  `X::new(Box::new(DefaultValueTransfer))` plus `use evm::default_value_transfer::DefaultValueTransfer;`, a
+  directory at a time, then the two `Default` impls out (the rule-offence). Done: evm tests, node-infra's two
+  builders, node's consensus test (`e4de9df`). Next: validation/src (`ibft_test_node.rs`, `ibft_cluster_builder.rs`)
+  and validation/tests/single_node (6 files) -- a `refactoring`; then validation/tests/cluster (10 files) with the
+  `Default` impls out. (2) `Bootstrapper::new`/`inactive` build `NoOpBootstrappingCoordinator`, and `init`
+  replaces it with `Faction::new(config, bridge)` built from runtime data -- needs a coordinator factory behind a
+  trait (SETUP: "the largest single piece, likely past the threshold"), ~40 constructions; surveyed, not begun.
+  The `c75-pending` scratch folder can go.
+- **Commits:** 88 on the branch; 4 past the threshold (3 planned, + `97225b7` for the dry4rust re-record); bug fixes
   1 (`eba863f`); the 80th ran all three stages, as every commit has; the 90th next
 - **Tests:** 3,440 at the base, 3,633 now (stage 5 463)
 - **Offences:** 116 as configured, 327 everything on, shear 0; Grip 642.59 / Braintax 4,502.09 (0.1427, the
@@ -96,7 +106,8 @@ pushed with the record at every commit.
   beacon's byte bounds (`efd7ee5`), three singles and the test node's peer (`59b99a1`),
   the runtime-timer harness's wait budget (`a2ad8dd`), the block gas limit's first readers (`75d9503`),
   its node and system-tests readers (`b455252`), validation's single-node tests (`2aded31`), the alias out
-  (`8fd7429`), the slice's last.
+  (`8fd7429`), the slice's last; injected dependencies: the EVM engines composed in evm and node-infra
+  (`e4de9df`).
 
 ## Next in line
 
