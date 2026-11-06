@@ -6,11 +6,8 @@ pushed with the record at every commit.
 
 ## In progress
 
-- **Part, step, slice:** Part 0, the tooling -- `cargo xtask measure`
-- **Last commit:** `766a0aa` Run the measuring tools over an exported tree, for cargo xtask measure (workbook row 9)
-- **Next piece of measure:** the `measure` command in `main.rs`: export the index (`checkout-index`) or a revision
-  (`archive` + `tar`), empty baseline, everything-on config, shipped crates = members minus validation,
-  system-tests, xtask, node-contracts. Commit 10: all three stages anyway.
+- **Part, step, slice:** Part 0, the tooling -- the dry4rust gate and its baseline
+- **Last commit:** `7bd2ad9` Print every figure a commit's row owes: cargo xtask measure (workbook row 10)
 - **Started (UTC):** 2026-11-06T16:02:08Z; branch `unattended-overhaul` created from `8a775a2`
 
 ## Next in line
@@ -20,15 +17,14 @@ slice*).
 
 | # | slice | kind | `Chosen-By` |
 |---|---|---|---|
-| 4 | `cargo xtask measure`: offences both ways rule by rule, shear, Grip and Braintax | support | dependency |
-| 5 | the dry4rust gate and its baseline (past the threshold, planned) | support | dependency |
-| 6 | the 13 unused dependencies, a few commits | rule-offence | dependency |
-| 7 | the `cargo-shear` gate, `ignored` entries refused without `reasons` | support | dependency |
-| 8 | the harness waits that give up say so; slotgate's timeout 120 -> 160 | -- | risk |
-| 9 | the single-node harnesses' ports from the slot's range, and `next_port` | -- | risk |
-| 10 | the three conflict-detection tests | tests | safety-net |
-| 11 | the coverage baseline per module | support | measurement |
-| 12 | the reference-traces driver landed, last (past the threshold, planned) | tests | (plan: last) |
+| 1 | the dry4rust gate, its baseline recorded from the base's export (past the threshold, planned) | support | dependency |
+| 2 | the 13 unused dependencies, a few commits | rule-offence | dependency |
+| 3 | the `cargo-shear` gate, `ignored` entries refused without `reasons` | support | dependency |
+| 4 | the harness waits that give up say so; slotgate's timeout 120 -> 160 | -- | risk |
+| 5 | the single-node harnesses' ports from the slot's range, and `next_port` | -- | risk |
+| 6 | the three conflict-detection tests | tests | safety-net |
+| 7 | the coverage baseline per module | support | measurement |
+| 8 | the reference-traces driver landed, last (past the threshold, planned) | tests | (plan: last) |
 
 ## Parked
 
@@ -40,19 +36,26 @@ slice*).
 - **Questions:** 0 answered, 0 open.
 - **Interventions:** 0.
 - **Waits:** 0, 0 hours in all.
-- **Commits:** 9 on the branch; the tenth commit runs all three stages.
-- **Tests:** `cargo xtask test-inventory [<rev>]` -- 3,440 at the base, 3,503 at `766a0aa`. Before every
-  commit: `cargo xtask test-diff HEAD --message <msg file>` over the staged index.
+- **Commits:** 10 on the branch; the 20th runs all three stages.
+- **Tests:** 3,440 at the base, 3,503 at `7bd2ad9`.
 
-## How the checks are run (until `cargo xtask measure` and the inventory diff exist)
+## How the checks are run, each commit
 
-- offences: `git checkout-index -a --prefix=<scratch>/index-cN/`, stern with `--baseline` the empty
-  `overhaul-scratch/empty-baseline.json` (as configured), then again with `overhaul-scratch/everything-on.toml`
-  copied over the export's `stern4rust.toml`; `cargo shear --locked --format json <export>`;
-- tests: stage 1's `test result` lines plus stage 5's slotgate summary (3,042 + 398 at the base);
-- times: `date -u` at the slice's choice, at each attempt's start and finish.
-- the harness refuses `git switch -c` (deny `git * -c *`), `cp -r`, `awk`, `;`-compound commands: use
-  `checkout -b`, single-file `cp`, `grep`.
+1. `date -u` at the slice's choice; implement; `cargo fmt`; `git add -A`;
+2. `git diff --cached --no-renames --numstat` (and `--name-status`) for the counts and the threshold;
+3. `cargo xtask test-diff HEAD --message <scratch msg file>` -- the inventory's diff and the assertion
+   comparison over the index; every `changed` read and judged; a `Maps:` line for any removal (constraint 6);
+4. `cargo xtask measure /home/umberto/Projects/overhaul-scratch/measure-cN` -- offences both ways rule by rule,
+   shear, Grip/Braintax of the index; the parent's figures are the previous row's;
+5. the traces (once the driver has landed);
+6. `date -u`, then the stages, one call each, output to `overhaul-scratch/stageN.log`: stage 1 checked with
+   `grep -h 'test result' ... | grep -vc '0 failed; 0 ignored'` = 0; stage 5's slotgate `SUMMARY` line;
+7. commit `-S -F`, push the branch; the workbook row, the attempts, this file; record commit, the two blocklist
+   checks one after the other, then push.
+
+- the harness refuses `git switch -c` (deny `git * -c *`), `cp -r`, `awk`: use `checkout -b`, single-file `cp`.
+- `overhaul-scratch/base-8a775a2` (an export of the base) and `index-c1` stay: nothing allowed removes a
+  directory but `cargo xtask measure`, which removes its own.
 
 ## Easily forgotten
 
