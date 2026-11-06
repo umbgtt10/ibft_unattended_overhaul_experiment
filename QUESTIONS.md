@@ -41,6 +41,7 @@ After the run the owner takes each open entry -- implement, discuss, discard, po
 | 21 | commit 56, Part A | the gate tests' 32 assertions on a gate's failure compared the `String` it failed with, ahead of the gates' failure type | answered | each compares the failure's text, through `to_string()`, to the same words -- the same check of a `String` today and of the failure type, whose text is the old one |
 | 22 | commit 59, Part A | `Gate::run` fails with a `GateFailure`: the fake gate fails with one, not with free text, and three assertions name what it fails with | answered | each says what it said of the text it was given, now of a failure a gate gives; one expected text grows by the exit code the fake's failure carries |
 | 23 | commit 60, Part A | the system runner's launch-failure test read the `String` it failed with; it fails with a `LaunchFailure` | answered | the same check -- the failure's text starts "failed to launch" -- read through `to_string()` |
+| 24 | commit 62, Part A | the CRAP report parser's three failure tests read the `String` it failed with; it fails with a `CrapReportFailure` | answered | each reads the same words through `to_string()`; the new type's tests pin the whole text |
 
 ## Interventions
 
@@ -482,3 +483,15 @@ the course the slice took and the run's recommendation; after the run, the owner
 - **Answer:** the claim is the same -- a missing program is a launch failure, not an exit code -- and it is checked
   the same way, on the same words. `LaunchFailure`'s own test pins the whole text.
 - **Commit:** 60.
+
+### 24. The CRAP report parser's failures, read through their text
+
+- **Raised:** commit 62, Part A, a failure type per concern -- `CrapReportParser::parse`.
+- **What:** `parse_a_truncated_report_returns_a_parse_error`, `parse_empty_output_returns_a_not_found_error` and
+  `parse_output_carrying_no_report_returns_a_not_found_error` asserted `result.is_err_and(|error|
+  error.contains(..))` of the `String` the parser failed with. It fails with a `CrapReportFailure` --
+  `NoReport` or `Unparsable` -- and each now reads `error.to_string().contains(..)`, the same words.
+- **Status:** answered.
+- **Answer:** the three claims are unchanged and checked the same way. The new type's two tests pin each variant's
+  whole text, and the gate failure's report test builds a `NoReport`, its expected text unchanged.
+- **Commit:** 62.
