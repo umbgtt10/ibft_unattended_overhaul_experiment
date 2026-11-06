@@ -29,6 +29,7 @@ After the run the owner takes each open entry -- implement, discuss, discard, po
 | 9 | commit 41, Part A | the wake signal's six tests time a timed wait -- promptness and duration are what they check -- and no timeless rewrite says as much | open | they stay in the stern baseline, `timeless-tests`; recommended: accept them beside decision 2's exception, the one place the subject under test is a timed wait |
 | 10 | commit 42, Part A | three test waits change shape as they move onto `PollingWait`: a count of polls becomes a deadline, two fixed 40 ms sleeps become a wait for the server, forty connect attempts become one | answered | every ceiling kept or replaced by the event it stood for; no assertion moves |
 | 11 | commit 43, Part A | five fixed delays in single-node tests -- 20, 100, 120 (three times) and 250 ms -- have no event to wait for in their place, and move onto the sleeper port unchanged | answered | the tests compose real time and sleep through `PollingWait::sleep`, as long as before; the rule stops seeing them, the delay does not go -- each is named, so a later change can replace it with the event it stands for |
+| 12 | commit 44, Part A | the cluster tests' last four waits move onto `PollingWait`: two deadline loops now take their last look just after the deadline rather than just before, and a 3 s partition settle goes through the sleeper | answered | each window grows by at most one poll -- 200 ms and 100 ms in 60 s; the settle is as long as before, as entry 11 |
 
 ## Interventions
 
@@ -265,3 +266,25 @@ the course the slice took and the run's recommendation; after the run, the owner
   replace the three 120 ms sleeps and the 100 ms one with a wait for the node's client port to answer, which
   would shorten them, and keep the 250 ms window, which is the test's subject.
 - **Commit:** 43.
+
+### 12. The cluster tests' last four waits on `PollingWait`
+
+- **Raised:** commit 44, Part A, time behind ports and timeless tests.
+- **What:** four cluster tests read `Instant::now()` or slept, the last four `timeless-tests` offences outside the
+  wake signal's:
+  - `no_committed_block_carries_more_transactions_than_the_fleet_allows` polled every 200 ms while 60 s had not
+    passed, and `wait_until_the_transfer_lands` every 100 ms while 60 s had not passed. Both checked the deadline
+    before each look. `PollingWait::until` looks first and gives up once the deadline has passed. The last look
+    now comes on the far side of the deadline, so each window grows by at most one poll: 200 ms, and 100 ms, in
+    60 s.
+  - `wait_until_every_node_passes` gave up at `now >= deadline`, and now gives up at `elapsed > timeout`. The two
+    differ only at the deadline instant itself.
+  - `split_partition_induces_round_changes_and_cluster_reconverges_after_heal` holds its partition for 3 s, the
+    time in which rounds must change, and that is the test's arrangement. It sleeps through `PollingWait::sleep`,
+    as long as before (entry 11).
+- **Status:** answered.
+- **Answer:** no assertion changes and no test is added or lost. The two widened windows are named here, as
+  *Reporting* asks of a moved time bound. Each widens by one poll at most. Neither test's verdict for a
+  cluster that commits, or one that never does, can move. `timeless-tests` is left holding the wake signal's
+  six alone (entry 9).
+- **Commit:** 44.

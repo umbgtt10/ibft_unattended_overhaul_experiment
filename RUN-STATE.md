@@ -6,27 +6,25 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `ffe821d` Wait in the single-node tests through PollingWait and the pause (row 43)
-- **Slice in progress:** Part A -- time behind ports, tests off the clock; injected-time done but the cluster
-  harness's 20 (decision 2); left: timeless-tests 10 -- the wake signal's 6 stay (Q9, open); to pay, 4: cluster
-  `block_transaction_bound` (a deadline loop), `clock_drift` `wait_until_every_node_passes`,
-  `future_round_coverage` (a sleep), `restart` `wait_until_the_transfer_lands`. The way: polling loops go through
-  `PollingWait::until` composed by `real_time_wait()`, bounds and intervals as they were -- a bound that moves is
-  named in QUESTIONS.md (*Reporting*); an assertion never says less to pay (constraint 6). Ports, all in
-  `system-tests/src/infra` but `Clock`:
-  `Clock` (timer_scheduler.rs, `SystemClock`; returns a `Duration` since the clock's origin), `WallClock`
-  (`SystemWallClock`), `Sleeper` (`ThreadSleeper`), `Pause` (`TokioPause`, async). `PollingWait`
-  (`src/polling_wait.rs`, clock + sleeper, `until(interval, timeout, probe)`, `sleep`, `elapsed_since`) is the
-  harness loop. Both harnesses take their `PollingWait` (and the client harness its `Pause`) from the tests, which
-  compose real time through `real_time_wait()` in `tests/polling_wait_tests.rs` -- stern's
-  `injected-dependencies` refused a harness choosing its own.
-- **Commits:** 43 on the branch; 4 past the threshold (3 planned, + `97225b7` for the dry4rust re-record); bug fixes
+- **Last commit:** `44db935` Wait in the cluster tests through PollingWait (row 44)
+- **Slice done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to `44db935`).
+  injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6 alone (Q9,
+  open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs, `SystemClock`; a
+  `Duration` since the clock's origin), `WallClock` (`SystemWallClock`), `Sleeper` (`ThreadSleeper`), `Pause`
+  (`TokioPause`, async). `PollingWait` (`src/polling_wait.rs`: `until(interval, timeout, probe)`, `sleep`,
+  `elapsed_since`) is every harness and test wait; tests compose real time through `real_time_wait()` in
+  `tests/polling_wait_tests.rs`.
+- **Slice next:** Part A slice 2, a failure type per concern, top-down -- typed-errors 49 (system-tests 42: the
+  storage codec 12, the client-interface codec 6, ...; xtask 7). House pattern: `LaunchFailure`, `GateFailure`,
+  `StageFailure` in etheram-core's xtask -- not readable from here; xtask's own `MeasureFailure`, `ScanFailure`,
+  `TreeFailure` are the in-repo examples -- and a `Display` printing the old text word for word (constraint 7).
+- **Commits:** 44 on the branch; 4 past the threshold (3 planned, + `97225b7` for the dry4rust re-record); bug fixes
   1 (`eba863f`); the 50th runs all three stages
 - **Tests:** 3,440 at the base, 3,540 now (stage 5 420)
-- **Offences:** 300 as configured, 511 everything on, shear 0; Grip 642.59 / Braintax 4,510.09 (0.1425); dry4rust
+- **Offences:** 296 as configured, 507 everything on, shear 0; Grip 642.59 / Braintax 4,510.09 (0.1425); dry4rust
   baseline 215 groups, 213 matching (paid: the runtime-timer harness's two waits `3868a69`, the two
   `connect_client` test helpers `97ee66a`)
-- **Questions:** 10 answered, 1 open (9). **Interventions:** 0. **Waits:** 0.
+- **Questions:** 11 answered, 1 open (9). **Interventions:** 0. **Waits:** 0.
 
 ## The run so far
 
@@ -38,7 +36,7 @@ pushed with the record at every commit.
   (`1b0171b`), the sleeper (`3e9c051`), the client-interface bus
   and the pause (`1e0d986`), the runtime-timer harness and `PollingWait` (`3868a69`), the
   client harness (`9d848e2`), the runtime-timer harness handed its wait (`b8fbd48`), the wake
-  signal's report (`27580b9`), the infra tests' waits (`97ee66a`), the single-node tests' (`ffe821d`).
+  signal's report (`27580b9`), the infra tests' waits (`97ee66a`), the single-node tests' (`ffe821d`), the cluster tests' (`44db935`).
 
 ## Next in line
 
@@ -46,7 +44,7 @@ Part A's slices, in order, with the criterion that put each there (`SETUP.md`, *
 
 | # | slice | rules | `Chosen-By` |
 |---|---|---|---|
-| 1 | time behind ports, tests off the clock -- the cluster harness's own reads stay (decision 2) | injected-time 19 to pay, timeless-tests 46 | risk |
+| 1 | ~~time behind ports, tests off the clock~~ -- done at `44db935`; left: the cluster harness's 20 (decision 2), the wake signal's 6 (Q9) | injected-time 19 to pay, timeless-tests 46 | risk |
 | 2 | a failure type per concern, top-down | typed-errors 49 | no-scaffolding |
 | 3 | one file per implemented type (with the protocol's and control's fields) | implemented-in-one-file 2 | risk |
 | 4 | `pub` or private, each made `pub` with tests | public-or-private 30 | fastest-feedback |
