@@ -86,3 +86,4 @@ commit_n,attempt,kind,stages,start,finish,outcome,refused_by,files_added,files_r
 81,1,rule-offence,"1, 2, 5",2026-11-06T22:59:46Z,2026-11-06T23:01:12Z,landed,,1,0,4,24,15
 82,1,rule-offence,"1, 2, 5",2026-11-06T23:03:42Z,2026-11-06T23:05:11Z,landed,,3,0,11,30,16
 83,1,rule-offence,"1, 2, 5",2026-11-06T23:06:37Z,2026-11-06T23:07:58Z,landed,,0,0,2,2,4
+84,1,refactoring,"1, 2, 5",2026-11-06T23:10:55Z,2026-11-06T23:12:26Z,landed,,1,0,15,24,14

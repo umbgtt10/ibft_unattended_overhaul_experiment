@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `a2ad8dd` Keep the runtime-timer harness's eventual-wait budget private (row 83)
+- **Last commit:** `75d9503` Give the block gas limit a constants file; point the first readers at it (row 84)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -59,9 +59,16 @@ pushed with the record at every commit.
   `PENDING_TX_POOL_CAPACITY`, `INLINE_SIGNATURE_BYTES` to constants files, validation's `PEER_ID` private (stern
   had matched a node test's own `PEER_ID` by name) (`59b99a1`); the runtime-timer harness's
   `EVENTUAL_TIMEOUT`/`EVENTUAL_POLL_INTERVAL` private -- the client harness has its own pair, matched by name
-  (`a2ad8dd`). Stern matches readers by name: check an import exists before moving. Left: (d)
-  `BLOCK_GAS_LIMIT`, read by 58 files -- batches. The `c75-pending` scratch folder can go.
-- **Commits:** 83 on the branch; 4 past the threshold (3 planned, + `97225b7` for the dry4rust re-record); bug fixes
+  (`a2ad8dd`). Stern matches readers by name: check an import exists before moving. In progress: (d)
+  `BLOCK_GAS_LIMIT`, imported by 55 files -- in `execution-types/src/common_types/block_constants.rs` since
+  `75d9503`, `block.rs` keeping `pub const BLOCK_GAS_LIMIT: Gas = SHARED_BLOCK_GAS_LIMIT;` (an alias, imported
+  `as`) until the last reader moves. Done: execution-types, types, evm, node-infra, recovery/ibft (13). Next, each
+  a `refactoring` with `block::BLOCK_GAS_LIMIT` -> `block_constants::BLOCK_GAS_LIMIT`: node (11 tests +
+  `node/src/ibft/assembly/ibft_protocol_config.rs`) and system-tests (4: 1 test, 3 src) -- 16 files; then
+  validation/tests/single_node (17); then the rule-offence: validation/tests/cluster (6) and validation/src (3),
+  the alias out of `block.rs` (it imports the constant plainly for `Block::empty`), the baseline re-recorded.
+  `DIAGNOSTIC_FIELDS` stays (Q31). The `c75-pending` scratch folder can go.
+- **Commits:** 84 on the branch; 4 past the threshold (3 planned, + `97225b7` for the dry4rust re-record); bug fixes
   1 (`eba863f`); the 80th ran all three stages, as every commit has; the 90th next
 - **Tests:** 3,440 at the base, 3,633 now (stage 5 463)
 - **Offences:** 117 as configured, 328 everything on, shear 0; Grip 642.59 / Braintax 4,502.09 (0.1427, the
@@ -96,7 +103,7 @@ pushed with the record at every commit.
   last; constants: the three nobody else reads, private (`8727d28`), the gas costs (`57b4222`), the
   opcodes (`c931cfe`), the engine's re-export shim out (`e660a94`), the state's layout bytes (`8f01aff`), the
   beacon's byte bounds (`efd7ee5`), three singles and the test node's peer (`59b99a1`),
-  the runtime-timer harness's wait budget (`a2ad8dd`).
+  the runtime-timer harness's wait budget (`a2ad8dd`), the block gas limit's first readers (`75d9503`).
 
 ## Next in line
 
