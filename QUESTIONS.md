@@ -48,6 +48,7 @@ After the run the owner takes each open entry -- implement, discuss, discard, po
 | 28 | commit 73, Part A | the EVM's `sha3_range` returns a `Sha3Window` where it returned offset, size and end as a tuple; one test compared the tuple | answered | it compares the record with the same three values, now named -- the same claim and the same check |
 | 29 | commit 75, Part A | the cluster harness's waits return `NodeHeight` where they returned `(node, height)` pairs, which their log lines and one wait's panic text print, and one test read the pairs by position | answered | the record prints as the pair did, pinned by a new test, so no line and no panic text changes; the test reads the same values by name |
 | 30 | commit 79, Part A | the EVM engine's `pub use` re-exports of the opcodes and `TinyEvmOpcode` -- a shim CLAUDE.md forbids -- counted as a second reader of ten opcodes commit 78 moved to a constants file; without the shim each has one reader | answered | nine go private into `tiny_evm_opcode.rs`, which alone matches on them, and `OPCODE_PUSH2` into the one test that assembles it, as stern's corrections say; no count moves, no test changes but for its imports |
+| 31 | commit 81, Part A | the diagnostic beacon's field table, `DIAGNOSTIC_FIELDS`: in a constants file, the only thing production reads it for -- `DIAGNOSTIC_MAX_BYTES` -- does not count, and stern's correction is to move the table into its test | answered | it stays beside `NodeDiagnostics`, its offence in the baseline as it was; the three byte bounds move to `diagnostic_constants.rs` and are paid |
 
 ## Interventions
 
@@ -620,3 +621,23 @@ the course the slice took and the run's recommendation; after the run, the owner
   stern baseline unchanged -- so commit 79 is a `refactoring`. Commit 78's 33 stand paid: ten of them only
   because the shim read them, until this commit.
 - **Commit:** 79.
+
+### 31. The diagnostic beacon's field table stays beside the struct
+
+- **Raised:** commit 81, Part A, constants given one home.
+- **What:** `node/src/observer/node_diagnostics.rs` declared four public constants its test reads:
+  `DIAGNOSTIC_FIELDS`, the beacon's budget table, and three byte bounds derived from it or beside it --
+  `DIAGNOSTIC_MAX_BYTES` (the table's rendered width, through `NodeDiagnostics::diagnostic_max_bytes`),
+  `DIAGNOSTIC_PREFIX_MAX_BYTES` and `DIAGNOSTIC_DATAGRAM_BYTES`. A `const` assertion in the file holds the three
+  bounds to one UDP datagram at compile time. Moved together to `diagnostic_constants.rs`, the table is read there
+  (by `DIAGNOSTIC_MAX_BYTES`) and by its test; stern does not count a constants file reading its own constant, so
+  it reports the table as read by the test alone and corrects: "move it into `node_diagnostics_tests.rs` and make
+  it private" (measured on the working tree, then undone).
+- **Status:** answered.
+- **Answer:** the table stays in `node_diagnostics.rs`, beside the struct its comment says it is kept beside, and
+  its one offence stays in the baseline under the key it had. Moving it into a test would take the production
+  declaration the compile-time bound is computed from out of production; making production read it a second time
+  to look shared would be paying the count, not the offence. The three bounds move to
+  `node/src/observer/diagnostic_constants.rs`, read by the assertion and the test, and their three offences are
+  paid. Left for whoever owns the rule: a constants file's own reads could count as readers.
+- **Commit:** 81.
