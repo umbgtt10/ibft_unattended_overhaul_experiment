@@ -8,9 +8,10 @@ pushed with the record at every commit.
 
 - **Part, step, slice:** Part A, the rules block -- the harness: waits that fail on stalled progress; the
   cargo-build fallback behind a trait, the five tests back
-- **Last commit:** `41891d0` Put the node binary's build fallback behind a trait, and test the choice without the
-  compiler (workbook row 28)
-- **The harness slice, next:** (1) done; (2) `bug-fix`: the fallback's path hardcodes `.exe` -- `EXE_SUFFIX`, test-first through the trait's impl;
+- **Last commit:** `d2cbd53` Name where the cargo fallback leaves the node binary: CargoNodeBinaryBuild::binary_path
+  (workbook row 29)
+- **The harness slice, next:** (1) done; (2) `bug-fix`: `binary_path` hardcodes `.exe` -- a test asserting the name
+  ends with `system-tests{EXE_SUFFIX}`, run red on the parent in a scratch worktree, then `EXE_SUFFIX`;
   (3) waits failing on stalled progress (a stall window beside the 120 s cap; `heights_settle` keeps its cap only),
   a QUESTIONS entry for the time bound.
 - **Started (UTC):** 2026-11-06T16:02:08Z; branch `unattended-overhaul` created from `8a775a2`
@@ -46,9 +47,9 @@ Owed: `RuntimeTimerHarness::next_port` has no test (everything-on `tested-public
 - **Questions:** 5 answered, 0 open.
 - **Interventions:** 0.
 - **Waits:** 0, 0 hours in all.
-- **Commits:** 28 on the branch, 3 past the threshold (planned: dry4rust baseline, driver, `--fix`); the 30th runs
+- **Commits:** 29 on the branch, 3 past the threshold (planned: dry4rust baseline, driver, `--fix`); the 30th runs
   all three stages.
-- **Tests:** 3,440 at the base, 3,527 at `41891d0` (stage 5 407).
+- **Tests:** 3,440 at the base, 3,528 at `d2cbd53` (stage 5 408).
 - **Offences:** 359 as configured, 571 everything on, shear 0; Grip 642.59 / Braintax 4,510.09 (0.1425).
 - **Living documents owed:** `stern4rust.toml`'s and `CLAUDE.md`'s "483" (the baseline is 359 now); stage 2's
   gates (shear, dry4rust) in `CLAUDE.md` and the justfile's comments; the dry4rust baseline (216 of 217).
