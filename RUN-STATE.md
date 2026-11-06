@@ -6,16 +6,16 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `e950eb0` Name the system tests' temporary configs and databases without the wall clock (workbook
-  row 33)
-- **Slice in progress:** Part A -- time behind ports, tests off the clock; left: injected-time 16 (client harness 5,
-  runtime-timer harness 5, drifting clock, malicious node, grpc bus 2, grpc transport, structured log), timeless-tests
-  46 (system-tests)
-- **Commits:** 33 on the branch; 3 past the threshold (planned: dry4rust baseline, driver, `--fix`); bug fixes 1
-  (`eba863f`); the 40th runs all three stages
-- **Tests:** 3,440 at the base, 3,531 now (stage 5 411)
-- **Offences:** 352 as configured, 564 everything on, shear 0; Grip 642.59 / Braintax 4,510.09 (0.1425)
-- **Questions:** 6 answered, 0 open. **Interventions:** 0. **Waits:** 0.
+- **Last commit:** `97225b7` Stamp the node's log lines from a wall clock it is given (workbook row 34)
+- **Slice in progress:** Part A -- time behind ports, tests off the clock; left: injected-time 15 (client harness 5,
+  runtime-timer harness 5, drifting clock, malicious node, grpc bus 2, grpc transport), timeless-tests 46
+  (system-tests). Ports so far: `Clock` (timer_scheduler.rs, `SystemClock`), `WallClock` (`SystemWallClock`).
+- **Commits:** 34 on the branch; 4 past the threshold (3 planned, + `97225b7` for the dry4rust re-record); bug fixes
+  1 (`eba863f`); the 40th runs all three stages
+- **Tests:** 3,440 at the base, 3,532 now (stage 5 412)
+- **Offences:** 351 as configured, 563 everything on, shear 0; Grip 642.59 / Braintax 4,510.09 (0.1425); dry4rust
+  baseline 215 groups
+- **Questions:** 7 answered, 0 open. **Interventions:** 0. **Waits:** 0.
 
 ## The run so far
 

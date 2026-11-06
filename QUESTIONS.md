@@ -23,6 +23,7 @@ After the run the owner takes each open entry -- implement, discuss, discard, po
 | 3 | commit 17, Part 0 | which kind carries the single-node harnesses' ports moving into the slot's range | answered | `refactoring`: a test's ports were arbitrary and stay arbitrary; under slotgate they now come from the slot's range, as the cluster harness's already did; outside it, the same port-0 fallback |
 | 4 | commit 18, Part 0 | five conflict tests, their blocks now valid, still pass with conflict detection disabled | answered | each gets the setup or assertion that only detection explains, in `tests` commits of their own after this one; none failed with detection on, so no bug |
 | 6 | commit 31, Part A | the cluster harness's eventual waits fail on 60 seconds without progress, beside their 120-second budget: a time bound added | answered | the plan's own change, `OPEN_POINTS.md`'s preferred option 1; the budget kept as the backstop below slotgate's kill; `refactoring`, as entry 2 |
+| 7 | commit 34, Part A | the logging observer's 74 one-line methods, a duplicate group the dry4rust baseline records, are reshaped by the clock they now pass, and the gate refuses the reshaped group | answered | re-record the dry4rust baseline: the same group under its new fingerprint, and the two groups paid since the base dropped -- 217 to 215, none added |
 | 5 | commit 27, Part A | the five harness tests restored lower a count -- `tested-public-api`, stood down in `system-tests` as configured -- so no `tests` commit can carry them | answered | `rule-offence`, `Rule: tested-public-api`: calling an untested public function from a test is the rule's own fix; the count falls with everything on and cannot move as configured, where the rule is stood down |
 
 ## Interventions
@@ -160,3 +161,20 @@ the course the slice took and the run's recommendation; after the run, the owner
   passes today -- the longest passing tests run 25 to 33 seconds in all -- can stall into a failure. Kind
   `refactoring`, for entry 2's reasons: no passing test's outcome moves, and the change is the harness's.
 - **Commit:** 31.
+
+### 7. A recorded duplicate reshaped: the logging observer's methods
+
+- **Raised:** commit 34, Part A, time behind ports -- the first attempt, refused by dry4rust in stage 2.
+- **What:** `LoggingObserver` implements `ProtocolObserver`'s 74 methods, each one `log_event(...)` call: an exact
+  duplicate group of 74 members, recorded in the dry4rust baseline at the base (`fc9ab25929438ad0`). The wall clock
+  the observer now hands `log_event` changes every one of those bodies alike, so the group's fingerprint changes
+  (`c3d5152558f3f893`) and the gate, which matches by fingerprint, reports it as new. `SETUP.md` names the trap:
+  "remove the duplication, or leave the bodies byte-identical". Neither is open here -- the duplication is a trait's
+  74 methods, and a body that does not name the clock cannot be handed one without a global.
+- **Status:** answered.
+- **Answer:** re-record the dry4rust baseline (`cargo dry4rust baseline --path . --exclude-tests --min-lines 5`),
+  the move stern4rust's baseline makes when a file moves and re-keys its entries. Checked fingerprint by fingerprint:
+  the observer's group goes out under its old fingerprint and in under its new one, 74 members both times; the
+  only other changes are the two groups this branch has paid -- xtask's four `scratch_root` helpers (commit 32) and
+  the three `next_port` helpers (commit 17) -- which go. 217 groups to 215, none added.
+- **Commit:** 34.
