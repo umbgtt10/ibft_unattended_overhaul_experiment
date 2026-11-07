@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `75179bc` Name what each file of the tree counts as, by the plan's categories (row 341)
+- **Last commit:** `1ae5be1` Count a revision's files and lines by category and package: cargo xtask size (row 342)
 - **Part C now** (Q58, the plan): the report is `docs/history/[IMPLEMENTED] OVERHAUL-2026-11-FINAL-CHECKS.md` in
   etheram-ibft, a section per check. (1) black-box: expected failures (none) committed at `9bac4a1`; the run --
   `cargo test --manifest-path overhaul-scratch/blackbox-8a775a2/Cargo.toml -p system-tests --config
@@ -21,9 +21,8 @@ pushed with the record at every commit.
   `f8b3b3d` is 464/27,739, 689/121,059, 117/9,492, 119 other, 1,389/158,290. It was 522 lines, so it lands in three
   commits: `PackageDirectories` (shared with `GitTree`, which held it privately) -- `8af3cb2`; then `PathCategory`
   and its tests -- `75179bc` (its label a table, since a four-arm match was an exact copy of `SectionKind::label`);
-  then `FileLines`, `PackageLines`, `TreeSize`, its tests and the subcommand (342), their
-  finished files in `overhaul-scratch/c340-split` (main.rs, measure-mod.rs, tests-measure-mod.rs and the six new
-  files). Coverage taken: `overhaul-scratch/coverage-start-full.json` (export `start-8a775a2`, `-p evm -p
+  then `FileLines`, `PackageLines`, `TreeSize`, its tests and the subcommand -- `1ae5be1`
+  (the split done; `overhaul-scratch/c340-split` can go). Coverage taken: `overhaul-scratch/coverage-start-full.json` (export `start-8a775a2`, `-p evm -p
   execution-types -p types -p recovery-control -p recovery-ibft -p node -p node-infra -p validation`) and
   `coverage-end-full.json` (export `end-f8b3b3d`, the end's stage-1 packages less xtask); names v0-mangled, one
   entry per binary a function is compiled into. Next, after the size commits: the rest of (4), (3) coverage with a new xtask subcommand, (5) the
@@ -964,18 +963,18 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 341 on the branch; 14 past the threshold (7 planned -- the 5th the merge, `8afa421`, the 6th the
+- **Commits:** 342 on the branch; 14 past the threshold (7 planned -- the 5th the merge, `8afa421`, the 6th the
   execution port's move, `4cfcce2` --, + `97225b7` for the dry4rust re-record, `1d27ff1` for the two states' 36
   accessors, `3cf1ec6` and `3433b15` for the transaction status's 33 importers and the timer key's 100, `2883602`
   for the slot discovery's 11, `a352577` for the Ed25519 scheme's 14, planned within by SETUP, `d7d2c45` for
   Faction's two implementations and their test files, Q43; the 7th planned, `6fc97b9`, `SledStorageInner`'s 678
-  lines, which `implemented-in-one-file` moves whole) -- 14 of 341 is 4.1%, 327 of 341 within; the 95% reached at the 260th (247 of 260 within), and it holds only while every
+  lines, which `implemented-in-one-file` moves whole) -- 14 of 342 is 4.1%, 328 of 342 within; the 95% reached at the 260th (247 of 260 within), and it holds only while every
   commit from here stays within: count a move's files first, and
   shape the seams so a type is born where it ends; bug fixes
   6 (`eba863f`, `e1232ca`, `5013d0e`, `1e7ac29`, `643bfd5`, `8e1ca00`); the 150th (`7ffb333`) ran all three stages, Part A's end, the 160th (`6912269`) and
   the 170th (`2883602`), the 180th (`b31593c`), the 190th (`c885cf9`), the 200th (`7508819`), the 210th
   (`e04403c`), the 220th (`e329250`), the 230th (`5ebe5f1`), the 240th (`18baf35`), the 250th (`8bdb859`), the 260th (`1fef15d`), the 270th (`fdd825e`), the 280th (`00c5f1b`), the 290th (`0b135b2`), the 300th (`2a7c601`), the 310th (`44b91f4`), the 320th (`694fb62`), the 330th (`729dae4`) and the 340th (`8af3cb2`); the 350th next
-- **Tests:** 3,440 at the base, 3,900 now (stage 5 511); removed under constraint 6: 1 (`2e6d484`, Q34)
+- **Tests:** 3,440 at the base, 3,902 now (stage 5 511); removed under constraint 6: 1 (`2e6d484`, Q34)
 - **Offences:** 33 as configured (single-implemented-type 0), 33 everything on (returned-mutations 0, from 37 at `6fc97b9`; paired-test-file 0, from 100 at `4a976c2`; tested-public-api 0,
   from 25 at `15e7d4d` and 17 at `ca72bf4`, Q52, Q54), shear 0; Grip 791.40 / Braintax 4,865.29 (0.1627 at `d517272`, node 331.86 / 2,338.42; 787.08 /
   4,869.10, 0.1616 at `508fa94`, node 327.54 / 2,342.23, the WAL encoder returning its bytes; 780.18 / 4,868.87, 0.1602 at `1f5213f`, the tracker into the tally, node-infra
