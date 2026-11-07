@@ -775,7 +775,9 @@ the course the slice took and the run's recommendation; after the run, the owner
   `48bb57ae90e740a3` in) and validation's commit and prepare checks (`b4cf6cb55629bbab` out, `9178a547e5c34ac8` in),
   each with the same members, 203 kept. (Commit 130's message says the baseline still holds 200 groups: 200 is what
   the failing check suppressed beside the three it could not match, and the baseline holds 203 -- counted in the
-  file at commit 131.)
+  file at commit 131.) Commit 132 -- the pair of `setup_after_propose_with_tx` helpers again, both moved onto the
+  context's `with_` methods in one commit so they stay a pair: `5666a931299b8d2e` out, `76af3e733fa15833` in, 203
+  kept.
 
 ### 36. The hard state drops a pending block's transaction data
 
