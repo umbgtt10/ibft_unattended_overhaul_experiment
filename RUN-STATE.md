@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `4b8a7a1` Translate Faction's outcomes and transitions into node's vocabulary (row 184)
+- **Last commit:** `c43c0f2` Move Faction's coordinator factory into node-faction (row 185)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -136,7 +136,9 @@ pushed with the record at every commit.
   previous_view, outputs, new_view }`); (e) the `node-faction` crate (`etheram_ibft_node_faction`, `no_std`, in
   stage 1's lists and crap4rust's, twin4rust's and iceberg4rust's) with `FactionTranslation`, its tests asserting
   `{:?}` alike for every variant -- the commands both ways done at `17fd986`, the outcomes and the transition at
-  `4b8a7a1` (`Transition::previous_view()` returns its view by value); (f) the factory into it, then (g) the bridge, (h) the coordinator as a wrapper
+  `4b8a7a1` (`Transition::previous_view()` returns its view by value); (f) the factory into it -- done at `c43c0f2`
+  (15 files; node-faction on etheram-core too, node-infra on node-faction, node and node-faction dev-depending on
+  each other's neighbours); (g) next, the bridge, (h) the coordinator as a wrapper
   struct -- its tests need a recording `ProtocolObserver` of their own; (i) the port's commands and outcomes in
   node's vocabulary, then (j) the event's, `faction` out of node's manifest; (k) the fixed-membership default in
   node-infra, a builder choice; (l) the bootstrapping contract in `node-contracts`, (m) run by both; (n) docs.
@@ -345,10 +347,10 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 184 on the branch; 12 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
+- **Commits:** 185 on the branch; 12 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
   execution port's move, `4cfcce2` --, + `97225b7` for the dry4rust re-record, `1d27ff1` for the two states' 36
   accessors, `3cf1ec6` and `3433b15` for the transaction status's 33 importers and the timer key's 100, `2883602`
-  for the slot discovery's 11, `a352577` for the Ed25519 scheme's 14, planned within by SETUP) -- 12 of 184 is
+  for the slot discovery's 11, `a352577` for the Ed25519 scheme's 14, planned within by SETUP) -- 12 of 185 is
   6.5%; the 95% needs about 240 commits with every commit from here within it: count a move's files first, and
   shape the seams so a type is born where it ends; bug fixes
   2 (`eba863f`, `e1232ca`); the 150th (`7ffb333`) ran all three stages, Part A's end, the 160th (`6912269`) and
@@ -445,7 +447,8 @@ pushed with the record at every commit.
   node-infra (`a352577`), the seam's one commit. Faction: what it answers through the port (`951d746`), node-infra's
   bootstrapper builder and its first six sites (`73cb8eb`), node's test helpers through it (`b31593c`), validation's tests through it
   (`f2f5e31`), node's vocabulary for the port (`a59c662`), `node-faction` with the command
-  translation (`17fd986`), its outcome and transition translations (`4b8a7a1`).
+  translation (`17fd986`), its outcome and transition translations (`4b8a7a1`), the factory into it
+  (`c43c0f2`).
 
 ## Next in line
 
