@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `f761aae` Hand a protocol back from its drive to commit (row 333)
+- **Last commit:** `2577cdc` Take returned-mutations out of validation's stand-down (row 334)
 - **Step now:** Part B step 8, the gates -- started 21:03Z, the scope Q56 (answered), the recovery crates' part
   Q57 (open: `node` keeps `recovery-control` and `recovery-ibft`, which the gate names as owed). In order: (a)
   `returned-mutations` paid in node (20, five files), then validation (17, three files, about 240 call sites in
@@ -45,8 +45,12 @@ pushed with the record at every commit.
   to 194; tests reassign `protocol = advance_protocol_past_discovery(protocol, ..)`). (9) `drive_to_commit` by value,
   returning the protocol alone, since no caller read its hash -- `f761aae` (5 files, 43 lines; 1 to 0, everything
   on 34 to 33, equal to as configured; the exact pair `bf88d45c0c9668dd` with node's test copy near
-  `cac40dc879b6305e`). **returned-mutations is paid: 37 to 0.** Next: (10) validation's stand-down out (`support`,
-  stage 2: `stern4rust.toml`'s section and comment, CLAUDE.md, OPEN_POINTS' row out); then (b) the dependency gate. Earlier plan, for the record: (8) the protocol drivers by value -- ibft_cluster_test_helpers' copy of
+  `cac40dc879b6305e`). **returned-mutations is paid: 37 to 0.** (10) validation's stand-down out -- `2577cdc` (`support`,
+  stage 2, 3 files, 56 lines): **`stern4rust.toml` stands nothing down, stern reports `rules_skipped=0`**, both counts
+  33, all baselined. OPEN_POINTS' *Rules stood down and baselined* still says 41 and lists the eight
+  `single-implemented-type` (paid at `6fc97b9`): step 9's documents. Next: (b) the dependency gate,
+  `cargo xtask dependency-boundary` (a `DependencyGate` over `cargo metadata --no-deps` through the `CommandRunner`,
+  as `ShearGate` reads it; allow-lists per crate, in stage 1 beside the other boundaries). Earlier plan, for the record: (8) the protocol drivers by value -- ibft_cluster_test_helpers' copy of
   `advance_protocol_past_discovery` folded into scenario_helpers' (the same context, built two ways), and
   `drive_to_commit` returning the protocol beside the hash. The 8 left before (5): the cluster helpers' 5
   (`advance_cluster_past_discovery`, `commit_next`, `commit_many`, the two `finalize_round_*`) become `IbftCluster`'s
@@ -925,12 +929,12 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 333 on the branch; 14 past the threshold (7 planned -- the 5th the merge, `8afa421`, the 6th the
+- **Commits:** 334 on the branch; 14 past the threshold (7 planned -- the 5th the merge, `8afa421`, the 6th the
   execution port's move, `4cfcce2` --, + `97225b7` for the dry4rust re-record, `1d27ff1` for the two states' 36
   accessors, `3cf1ec6` and `3433b15` for the transaction status's 33 importers and the timer key's 100, `2883602`
   for the slot discovery's 11, `a352577` for the Ed25519 scheme's 14, planned within by SETUP, `d7d2c45` for
   Faction's two implementations and their test files, Q43; the 7th planned, `6fc97b9`, `SledStorageInner`'s 678
-  lines, which `implemented-in-one-file` moves whole) -- 14 of 333 is 4.2%, 319 of 333 within; the 95% reached at the 260th (247 of 260 within), and it holds only while every
+  lines, which `implemented-in-one-file` moves whole) -- 14 of 334 is 4.2%, 320 of 334 within; the 95% reached at the 260th (247 of 260 within), and it holds only while every
   commit from here stays within: count a move's files first, and
   shape the seams so a type is born where it ends; bug fixes
   6 (`eba863f`, `e1232ca`, `5013d0e`, `1e7ac29`, `643bfd5`, `8e1ca00`); the 150th (`7ffb333`) ran all three stages, Part A's end, the 160th (`6912269`) and
