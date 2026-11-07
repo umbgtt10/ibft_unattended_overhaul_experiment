@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `0a38d3c` Give the EVM machine's changing parts a type of their own (row 152)
+- **Last commit:** `bc9904f` Move the EVM's push, dup and swap into the machine state (row 153)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -96,8 +96,10 @@ pushed with the record at every commit.
   `take_mutations`, `charge_opcode_gas(opcode, contract)` and methods calling today's free functions with
   `&mut self.<field>`, ten tests; the machine holds it -- done at `0a38d3c` (352 lines, 8 short of the threshold:
   rustfmt wraps a call whose arguments pass 60 columns); (2..) `rule-offence`s, a group a commit, each with its
-  tests moved from `tiny_evm_ops_tests.rs` to `tiny_evm_machine_state_tests.rs`: dup, swap and push; the arithmetic
-  dispatcher, then the ten `exec_*` (their tests renamed `execute_arithmetic_opcode_*`); the environment; sload and
+  tests moved from `tiny_evm_ops_tests.rs` to `tiny_evm_machine_state_tests.rs`: dup, swap and push -- done at
+  `bc9904f` (251 to 248); the arithmetic dispatcher through `TinyEvmWordAlu` with the ten `exec_*` gone (their
+  tests renamed `execute_arithmetic_opcode_*`; the dry4rust baseline's three groups of them -- `exec_add`/`exec_mul`/
+  `exec_sub`, `exec_lt`/`exec_gt`, `exec_and`/`exec_or` -- paid, re-recorded); the environment; sload and
   sstore; the memory dispatcher; mstore, mload and the two expansions; sha3 and its three helpers; `pop_word` last
   (every free operation calls it); then the engine's five; then `returned-mutations` out of evm's skip. A test
   whose `bool` and out-parameter merge into one `Option` loses one assertion: `Maps:` it to itself, Q38.
@@ -220,14 +222,14 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 152 on the branch; 8 past the threshold (4 planned, + `97225b7` for the dry4rust re-record,
+- **Commits:** 153 on the branch; 8 past the threshold (4 planned, + `97225b7` for the dry4rust re-record,
   `1d27ff1` for the two states' 36 accessors, `3cf1ec6` and `3433b15` for the transaction status's 33 importers
-  and the timer key's 100 -- 8 of 152 is 5.3%, so the 95% needs Parts B and C to add commits within it, and Part
+  and the timer key's 100 -- 8 of 153 is 5.2%, so the 95% needs Parts B and C to add commits within it, and Part
   B's two planned moves out of `execution-types` past it; keep every other commit within); bug fixes
   2 (`eba863f`, `e1232ca`); the 150th (`7ffb333`) ran all three stages, Part A's end; the 160th next
 - **Tests:** 3,440 at the base, 3,680 now (stage 5 465); removed under constraint 6: 1 (`2e6d484`, Q34)
-- **Offences:** 41 as configured, 251 everything on, shear 0; Grip 751.57 / Braintax 4,726.66 (0.1590; evm
-  37.41 / 522.15 at `0a38d3c`, the delegation layer's price, 34.29 / 498.16 at `3c21b53`;
+- **Offences:** 41 as configured, 248 everything on, shear 0; Grip 750.85 / Braintax 4,721.63 (0.1590; evm
+  36.69 / 517.12 at `bc9904f`; 37.41 / 522.15 at `0a38d3c`, the delegation layer's price, 34.29 / 498.16 at `3c21b53`;
   execution-types 38.62 / 102.22 at `618a5d2`; 37.67 / 99.93 and types 72.23 / 518.56 at `23c92f9`, the block's
   accessors;
   node 325.06 / 2,354.12 at `b440217`;
@@ -299,7 +301,7 @@ pushed with the record at every commit.
   the gate documents (`520ee10`), the three resolved open points retired (`7ffb333`), Part A's last; bugs found on
   the way: the hard state's dropped transaction data (`e1232ca`, Q36).
 - **Part B:** from row 151, 2026-11-07T05:33Z. The skipped rules: evm's `returned-mutations` -- the push's
-  counter returned (`3c21b53`), the machine state (`0a38d3c`).
+  counter returned (`3c21b53`), the machine state (`0a38d3c`), push, dup and swap moved in (`bc9904f`).
 
 ## Next in line
 
