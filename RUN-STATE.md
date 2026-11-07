@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `e04403c` Let the protocol's dependencies take the recovery factory (row 210)
+- **Last commit:** `29ef8e4` Bring the documents and the recovery boundary up to the factory port (row 211)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -188,7 +188,14 @@ pushed with the record at every commit.
   the factory in place of the coordinator and the decision recorder (13 files build it: node-infra's protocol
   builder, node's three test helpers and its dependencies test, system-tests' protocol factory, validation's five),
   `into_parts(timing)` building through it; (f5) the documents (CLAUDE.md's recovery-boundary paragraph -- the
-  assembly exemption -- RECOVERY-AS-BUILT §9, README).
+  assembly exemption -- RECOVERY-AS-BUILT §9, README) -- done at `29ef8e4` (`support`, all three stages: xtask
+  changed), with the recovery boundary's first rule exempting nothing now, checked by a planted `RecoveryState`. The
+  port is done. Next: (f6) retire the open points the seam closed, moved verbatim into
+  `docs/history/[IMPLEMENTED] RESOLVED-OPEN-POINTS-2026-11-07.md` as `7ffb333` did, each followed by what closed
+  it -- the snapshot apply (`7508819`, `5013d0e`, `a5e9b26`, `4fbf853`), the duplicate `PrePrepare` (`1e7ac29`),
+  `requests_blind` (`643bfd5`), with the two pointers (OPEN_POINTS' counter class, RECOVERY-AS-BUILT §9's queue)
+  repointed; (f7) the `#[must_use]` entry (`f2a36a8`, `a8a1d57`) and the retention-and-snapshot join, and the peer
+  knowledge entry updated (`9b496e6`); then the certifier's seam.
 - **Faction's detail:** Part B seam 3, Faction (SETUP, *Part B*, step 3) -- `Chosen-By: owner-order` among the
   bookkeepers (Faction, then Beggar, the certifier, consensus last), over the skipped-rule slices for seam 2's
   reason; the design is Q42. `node` names faction in the port (`BootstrappingCoordinator::process(Command) ->
@@ -461,11 +468,11 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 210 on the branch; 13 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
+- **Commits:** 211 on the branch; 13 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
   execution port's move, `4cfcce2` --, + `97225b7` for the dry4rust re-record, `1d27ff1` for the two states' 36
   accessors, `3cf1ec6` and `3433b15` for the transaction status's 33 importers and the timer key's 100, `2883602`
   for the slot discovery's 11, `a352577` for the Ed25519 scheme's 14, planned within by SETUP, `d7d2c45` for
-  Faction's two implementations and their test files, Q43) -- 13 of 210 is 6.2%; the 95% now needs about 260
+  Faction's two implementations and their test files, Q43) -- 13 of 211 is 6.2%; the 95% now needs about 260
   commits, every one from here within it: count a move's files first, and
   shape the seams so a type is born where it ends; bug fixes
   5 (`eba863f`, `e1232ca`, `5013d0e`, `1e7ac29`, `643bfd5`); the 150th (`7ffb333`) ran all three stages, Part A's end, the 160th (`6912269`) and
@@ -578,7 +585,8 @@ pushed with the record at every commit.
   their own kind (`1e7ac29`, a bug-fix), the last resort counted as blind (`643bfd5`, a bug-fix), the unavailable
   path's retry cancelled by the control layer (`a5e9b26`), the jump re-arming the layer's check (`4fbf853`), a pushed range pinned (`e248472`), the port's outcome must-use
   (`a8a1d57`), the factory port and its default (`835af20`, Q45), the factory's
-  `Default` (`0d46800`, Q46), the dependencies taking the factory (`e04403c`).
+  `Default` (`0d46800`, Q46), the dependencies taking the factory (`e04403c`), the documents and the
+  narrowed recovery boundary (`29ef8e4`).
 
 ## Next in line
 
