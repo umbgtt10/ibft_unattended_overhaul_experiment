@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `a7bec37` Give the execution contract its gas and mutation clauses (row 172)
+- **Last commit:** `32ccbe1` Close the execution contract with repeatability and its scenarios (row 173)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -132,9 +132,10 @@ pushed with the record at every commit.
   and the first two clauses, four tests against a scripted engine (`fn(&Block) -> ExecutionResult`), in stage 1's
   no_std, test and test-layout lists -- done at `3a96314` (272 lines); (5b) the gas and mutation clauses
   (`GasAboveLimit`, `MutationOutsideBlock`, each with the result's index; `check_transaction_result` takes the
-  block, a private `names_a_party_of`) -- done at `a7bec37`, four tests; (5c) next, repeatability (`NotRepeatable`, a second fake whose answer changes per call) and
-  `check_standard_scenarios()` over private scenarios -- empty block, a transfer, a zero gas limit, a relay A to B
-  to C, a call carrying data to a contract holding storage; (5d) the three engines' test files each run it, the
+  block, a private `names_a_party_of`) -- done at `a7bec37`, four tests; (5c) repeatability (`NotRepeatable`, a
+  second execution compared result by result; a `DriftingEngine` fake) and `check_standard_scenarios()` over five
+  private `ExecutionScenario`s -- empty block, a transfer, a zero gas limit, a relay A to B to C, a call storing 42
+  at slot 0 of a contract holding storage, 100,000 gas each -- done at `32ccbe1`, three tests; (5d) next, the three engines' test files each run it, the
   workspace dependency and evm's and node-infra's dev-dependencies with them; (5e) the documents naming the
   members; (6) the boundary check beside `cargo xtask recovery-boundary`: evm imports only `types`' execution
   module.
@@ -289,10 +290,10 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 172 on the branch; 11 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
+- **Commits:** 173 on the branch; 11 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
   execution port's move, `4cfcce2` --, + `97225b7` for the dry4rust re-record, `1d27ff1` for the two states' 36
   accessors, `3cf1ec6` and `3433b15` for the transaction status's 33 importers and the timer key's 100, `2883602`
-  for the slot discovery's 11 -- 11 of 172 is 6.4%; every other commit planned within it, the 95% holds at about
+  for the slot discovery's 11 -- 11 of 173 is 6.4%; every other commit planned within it, the 95% holds at about
   220 commits -- SETUP's own reading of the total -- so no further move across crates goes past it unsplit, so the 95% needs Parts B and C to add commits within it, and Part
   B's two planned moves out of `execution-types` past it; keep every other commit within); bug fixes
   2 (`eba863f`, `e1232ca`); the 150th (`7ffb333`) ran all three stages, Part A's end, and the 160th (`6912269`);
@@ -383,7 +384,7 @@ pushed with the record at every commit.
   node's test context builders through one helper (`8ef334d`, Q39), the slot discovery port (`d170c7e`), its
   wiring -- `node` off evm (`142ce22`), the execution port into `node/src/traits` (`4cfcce2`), the
   TinyEvm slot discovery into evm (`2883602`), `node-contracts` with the contract's first two clauses (`3a96314`), its gas
-  and mutation clauses (`a7bec37`).
+  and mutation clauses (`a7bec37`), repeatability and the standard scenarios (`32ccbe1`).
 
 ## Next in line
 
