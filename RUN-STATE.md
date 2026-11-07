@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `5ebe5f1` Run the vote tally contract's standard scenarios on node-infra's tally (row 230)
+- **Last commit:** `1f04448` Bring the documents up to the consensus seam, and retire its open point (row 231)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -167,15 +167,12 @@ pushed with the record at every commit.
   `check_cleared`, `check_resized(quorum, resized_to, casts)`, `check_restored`; `NotExported`,
   `RestoredDiffers { key }`; eight tests, 211 lines). (h3) the standard scenarios -- done at `5ebe5f1`, the 230th,
   all three stages (quorums 1, 3, 5, 7; three cast sets; each counted, cleared, resized up and down by two, and
-  restored; `QuorumTallyFactory` passes them in node-infra). Next: (i) the documents (`support`, stage 2):
-  - OPEN_POINTS' "A replayed proposal is judged without the accounts its transactions touch (2026-10-10)" (its
-    lines 202 to 210) moves verbatim to the end of `docs/history/[IMPLEMENTED] RESOLVED-OPEN-POINTS-2026-11-07.md`,
-    with a `**Closed:**` paragraph: `8e1ca00`, test-first, the held proposal re-queued as the entry's clean fix
-    said, the two red tests named; the file's opening counts ten and names the consensus seam;
-  - CLAUDE.md's node-contracts paragraph gains the tally suite, after the certification suite: what it asks, at
-    which quorums, and that node-infra's `QuorumTally` runs it;
-  - README's node-contracts row (line 77) names `VoteTallyContract` and `QuorumTally`.
-  Then Part B step 7, the observer split by concern. The
+  restored; `QuorumTallyFactory` passes them in node-infra). (i) the documents -- done at `1f04448` (`support`,
+  stage 2: CLAUDE.md's tally suite, README's node, node-infra and node-contracts rows, the replayed-proposal open
+  point moved verbatim to the 2026-11-07 resolved history with its closing, the opening counting ten).
+  **The consensus seam is done**: 14 commits, rows 218 to 231. Next: Part B step 7, the observer split by concern
+  (SETUP *Part B* step 7; `Chosen-By: owner-order`, over the three skipped-rule slices), its design first in a
+  QUESTIONS entry. The
   plan of (f) was: the dependencies take the factory (30 sites, one line each, the seven dependency-helper pairs re-keyed as
   Q46), the volatile state steps two tallies; (g) `VoteTracker` moved into `QuorumTally`; (h) `VoteTallyContract`;
   (i) the documents and the replayed-proposal open point retired. The plan of (b) was: the two red tests are in
@@ -546,11 +543,11 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 230 on the branch; 13 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
+- **Commits:** 231 on the branch; 13 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
   execution port's move, `4cfcce2` --, + `97225b7` for the dry4rust re-record, `1d27ff1` for the two states' 36
   accessors, `3cf1ec6` and `3433b15` for the transaction status's 33 importers and the timer key's 100, `2883602`
   for the slot discovery's 11, `a352577` for the Ed25519 scheme's 14, planned within by SETUP, `d7d2c45` for
-  Faction's two implementations and their test files, Q43) -- 13 of 230 is 5.7%; the 95% now needs about 260
+  Faction's two implementations and their test files, Q43) -- 13 of 231 is 5.6%; the 95% now needs about 260
   commits, every one from here within it: count a move's files first, and
   shape the seams so a type is born where it ends; bug fixes
   6 (`eba863f`, `e1232ca`, `5013d0e`, `1e7ac29`, `643bfd5`, `8e1ca00`); the 150th (`7ffb333`) ran all three stages, Part A's end, the 160th (`6912269`) and
@@ -675,7 +672,8 @@ pushed with the record at every commit.
   the port's read (`97441de`, Q49 amended), the volatile state's tests through helpers (`1cd555a`), the wiring
   (`58844eb`), the dependencies' hand-over pinned (`6de5afa`), eight of the tracker's tests onto the tally
   (`c24eaaa`), the tracker wholly into it (`1f5213f`), the tally contract's counting clauses (`ffb6f45`), its cleared, resized and
-  restored checks (`ab2d884`), its standard scenarios, run by the default (`5ebe5f1`).
+  restored checks (`ab2d884`), its standard scenarios, run by the default (`5ebe5f1`), the documents and the open
+  point retired (`1f04448`), the seam's last.
 
 ## Next in line
 
@@ -703,8 +701,9 @@ calls), the eight `single-implemented-type` entries split; then the seams, 75 to
 order -- ~~execution with `execution-types` dissolved into `types`~~ (done at `c83fba2`, 13 commits, `Chosen-By:
 dependency`), ~~`node`'s own dependencies~~ (done at `a352577`, 1 commit, `Chosen-By: no-scaffolding`), ~~Faction~~
 (done at `a4f3033`, 18 commits, `Chosen-By: owner-order`), ~~Beggar~~ (done at `52bc729`, 19 commits, `Chosen-By:
-owner-order`), ~~the certifier~~ (done at `b0756e2`, 3 commits, `Chosen-By: owner-order`), consensus (in progress, `Chosen-By:
-owner-order`), the observer split by concern, the gates, an ADR and the living documents.
+owner-order`), ~~the certifier~~ (done at `b0756e2`, 3 commits, `Chosen-By: owner-order`), ~~consensus~~ (done at `1f04448`, 14
+commits, rows 218 to 231, `Chosen-By: owner-order`), the observer split by concern, the gates, an ADR and the living
+documents.
 
 Owed, for Part B's `tested-public-api` slice: `RuntimeTimerHarness::next_port` has no test (everything-on
 `tested-public-api`); nor has `RuntimeTimerHarness::new`, which the tool stopped reporting at `3868a69` only because
