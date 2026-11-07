@@ -67,6 +67,7 @@ After the run the owner takes each open entry -- implement, discuss, discard, po
 | 47 | after commit 214, Part B, the certifier's seam | the seam SETUP names -- `node`'s `SignatureScheme` port, `Ed25519SignatureScheme` behind it in `node-infra`, every key derived from the peer id -- already stands; which of the seam's pieces are left, and whether the port takes a height | answered | the port is today's, with no height (decision 9; a height comes with the key variants, decision 5); the protocol boundary is characterized already; what is left is a contract suite every scheme runs -- what one member signs, every member accepts as that member's, for messages and certificates both -- and the documents |
 | 48 | after commit 217, Part B, the consensus seam | the one recorded bug in consensus's code: a buffered proposal is replayed under the context of the message that released it, without the accounts its transactions touch; SETUP fixes it by re-queuing, so the runtime builds it its own, and no action re-queues today | answered | a new `Action::RequeueMessage`, which the partitioner routes to the node's own work; `EtheramNode` serves re-queued messages before its event source; both buffers re-queue a held proposal and replay votes in place as now; the replay report gains a `Requeued` blocker; three consumer breaks, named in the commit |
 | 49 | after commit 219, Part B, the consensus seam | the port for "the quorum, the tallies and the decision", in the step shape (decision 9), when consensus is `IbftProtocol`'s own methods and its tallies two `VoteTracker`s inside the volatile state | answered | `VoteTally::step(TallyInput) -> TallyOutput`, one tally per phase, holding its quorum and answering whether a key has reached it; the volatile state the adapter, its methods unchanged, so consensus's code is not touched; the default `QuorumTally` in node-infra over today's tracker, built by a `VoteTallyFactory` the dependencies take; view changes stay evidence; a contract suite |
+| 50 | after commit 231, Part B, the observer | step 7 splits `ProtocolObserver` -- 77 declared, one inherited -- into five concerns under a composite with no body (decision 10); which facet each method joins, when the diagnostic beacon fits none of the five, and in what order | answered | six facets in `node/src/observer/`: peer discovery widened, consensus with message admission, the buffers, the timers' dispatch and the pool, recovery with snapshot, retention, the refusals, and the beacon alone; `ProtocolObserver` the composite, an empty `impl` per implementor; one facet a commit from the trait's tail, consensus last; then the bootstrapper, the recovery dispatch and the reporting output each narrowed to its facet; then the documents |
 
 ## Interventions
 
@@ -1249,3 +1250,68 @@ the course the slice took and the run's recommendation; after the run, the owner
     volatile state's tests first build their state through two helpers, so the wiring changes each construction
     in one place.
 - **Commit:** 220 onward.
+
+### 50. The observer's split: which facet each method joins, and in what order
+
+- **Raised:** after commit 231, Part B step 7, the consensus seam done.
+- **What:** `ProtocolObserver` (`node/src/observer/protocol_observer.rs`) declares 77 methods and inherits an
+  78th, `readiness_transition_observed`, from `PeerDiscoveryObserver`, the facet entry 43 split out for Faction's
+  bridge. Six types implement it, each listing the methods in the trait's order:
+  - node-infra's `NoOpObserver`;
+  - system-tests' `LoggingObserver`;
+  - validation's `PruneRecordingObserver`;
+  - node's test `RecordingObserver`;
+  - validation's two test observers.
+  node-faction's test observer implements the facet alone. Step 7 names five concerns: consensus, recovery,
+  retention, peer discovery and the output dimensions' refusals. Decision 10 composes them by one composite trait
+  with no body, implemented explicitly in each implementor's file, the node handing each component its facet by
+  trait upcasting.
+  One method fits none of the five: `diagnostics_sampled`, the periodic beacon. Its comment calls it "unlike every
+  other hook here": a timer drives it rather than an event. Its one sample carries consensus's round and
+  signatures, recovery's requests and in-flight slot, and retention's retained heights.
+  Others sit between concerns:
+  - the admission of a peer message: duplicates, sequences, the height window;
+  - the two buffers and their replays;
+  - the timers' dispatch;
+  - the pool's admission of a transaction;
+  - the membership update a committed block applies.
+  Three components report to one concern alone, by their calls:
+  - the bootstrapper to peer discovery;
+  - the recovery host's observation dispatch to recovery;
+  - the reporting output to the refusals.
+- **Status:** answered, from step 7, decision 10, and the open point the step answers.
+- **Answer:**
+  - **six facets**, each a trait of its own file in `node/src/observer/`:
+    - `PeerDiscoveryObserver`, today's facet, gaining the bootstrapper's seven: `node_started`,
+      `peer_discovery_started`, `peer_confirmed`, `peer_discovery_completed`, `peer_discovery_timeout`,
+      `peer_rejoin_acknowledged`, `join_transition_observed`. node-faction's test observer gives the seven empty
+      bodies, which is what a facet costs inside its own concern;
+    - `ConsensusObserver`, 40 methods. It takes the proposal, the votes, the certificates, the view change and the
+      commit. It also takes what the protocol does to admit and hold a consensus message: the admission checks, the
+      two buffers and their replays, and the timers' dispatch. With them go the pool's admission and
+      `validator_set_updated`, which a commit applies;
+    - `RecoveryObserver`, 25 methods: recovery's 18, `peer_banned` and `recovery_check_decided` among them, and the
+      seven snapshot methods, snapshot recovery being recovery's last resort;
+    - `RetentionObserver`: `history_pruned`;
+    - `OutputRefusalObserver`: the three refusals, with their comment;
+    - `DiagnosticsObserver`: `diagnostics_sampled`, with its comment. It is a sixth facet rather than a place in one
+      of the five, since its sample is every concern's: in any one facet it would report the others' state. The
+      composition is still decision 10's, over six;
+  - **`ProtocolObserver` becomes the composite**: the six as supertraits and no body, with
+    `impl ProtocolObserver for X {}` in each implementor's file. There is no blanket implementation;
+  - **one facet a commit, from the trait's tail**, each a `refactoring` that moves no count:
+    - the refusals, then the beacon, then retention;
+    - peer discovery, from the head;
+    - recovery;
+    - consensus last, after which the composite is empty.
+    Each commit cuts the implementors' one impl block where the facet's methods already stand, so no method body
+    moves;
+  - **then the narrowing**, one commit each. Each of the three components named above takes its facet alone,
+    upcast from the node's observer where it is built. A component that reports to several facets keeps the
+    composite;
+  - **then the documents**. The open point "The Observer trait is one surface for five concerns" is closed in
+    this repository and retired. The consumer's own observer follows after the experiment, with its integration,
+    as the entry asks;
+  - **the consumer's break** (decision 11) is the facet traits to implement and import, and each narrowed
+    signature. Each is named in its commit.
+- **Commit:** 232 onward.

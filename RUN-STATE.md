@@ -170,9 +170,20 @@ pushed with the record at every commit.
   restored; `QuorumTallyFactory` passes them in node-infra). (i) the documents -- done at `1f04448` (`support`,
   stage 2: CLAUDE.md's tally suite, README's node, node-infra and node-contracts rows, the replayed-proposal open
   point moved verbatim to the 2026-11-07 resolved history with its closing, the opening counting ten).
-  **The consensus seam is done**: 14 commits, rows 218 to 231. Next: Part B step 7, the observer split by concern
-  (SETUP *Part B* step 7; `Chosen-By: owner-order`, over the three skipped-rule slices), its design first in a
-  QUESTIONS entry. The
+  **The consensus seam is done**: 14 commits, rows 218 to 231.
+  **The observer split** (SETUP *Part B* step 7; `Chosen-By: owner-order`, `Over:` the three skipped-rule slices),
+  design Q50 (answered): six facets in `node/src/observer/`, one file each -- `PeerDiscoveryObserver` widened by the
+  bootstrapper's seven, `ConsensusObserver` (40), `RecoveryObserver` (25, snapshot's seven with it),
+  `RetentionObserver` (`history_pruned`), `OutputRefusalObserver` (the three refusals), `DiagnosticsObserver`
+  (`diagnostics_sampled`) -- and `ProtocolObserver` the composite over the six with no body, `impl ProtocolObserver
+  for X {}` in each implementor's file. One facet a commit, cutting the implementors' impl block where the methods
+  stand (they list them in the trait's order): (a) the refusals, (b) the beacon, (c) retention, (d) peer discovery
+  from the head, (e) recovery, (f) consensus. Then narrowing, one commit each: the reporting output to the refusals,
+  the recovery observation dispatch to recovery, the bootstrapper to peer discovery. Then the documents. Implementors:
+  `node-infra/src/implementations/no_op_observer.rs`, `system-tests/src/infra/observer/logging_observer.rs`,
+  `validation/src/prune_recording_observer.rs`, `node/tests/ibft/recording_observer.rs`,
+  `validation/tests/single_node/protocol/{dispatch_tests,etheram_node_unit_tests}.rs`, and
+  `node-faction/tests/bootstrapping_observer_bridge_tests.rs` (the facet alone). Next: (a). The
   plan of (f) was: the dependencies take the factory (30 sites, one line each, the seven dependency-helper pairs re-keyed as
   Q46), the volatile state steps two tallies; (g) `VoteTracker` moved into `QuorumTally`; (h) `VoteTallyContract`;
   (i) the documents and the replayed-proposal open point retired. The plan of (b) was: the two red tests are in
@@ -586,7 +597,7 @@ pushed with the record at every commit.
   one group added at `64f562b`, Q33; one added and one paid at `1121282`; one re-keyed and one added at `8230a8a`,
   Q35, each copy kept in scratch as `dry-baseline-before-cN.json`; one re-keyed at `97cd2da`; one grown by a member
   at `0d46800`, Q46; seven re-keyed and one near pair paid at `e04403c`, Q46, 196 to 195)
-- **Questions:** 46 answered, 3 open (9, 25, 37). **Interventions:** 0. **Waits:** 0.
+- **Questions:** 47 answered, 3 open (9, 25, 37). **Interventions:** 0. **Waits:** 0.
 
 ## The run so far
 
