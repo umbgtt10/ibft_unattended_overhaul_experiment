@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `a4f3033` Bring the documents up to the Faction seam (row 195)
+- **Last commit:** `187b65c` Pin how a node behind a pruned cluster recovers by snapshot (row 196)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -126,7 +126,18 @@ pushed with the record at every commit.
   first lets a plug-in's tests implement one method instead of 78; rustfmt wrapping a signature can push a
   three-line getter into dry4rust's reach -- name the type instead; a type's test file wants its scenario helpers
   to differ in data, not in code, or dry4rust pairs them.
-- **Slice in progress:** none chosen yet -- Beggar (SETUP, *Part B*, step 4) is next by the owner's order.
+- **Slice in progress:** Part B seam 4, Beggar (SETUP, *Part B*, step 4) -- `Chosen-By: owner-order` (Faction,
+  Beggar, the certifier, consensus), `Over:` the three skipped-rule slices, the certifier, consensus; started
+  09:31Z. SETUP's order: characterization, `#[must_use]`, peer knowledge out of `recovery_state.rs`, the
+  snapshot apply split, three bugs test-first, the port shaped by today's `recovery-control` (its default),
+  whose trait must not fix who drives a transfer. Gate 8 wants `node` on `etheram-core` and `types` alone, so
+  `recovery-control` and `recovery-ibft` leave node's manifest by the seam's end. Steps: (a) characterization --
+  done at `187b65c` (`tests`): in `ibft_cluster_recovery_tests.rs`, five validators, an eight-block window
+  (`RETAINED_BLOCKS`), node 4 partitioned for 24 heights, healed and left to its own check and retry timers
+  (`recovery_messages_delivered_to(cluster, node, passes)` collects what it received): refused `CannotServe {
+  oldest_available: 17 }` by all four peers (0, 3, 2, 1, two of them twice) before peer 1's `SnapshotResponse`
+  (head 23) lands it at 24 with the majority's root; then it follows height 24 by blocks to 25. Next: (b)
+  `#[must_use]` -- read OPEN_POINTS "`#[must_use]` on the state-deciding bools" (line ~719) first.
 - **Faction's detail:** Part B seam 3, Faction (SETUP, *Part B*, step 3) -- `Chosen-By: owner-order` among the
   bookkeepers (Faction, then Beggar, the certifier, consensus last), over the skipped-rule slices for seam 2's
   reason; the design is Q42. `node` names faction in the port (`BootstrappingCoordinator::process(Command) ->
@@ -399,16 +410,16 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 195 on the branch; 13 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
+- **Commits:** 196 on the branch; 13 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
   execution port's move, `4cfcce2` --, + `97225b7` for the dry4rust re-record, `1d27ff1` for the two states' 36
   accessors, `3cf1ec6` and `3433b15` for the transaction status's 33 importers and the timer key's 100, `2883602`
   for the slot discovery's 11, `a352577` for the Ed25519 scheme's 14, planned within by SETUP, `d7d2c45` for
-  Faction's two implementations and their test files, Q43) -- 13 of 195 is 6.7%; the 95% now needs about 260
+  Faction's two implementations and their test files, Q43) -- 13 of 196 is 6.6%; the 95% now needs about 260
   commits, every one from here within it: count a move's files first, and
   shape the seams so a type is born where it ends; bug fixes
   2 (`eba863f`, `e1232ca`); the 150th (`7ffb333`) ran all three stages, Part A's end, the 160th (`6912269`) and
   the 170th (`2883602`), the 180th (`b31593c`) and the 190th (`c885cf9`); the 200th next
-- **Tests:** 3,440 at the base, 3,757 now (stage 5 465); removed under constraint 6: 1 (`2e6d484`, Q34)
+- **Tests:** 3,440 at the base, 3,759 now (stage 5 465); removed under constraint 6: 1 (`2e6d484`, Q34)
 - **Offences:** 41 as configured, 195 everything on, shear 0; Grip 770.32 / Braintax 4,797.08 (0.1606 at `44a0b7a`,
   node-infra 162.07 / 675.84 with the fixed membership; 160.72 / 669.63 at `c885cf9`; node-faction 10.25 / 53.45 at `082c59c`;
   node-infra
@@ -507,7 +518,8 @@ pushed with the record at every commit.
   coordinator and bridge into node-faction (`d7d2c45`), the port in node's vocabulary (`d1246b3`), the event's, `node` off
   faction (`082c59c`), the fixed-membership coordinator (`c885cf9`), its other answers' tests (`356ecee`), the builder's
   choice of it (`44a0b7a`), the bootstrapping contract's check (`515d818`), its standard scenarios
-  run by both coordinators (`bf5c717`), the documents (`a4f3033`), the seam's last.
+  run by both coordinators (`bf5c717`), the documents (`a4f3033`), the seam's last. Beggar: the
+  pruned-cluster join pinned (`187b65c`).
 
 ## Next in line
 
@@ -534,7 +546,7 @@ its tests the cluster they start from), `tested-public-api` in `system-tests` (t
 calls), the eight `single-implemented-type` entries split; then the seams, 75 to 100 commits, in the owner's
 order -- ~~execution with `execution-types` dissolved into `types`~~ (done at `c83fba2`, 13 commits, `Chosen-By:
 dependency`), ~~`node`'s own dependencies~~ (done at `a352577`, 1 commit, `Chosen-By: no-scaffolding`), ~~Faction~~
-(done at `a4f3033`, 18 commits, `Chosen-By: owner-order`), Beggar, the
+(done at `a4f3033`, 18 commits, `Chosen-By: owner-order`), Beggar (in progress, `Chosen-By: owner-order`), the
 certifier, consensus, the observer split by concern, the gates, an ADR and the living documents.
 
 Owed, for Part B's `tested-public-api` slice: `RuntimeTimerHarness::next_port` has no test (everything-on
