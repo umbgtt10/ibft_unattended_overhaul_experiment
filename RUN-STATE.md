@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `e7da3a4` Give system-tests' four configuration records files of their own (row 148)
+- **Last commit:** `520ee10` Bring the gate documents up to date with the six gates and the 41-entry baseline (row 149)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -79,10 +79,16 @@ pushed with the record at every commit.
   reads the staged tree; a folder of records adds no file to a full directory; cargo fmt leaves over-long imports
   unsorted; never `--write-baseline` over a reported offence.
 - **Slice in progress:** Part A slice 10, living documents in `etheram-ibft`, any baseline re-recorded (SETUP: 1-2
-  commits) -- the last of Part A; then Part B. Known so far: the "483" baseline count in CLAUDE.md (and
-  stern4rust.toml's comment, if it has one) -- 41 now; stage 2's gates as CLAUDE.md lists them -- cargo-shear and
-  dry4rust joined in Part 0; the docs naming files this run moved or removed (e.g. `episode_state.rs`, the timer
-  key's and the transaction status's homes). Check each against the tree before writing.
+  commits) -- the last of Part A; then Part B. `Chosen-By: no-scaffolding`, `Over: none`. The gate documents at
+  `520ee10` (`support`: CLAUDE.md's six stage-2 gates and install lines, the baseline's 41 in CLAUDE.md,
+  stern4rust.toml and OPEN_POINTS -- with what the 41 are --, stern4rust.toml's stale package and rule counts, the
+  justfile's comment). Next and last (commit 150, the 150th and Part A's end, so stages 1, 2, 5): the three
+  OPEN_POINTS entries this run resolved, moved verbatim into `docs/history/[IMPLEMENTED]
+  RESOLVED-OPEN-POINTS-2026-11-07.md`, each followed by a **Closed:** line as the 2026-10-18 file does -- "Three
+  conflict-detection tests pass with blocks that are invalid anyway" (Part 0, `529bb6f`, `db8e4ba`, `da850ab`,
+  `33d610a`, `dfab36a`, `bc68c24`, Q4), "REMOVED: the harness helper tests" (`43ead85` five back, `41891d0` the
+  fallback behind a trait, `d2cbd53`/`eba863f`), "The retention tests race a deadline" (`7f2fed8` stall-based waits,
+  `e61f584` the wait's report, `f5a0be9` slotgate's 160 s).
 - **Slice 9's detail:** record-home 23 (SETUP: 4-6
   commits; 13 records named in a crate's public API but declared in another type's file, 8 wire types used by
   several files but not `pub`, 2 records with one user in files of their own); listed in
@@ -202,7 +208,7 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 148 on the branch; 8 past the threshold (4 planned, + `97225b7` for the dry4rust re-record,
+- **Commits:** 149 on the branch; 8 past the threshold (4 planned, + `97225b7` for the dry4rust re-record,
   `1d27ff1` for the two states' 36 accessors, `3cf1ec6` and `3433b15` for the transaction status's 33 importers
   and the timer key's 100 -- 8 of 147 is 5.4%, so the 95% needs Parts B and C to add commits within it); bug fixes
   2 (`eba863f`, `e1232ca`); the 140th (`f18f095`) ran all three stages, as every commit has; the 150th next
