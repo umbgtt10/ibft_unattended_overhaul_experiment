@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `618a5d2` Read the block through its getters in node's sources (row 136)
+- **Last commit:** `65a4f5e` Build the block through its accessors in recovery-ibft's and node-infra's tests (row 137)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -138,9 +138,10 @@ pushed with the record at every commit.
   readers surface a compile layer at a time with the fields private -- the next layer's list in
   `overhaul-scratch/block-readers-next.txt`; node's sources and node-infra's storage at `618a5d2`, with
   `with_proposer` (`apply_proposal_commitments` keeps its `&mut Block`, which returning a value would turn into an
-  everything-on `returned-mutations` move, so it assigns back a `with_` chain); next recovery-ibft's tests, already
-  converted, in `git stash` ("c137-pending") -- split off for 19 files -- with node-infra's tests; then node's tests
-  with validation's sources (their helper twins are recorded dry4rust pairs: scenario, action, recovery helpers);
+  everything-on `returned-mutations` move, so it assigns back a `with_` chain); recovery-ibft's and node-infra's
+  tests at `65a4f5e` (dry4rust 203 to 202; `commit_certificate_for` out of its group of three until its node and
+  validation twins move, Q35); next node's tests with validation's sources (their helper twins are recorded
+  dry4rust groups: scenario, action, recovery helpers, `commit_certificate_for`);
   then system-tests' sources; then the next layer -- validation's and system-tests' tests; the fields private
   last), `NodeDiagnostics` (Q37, open: a constructor of 28 -- left in the baseline),
   `IbftProtocol` (Q25) (node),
@@ -165,7 +166,7 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 136 on the branch; 6 past the threshold (4 planned, + `97225b7` for the dry4rust re-record,
+- **Commits:** 137 on the branch; 6 past the threshold (4 planned, + `97225b7` for the dry4rust re-record,
   `1d27ff1` for the two states' 36 accessors); bug fixes
   2 (`eba863f`, `e1232ca`); the 130th (`2f65d20`) ran all three stages, as every commit has; the 140th next
 - **Tests:** 3,440 at the base, 3,670 now (stage 5 465); removed under constraint 6: 1 (`2e6d484`, Q34)

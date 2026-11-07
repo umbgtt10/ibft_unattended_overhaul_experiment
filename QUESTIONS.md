@@ -778,7 +778,10 @@ the course the slice took and the run's recommendation; after the run, the owner
   the failing check suppressed beside the three it could not match, and the baseline holds 203 -- counted in the
   file at commit 131.) Commit 132 -- the pair of `setup_after_propose_with_tx` helpers again, both moved onto the
   context's `with_` methods in one commit so they stay a pair: `5666a931299b8d2e` out, `76af3e733fa15833` in, 203
-  kept.
+  kept. Commit 137 -- recovery-ibft's test helpers through the block's accessors: its two `make_block`s, one line
+  each now, under dry4rust's five, pay their pair `3610fac662d3b38a`; its `make_recovery_block` leaves its group
+  of three the same way; its `commit_certificate_for`, reading the height through the getter, leaves its group of
+  three until node's and validation's copies read it so too, when the three are recorded again; 203 to 202.
 
 ### 36. The hard state drops a pending block's transaction data
 
