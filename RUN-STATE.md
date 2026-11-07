@@ -209,8 +209,13 @@ pushed with the record at every commit.
   config's own comment calling the rule unfit; then `tested-public-api` in system-tests (17) and the eight
   `single-implemented-type` entries, all in system-tests and validation. Gate 8 also asks `returned-mutations` on in
   node and validation (37 everything on), which SETUP's slice list does not name: a question when step 8 comes.
-  First: the offences listed (everything-on detail, `overhaul-scratch/stern-all.toml`), then the slice's design in a
-  QUESTIONS entry. Lesson: `grep -v -x -F -f` here does not drop blank lines, so count a move's lines with
+  The offences are listed in `overhaul-scratch/paired-test-file-c242.txt` (everything on, the export
+  `overhaul-scratch/export-c242`), and the design is Q51 (answered): no test renamed, a scenario source per test file
+  named for its stem at the rule's path, holding the cluster or node its tests start from; a test of a source at
+  another path moves there (validation's 7 `tests/harness/*` files, 32 to 109 lines, to `tests/`; system-tests'
+  `tests/infra/**` one folder down; `protocol_helpers_setup_tests.rs`'s tests into `protocol_helpers_tests.rs`);
+  `rule-offence` commits with `Rule: paired-test-file` (everything-on count falling); the moves first, then the
+  scenario sources a folder at a time; the stand-down out at zero. Next: validation's harness test moves. Lesson: `grep -v -x -F -f` here does not drop blank lines, so count a move's lines with
   `grep -c "."`. Lesson: a blocklist hit can be a phrase, not a word -- test candidate phrases from a scratch file through
   the same grep, never reading the list, then reword and amend the unpushed commit. The
   plan of (f) was: the dependencies take the factory (30 sites, one line each, the seven dependency-helper pairs re-keyed as
@@ -626,7 +631,7 @@ pushed with the record at every commit.
   one group added at `64f562b`, Q33; one added and one paid at `1121282`; one re-keyed and one added at `8230a8a`,
   Q35, each copy kept in scratch as `dry-baseline-before-cN.json`; one re-keyed at `97cd2da`; one grown by a member
   at `0d46800`, Q46; seven re-keyed and one near pair paid at `e04403c`, Q46, 196 to 195)
-- **Questions:** 47 answered, 3 open (9, 25, 37). **Interventions:** 0. **Waits:** 0.
+- **Questions:** 48 answered, 3 open (9, 25, 37). **Interventions:** 0. **Waits:** 0.
 
 ## The run so far
 

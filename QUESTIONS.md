@@ -68,6 +68,7 @@ After the run the owner takes each open entry -- implement, discuss, discard, po
 | 48 | after commit 217, Part B, the consensus seam | the one recorded bug in consensus's code: a buffered proposal is replayed under the context of the message that released it, without the accounts its transactions touch; SETUP fixes it by re-queuing, so the runtime builds it its own, and no action re-queues today | answered | a new `Action::RequeueMessage`, which the partitioner routes to the node's own work; `EtheramNode` serves re-queued messages before its event source; both buffers re-queue a held proposal and replay votes in place as now; the replay report gains a `Requeued` blocker; three consumer breaks, named in the commit |
 | 49 | after commit 219, Part B, the consensus seam | the port for "the quorum, the tallies and the decision", in the step shape (decision 9), when consensus is `IbftProtocol`'s own methods and its tallies two `VoteTracker`s inside the volatile state | answered | `VoteTally::step(TallyInput) -> TallyOutput`, one tally per phase, holding its quorum and answering whether a key has reached it; the volatile state the adapter, its methods unchanged, so consensus's code is not touched; the default `QuorumTally` in node-infra over today's tracker, built by a `VoteTallyFactory` the dependencies take; view changes stay evidence; a contract suite |
 | 50 | after commit 231, Part B, the observer | step 7 splits `ProtocolObserver` -- 77 declared, one inherited -- into five concerns under a composite with no body (decision 10); which facet each method joins, when the diagnostic beacon fits none of the five, and in what order | answered | six facets in `node/src/observer/`: peer discovery widened, consensus with message admission, the buffers, the timers' dispatch and the pool, recovery with snapshot, retention, the refusals, and the beacon alone; `ProtocolObserver` the composite, an empty `impl` per implementor; one facet a commit from the trait's tail, consensus last; then the bootstrapper, the recovery dispatch and the reporting output each narrowed to its facet; then the documents |
+| 51 | after commit 241, Part B, the skipped rules | `paired-test-file` reports 100 test files in validation and system-tests; SETUP pairs each `<scenario>_scenario_tests.rs` with a `<scenario>_scenario.rs`, but renaming the scenario tests counts about 30,000 lines twice under `--no-renames`, far past the threshold | answered | a scenario source takes the test file's own stem, no test renamed, holding the cluster or node its tests start from; a test of a source at another path moves to that path; `rule-offence` commits, the moves first, then the sources a folder at a time; the stand-down out at zero |
 
 ## Interventions
 
@@ -1315,3 +1316,45 @@ the course the slice took and the run's recommendation; after the run, the owner
   - **the consumer's break** (decision 11) is the facet traits to implement and import, and each narrowed
     signature. Each is named in its commit.
 - **Commit:** 232 onward.
+
+### 51. `paired-test-file` in validation and system-tests: the scenario sources, without renaming the tests
+
+- **Raised:** after commit 241, Part B, the skipped rules. They come before step 8's gates, which ask every rule
+  on. `risk` puts this slice first of the three.
+- **What:** SETUP's slice reads "each `<scenario>_scenario_tests.rs` pairs with a `<scenario>_scenario.rs` in `src`
+  that hands its tests the cluster they start from". With every rule on, the rule reports 100 test files. They are
+  of two kinds:
+  - **scenario tests**, about 80. These are validation's `tests/cluster/**` and `tests/single_node/**`, and
+    system-tests' `tests/cluster/*`, each named for a scenario no source carries. Their sizes run from 21 to 2,306
+    lines; validation's cluster files alone sum to about 15,000;
+  - **tests of a source that exists at another path**, about 20. These are validation's seven `tests/harness/*` for
+    sources at `src/`'s root, and system-tests' `tests/infra/**` for sources one folder deeper than their tests.
+    Among them, `protocol_helpers_setup_tests.rs` is named for no source at all.
+  SETUP's names rename every scenario test file. The threshold counts a commit's lines with `--no-renames`, so a
+  rename counts the whole file removed and added again. The renames alone would be about 30,000 lines, each file a
+  commit past the threshold and most of them several times over. That is the experiment's whole 5% allowance
+  several times over.
+- **Status:** answered, from SETUP's slice, the threshold rule (*The rules for every commit*), and the evm slice's
+  precedent for kinds.
+- **Answer:**
+  - **a scenario source takes the test file's own stem**, at the path the rule asks:
+    `tests/cluster/consensus/ibft_cluster_basics_tests.rs` pairs with
+    `src/cluster/consensus/ibft_cluster_basics.rs`, and so on. No test file is renamed, so no test's name and no
+    file's history moves. The content is SETUP's: the cluster, or the single node, the file's tests start from, as
+    public functions their Arrange calls in place of the setup they repeat. A test whose setup is its own keeps it.
+    The tests are the source's tests, so validation's `tested-public-api` holds each function to a caller. The `_scenario`
+    of SETUP's names is the one part not kept, since keeping it costs the renames;
+  - **a test of a source at another path moves to its source's path**, unchanged but for its module registration:
+    validation's `tests/harness/*` to `tests/` beside its source's root, and system-tests' `tests/infra/**` one
+    folder down. `protocol_helpers_setup_tests.rs`'s tests move into `protocol_helpers_tests.rs`. A move counts its
+    lines twice, so a commit moves files of about 180 lines in all;
+  - **kinds**: a commit that lowers `paired-test-file`'s everything-on count is a `rule-offence` with
+    `Rule: paired-test-file`, as the evm slice's were with `returned-mutations` stood down. The stand-down comes
+    out of both packages' sections in a `support` commit once the count is zero, and the stern config's comment
+    against the rule goes with it;
+  - **order**: the moves first, validation's then system-tests', since they are mechanical and small. Then the
+    scenario sources, one test folder a commit, or two small ones, within 18 files and 360 lines;
+  - **dry4rust**: a fixture that leaves a test for `src` becomes code dry4rust reads. A fixture repeated across
+    scenario files becomes one function in `scenario_helpers.rs` that the sources call, rather than a recorded
+    duplicate.
+- **Commit:** 242 onward.
