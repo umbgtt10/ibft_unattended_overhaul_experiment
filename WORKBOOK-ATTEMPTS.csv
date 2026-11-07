@@ -124,3 +124,4 @@ commit_n,attempt,kind,stages,start,finish,outcome,refused_by,files_added,files_r
 119,1,rule-offence,"1, 2, 5",2026-11-07T02:31:32Z,2026-11-07T02:33:01Z,landed,,0,0,6,98,47
 120,1,refactoring,"1, 2, 5",2026-11-07T02:41:14Z,2026-11-07T02:42:45Z,landed,,0,0,14,97,78
 121,1,rule-offence,"1, 2, 5",2026-11-07T02:44:20Z,2026-11-07T02:45:59Z,landed,,0,0,7,29,57
+122,1,refactoring,"1, 2, 5",2026-11-07T02:54:23Z,2026-11-07T02:56:01Z,landed,,0,0,14,521,338

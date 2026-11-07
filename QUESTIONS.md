@@ -703,7 +703,9 @@ the course the slice took and the run's recommendation; after the run, the owner
   `Block::with_parent_hash`, three one-field struct updates on two types, recorded as the exact group
   `63532d7dea94bfeb`; the same commit paid `4357ad2b28af5fbc`, so the baseline stays at 210. Commit 105 --
   `InFlightSlot::request` and `ContextSnapshot::header`, each a three-field literal of its own fields, recorded as
-  `f280cde3a9b5c133` (entry 35).
+  `f280cde3a9b5c133` (entry 35). Commit 122 -- the hard state's and the volatile snapshot's `with_` methods, sixteen
+  multi-line one-field struct updates, join `63532d7dea94bfeb`, 3 members to 19: each sets its own field of its own
+  type, and the only shared part is the struct-update syntax itself.
 
 ### 34. A getter's test the record-alone rule refuses
 
@@ -758,7 +760,9 @@ the course the slice took and the run's recommendation; after the run, the owner
   again as `5666a931299b8d2e`, 204 to 205. Commit 120 -- the world state snapshot's constructor reshapes the pair of
   `snapshot` test helpers in node's and recovery-ibft's tests alike, from an exact pair to a near one:
   `c983291a4180624d` out, `a17c620ba9f6cd6b` in, 203 kept; the two live in two crates' tests and share nothing they
-  could import.
+  could import. Commit 122 -- the pair of `setup_restored_protocol_with_fallback_validators`, in validation's sources
+  and node's tests, reshaped alike by `with_active_validators`: `256b6ee250ec7b90` out, `53d1f2df9ed91e42` in; a
+  near pair of test helpers paid beside it, 203 to 202.
 
 ### 36. The hard state drops a pending block's transaction data
 
