@@ -1241,4 +1241,11 @@ the course the slice took and the run's recommendation; after the run, the owner
     run; the documents, retiring the replayed-proposal open point with the rest;
   - **the consumer's breaks** (decision 11): `IbftProtocolDependencies::new` gains the factory, and
     `IbftVolatileState`'s constructors take the two tallies. Both are named in their commits.
+  - **amended at commit 222: a read beside the step.** A key's tally and the WAL's export are asked from where
+    consensus holds itself by reference: the commit certificate is built in a `&self` method, and the volatile
+    snapshot is `&self`, called by some sixty tests on a protocol they only borrow. Routed through the `&mut` step,
+    both would spread `&mut` across consensus and its tests. So `read(&self, TallyQuery) -> TallyOutput` answers a
+    key or the export, and the step keeps what changes a tally. Neither takes a time or a random value. The
+    volatile state's tests first build their state through two helpers, so the wiring changes each construction
+    in one place.
 - **Commit:** 220 onward.
