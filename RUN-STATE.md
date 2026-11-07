@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `187b65c` Pin how a node behind a pruned cluster recovers by snapshot (row 196)
+- **Last commit:** `f2a36a8` Make the recovery and buffer calls that decide state must-use (row 197)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -136,8 +136,13 @@ pushed with the record at every commit.
   (`RETAINED_BLOCKS`), node 4 partitioned for 24 heights, healed and left to its own check and retry timers
   (`recovery_messages_delivered_to(cluster, node, passes)` collects what it received): refused `CannotServe {
   oldest_available: 17 }` by all four peers (0, 3, 2, 1, two of them twice) before peer 1's `SnapshotResponse`
-  (head 23) lands it at 24 with the majority's root; then it follows height 24 by blocks to 25. Next: (b)
-  `#[must_use]` -- read OPEN_POINTS "`#[must_use]` on the state-deciding bools" (line ~719) first.
+  (head 23) lands it at 24 with the majority's root; then it follows height 24 by blocks to 25. (b)
+  `#[must_use]` -- done at `f2a36a8`: `RecoveryCoordinator`'s seven state-deciding bools and `RecoveryState`'s
+  seven, `EpisodeTracker::start`/`start_untargeted`, node's `MessageBuffer::try_push`/`make_room_from`; no
+  production site discarded one, 38 test sites took `let _ =` from clippy's list through a scratch tool
+  (`overhaul-scratch/must-use-fixer -- <root> <clippy short output>`). Next (c) peer knowledge
+  (`observed_statuses`, `broadcast_attempts`) out of `recovery_state.rs` into a type of its own, the in-flight
+  slot and peer standing kept together (OPEN_POINTS line ~792).
 - **Faction's detail:** Part B seam 3, Faction (SETUP, *Part B*, step 3) -- `Chosen-By: owner-order` among the
   bookkeepers (Faction, then Beggar, the certifier, consensus last), over the skipped-rule slices for seam 2's
   reason; the design is Q42. `node` names faction in the port (`BootstrappingCoordinator::process(Command) ->
@@ -410,11 +415,11 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 196 on the branch; 13 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
+- **Commits:** 197 on the branch; 13 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
   execution port's move, `4cfcce2` --, + `97225b7` for the dry4rust re-record, `1d27ff1` for the two states' 36
   accessors, `3cf1ec6` and `3433b15` for the transaction status's 33 importers and the timer key's 100, `2883602`
   for the slot discovery's 11, `a352577` for the Ed25519 scheme's 14, planned within by SETUP, `d7d2c45` for
-  Faction's two implementations and their test files, Q43) -- 13 of 196 is 6.6%; the 95% now needs about 260
+  Faction's two implementations and their test files, Q43) -- 13 of 197 is 6.6%; the 95% now needs about 260
   commits, every one from here within it: count a move's files first, and
   shape the seams so a type is born where it ends; bug fixes
   2 (`eba863f`, `e1232ca`); the 150th (`7ffb333`) ran all three stages, Part A's end, the 160th (`6912269`) and
@@ -519,7 +524,7 @@ pushed with the record at every commit.
   faction (`082c59c`), the fixed-membership coordinator (`c885cf9`), its other answers' tests (`356ecee`), the builder's
   choice of it (`44a0b7a`), the bootstrapping contract's check (`515d818`), its standard scenarios
   run by both coordinators (`bf5c717`), the documents (`a4f3033`), the seam's last. Beggar: the
-  pruned-cluster join pinned (`187b65c`).
+  pruned-cluster join pinned (`187b65c`), `#[must_use]` on the state-deciding bools (`f2a36a8`).
 
 ## Next in line
 
