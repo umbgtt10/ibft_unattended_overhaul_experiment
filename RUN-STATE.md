@@ -6,7 +6,8 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `ba4e857` Move the EVM's memory window and its expansion into the machine state (row 159)
+- **Last commit:** `6912269` Move the EVM's SHA3, its memory expansion and its word charge into the machine state
+  (row 160)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -107,8 +108,10 @@ pushed with the record at every commit.
   free ones left: the dispatcher, mstore and mload at `89735b7` (228 to 216; getter `memory`; private
   `continue_or_out_of_gas`, and a private `ensure_memory_window` calling the free one; the mload test stores its
   word first, from 1,003 gas); `ensure_memory_window` and `expand_memory_if_needed` at `ba4e857` (216 to 210; the
-  private one made `pub`, a `memory_words` getter); next sha3 with `sha3_range`, `expand_memory_for_sha3`, `charge_sha3_words`
-  and `pop_word` (the last caller of the free `pop_word` is `sha3_range`) -- the 160th, all three stages; then
+  private one made `pub`, a `memory_words` getter); sha3, `expand_memory_for_sha3` and `charge_sha3_words` at
+  `6912269` (210 to 202; the 160th, all three stages; one change of 375 lines split before landing -- the finished
+  four files kept in `overhaul-scratch/c161-*.rs`, the tree edited back to the first half); next `sha3_range` and
+  `pop_word` (the last caller of the free `pop_word` is `sha3_range`) by copying the `c161-*` files back; then
   the engine's five; then `returned-mutations` out of evm's skip. A test
   whose `bool` and out-parameter merge into one `Option` loses one assertion: `Maps:` it to itself, Q38.
 - **Slice 9's detail:** record-home 23 (SETUP: 4-6
@@ -230,14 +233,15 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 159 on the branch; 8 past the threshold (4 planned, + `97225b7` for the dry4rust re-record,
+- **Commits:** 160 on the branch; 8 past the threshold (4 planned, + `97225b7` for the dry4rust re-record,
   `1d27ff1` for the two states' 36 accessors, `3cf1ec6` and `3433b15` for the transaction status's 33 importers
-  and the timer key's 100 -- 8 of 159 is 5.0%, so the 95% needs Parts B and C to add commits within it, and Part
+  and the timer key's 100 -- 8 of 160 is 5.0%, so the 95% needs Parts B and C to add commits within it, and Part
   B's two planned moves out of `execution-types` past it; keep every other commit within); bug fixes
-  2 (`eba863f`, `e1232ca`); the 150th (`7ffb333`) ran all three stages, Part A's end; the 160th next
+  2 (`eba863f`, `e1232ca`); the 150th (`7ffb333`) ran all three stages, Part A's end, and the 160th (`6912269`);
+  the 170th next
 - **Tests:** 3,440 at the base, 3,680 now (stage 5 465); removed under constraint 6: 1 (`2e6d484`, Q34)
-- **Offences:** 41 as configured, 210 everything on, shear 0; Grip 754.32 / Braintax 4,695.03 (0.1607; evm
-  40.16 / 490.52 at `ba4e857`; 39.45 / 492.86 at `89735b7`; 38.06 / 495.55 at `78c9a21`; 36.70 / 495.26 at `60b3373`, the calldata loop in a private helper; 35.64 / 499.52 at `bf1b812`; 36.15 / 508.72 at `a022bd1`; 36.69 / 517.12 at `bc9904f`; 37.41 / 522.15 at `0a38d3c`, the delegation layer's price, 34.29 / 498.16 at `3c21b53`;
+- **Offences:** 41 as configured, 202 everything on, shear 0; Grip 754.17 / Braintax 4,692.26 (0.1607; evm
+  40.01 / 487.75 at `6912269`; 40.16 / 490.52 at `ba4e857`; 39.45 / 492.86 at `89735b7`; 38.06 / 495.55 at `78c9a21`; 36.70 / 495.26 at `60b3373`, the calldata loop in a private helper; 35.64 / 499.52 at `bf1b812`; 36.15 / 508.72 at `a022bd1`; 36.69 / 517.12 at `bc9904f`; 37.41 / 522.15 at `0a38d3c`, the delegation layer's price, 34.29 / 498.16 at `3c21b53`;
   execution-types 38.62 / 102.22 at `618a5d2`; 37.67 / 99.93 and types 72.23 / 518.56 at `23c92f9`, the block's
   accessors;
   node 325.06 / 2,354.12 at `b440217`;
@@ -313,7 +317,7 @@ pushed with the record at every commit.
   counter returned (`3c21b53`), the machine state (`0a38d3c`), push, dup and swap moved in (`bc9904f`), the
   arithmetic's first half through the word ALU (`a022bd1`), its second (`bf1b812`), the environment opcodes
   (`60b3373`), SLOAD and SSTORE (`78c9a21`), the memory dispatcher, MSTORE and MLOAD (`89735b7`), the memory
-  window and its expansion (`ba4e857`).
+  window and its expansion (`ba4e857`), SHA3 with its expansion and word charge (`6912269`).
 
 ## Next in line
 
