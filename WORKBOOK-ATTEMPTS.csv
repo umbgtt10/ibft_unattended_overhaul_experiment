@@ -262,3 +262,4 @@ commit_n,attempt,kind,stages,start,finish,outcome,refused_by,files_added,files_r
 256,1,refactoring,"1, 2, 5",2026-11-07T14:49:16Z,2026-11-07T14:51:07Z,landed,,0,0,3,138,127
 257,1,refactoring,"1, 2, 5",2026-11-07T14:53:22Z,2026-11-07T14:55:05Z,landed,,0,0,2,149,148
 258,1,refactoring,"1, 2, 5",2026-11-07T14:57:21Z,2026-11-07T14:59:15Z,landed,,0,0,2,64,64
+259,1,rule-offence,"1, 2, 5",2026-11-07T15:01:15Z,2026-11-07T15:03:03Z,landed,,0,1,2,118,141
