@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `18baf35` Hand the bootstrapper and its coordinator port peer discovery's facet alone (row 240)
+- **Last commit:** `301ffc3` Bring the documents up to the observer split, and retire its open point (row 241)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -199,12 +199,19 @@ pushed with the record at every commit.
   `d42690c` (6 lines). (g3) the bootstrapper, its lifecycle and the coordinator factory port take the
   peer-discovery facet -- done at `18baf35`, the 240th, all stages (77 lines; `Arc::clone(&x)` infers its type from
   the parameter and refuses the upcast, `x.clone()` does not; three tests that cloned that way build the facet).
-  **The observer split's code is done.** Next: (h) the documents (`support`, stage 2): OPEN_POINTS' "The Observer
-  trait is one surface for five concerns (2026-08-16, worsened 2026-09-02)" (lines 351 to 406) moves verbatim to
-  the 2026-11-07 resolved history with its closing (commits 232 to 240; the consumer's own observer after the
-  experiment, with its integration); the opening counts eleven; `IBFT-SPEC-COVERAGE.md:225`'s location cell names
-  the composite and its six facets; `RECOVERY-AS-BUILT.md:776` and `:794` gain bracketed notes (the 25 hooks are
-  the `RecoveryObserver` facet, the dispatch handed it alone). Lesson: a blocklist hit can be a phrase, not a word -- test candidate phrases from a scratch file through
+  (h) the documents -- done at `301ffc3` (`support`, stage 2; the open point moved verbatim to the 2026-11-07
+  resolved history, its opening counting eleven; IBFT-SPEC-COVERAGE's row, RECOVERY-AS-BUILT's two notes).
+  **The observer split is done**: 10 commits, rows 232 to 241, SETUP Part B step 7.
+  **Next: the skipped rules** (SETUP *Part B*, "The skipped rules"), before the gates (step 8), which ask every
+  rule on: `dependency` puts them first. Among the three left, `risk` (criterion 5) puts `paired-test-file` in
+  validation and system-tests first: 100 offences everything on, structural (each `<scenario>_scenario_tests.rs`
+  paired with a `<scenario>_scenario.rs` in `src` that hands its tests the cluster they start from), the stern
+  config's own comment calling the rule unfit; then `tested-public-api` in system-tests (17) and the eight
+  `single-implemented-type` entries, all in system-tests and validation. Gate 8 also asks `returned-mutations` on in
+  node and validation (37 everything on), which SETUP's slice list does not name: a question when step 8 comes.
+  First: the offences listed (everything-on detail, `overhaul-scratch/stern-all.toml`), then the slice's design in a
+  QUESTIONS entry. Lesson: `grep -v -x -F -f` here does not drop blank lines, so count a move's lines with
+  `grep -c "."`. Lesson: a blocklist hit can be a phrase, not a word -- test candidate phrases from a scratch file through
   the same grep, never reading the list, then reword and amend the unpushed commit. The
   plan of (f) was: the dependencies take the factory (30 sites, one line each, the seven dependency-helper pairs re-keyed as
   Q46), the volatile state steps two tallies; (g) `VoteTracker` moved into `QuorumTally`; (h) `VoteTallyContract`;
@@ -576,11 +583,11 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 240 on the branch; 13 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
+- **Commits:** 241 on the branch; 13 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
   execution port's move, `4cfcce2` --, + `97225b7` for the dry4rust re-record, `1d27ff1` for the two states' 36
   accessors, `3cf1ec6` and `3433b15` for the transaction status's 33 importers and the timer key's 100, `2883602`
   for the slot discovery's 11, `a352577` for the Ed25519 scheme's 14, planned within by SETUP, `d7d2c45` for
-  Faction's two implementations and their test files, Q43) -- 13 of 240 is 5.4%; the 95% now needs about 260
+  Faction's two implementations and their test files, Q43) -- 13 of 241 is 5.4%; the 95% now needs about 260
   commits, every one from here within it: count a move's files first, and
   shape the seams so a type is born where it ends; bug fixes
   6 (`eba863f`, `e1232ca`, `5013d0e`, `1e7ac29`, `643bfd5`, `8e1ca00`); the 150th (`7ffb333`) ran all three stages, Part A's end, the 160th (`6912269`) and
@@ -710,7 +717,8 @@ pushed with the record at every commit.
   (`30c8267`), retention's (`892a3a2`), peer discovery's whole
   (`f3a66f4`), recovery's (`615232c`), consensus's, the composite left with no body
   (`9de46cf`), the output dispatcher narrowed to the refusals (`e4708ec`), the recovery
-  observation dispatch to recovery (`d42690c`), the bootstrapper and its port to peer discovery (`18baf35`).
+  observation dispatch to recovery (`d42690c`), the bootstrapper and its port to peer discovery (`18baf35`), the documents and the open
+  point retired (`301ffc3`), the split's last.
 
 ## Next in line
 
@@ -739,8 +747,8 @@ order -- ~~execution with `execution-types` dissolved into `types`~~ (done at `c
 dependency`), ~~`node`'s own dependencies~~ (done at `a352577`, 1 commit, `Chosen-By: no-scaffolding`), ~~Faction~~
 (done at `a4f3033`, 18 commits, `Chosen-By: owner-order`), ~~Beggar~~ (done at `52bc729`, 19 commits, `Chosen-By:
 owner-order`), ~~the certifier~~ (done at `b0756e2`, 3 commits, `Chosen-By: owner-order`), ~~consensus~~ (done at `1f04448`, 14
-commits, rows 218 to 231, `Chosen-By: owner-order`), the observer split by concern, the gates, an ADR and the living
-documents.
+commits, rows 218 to 231, `Chosen-By: owner-order`), ~~the observer split by concern~~ (done at `301ffc3`, 10
+commits, rows 232 to 241, `Chosen-By: owner-order`), the gates, an ADR and the living documents.
 
 Owed, for Part B's `tested-public-api` slice: `RuntimeTimerHarness::next_port` has no test (everything-on
 `tested-public-api`); nor has `RuntimeTimerHarness::new`, which the tool stopped reporting at `3868a69` only because
