@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `892a3a2` Split retention's pruning event out of the observer into a facet (row 234)
+- **Last commit:** `f3a66f4` Bring the bootstrapper's seven events into the peer-discovery facet (row 235)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -188,10 +188,13 @@ pushed with the record at every commit.
   (b) the beacon -- done at `30c8267` (64 lines; node's recording observer's beacon moved below its tail, the
   logging observer's refusal comment moved to the refusals' impl). (c) retention -- done at `892a3a2` (47 lines;
   system-tests' logging observer test, calling the event on the concrete type, imports the facet: a call on a
-  concrete implementor needs the facet in scope, a call through `dyn ProtocolObserver` does not). Next: (d) peer
-  discovery, the head seven into `PeerDiscoveryObserver` -- in each implementor the cut moves from before
-  `node_started` to after `join_transition_observed`; node-faction's test observer gains seven empty bodies and their
-  imports; tests calling these on a concrete implementor import the facet. Lesson: a blocklist hit can be a phrase, not a word -- test candidate phrases from a scratch file through
+  concrete implementor needs the facet in scope, a call through `dyn ProtocolObserver` does not). (d) peer
+  discovery -- done at `f3a66f4` (134 lines; node's recording observer's seven gathered from three places;
+  node-faction's test observer seven empty bodies; the no-op and logging observer tests import the facet). Next: (e)
+  recovery, `RecoveryObserver`, 25 methods with snapshot's seven. Mostly contiguous at each composite impl's tail; out
+  of place: node's recording observer's `recovery_fallback_request_sent` (near its impl's head) and the prune
+  recorder's `recovery_status_request_unanswered` (after its consensus tail). Tests calling a recovery event on a
+  concrete implementor import the facet. Lesson: a blocklist hit can be a phrase, not a word -- test candidate phrases from a scratch file through
   the same grep, never reading the list, then reword and amend the unpushed commit. The
   plan of (f) was: the dependencies take the factory (30 sites, one line each, the seven dependency-helper pairs re-keyed as
   Q46), the volatile state steps two tallies; (g) `VoteTracker` moved into `QuorumTally`; (h) `VoteTallyContract`;
@@ -563,11 +566,11 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 234 on the branch; 13 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
+- **Commits:** 235 on the branch; 13 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
   execution port's move, `4cfcce2` --, + `97225b7` for the dry4rust re-record, `1d27ff1` for the two states' 36
   accessors, `3cf1ec6` and `3433b15` for the transaction status's 33 importers and the timer key's 100, `2883602`
   for the slot discovery's 11, `a352577` for the Ed25519 scheme's 14, planned within by SETUP, `d7d2c45` for
-  Faction's two implementations and their test files, Q43) -- 13 of 234 is 5.6%; the 95% now needs about 260
+  Faction's two implementations and their test files, Q43) -- 13 of 235 is 5.5%; the 95% now needs about 260
   commits, every one from here within it: count a move's files first, and
   shape the seams so a type is born where it ends; bug fixes
   6 (`eba863f`, `e1232ca`, `5013d0e`, `1e7ac29`, `643bfd5`, `8e1ca00`); the 150th (`7ffb333`) ran all three stages, Part A's end, the 160th (`6912269`) and
@@ -694,7 +697,8 @@ pushed with the record at every commit.
   (`c24eaaa`), the tracker wholly into it (`1f5213f`), the tally contract's counting clauses (`ffb6f45`), its cleared, resized and
   restored checks (`ab2d884`), its standard scenarios, run by the default (`5ebe5f1`), the documents and the open
   point retired (`1f04448`), the seam's last. The observer: the refusals' facet (`bb1a03c`), the beacon's
-  (`30c8267`), retention's (`892a3a2`).
+  (`30c8267`), retention's (`892a3a2`), peer discovery's whole
+  (`f3a66f4`).
 
 ## Next in line
 
