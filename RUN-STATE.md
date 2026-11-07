@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `1161afd` Hold the crate graph to allow-lists with a dependency boundary gate (row 335)
+- **Last commit:** `3e71f64` Bring the baseline's account up to date in every document that gives it (row 336)
 - **Step now:** Part B step 8, the gates -- started 21:03Z, the scope Q56 (answered), the recovery crates' part
   Q57 (open: `node` keeps `recovery-control` and `recovery-ibft`, which the gate names as owed). In order: (a)
   `returned-mutations` paid in node (20, five files), then validation (17, three files, about 240 call sites in
@@ -53,11 +53,12 @@ pushed with the record at every commit.
   metadata --no-deps`, `ToolReports::production_dependencies`, `GateFailure::ForbiddenDependencies`, the six
   allow-lists in `xtask/src/main.rs` (node's holding the two recovery crates, owed, Q57); passes on the workspace;
   the parser built in `run` since as a field the constructor was a 95% dry4rust copy of `ShearGate::new`.
-  **Step 8 is done** as Q56 scoped it: 11 commits, rows 325 to 335. Next: step 9, an ADR and the living documents
-  -- CLAUDE.md's baseline paragraph (41, the eight `single-implemented-type` in seven files), `stern4rust.toml`'s
-  baseline and `single-implemented-type` comments, OPEN_POINTS' *Rules stood down and baselined* (41, the
-  `single-implemented-type` row), README's crate rows, and an ADR in `docs/ADRs/` for Part B's shape (the protocol
-  orchestrating its bookkeepers behind ports, each seam's four parts, the gates that hold them, what is owed). Earlier plan, for the record: (8) the protocol drivers by value -- ibft_cluster_test_helpers' copy of
+  **Step 8 is done** as Q56 scoped it: 11 commits, rows 325 to 335. **Step 9** (`Chosen-By: owner-order`): (1) the
+  living documents -- `3e71f64` (`support`, stage 2, 4 files, 79 lines: `stern4rust.toml`'s baseline and
+  `single-implemented-type` comments, CLAUDE.md's baseline paragraph, OPEN_POINTS' *Rules stood down and baselined*
+  at 33 with its last table row gone, README's node row naming its dependencies and the gate). Next: (2) an ADR in
+  `docs/ADRs/` for Part B's shape (the protocol orchestrating its bookkeepers behind ports, each seam's parts, the
+  gates that hold them, what is owed) and its index row; then Part C. Earlier plan, for the record: (8) the protocol drivers by value -- ibft_cluster_test_helpers' copy of
   `advance_protocol_past_discovery` folded into scenario_helpers' (the same context, built two ways), and
   `drive_to_commit` returning the protocol beside the hash. The 8 left before (5): the cluster helpers' 5
   (`advance_cluster_past_discovery`, `commit_next`, `commit_many`, the two `finalize_round_*`) become `IbftCluster`'s
@@ -936,12 +937,12 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 335 on the branch; 14 past the threshold (7 planned -- the 5th the merge, `8afa421`, the 6th the
+- **Commits:** 336 on the branch; 14 past the threshold (7 planned -- the 5th the merge, `8afa421`, the 6th the
   execution port's move, `4cfcce2` --, + `97225b7` for the dry4rust re-record, `1d27ff1` for the two states' 36
   accessors, `3cf1ec6` and `3433b15` for the transaction status's 33 importers and the timer key's 100, `2883602`
   for the slot discovery's 11, `a352577` for the Ed25519 scheme's 14, planned within by SETUP, `d7d2c45` for
   Faction's two implementations and their test files, Q43; the 7th planned, `6fc97b9`, `SledStorageInner`'s 678
-  lines, which `implemented-in-one-file` moves whole) -- 14 of 335 is 4.2%, 321 of 335 within; the 95% reached at the 260th (247 of 260 within), and it holds only while every
+  lines, which `implemented-in-one-file` moves whole) -- 14 of 336 is 4.2%, 322 of 336 within; the 95% reached at the 260th (247 of 260 within), and it holds only while every
   commit from here stays within: count a move's files first, and
   shape the seams so a type is born where it ends; bug fixes
   6 (`eba863f`, `e1232ca`, `5013d0e`, `1e7ac29`, `643bfd5`, `8e1ca00`); the 150th (`7ffb333`) ran all three stages, Part A's end, the 160th (`6912269`) and
