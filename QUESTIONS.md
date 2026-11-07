@@ -722,7 +722,14 @@ the course the slice took and the run's recommendation; after the run, the owner
   -- validation's `sample_hard_state` and types' `base_state`, full seven-field chains, recorded as the near pair
   `9940b28a2a188433`, 202 to 203. Commit 128 -- seven of the context snapshot's multi-line `with_` methods join
   `63532d7dea94bfeb`, 19 members to 26. Commit 135 -- three of the block's new `with_` methods
-  (`with_post_state_root`, `with_receipts_root`, `with_transactions`) join it, 26 members to 29; 203 kept.
+  (`with_post_state_root`, `with_receipts_root`, `with_transactions`) join it, 26 members to 29; 203 kept. Commit
+  179 -- validation's protocol helpers build their bootstrapper through node-infra's `BootstrapperBuilder`, so
+  each active helper and its inactive twin differ by `inactive()` alone: three near pairs recorded,
+  `6ef0847f24a9ccfa` (`setup_dependencies`, `setup_hard_state_dependencies`), `b2ccf891cc51ff07` (the two
+  `_with_observer`) and `b90d9211dac07c91` (the two `_with_execution_engine`). Sharing was measured and refused: a
+  delegating helper of five lines or more differs from its twin by the same `inactive()`. The same commit's six
+  exact pairs between those helpers and node's test helpers of the same name no longer match, node's still building
+  the old way; 196 to 193.
 
 ### 34. A getter's test the record-alone rule refuses
 
