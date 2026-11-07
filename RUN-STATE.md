@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `d42690c` Hand the recovery observation dispatch recovery's facet alone (row 239)
+- **Last commit:** `18baf35` Hand the bootstrapper and its coordinator port peer discovery's facet alone (row 240)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -196,13 +196,15 @@ pushed with the record at every commit.
   the split's cuts done). The narrowing, one commit each: (g1) `ReportingOutput` and
   `EtheramOutputDispatcher::dispatch_outputs` take `&dyn OutputRefusalObserver` -- done at `e4708ec` (16 lines; the
   upcast is implicit at the call). (g2) `RecoveryObservationDispatch` takes `&dyn RecoveryObserver` -- done at
-  `d42690c` (6 lines). Next: (g3, the 240th, all stages) the bootstrapper's `&dyn ProtocolObserver` parameters
-  (`bootstrapper.rs`, 10 sites; `bootstrapping_lifecycle.rs`, 5) and `BootstrappingCoordinatorFactory::coordinator`'s
-  `Arc<dyn ProtocolObserver>` take the peer-discovery facet -- a port change, so node-contracts' bootstrapping
-  contract (2) and its tests' `ScriptedFactory` (1), node-faction's factory (1, its bridge then needs no upcast) and
-  node-infra's fixed membership (1) follow; tests holding `Arc<dyn ProtocolObserver>` coerce at the call. The
-  path-rewriter over `node/src/ibft/ibft_protocol/bootstrapping` does the three node files. Then the documents.
-  Lesson: a blocklist hit can be a phrase, not a word -- test candidate phrases from a scratch file through
+  `d42690c` (6 lines). (g3) the bootstrapper, its lifecycle and the coordinator factory port take the
+  peer-discovery facet -- done at `18baf35`, the 240th, all stages (77 lines; `Arc::clone(&x)` infers its type from
+  the parameter and refuses the upcast, `x.clone()` does not; three tests that cloned that way build the facet).
+  **The observer split's code is done.** Next: (h) the documents (`support`, stage 2): OPEN_POINTS' "The Observer
+  trait is one surface for five concerns (2026-08-16, worsened 2026-09-02)" (lines 351 to 406) moves verbatim to
+  the 2026-11-07 resolved history with its closing (commits 232 to 240; the consumer's own observer after the
+  experiment, with its integration); the opening counts eleven; `IBFT-SPEC-COVERAGE.md:225`'s location cell names
+  the composite and its six facets; `RECOVERY-AS-BUILT.md:776` and `:794` gain bracketed notes (the 25 hooks are
+  the `RecoveryObserver` facet, the dispatch handed it alone). Lesson: a blocklist hit can be a phrase, not a word -- test candidate phrases from a scratch file through
   the same grep, never reading the list, then reword and amend the unpushed commit. The
   plan of (f) was: the dependencies take the factory (30 sites, one line each, the seven dependency-helper pairs re-keyed as
   Q46), the volatile state steps two tallies; (g) `VoteTracker` moved into `QuorumTally`; (h) `VoteTallyContract`;
@@ -574,16 +576,16 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 239 on the branch; 13 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
+- **Commits:** 240 on the branch; 13 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
   execution port's move, `4cfcce2` --, + `97225b7` for the dry4rust re-record, `1d27ff1` for the two states' 36
   accessors, `3cf1ec6` and `3433b15` for the transaction status's 33 importers and the timer key's 100, `2883602`
   for the slot discovery's 11, `a352577` for the Ed25519 scheme's 14, planned within by SETUP, `d7d2c45` for
-  Faction's two implementations and their test files, Q43) -- 13 of 239 is 5.4%; the 95% now needs about 260
+  Faction's two implementations and their test files, Q43) -- 13 of 240 is 5.4%; the 95% now needs about 260
   commits, every one from here within it: count a move's files first, and
   shape the seams so a type is born where it ends; bug fixes
   6 (`eba863f`, `e1232ca`, `5013d0e`, `1e7ac29`, `643bfd5`, `8e1ca00`); the 150th (`7ffb333`) ran all three stages, Part A's end, the 160th (`6912269`) and
   the 170th (`2883602`), the 180th (`b31593c`), the 190th (`c885cf9`), the 200th (`7508819`), the 210th
-  (`e04403c`), the 220th (`e329250`) and the 230th (`5ebe5f1`); the 240th next
+  (`e04403c`), the 220th (`e329250`), the 230th (`5ebe5f1`) and the 240th (`18baf35`); the 250th next
 - **Tests:** 3,440 at the base, 3,834 now (stage 5 465); removed under constraint 6: 1 (`2e6d484`, Q34)
 - **Offences:** 41 as configured, 195 everything on, shear 0; Grip 780.18 / Braintax 4,868.87 (0.1602 at `1f5213f`, the tracker into the tally, node-infra
   166.15 / 700.19 and node 320.64 / 2,342.00; 782.93 / 4,880.81, 0.1604 at `58844eb`, the tally port, node-infra
@@ -708,7 +710,7 @@ pushed with the record at every commit.
   (`30c8267`), retention's (`892a3a2`), peer discovery's whole
   (`f3a66f4`), recovery's (`615232c`), consensus's, the composite left with no body
   (`9de46cf`), the output dispatcher narrowed to the refusals (`e4708ec`), the recovery
-  observation dispatch to recovery (`d42690c`).
+  observation dispatch to recovery (`d42690c`), the bootstrapper and its port to peer discovery (`18baf35`).
 
 ## Next in line
 
