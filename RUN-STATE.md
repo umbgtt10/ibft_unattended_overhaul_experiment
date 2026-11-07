@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `a247cf2` Build the recovery requests by literal (row 99)
+- **Last commit:** `df27ed7` Build the recovery facts by literal (row 100)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -65,15 +65,15 @@ pushed with the record at every commit.
   Lessons: stern refuses anything but a parameter assigned to a trait-typed field, an injected factory's call
   included -- split build from install; a delegating trait-impl stub can be a dry4rust near duplicate of
   another, so let the impl hold the body; a planned past-threshold commit says so in `Threshold: exceeded --`.
-- **Slice in progress:** Part A slice 8, records and objects, a module at a time -- records-and-objects 28 left
+- **Slice in progress:** Part A slice 8, records and objects, a module at a time -- records-and-objects 27 left
   (`Chosen-By: no-scaffolding`; started 23:51:38Z; full list `overhaul-scratch/records-and-objects.txt`). Three
   kinds. (A) record with private fields -> make them `pub`: all 14 done (`3b243b5`). (B) getter-only -> delete
-  the getters and constructor, `pub` fields, built by literal (2 left; `EtheramGrpcNodeTimerConfig`,
+  the getters and constructor, `pub` fields, built by literal (1 left; `EtheramGrpcNodeTimerConfig`,
   `FleetProtocolConfig` done at `64b9ab9`, `ConsensusAdmissionConfig`, `ConsensusTimingConfig`, `DiagnosticsConfig`
   at `c72cdf3`, `BootstrappingConfig` at `64f562b`, `NewViewMessageFields` at `2e6d484` -- one getter test removed
   under constraint 6, Q34; `ValidatorSetUpdate` at `ef5f4d9`, 63 literals in 10 files, 336 lines;
-  `RecoveryRequest` at `a247cf2`, 33 literals, 270 lines): `RecoveryFacts` (32 `::new` calls, three fields -- about
-  one commit), `PeerRecoveryStatus` (99 calls, two fields -- about 500 lines: call sites in `refactoring` batches
+  `RecoveryRequest` at `a247cf2`, 33 literals, 270 lines; `RecoveryFacts` at `df27ed7`, 32 literals, 214 lines):
+  `PeerRecoveryStatus` (99 calls, two fields -- about 500 lines: call sites in `refactoring` batches
   with the constructor kept, the last batch removing it as the `rule-offence`) -- a test that only read a getter keeps its assertion on
   the field unless `behaviour-tests` then refuses it as a record-alone test (constraint 6, QUESTIONS); it did not
   for the three at `c72cdf3`, and refused one of five at `2e6d484` -- removed, mapped to the behaviour test that
@@ -90,11 +90,11 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 99 on the branch; 5 past the threshold (4 planned, + `97225b7` for the dry4rust re-record); bug fixes
-  1 (`eba863f`); the 90th ran all three stages, as every commit has; the 100th next
+- **Commits:** 100 on the branch; 5 past the threshold (4 planned, + `97225b7` for the dry4rust re-record); bug fixes
+  1 (`eba863f`); the 100th ran all three stages, as every commit has; the 110th next
 - **Tests:** 3,440 at the base, 3,635 now (stage 5 463); removed under constraint 6: 1 (`2e6d484`, Q34)
-- **Offences:** 88 as configured, 299 everything on, shear 0; Grip 629.93 / Braintax 4,469.03 (0.1410;
-  recovery/control 62.22 / 365.78 at `a247cf2`; node 285.44 / 2,268.11 at `ef5f4d9`, 286.39 / 2,270.20 at `2e6d484`, 290.57 / 2,277.38 at `64f562b`, 292.63 / 2,284.79 at `c72cdf3`; before it 643.14 / 4,502.39, 0.1428;
+- **Offences:** 87 as configured, 298 everything on, shear 0; Grip 629.04 / Braintax 4,466.93 (0.1408;
+  recovery/ibft 48.77 / 245.23 and node 285.50 / 2,268.11 at `df27ed7`; recovery/control 62.22 / 365.78 at `a247cf2`; node 285.44 / 2,268.11 at `ef5f4d9`, 286.39 / 2,270.20 at `2e6d484`, 290.57 / 2,277.38 at `64f562b`, 292.63 / 2,284.79 at `c72cdf3`; before it 643.14 / 4,502.39, 0.1428;
   execution-types 64.14 to 56.14 at `069fd4c`, evm 503.97 to 500.25 at `1618598`, node 2295.50 to 2299.52 at
   `cec0c5b` with the factory seam); dry4rust baseline 210 groups, all matching (re-recorded at `cec0c5b`, Q32;
   one group added at `64f562b`, Q33)
@@ -132,7 +132,7 @@ pushed with the record at every commit.
   (`8fd7429`), the slice's last; injected dependencies: the EVM engines composed in evm and node-infra
   (`e4de9df`), and in validation's helpers and single-node tests (`c576a8a`), their `Default` out (`1618598`); the bootstrapper's coordinator factory (`3505d8d`), the bootstrapper handed its coordinator (`cec0c5b`), the
   slice's last; records and objects: fourteen records' fields public (`3b243b5`), two
-  system-tests configs by literal (`64b9ab9`), the node's admission, timing and diagnostics configs (`c72cdf3`), the bootstrapping config (`64f562b`), the NewView message's fields (`2e6d484`), the validator set updates (`ef5f4d9`), the recovery requests (`a247cf2`).
+  system-tests configs by literal (`64b9ab9`), the node's admission, timing and diagnostics configs (`c72cdf3`), the bootstrapping config (`64f562b`), the NewView message's fields (`2e6d484`), the validator set updates (`ef5f4d9`), the recovery requests (`a247cf2`), the recovery facts (`df27ed7`).
 
 ## Next in line
 
