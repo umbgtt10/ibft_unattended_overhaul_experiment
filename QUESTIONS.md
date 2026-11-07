@@ -789,7 +789,8 @@ the course the slice took and the run's recommendation; after the run, the owner
   exact pair (`5472a4f676429fed`, node's copy and validation's) goes with node's copy, and validation's two copies,
   differing in the gas limit, are recorded as the near pair they are (`ea21bd393a440c18`) until validation's tests
   move; 202 to 201. Commit 139 -- the wire block's pair of field-for-field `From`s paid (`b52b192032123e3e`), the
-  block's side a constructor chain now; 201 to 200.
+  block's side a constructor chain now; 201 to 200. Commit 141 -- validation's two snapshot `anchor()`s, two lines
+  each now, pay their near pair (`ea21bd393a440c18`); 200 to 199.
 
 ### 36. The hard state drops a pending block's transaction data
 

@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `f18f095` Read and build the block through its accessors in validation's single-node tests (row 140)
+- **Last commit:** `ca372f1` Keep the block's fields private (row 141)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -65,8 +65,21 @@ pushed with the record at every commit.
   Lessons: stern refuses anything but a parameter assigned to a trait-typed field, an injected factory's call
   included -- split build from install; a delegating trait-impl stub can be a dry4rust near duplicate of
   another, so let the impl hold the body; a planned past-threshold commit says so in `Threshold: exceeded --`.
-- **Slice in progress:** Part A slice 8, records and objects, a module at a time -- records-and-objects 4 left
-  (`Chosen-By: no-scaffolding`; started 23:51:38Z; full list `overhaul-scratch/records-and-objects.txt`). Three
+  Part A slice 8, records and objects -- 49 commits, rows 93 to 141 (`3b243b5` to `ca372f1`), against SETUP's 6-10
+  (the upper end being "every reader changes", and three objects -- `Block`, the two states, the context snapshot
+  -- taking seven each); records-and-objects 51 to 3 both ways, the 3 waiting on questions: `IbftProtocol` and
+  `RecoveryControl` on Q25 (their fields are read by sibling implementation files), `NodeDiagnostics` on Q37 (a
+  constructor of 28). Lessons, kept below with the slice's detail: list the readers by compiling with the fields
+  private, a compile layer at a time; split a commit through `git stash --keep-index`; move a recorded dry4rust
+  twin with its pair; dry4rust re-records from the start folder with `--path .`.
+- **Slice in progress:** Part A slice 9, each record in the module of what uses it -- record-home 23 (SETUP: 4-6
+  commits; 13 records named in a crate's public API but declared in another type's file, 8 wire types used by
+  several files but not `pub`, 2 records with one user in files of their own); next: list them
+  (`cargo stern4rust --rule record-home --baseline <empty> --offence-threshold 0`, as for shared-constants) into
+  `overhaul-scratch/record-home.txt`. A record moves without a re-export shim, each move updating every importer
+  at once; one whose importers alone pass the threshold moves in a commit of its own, which says why.
+- **Slice 8's detail** (records and objects, a module at a time -- `Chosen-By: no-scaffolding`; started 23:51:38Z;
+  full list `overhaul-scratch/records-and-objects.txt`). Three
   kinds. (A) record with private fields -> make them `pub`: all 14 done (`3b243b5`). (B) getter-only -> delete
   the getters and constructor, `pub` fields, built by literal: all 11 done (`EtheramGrpcNodeTimerConfig`,
   `FleetProtocolConfig` at `64b9ab9`, `ConsensusAdmissionConfig`, `ConsensusTimingConfig`, `DiagnosticsConfig`
@@ -132,7 +145,7 @@ pushed with the record at every commit.
   `grep -n "^ *\.blocks\b\|..."` for chains rustfmt split -- patterns ending in `$` are refused; `x.with_y(x.z())`
   moves before it borrows, so bind `x.z()` first; a `with_` replacing a collection holds what inserts did only
   over a helper whose collections start empty -- check it);
-  4 left: `Block` (execution-types; in progress -- eight getters and a `with_` for each written field, `with_height`,
+  `Block` at `ca372f1` (seven commits, rows 135-141 -- eight getters and a `with_` for each written field, `with_height`,
   `with_state_root`, `with_transactions`, `with_gas_limit`, `with_post_state_root`, `with_receipts_root` beside
   `with_parent_hash`, eight tests, with evm's, types' and recovery-ibft's sources and types' tests at `23c92f9`; the
   readers surface a compile layer at a time with the fields private -- the next layer's list in
@@ -141,12 +154,10 @@ pushed with the record at every commit.
   everything-on `returned-mutations` move, so it assigns back a `with_` chain); recovery-ibft's and node-infra's
   tests at `65a4f5e` (dry4rust 203 to 202; `commit_certificate_for` out of its group of three until its node and
   validation twins move, Q35); node's tests with validation's sources at `5f1c775` (201 groups); system-tests'
-  sources and tests and the trace driver at `fd46022` (200 groups); left, in
-  `overhaul-scratch/block-readers-next.txt`: validation's single_node/ tests at `f18f095` (the 140th, all three
-  stages); next and last cluster/ and harness/ (11 files, 47 reads, a literal in gas_price_tests; its two
-  `anchor()`s a near dry4rust pair until they move) with the fields private (`rule-offence`, 64 to 63 / 275 to
-  274)), `NodeDiagnostics` (Q37, open: a constructor of 28 -- left in the baseline),
-  `IbftProtocol` (Q25) (node),
+  sources and tests and the trace driver at `fd46022` (200 groups); validation's single_node/ tests at `f18f095`
+  (the 140th, all three stages); cluster/ and harness/ with the fields private at `ca372f1` (`rule-offence`, 64 to
+  63 / 275 to 274; the anchors' near pair paid, 199 groups));
+  left in the baseline: `NodeDiagnostics` (Q37, open: a constructor of 28), `IbftProtocol` (Q25) (node),
   `RecoveryControl` (Q25) (recovery). SETUP's 6-10 for the slice is its commit range, not what is left
   (read wrongly here until row 114): the stern baseline is to end holding the cluster harness's time reads alone,
   so every object closes, the upper end of the range being the protocol's and control's types (Q25) and
@@ -168,11 +179,11 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 140 on the branch; 6 past the threshold (4 planned, + `97225b7` for the dry4rust re-record,
+- **Commits:** 141 on the branch; 6 past the threshold (4 planned, + `97225b7` for the dry4rust re-record,
   `1d27ff1` for the two states' 36 accessors); bug fixes
   2 (`eba863f`, `e1232ca`); the 140th (`f18f095`) ran all three stages, as every commit has; the 150th next
 - **Tests:** 3,440 at the base, 3,670 now (stage 5 465); removed under constraint 6: 1 (`2e6d484`, Q34)
-- **Offences:** 64 as configured, 275 everything on, shear 0; Grip 748.45 / Braintax 4,702.58 (0.1592;
+- **Offences:** 63 as configured, 274 everything on, shear 0; Grip 748.45 / Braintax 4,702.58 (0.1592;
   execution-types 38.62 / 102.22 at `618a5d2`; 37.67 / 99.93 and types 72.23 / 518.56 at `23c92f9`, the block's
   accessors;
   node 325.06 / 2,354.12 at `b440217`;
