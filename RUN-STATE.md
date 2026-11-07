@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `a449311` Keep the account's fields private; read and build it through its accessors (row 114)
+- **Last commit:** `ac456b9` Give the transaction its accessors; read it through them in production (row 115)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -102,7 +102,14 @@ pushed with the record at every commit.
   node-infra's three in-memory states at `618894b` (`open_queue`/`open_inbox`, `pop_*`, `push_response`, eight
   tests; three dry4rust groups paid, one re-keyed, 209 to 206); `IbftProtocolConfig` at `a2cfb60` (handed over as
   `into_parts()` -> `IbftProtocolConfigParts`, the dependencies' shape); `Account` at `a449311` (four commits,
-  rows 111-114); 10 left: `Block`, `Transaction`
+  rows 111-114); `Transaction` in progress: its getters (six `const fn` -- the pool's `const fn of` reads them --
+  and `data() -> &[u8]`) and the production readers but the hard state's at `ac456b9` (`refactoring`; `from()`
+  shadows `From::from` in a path, so `.map(Into::into)`; evm's two all-gas results folded into `gas_spent_result`,
+  a dry4rust pair paid, 205 to 204); next the bug-fix (Q36: the hard state drops transaction data -- types'
+  encoder, cursor and their tests, node's `WalRecordEncoder` and its tests, the layout bytes 0x03 to 0x05 and
+  0x04 to 0x06), then the readers left: system-tests' sources (the wire transaction, the gRPC codec), the trace
+  driver (`traced_cluster.rs`, `trace_rendering.rs`), then the tests -- list them with the fields private
+  (`overhaul-scratch/transaction-readers.txt`); 10 left: `Block`, `Transaction`
   (execution-types), `NodeDiagnostics`, `ContextSnapshot`, `IbftProtocol` (Q25) (node),
   `RecoveryStateSnapshot`, `RecoveryControl` (Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types) -- the types' three built by literal in some 38 files, `..Default::default()`
@@ -128,10 +135,11 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 114 on the branch; 5 past the threshold (4 planned, + `97225b7` for the dry4rust re-record); bug fixes
+- **Commits:** 115 on the branch; 5 past the threshold (4 planned, + `97225b7` for the dry4rust re-record); bug fixes
   1 (`eba863f`); the 110th ran all three stages, as every commit has; the 120th next
 - **Tests:** 3,440 at the base, 3,650 now (stage 5 465); removed under constraint 6: 1 (`2e6d484`, Q34)
-- **Offences:** 70 as configured, 281 everything on, shear 0; Grip 659.84 / Braintax 4,524.25 (0.1458;
+- **Offences:** 70 as configured, 281 everything on, shear 0; Grip 665.54 / Braintax 4,529.11 (0.1469;
+  execution-types 24.37 / 75.83 and evm 34.29 / 498.07 at `ac456b9`;
   execution-types 17.72 / 66.79 at `2e93617`;
   node 301.27 / 2,300.34 at `a2cfb60`;
   node-infra 151.68 / 596.73 at `618894b`;
@@ -146,7 +154,7 @@ pushed with the record at every commit.
   `2e93617`), all matching (re-recorded at `cec0c5b`, Q32;
   one group added at `64f562b`, Q33; one added and one paid at `1121282`; one re-keyed and one added at `8230a8a`,
   Q35, each copy kept in scratch as `dry-baseline-before-cN.json`; one re-keyed at `97cd2da`)
-- **Questions:** 33 answered, 2 open (9, 25). **Interventions:** 0. **Waits:** 0.
+- **Questions:** 34 answered, 2 open (9, 25). **Interventions:** 0. **Waits:** 0.
 
 ## The run so far
 
@@ -182,7 +190,8 @@ pushed with the record at every commit.
   slice's last; records and objects: fourteen records' fields public (`3b243b5`), two
   system-tests configs by literal (`64b9ab9`), the node's admission, timing and diagnostics configs (`c72cdf3`), the bootstrapping config (`64f562b`), the NewView message's fields (`2e6d484`), the validator set updates (`ef5f4d9`), the recovery requests (`a247cf2`), the recovery facts (`df27ed7`), the peers' recovery statuses (`12b0c09`), the last getter-only one; xtask's report and command outcome
   (`d09acfa`), the first objects; the cluster config and the fleet's block limits (`6c83656`), the prune plan and the retained counts (`1121282`), the in-flight slot (`8230a8a`), the recovery context (`97cd2da`), the protocol limits (`d8dc9d5`), the transaction receipt (`07f708e`), the in-memory states (`618894b`), the protocol config (`a2cfb60`), the account's accessors and its production readers (`2e93617`), its node, node-infra and system-tests
-  test readers (`68620c3`), validation's cluster tests (`31dea7c`), its fields private (`a449311`).
+  test readers (`68620c3`), validation's cluster tests (`31dea7c`), its fields private (`a449311`); the transaction's accessors and
+  production readers (`ac456b9`).
 
 ## Next in line
 

@@ -53,6 +53,7 @@ After the run the owner takes each open entry -- implement, discuss, discard, po
 | 33 | commit 96, Part A | `records-and-objects`' correction builds a getter-only config's `Default` by literal, and dry4rust pairs two such `Default`s -- the bootstrapping and the consensus timing configs, three fields each -- as near duplicates: alike in shape, with nothing to share | answered | the pair is recorded in the dry4rust baseline under `c2faba878ab6d286`, named here, every other group as it was -- 209 to 210 -- as the stern baseline takes an added offence named in `QUESTIONS.md`; a later commit can drop it |
 | 34 | commit 97, Part A | `NewViewMessageFields` loses its five getters, and `behaviour-tests` refuses one of the five getter tests, `view_change_proofs_returns_the_proofs_the_new_view_carries`, as a test of the record alone | answered | removed under constraint 6's licence, mapped to `change_senders_collects_one_entry_per_distinct_proof_sender`, which checks that what the validator reads from the proofs is the proofs the fields were built with; the other four, which the gate does not refuse, read the fields |
 | 35 | commit 105, Part A | the in-flight slot's fields go private, and reading them through getters reshapes a recorded dry4rust pair, the recovery state's `fail_request` and `refuse_request`; the slot's new `request()` pairs with `ContextSnapshot::header` | answered | the pair re-keyed as entries 7, 13, 26 and 32 did, `b4e7991104edfc28` out and `0df28f4a7502fa38` in, the same two members; the literal pair recorded under entry 33 as `f280cde3a9b5c133` -- 210 to 211 |
+| 36 | commit 115, Part A | the hard state writes a pending block's transactions without their data, in both its layouts, and reads them back empty -- harmless while the block hash left data out, a block that no longer hashes as its certificate since the hash covers it | answered | a bug, fixed test-first in a `bug-fix` commit of its own: both encoders write the data, the cursor reads it, and the layout bytes move on as the house moved them when blocks gained a parent hash -- state in the old layout refused, not misread |
 
 ## Interventions
 
@@ -754,3 +755,26 @@ the course the slice took and the run's recommendation; after the run, the owner
   commits: 111 moved validation's copy onto the account's constructor and the pair stopped matching
   (`79cc9577e74d4e90` out, 206 to 204 with another paid group); 112 moves node's alike, and the same two are recorded
   again as `5666a931299b8d2e`, 204 to 205.
+
+### 36. The hard state drops a pending block's transaction data
+
+- **Raised:** commit 115, Part A, records and objects -- found moving the transaction's readers onto its getters.
+- **What:** the consensus hard state persists the pending -- locked -- block, in two layouts: the whole state
+  (`IbftHardStateEncoder`, types; the checkpoint record reuses it) and the `SetPendingBlock` delta
+  (`WalRecordEncoder`, node). Both write each transaction's six scalar fields and not its `data`, and the cursor
+  reads every transaction back with `data` empty. Three tests pin it -- one with the comment "the WAL never carries
+  calldata, so data decodes empty", from 2026-08-21. Then the block hash was a byte-wise mix that left a
+  transaction's data out, so a restored block hashed as before. Since `4f0c2cd` (2026-10-10) the Keccak block hash
+  covers each transaction's data, so a node restarted holding a locked block with a contract call restores a block
+  that no longer hashes as its prepared certificate: its votes and its own pending-block hash no longer match, and
+  re-proposing it, which a locked proposer must, fails the NewView justification at every peer. A round is lost,
+  not a block forked: what peers vote on is the certificate's hash.
+- **Status:** answered.
+- **Answer:** a bug -- the two halves of one design changed at different times -- fixed test-first in a `bug-fix`
+  commit of its own (`SETUP.md`: "a bug found while fixing an offence is its own commit"): both encoders write the
+  data, length first, and the cursor reads it. The house's default for a changed layout is in the history: when
+  blocks gained a parent hash (`d809c18`), both layout bytes moved on -- `HARD_STATE_VERSION` 0x01 to 0x03,
+  `WAL_V2_MAGIC` 0x02 to 0x04 -- "state in the 0x01 layout is refused, not misread". They move on again, 0x03 to
+  0x05 and 0x04 to 0x06, past each other's old values as then. The tests that pinned the empty data check the data
+  restored; a round-trip test of each layout is the commit's test, red on its parent.
+- **Commit:** 116.
