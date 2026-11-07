@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `2577cdc` Take returned-mutations out of validation's stand-down (row 334)
+- **Last commit:** `1161afd` Hold the crate graph to allow-lists with a dependency boundary gate (row 335)
 - **Step now:** Part B step 8, the gates -- started 21:03Z, the scope Q56 (answered), the recovery crates' part
   Q57 (open: `node` keeps `recovery-control` and `recovery-ibft`, which the gate names as owed). In order: (a)
   `returned-mutations` paid in node (20, five files), then validation (17, three files, about 240 call sites in
@@ -48,9 +48,16 @@ pushed with the record at every commit.
   `cac40dc879b6305e`). **returned-mutations is paid: 37 to 0.** (10) validation's stand-down out -- `2577cdc` (`support`,
   stage 2, 3 files, 56 lines): **`stern4rust.toml` stands nothing down, stern reports `rules_skipped=0`**, both counts
   33, all baselined. OPEN_POINTS' *Rules stood down and baselined* still says 41 and lists the eight
-  `single-implemented-type` (paid at `6fc97b9`): step 9's documents. Next: (b) the dependency gate,
-  `cargo xtask dependency-boundary` (a `DependencyGate` over `cargo metadata --no-deps` through the `CommandRunner`,
-  as `ShearGate` reads it; allow-lists per crate, in stage 1 beside the other boundaries). Earlier plan, for the record: (8) the protocol drivers by value -- ibft_cluster_test_helpers' copy of
+  `single-implemented-type` (paid at `6fc97b9`): step 9's documents. (b) the dependency gate -- `1161afd` (`support`, stages 1 and 2, 10 files,
+  341 lines; tests 3,885 to 3,890): `cargo xtask dependency-boundary` in stage 1, `DependencyGate` over `cargo
+  metadata --no-deps`, `ToolReports::production_dependencies`, `GateFailure::ForbiddenDependencies`, the six
+  allow-lists in `xtask/src/main.rs` (node's holding the two recovery crates, owed, Q57); passes on the workspace;
+  the parser built in `run` since as a field the constructor was a 95% dry4rust copy of `ShearGate::new`.
+  **Step 8 is done** as Q56 scoped it: 11 commits, rows 325 to 335. Next: step 9, an ADR and the living documents
+  -- CLAUDE.md's baseline paragraph (41, the eight `single-implemented-type` in seven files), `stern4rust.toml`'s
+  baseline and `single-implemented-type` comments, OPEN_POINTS' *Rules stood down and baselined* (41, the
+  `single-implemented-type` row), README's crate rows, and an ADR in `docs/ADRs/` for Part B's shape (the protocol
+  orchestrating its bookkeepers behind ports, each seam's four parts, the gates that hold them, what is owed). Earlier plan, for the record: (8) the protocol drivers by value -- ibft_cluster_test_helpers' copy of
   `advance_protocol_past_discovery` folded into scenario_helpers' (the same context, built two ways), and
   `drive_to_commit` returning the protocol beside the hash. The 8 left before (5): the cluster helpers' 5
   (`advance_cluster_past_discovery`, `commit_next`, `commit_many`, the two `finalize_round_*`) become `IbftCluster`'s
@@ -929,18 +936,18 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 334 on the branch; 14 past the threshold (7 planned -- the 5th the merge, `8afa421`, the 6th the
+- **Commits:** 335 on the branch; 14 past the threshold (7 planned -- the 5th the merge, `8afa421`, the 6th the
   execution port's move, `4cfcce2` --, + `97225b7` for the dry4rust re-record, `1d27ff1` for the two states' 36
   accessors, `3cf1ec6` and `3433b15` for the transaction status's 33 importers and the timer key's 100, `2883602`
   for the slot discovery's 11, `a352577` for the Ed25519 scheme's 14, planned within by SETUP, `d7d2c45` for
   Faction's two implementations and their test files, Q43; the 7th planned, `6fc97b9`, `SledStorageInner`'s 678
-  lines, which `implemented-in-one-file` moves whole) -- 14 of 334 is 4.2%, 320 of 334 within; the 95% reached at the 260th (247 of 260 within), and it holds only while every
+  lines, which `implemented-in-one-file` moves whole) -- 14 of 335 is 4.2%, 321 of 335 within; the 95% reached at the 260th (247 of 260 within), and it holds only while every
   commit from here stays within: count a move's files first, and
   shape the seams so a type is born where it ends; bug fixes
   6 (`eba863f`, `e1232ca`, `5013d0e`, `1e7ac29`, `643bfd5`, `8e1ca00`); the 150th (`7ffb333`) ran all three stages, Part A's end, the 160th (`6912269`) and
   the 170th (`2883602`), the 180th (`b31593c`), the 190th (`c885cf9`), the 200th (`7508819`), the 210th
   (`e04403c`), the 220th (`e329250`), the 230th (`5ebe5f1`), the 240th (`18baf35`), the 250th (`8bdb859`), the 260th (`1fef15d`), the 270th (`fdd825e`), the 280th (`00c5f1b`), the 290th (`0b135b2`), the 300th (`2a7c601`), the 310th (`44b91f4`), the 320th (`694fb62`) and the 330th (`729dae4`); the 340th next
-- **Tests:** 3,440 at the base, 3,885 now (stage 5 511); removed under constraint 6: 1 (`2e6d484`, Q34)
+- **Tests:** 3,440 at the base, 3,890 now (stage 5 511); removed under constraint 6: 1 (`2e6d484`, Q34)
 - **Offences:** 33 as configured (single-implemented-type 0), 33 everything on (returned-mutations 0, from 37 at `6fc97b9`; paired-test-file 0, from 100 at `4a976c2`; tested-public-api 0,
   from 25 at `15e7d4d` and 17 at `ca72bf4`, Q52, Q54), shear 0; Grip 791.40 / Braintax 4,865.29 (0.1627 at `d517272`, node 331.86 / 2,338.42; 787.08 /
   4,869.10, 0.1616 at `508fa94`, node 327.54 / 2,342.23, the WAL encoder returning its bytes; 780.18 / 4,868.87, 0.1602 at `1f5213f`, the tracker into the tally, node-infra
