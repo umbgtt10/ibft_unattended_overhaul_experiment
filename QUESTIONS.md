@@ -56,6 +56,7 @@ After the run the owner takes each open entry -- implement, discuss, discard, po
 | 36 | commit 115, Part A | the hard state writes a pending block's transactions without their data, in both its layouts, and reads them back empty -- harmless while the block hash left data out, a block that no longer hashes as its certificate since the hash covers it | answered | a bug, fixed test-first in a `bug-fix` commit of its own: both encoders write the data, the cursor reads it, and the layout bytes move on as the house moved them when blocks gained a parent hash -- state in the old layout refused, not misread |
 | 37 | before commit 120, Part A | `NodeDiagnostics` has one associated `const fn` and 28 public fields, nearly all `u32`, built in one place: its correction wants a constructor, and a positional one of 28 would be past every precedent -- the house's largest allowed constructor takes twelve -- and swaps two counters without a compiler noticing | open | the type stays as it is, its offence in the baseline, and the slice goes on with the others; recommended: group the fields into the records the type's own comments already name -- chain position, chain progress, peers, the recovery slot, recovery counters, the protocol's census -- each a record of a few fields, and give `NodeDiagnostics` a constructor of the sequence and the six records |
 | 38 | commit 151, Part B, the skipped rules | the EVM interpreter's operations "become functions that return what they change" (`SETUP.md`): threaded by value, a dispatcher that declines an opcode consumes the stack it was handed; as the machine's own methods, their tests can preset and read nothing | answered | the machine's changing parts become one object, `TinyEvmMachineState`, and the operations its `&mut self` methods -- the house's own shape, the storage-slot analyzer's -- returning a value where they compute one; the counter stays with the machine, the push returning where it goes next; a `bool` and an out-parameter merged into one returned `Option` take their tests' two assertions into one, each mapped to itself |
+| 39 | before commit 166, Part B, the execution seam | `node` depends on `evm` in production: its storage access plan asks evm's `TinyEvmStorageSlotAnalyzer` which contract storage a transaction touches, so moving `ExecutionEngine` into `node` -- evm depending on `node` for it -- would close a cycle | answered | the analysis becomes a port of its own, `StorageSlotDiscovery`, in a new `node/src/traits`, injected through the constructors of the node and the snapshot context builder; evm implements it with today's analyzer, so every engine keeps today's plan; `node` keeps evm as a dev-dependency only, and the execution port follows into the same folder |
 
 ## Interventions
 
@@ -797,7 +798,11 @@ the course the slice took and the run's recommendation; after the run, the owner
   differing in the gas limit, are recorded as the near pair they are (`ea21bd393a440c18`) until validation's tests
   move; 202 to 201. Commit 139 -- the wire block's pair of field-for-field `From`s paid (`b52b192032123e3e`), the
   block's side a constructor chain now; 201 to 200. Commit 141 -- validation's two snapshot `anchor()`s, two lines
-  each now, pay their near pair (`ea21bd393a440c18`); 200 to 199.
+  each now, pay their near pair (`ea21bd393a440c18`); 200 to 199. Commit 166 -- node's tests build their context
+  builder through one helper, which reshapes three groups of the recovery-host tests' `deliver` helpers alike: the
+  exact `deliver` pair (`0c89ced451914a87` out, `9c4543b6454ba7bf` in), the exact `deliver_against` pair
+  (`d1a94f3e0d71aeac` out, `f022dffb125ee388` in) and a near `deliver` pair (`32a5210819b973f6` out,
+  `5f1cfde88a32f74e` in), each the same two members; 196 kept.
 
 ### 36. The hard state drops a pending block's transaction data
 
@@ -873,3 +878,28 @@ the course the slice took and the run's recommendation; after the run, the owner
   both. The inventory counts one assertion fewer; each such test is mapped to itself in its commit's message,
   naming this entry -- `exec_push_n_reads_the_immediate_bytes_and_advances_the_counter` first, at commit 151.
 - **Commit:** 151 onward.
+
+### 39. The storage access plan reads evm's analyzer, which the execution port's move would make a cycle
+
+- **Raised:** before commit 166, Part B, the execution seam -- planning the port's move after the merge.
+- **What:** `SETUP.md` moves `ExecutionEngine` into `node/src/traits` and makes evm a plug-in "depending on `node`
+  for the port". But `node` depends on `evm` in production: `TinyEvmStorageAccessPlan`, which decides which
+  accounts and contract storage the node loads to execute a block and the context builder loads for a proposal,
+  asks `TinyEvmStorageSlotAnalyzer` which slots a transaction's bytecode touches, falling back to a contract's whole
+  storage when it cannot tell. With the port in `node`, evm would depend on `node` and `node` on evm. The plan
+  assumed no such edge. (`node`'s tests also use evm -- the engine and opcode constants -- which a dev-dependency
+  can carry, as `node`'s on `node-infra` already does.) Three ways were weighed:
+  - the analysis as part of the execution port, each engine telling what its execution reads. The no-op and the
+    value-transfer engines would then plan differently from today, or carry an EVM analysis they never run;
+  - the analysis moved into `types` or `node` -- EVM bytecode knowledge in the data model or the protocol;
+  - a port of its own for the analysis, injected where the plan is made.
+- **Status:** answered -- the house has a clear default: a new protocol seam is a trait in `traits/`, its
+  implementation in its own area, every dependency injected through the single constructor (CLAUDE.md).
+- **Answer:** the third. `StorageSlotDiscovery`, in a new `node/src/traits`: the slots a bytecode touches, or none
+  when it cannot tell. evm implements it with today's analyzer, and the node and the snapshot context builder are
+  handed it through their constructors, so every engine keeps exactly today's plan -- the behaviour the reference
+  traces and every test pin. `node` then keeps evm as a dev-dependency only, evm depends on `node`, and
+  `ExecutionEngine` follows into the same folder. The constructor change reaches 58 constructions of the context
+  builder in node's tests, so a helper that builds it goes first (commit 166), and the port's commit writes the
+  new argument once.
+- **Commit:** 166 onward.

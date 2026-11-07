@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `de03fb2` Bring the documents up to date with execution-types dissolved (row 165)
+- **Last commit:** `8ef334d` Build node's test context builders through one helper (row 166)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -103,9 +103,20 @@ pushed with the record at every commit.
   package lists and the justfile's stage-1 lines follow. (2) the documents naming the crate -- done at `de03fb2`
   (`support`, stage 2): CLAUDE.md, `stern4rust.toml`'s comments, README, IBFT-SPEC-COVERAGE, RECOVERY-AS-BUILT,
   two ADRs' paths; the leaf-`types` open point retired into the 2026-11-07 history file; TEST-LADDER's dated
-  measurement and the history files left as written. (3) next, `ExecutionEngine` into `node/src/traits` (22 importers, the second planned past the
-  threshold); (4) evm a plug-in on `node` for the port and `types` for the data model -- `node` depends on `evm`
-  today, which goes first; `NoOpExecutionEngine` the default in node-infra; (5) the contract suite in a
+  measurement and the history files left as written. Found: `node` depends on `evm` in production -- the storage
+  access plan (`node/src/runtime/context/tiny_evm_storage_access_plan.rs`, used by `EtheramNode::execute_block`
+  and the snapshot context builder's pre-prepare and propose contexts) asks `TinyEvmStorageSlotAnalyzer` -- so the
+  port's move would close a cycle (Q39, answered): (3a) node's tests build the context builder through
+  `node_helpers::snapshot_context_builder()` -- done at `8ef334d` (`refactoring`, unplanned, Trigger Q39; three
+  dry4rust `deliver` groups re-keyed, Q35); (3b) next, `refactoring`: a port `StorageSlotDiscovery` in a new
+  `node/src/traits/storage_slot_discovery.rs` (`fn` the slots a bytecode touches, `None` when it cannot tell),
+  the access plan taking it, `EtheramNode::new` and `SnapshotContextBuilder::new` handed it, evm's
+  `TinyEvmStorageSlotDiscovery` implementing it with the analyzer, evm depending on `node`, `node` keeping evm in
+  dev-dependencies only; call sites: node-infra's two builders, validation's cluster builder and test node, two
+  validation node tests, system-tests' gRPC node and context factory, node's helpers and the context builder's
+  own tests with custom limits; (3c) the access plan renamed off `TinyEvm` if it reads wrong then; (3d)
+  `ExecutionEngine` into `node/src/traits` (22 importers, the second planned past the threshold); (4) evm a
+  plug-in on `node` for the port and `types` for the data model; `NoOpExecutionEngine` the default in node-infra; (5) the contract suite in a
   `node-contracts` crate, run by both engines and the no-op; (6) the boundary check beside `cargo xtask
   recovery-boundary`: evm imports only `types`' execution module.
 - **Slice 1's detail:** `Chosen-By: risk` (the largest of the
@@ -259,9 +270,9 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 165 on the branch; 9 past the threshold (5 planned -- the 5th the merge, `8afa421` --, +
+- **Commits:** 166 on the branch; 9 past the threshold (5 planned -- the 5th the merge, `8afa421` --, +
   `97225b7` for the dry4rust re-record, `1d27ff1` for the two states' 36 accessors, `3cf1ec6` and `3433b15` for
-  the transaction status's 33 importers and the timer key's 100 -- 9 of 165 is 5.5%, the `ExecutionEngine` move
+  the transaction status's 33 importers and the timer key's 100 -- 9 of 166 is 5.4%, the `ExecutionEngine` move
   planned to make it 10, so the 95% needs Parts B and C to add commits within it, and Part
   B's two planned moves out of `execution-types` past it; keep every other commit within); bug fixes
   2 (`eba863f`, `e1232ca`); the 150th (`7ffb333`) ran all three stages, Part A's end, and the 160th (`6912269`);
@@ -291,7 +302,7 @@ pushed with the record at every commit.
   `2e93617`), all matching (re-recorded at `cec0c5b`, Q32;
   one group added at `64f562b`, Q33; one added and one paid at `1121282`; one re-keyed and one added at `8230a8a`,
   Q35, each copy kept in scratch as `dry-baseline-before-cN.json`; one re-keyed at `97cd2da`)
-- **Questions:** 35 answered, 3 open (9, 25, 37). **Interventions:** 0. **Waits:** 0.
+- **Questions:** 36 answered, 3 open (9, 25, 37). **Interventions:** 0. **Waits:** 0.
 
 ## The run so far
 
@@ -347,7 +358,8 @@ pushed with the record at every commit.
   (`60b3373`), SLOAD and SSTORE (`78c9a21`), the memory dispatcher, MSTORE and MLOAD (`89735b7`), the memory
   window and its expansion (`ba4e857`), SHA3 with its expansion and word charge (`6912269`), SHA3's window and the
   word pop (`e444f5b`), the engine's working state (`36c3d9e`), the stand-down out (`5c6e9eb`), the slice's last.
-  The execution seam: `execution-types` dissolved into `types` (`8afa421`), the documents after it (`de03fb2`).
+  The execution seam: `execution-types` dissolved into `types` (`8afa421`), the documents after it (`de03fb2`),
+  node's test context builders through one helper (`8ef334d`, Q39).
 
 ## Next in line
 
