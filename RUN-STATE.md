@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `525d620` Keep the recovery state snapshot's fields private; build it through new (row 119)
+- **Last commit:** `439551b` Give the world state snapshot its accessors; read and build it through them in production (row 120)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -113,8 +113,13 @@ pushed with the record at every commit.
   so the stages ran on exactly the commit's tree); `RecoveryStateSnapshot` at `525d620` (an eight-argument
   `new` under `#[allow(clippy::too_many_arguments)]`, the house's way -- five constructors carry it; stern's
   `tested-public-api` misses a call written inside `assert_eq!`, so build the expected value in the arrange);
+  `WorldStateSnapshot` in progress: `new`, getters and every production reader at `439551b` (`refactoring`; the
+  in-memory storage copies the adopted maps -- an `into_parts` tuple tripped clippy's `type_complexity`; a dry4rust
+  pair re-keyed, Q35); the fields private with node-infra's, node's and validation's remaining tests is in
+  `git stash` ("c121-pending") -- `git stash pop`, then make the three fields private again (the stash holds no
+  change to `world_state_snapshot.rs`), re-run every gate;
   8 left: `Block`
-  (execution-types), `NodeDiagnostics` (next: 28 fields, one literal in `diagnostics.rs`, a `new` the same way),
+  (execution-types), `NodeDiagnostics` (Q37, open: a constructor of 28 -- left in the baseline),
   `ContextSnapshot`, `IbftProtocol` (Q25) (node),
   `RecoveryControl` (Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types) -- the types' three built by literal in some 38 files, `..Default::default()`
@@ -140,10 +145,11 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 119 on the branch; 5 past the threshold (4 planned, + `97225b7` for the dry4rust re-record); bug fixes
+- **Commits:** 120 on the branch; 5 past the threshold (4 planned, + `97225b7` for the dry4rust re-record); bug fixes
   2 (`eba863f`, `e1232ca`); the 110th ran all three stages, as every commit has; the 120th next
 - **Tests:** 3,440 at the base, 3,654 now (stage 5 465); removed under constraint 6: 1 (`2e6d484`, Q34)
-- **Offences:** 68 as configured, 279 everything on, shear 0; Grip 673.49 / Braintax 4,549.01 (0.1481;
+- **Offences:** 68 as configured, 279 everything on, shear 0; Grip 677.29 / Braintax 4,554.98 (0.1487;
+  types 39.26 / 453.13 at `439551b`;
   recovery/control 74.95 / 383.47 at `525d620`;
   types 35.46 / 447.16 at `e1232ca`; execution-types 24.37 / 75.83 and evm 34.29 / 498.07 at `ac456b9`;
   execution-types 17.72 / 66.79 at `2e93617`;
@@ -160,7 +166,7 @@ pushed with the record at every commit.
   `2e93617`), all matching (re-recorded at `cec0c5b`, Q32;
   one group added at `64f562b`, Q33; one added and one paid at `1121282`; one re-keyed and one added at `8230a8a`,
   Q35, each copy kept in scratch as `dry-baseline-before-cN.json`; one re-keyed at `97cd2da`)
-- **Questions:** 34 answered, 2 open (9, 25). **Interventions:** 0. **Waits:** 0.
+- **Questions:** 34 answered, 3 open (9, 25, 37). **Interventions:** 0. **Waits:** 0.
 
 ## The run so far
 
@@ -197,7 +203,8 @@ pushed with the record at every commit.
   system-tests configs by literal (`64b9ab9`), the node's admission, timing and diagnostics configs (`c72cdf3`), the bootstrapping config (`64f562b`), the NewView message's fields (`2e6d484`), the validator set updates (`ef5f4d9`), the recovery requests (`a247cf2`), the recovery facts (`df27ed7`), the peers' recovery statuses (`12b0c09`), the last getter-only one; xtask's report and command outcome
   (`d09acfa`), the first objects; the cluster config and the fleet's block limits (`6c83656`), the prune plan and the retained counts (`1121282`), the in-flight slot (`8230a8a`), the recovery context (`97cd2da`), the protocol limits (`d8dc9d5`), the transaction receipt (`07f708e`), the in-memory states (`618894b`), the protocol config (`a2cfb60`), the account's accessors and its production readers (`2e93617`), its node, node-infra and system-tests
   test readers (`68620c3`), validation's cluster tests (`31dea7c`), its fields private (`a449311`); the transaction's accessors and
-  production readers (`ac456b9`), its system-tests and trace-driver readers (`cbbd2f6`), its fields private (`e39ac2c`); the recovery state snapshot (`525d620`); bugs found on the way: the hard state's dropped transaction data (`e1232ca`,
+  production readers (`ac456b9`), its system-tests and trace-driver readers (`cbbd2f6`), its fields private (`e39ac2c`); the recovery state snapshot (`525d620`); the world state snapshot's accessors and production readers
+  (`439551b`); bugs found on the way: the hard state's dropped transaction data (`e1232ca`,
   Q36).
 
 ## Next in line

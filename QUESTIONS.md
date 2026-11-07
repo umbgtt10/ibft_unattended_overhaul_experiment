@@ -54,6 +54,7 @@ After the run the owner takes each open entry -- implement, discuss, discard, po
 | 34 | commit 97, Part A | `NewViewMessageFields` loses its five getters, and `behaviour-tests` refuses one of the five getter tests, `view_change_proofs_returns_the_proofs_the_new_view_carries`, as a test of the record alone | answered | removed under constraint 6's licence, mapped to `change_senders_collects_one_entry_per_distinct_proof_sender`, which checks that what the validator reads from the proofs is the proofs the fields were built with; the other four, which the gate does not refuse, read the fields |
 | 35 | commit 105, Part A | the in-flight slot's fields go private, and reading them through getters reshapes a recorded dry4rust pair, the recovery state's `fail_request` and `refuse_request`; the slot's new `request()` pairs with `ContextSnapshot::header` | answered | the pair re-keyed as entries 7, 13, 26 and 32 did, `b4e7991104edfc28` out and `0df28f4a7502fa38` in, the same two members; the literal pair recorded under entry 33 as `f280cde3a9b5c133` -- 210 to 211 |
 | 36 | commit 115, Part A | the hard state writes a pending block's transactions without their data, in both its layouts, and reads them back empty -- harmless while the block hash left data out, a block that no longer hashes as its certificate since the hash covers it | answered | a bug, fixed test-first in a `bug-fix` commit of its own: both encoders write the data, the cursor reads it, and the layout bytes move on as the house moved them when blocks gained a parent hash -- state in the old layout refused, not misread |
+| 37 | before commit 120, Part A | `NodeDiagnostics` has one associated `const fn` and 28 public fields, nearly all `u32`, built in one place: its correction wants a constructor, and a positional one of 28 would be past every precedent -- the house's largest allowed constructor takes twelve -- and swaps two counters without a compiler noticing | open | the type stays as it is, its offence in the baseline, and the slice goes on with the others; recommended: group the fields into the records the type's own comments already name -- chain position, chain progress, peers, the recovery slot, recovery counters, the protocol's census -- each a record of a few fields, and give `NodeDiagnostics` a constructor of the sequence and the six records |
 
 ## Interventions
 
@@ -754,7 +755,10 @@ the course the slice took and the run's recommendation; after the run, the owner
   `setup_after_propose_with_tx` helpers, in node's tests and validation's sources, is one group re-keyed across two
   commits: 111 moved validation's copy onto the account's constructor and the pair stopped matching
   (`79cc9577e74d4e90` out, 206 to 204 with another paid group); 112 moves node's alike, and the same two are recorded
-  again as `5666a931299b8d2e`, 204 to 205.
+  again as `5666a931299b8d2e`, 204 to 205. Commit 120 -- the world state snapshot's constructor reshapes the pair of
+  `snapshot` test helpers in node's and recovery-ibft's tests alike, from an exact pair to a near one:
+  `c983291a4180624d` out, `a17c620ba9f6cd6b` in, 203 kept; the two live in two crates' tests and share nothing they
+  could import.
 
 ### 36. The hard state drops a pending block's transaction data
 
@@ -782,3 +786,24 @@ the course the slice took and the run's recommendation; after the run, the owner
   security-relevant finding: it takes the node's own restart while it holds a lock on a contract call, which no
   peer or client can force, and what it costs is rounds, never a block that a quorum did not vote.
 - **Commit:** 116.
+
+### 37. The node diagnostics: a constructor of 28
+
+- **Raised:** before commit 120, Part A, records and objects.
+- **What:** `NodeDiagnostics` -- one node's diagnostic beacon sample -- has an associated `const fn`,
+  `diagnostic_max_bytes`, and 28 public fields: a `records-and-objects` offence ("an object's fields are
+  private"). Decision 1 keeps the function where it is, so the type is an object, and its correction is private
+  fields, a getter for each reader -- the logging observer renders all 28 -- and a constructor for its one builder,
+  `IbftProtocol::sample_diagnostics`, which now writes the 28 by name. The house's way past clippy's seven arguments
+  is `#[allow(clippy::too_many_arguments)]` -- five constructors carry it, the largest of twelve -- but a constructor
+  of 28, 24 of them `u32`, is another thing: two counters written in each other's place would compile, and nothing
+  but the beacon's readers would ever show it. A record of the 28, handed to the constructor, keeps the names but is
+  the same type twice over; grouping the fields changes the type's shape and every reader's.
+- **Status:** open -- a design choice with no house default for this size.
+- **Course meanwhile:** the type stays as it is, its offence in the stern baseline; the slice goes on with the
+  other objects.
+- **Recommended:** the type's own comments already divide the 28 into groups -- identity, chain position, chain
+  progress, peers, the in-flight recovery slot, recovery counters, the protocol's census. Make each group a record
+  of its named fields, in a file of its own beside the type, and give `NodeDiagnostics` a constructor taking the
+  sequence and the six records, its getters handing each record back. The beacon's rendering and its byte budget
+  do not change; its readers name the group they read.
