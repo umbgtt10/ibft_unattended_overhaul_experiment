@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `36c3d9e` Hand the EVM engine's working state back from each transaction (row 162)
+- **Last commit:** `5c6e9eb` Take returned-mutations out of evm's stand-down (row 163)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -83,7 +83,16 @@ pushed with the record at every commit.
   and OPEN_POINTS, stern4rust.toml's stale package and rule counts, the justfile's comment; the three open points
   this run closed retired verbatim into `docs/history/[IMPLEMENTED] RESOLVED-OPEN-POINTS-2026-11-07.md`, each with
   a **Closed:** line. **Part A is done.**
-- **Slice in progress:** Part B slice 1, `returned-mutations` in evm -- `Chosen-By: risk` (the largest of the
+  Part B slice 1, `returned-mutations` in evm -- 13 commits, rows 151 to 163 (`3c21b53` to `5c6e9eb`), 05:33Z to
+  06:30Z; 57 to 0 in evm, everything on 252 to 195, as configured 41 throughout; evm's stand-down out at
+  `5c6e9eb` (`support`, stage 2 alone), evm applying all thirty-nine. Lessons: a body moved into an `impl` is
+  re-indented, every line counted twice -- go a group of functions a commit; a function moved into an object cannot
+  be called by the free functions left behind -- callers first, callees last; a test renamed and moved at once is
+  not paired by test-diff -- a `Maps:` line each; rustfmt wraps a call whose arguments pass 60 columns; a staged
+  change past the threshold is split by keeping the finished files in scratch, editing the tree back to the first
+  half, and copying them back for the second.
+- **Slice in progress:** none -- choose the next (see `Next in line`).
+- **Slice 1's detail:** `Chosen-By: risk` (the largest of the
   skipped rules' pieces, and the one most likely to surprise), `Over:` the other three skipped-rule slices and the
   execution seam; started 05:33:28Z. 57 offences with the rule on (list:
   `overhaul-scratch/returned-mutations-evm.txt`): 52 in `tiny_evm_ops.rs`, 5 in `tiny_evm_engine.rs`. The shape
@@ -112,8 +121,8 @@ pushed with the record at every commit.
   four files kept in `overhaul-scratch/c161-*.rs`, the tree edited back to the first half); `sha3_range` and
   `pop_word` at `e444f5b` (202 to 200) -- `tiny_evm_ops.rs` holds no offence now; the engine's five at `36c3d9e`
   (200 to 195; a private `WorkingState` record of the two maps, taken and returned by value) -- evm holds no
-  `returned-mutations` offence; next the rule out of evm's skip (`support`: `stern4rust.toml` and its comment,
-  CLAUDE.md's "node and evm stand down returned-mutations"), the slice's last. A test
+  `returned-mutations` offence; the rule out of evm's skip at `5c6e9eb` (`stern4rust.toml`, CLAUDE.md,
+  `docs/OPEN_POINTS.md`), the slice's last. A test
   whose `bool` and out-parameter merge into one `Option` loses one assertion: `Maps:` it to itself, Q38.
 - **Slice 9's detail:** record-home 23 (SETUP: 4-6
   commits; 13 records named in a crate's public API but declared in another type's file, 8 wire types used by
@@ -234,9 +243,9 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 162 on the branch; 8 past the threshold (4 planned, + `97225b7` for the dry4rust re-record,
+- **Commits:** 163 on the branch; 8 past the threshold (4 planned, + `97225b7` for the dry4rust re-record,
   `1d27ff1` for the two states' 36 accessors, `3cf1ec6` and `3433b15` for the transaction status's 33 importers
-  and the timer key's 100 -- 8 of 162 is 4.9%, so the 95% needs Parts B and C to add commits within it, and Part
+  and the timer key's 100 -- 8 of 163 is 4.9%, so the 95% needs Parts B and C to add commits within it, and Part
   B's two planned moves out of `execution-types` past it; keep every other commit within); bug fixes
   2 (`eba863f`, `e1232ca`); the 150th (`7ffb333`) ran all three stages, Part A's end, and the 160th (`6912269`);
   the 170th next
@@ -319,7 +328,7 @@ pushed with the record at every commit.
   arithmetic's first half through the word ALU (`a022bd1`), its second (`bf1b812`), the environment opcodes
   (`60b3373`), SLOAD and SSTORE (`78c9a21`), the memory dispatcher, MSTORE and MLOAD (`89735b7`), the memory
   window and its expansion (`ba4e857`), SHA3 with its expansion and word charge (`6912269`), SHA3's window and the
-  word pop (`e444f5b`), the engine's working state (`36c3d9e`).
+  word pop (`e444f5b`), the engine's working state (`36c3d9e`), the stand-down out (`5c6e9eb`), the slice's last.
 
 ## Next in line
 
@@ -339,8 +348,8 @@ Part A's slices, in order, with the criterion that put each there (`SETUP.md`, *
 | 10 | ~~living documents~~ -- done at `7ffb333`, 2 commits | -- | no-scaffolding |
 
 Part B's, as SETUP lists them (*Part B: the restructuring*; to be chosen one at a time by *Choosing the next
-slice*): the skipped rules, 20 to 30 commits -- `returned-mutations` in `evm` (the interpreter's 52 operations
-that take the machine by `&mut` become functions returning what they change), `paired-test-file` in `validation`
+slice*): the skipped rules, 20 to 30 commits -- ~~`returned-mutations` in `evm`~~ (done at `5c6e9eb`, 13
+commits, `Chosen-By: risk`), `paired-test-file` in `validation`
 and `system-tests` (each `<scenario>_scenario_tests.rs` paired with a `<scenario>_scenario.rs` in `src` that hands
 its tests the cluster they start from), `tested-public-api` in `system-tests` (tests for the 20 functions no test
 calls), the eight `single-implemented-type` entries split; then the seams, 75 to 100 commits, in the owner's
