@@ -1453,4 +1453,7 @@ the course the slice took and the run's recommendation; after the run, the owner
   - **the stand-down comes out at zero**, with the config's comment, CLAUDE.md and the open points' table;
   - each commit stays a `rule-offence` naming `tested-public-api`. The rule is stood down as configured, so the
     configured count stays 41 and the everything-on total falls.
+  - **added at commit 307:** the timer harness builds its node in process, on real ports and a scratch database,
+    and starts no process. So its single-node build, its port and its `new` were tested beside the gRPC node's
+    constructor and step. The functions that start processes are nine, not twelve.
 - **Commit:** 306 onward.
