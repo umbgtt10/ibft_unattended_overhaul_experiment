@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `2a49ac5` Test the gRPC node config's four builders (row 309)
+- **Last commit:** `44b91f4` Hand both run loops their commands rather than have them read stdin (row 310)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -150,13 +150,17 @@ pushed with the record at every commit.
   `4d5741b` (5 tests, 146 lines, 20 to 16). (3) the `refactoring`: `EtheramGrpcNodeConfig::protocol_config()`, the
   node building from it, `FleetBlockLimits` `Clone`, a pure test of the defaults -- done at `0761abe` (55 lines,
   counts unchanged). (4) the four builders' tests (three through the read, genesis read back from the store, in
-  process) -- done at `2a49ac5` (132 lines, 16 to 12). Next (5): a `refactoring` handing both run loops their
+  process) -- done at `2a49ac5` (132 lines, 16 to 12). (5) the `refactoring` handing both run loops their
   commands as a `BufRead` (`R: BufRead + Send + 'static` for the gRPC node, whose control thread takes it; the
-  binary hands `BufReader::new(io::stdin())`; the control thread's spawn test hands `io::empty()`), then (6)
-  their tests: the malicious node announces itself before reading -- a peer-2 `GrpcTransportIncoming` sees
-  `PeerReady(1)` after `run_forever(Cursor::new("shutdown\n"))`; the gRPC node's is racy with a plain reader, so
-  a test-side reader that yields "shutdown" only once a peer-2 listener has heard from node 1 (validators [1, 2]),
-  and the test asserts what it heard; (7) the nine process starters, a smoke test each, a harness at a time; (8) the stand-down
+  binary hands the malicious node `io::stdin().lock()` and the gRPC node `BufReader::new(io::stdin())`; the
+  control thread's spawn test hands `io::empty()`) -- done at `44b91f4` (32 lines, counts unchanged). Next (6):
+  their tests, one `rule-offence`: the malicious node announces itself before reading -- a peer-2
+  `GrpcTransportIncoming` hears `PeerReady(1)` after `run_forever(Cursor::new("shutdown\n"))` (a test-side
+  no-op `Sleeper`; new `tests/etheram_malicious_node_tests.rs`); the gRPC node's in-process transport is
+  `LocalNoOp` unless `ETHERAM_NODE_PROCESS_TRANSPORT_BACKEND=grpc`, so a listener hears nothing and how many
+  steps run before shutdown is a race -- the node gains `shutdown_signal()` (a clone of its signal, which also
+  lets an in-process host stop it from another thread), and the test asserts it is requested once
+  `run_forever(Cursor::new("shutdown\n"))` returns; (7) the nine process starters, a smoke test each, a harness at a time; (8) the stand-down
   out.
   Before it, Part B seam 6, consensus (SETUP, *Part B*, step 6), started 11:29Z, `Chosen-By:
   owner-order`, `Over:` the three skipped-rule slices. The bug first (Q48, answered): (a) the control -- done at
@@ -812,16 +816,16 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 309 on the branch; 13 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
+- **Commits:** 310 on the branch; 13 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
   execution port's move, `4cfcce2` --, + `97225b7` for the dry4rust re-record, `1d27ff1` for the two states' 36
   accessors, `3cf1ec6` and `3433b15` for the transaction status's 33 importers and the timer key's 100, `2883602`
   for the slot discovery's 11, `a352577` for the Ed25519 scheme's 14, planned within by SETUP, `d7d2c45` for
-  Faction's two implementations and their test files, Q43) -- 13 of 309 is 4.2%; the 95% reached at the 260th (247 of 260 within), and it holds only while every
+  Faction's two implementations and their test files, Q43) -- 13 of 310 is 4.2%; the 95% reached at the 260th (247 of 260 within), and it holds only while every
   commit from here stays within: count a move's files first, and
   shape the seams so a type is born where it ends; bug fixes
   6 (`eba863f`, `e1232ca`, `5013d0e`, `1e7ac29`, `643bfd5`, `8e1ca00`); the 150th (`7ffb333`) ran all three stages, Part A's end, the 160th (`6912269`) and
   the 170th (`2883602`), the 180th (`b31593c`), the 190th (`c885cf9`), the 200th (`7508819`), the 210th
-  (`e04403c`), the 220th (`e329250`), the 230th (`5ebe5f1`), the 240th (`18baf35`), the 250th (`8bdb859`), the 260th (`1fef15d`), the 270th (`fdd825e`), the 280th (`00c5f1b`), the 290th (`0b135b2`) and the 300th (`2a7c601`); the 310th next
+  (`e04403c`), the 220th (`e329250`), the 230th (`5ebe5f1`), the 240th (`18baf35`), the 250th (`8bdb859`), the 260th (`1fef15d`), the 270th (`fdd825e`), the 280th (`00c5f1b`), the 290th (`0b135b2`), the 300th (`2a7c601`) and the 310th (`44b91f4`); the 320th next
 - **Tests:** 3,440 at the base, 3,855 now (stage 5 485); removed under constraint 6: 1 (`2e6d484`, Q34)
 - **Offences:** 41 as configured, 90 everything on (paired-test-file 0, from 100 at `4a976c2`; tested-public-api 12,
   from 25 at `15e7d4d` and 17 at `ca72bf4`, Q52, Q54), shear 0; Grip 780.18 / Braintax 4,868.87 (0.1602 at `1f5213f`, the tracker into the tally, node-infra
