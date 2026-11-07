@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `d74cdc1` Give the context header, the infrastructure inputs' parts and the bytecode step files of their own (row 144)
+- **Last commit:** `dcd2720` Keep the episode state private in the episode tracker (row 145)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -80,14 +80,17 @@ pushed with the record at every commit.
   `72ebb5b` (63 to 55 / 274 to 266) -- `cargo xtask measure` reads the staged tree, so `git add` before it.
   types' four WAL field groups into `state/wal_*_fields.rs` at `79526b2` (55 to 51 / 266 to 262; no test files --
   twin4rust asks none of a record); `ContextHeader`, `EtheramNodeInfrastructureInputsParts` and `BytecodeStep` at
-  `d74cdc1` (51 to 48 / 262 to 259). Next: (145) system-tests' `FleetConfig`, `GenesisAccountConfig`, `NodeConfig`
-  and `EtheramGrpcNodeTimerConfig` (6 files name them) -- but `system-tests/src` holds 20 files, the
-  `directory-file-count` limit, so room is made first by a move of its own (a `refactoring`: the cluster config's
-  files into a folder, their tests mirrored); (146) the one-user `EpisodeState` into episode_tracker.rs and
-  `RecoveryMessageFields` into dispatch.rs; (147) `TransactionStatus` (33 files) and (148) `TimerKey` (~100), each
-  past the threshold in a commit of its own that says why (SETUP's own provision) -- the 7th and 8th past it, the
-  95% then resting on Parts B and C's commits. A record moves without a re-export shim, each move updating every
-  importer at once.
+  `d74cdc1` (51 to 48 / 262 to 259); `EpisodeState` private in episode_tracker.rs at `dcd2720` (48 to 47 / 259 to
+  258) -- `RecoveryMessageFields` stays, its one user `dispatch.rs` being one of `IbftProtocol`'s implementation
+  files with no type of its own, so `named-subject` refuses it there: it waits on Q25 (noted there). Next:
+  (146) `TransactionStatus` into `execution-types/src/execution/transaction_status.rs` (33 files name it) and
+  (147) `TimerKey` into `types/src/timer_key.rs` (~100), each past the threshold in a commit of its own that says
+  why (SETUP's own provision) -- the 7th and 8th past it, the 95% then resting on Parts B and C's commits;
+  (148-149) system-tests' `FleetConfig`, `GenesisAccountConfig`, `NodeConfig` and `EtheramGrpcNodeTimerConfig`
+  (6 files name them) -- `system-tests/src` holds 20 files, the `directory-file-count` limit, so room is made
+  first by a move of its own (the cluster config's files into a folder, their tests mirrored; the harness and
+  its builder import them, so stage 5 runs three times). A record moves without a re-export shim, each move
+  updating every importer at once.
 - **Slice 8's detail** (records and objects, a module at a time -- `Chosen-By: no-scaffolding`; started 23:51:38Z;
   full list `overhaul-scratch/records-and-objects.txt`). Three
   kinds. (A) record with private fields -> make them `pub`: all 14 done (`3b243b5`). (B) getter-only -> delete
@@ -189,11 +192,11 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 144 on the branch; 6 past the threshold (4 planned, + `97225b7` for the dry4rust re-record,
+- **Commits:** 145 on the branch; 6 past the threshold (4 planned, + `97225b7` for the dry4rust re-record,
   `1d27ff1` for the two states' 36 accessors); bug fixes
   2 (`eba863f`, `e1232ca`); the 140th (`f18f095`) ran all three stages, as every commit has; the 150th next
 - **Tests:** 3,440 at the base, 3,670 now (stage 5 465); removed under constraint 6: 1 (`2e6d484`, Q34)
-- **Offences:** 48 as configured, 259 everything on, shear 0; Grip 748.45 / Braintax 4,702.58 (0.1592;
+- **Offences:** 47 as configured, 258 everything on, shear 0; Grip 748.45 / Braintax 4,702.58 (0.1592;
   execution-types 38.62 / 102.22 at `618a5d2`; 37.67 / 99.93 and types 72.23 / 518.56 at `23c92f9`, the block's
   accessors;
   node 325.06 / 2,354.12 at `b440217`;

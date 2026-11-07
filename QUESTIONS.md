@@ -544,6 +544,12 @@ the course the slice took and the run's recommendation; after the run, the owner
   become an object of their own, and the queries a type borrowing the coordinator and the facts; for the
   handlers that mutate, the coordinator's ownership is decided first. `IbftProtocol` is split along the lines
   Part B's seams already draw, slice by slice, each split taking its tests with it.
+- **Also waiting on it:** two `records-and-objects` offences (slice 8) -- `IbftProtocol` exposes 27 fields and
+  `RecoveryControl` 5 to their sibling implementation files, which a private field would put out of reach -- and,
+  from commit 145 (slice 9), one `record-home`: `RecoveryMessageFields` is used by `dispatch.rs` alone, one of
+  `IbftProtocol`'s implementation files, which declares no type of its own; moved there, `named-subject` refuses
+  the file as named after none of its types (tried on the branch and reverted before the commit). A merge
+  answers all three; so does a split that gives the dispatch its own type.
 
 ### 26. A recorded duplicate reshaped: the three block builders with commitments
 
