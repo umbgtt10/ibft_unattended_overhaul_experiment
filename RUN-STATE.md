@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `dcd2720` Keep the episode state private in the episode tracker (row 145)
+- **Last commit:** `3cf1ec6` Give the transaction status a file of its own (row 146)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -82,10 +82,11 @@ pushed with the record at every commit.
   twin4rust asks none of a record); `ContextHeader`, `EtheramNodeInfrastructureInputsParts` and `BytecodeStep` at
   `d74cdc1` (51 to 48 / 262 to 259); `EpisodeState` private in episode_tracker.rs at `dcd2720` (48 to 47 / 259 to
   258) -- `RecoveryMessageFields` stays, its one user `dispatch.rs` being one of `IbftProtocol`'s implementation
-  files with no type of its own, so `named-subject` refuses it there: it waits on Q25 (noted there). Next:
-  (146) `TransactionStatus` into `execution-types/src/execution/transaction_status.rs` (33 files name it) and
-  (147) `TimerKey` into `types/src/timer_key.rs` (~100), each past the threshold in a commit of its own that says
-  why (SETUP's own provision) -- the 7th and 8th past it, the 95% then resting on Parts B and C's commits;
+  files with no type of its own, so `named-subject` refuses it there: it waits on Q25 (noted there);
+  `TransactionStatus` into `execution/transaction_status.rs` at `3cf1ec6` (33 importers, past the threshold by
+  SETUP's provision, the 7th). Next: (147) `TimerKey` into `types/src/io/timer_key.rs`, beside `TimerEvent` (~96
+  single-line imports `action::TimerKey` and 8 grouped `action::{Action, TimerKey}`, written out as two; cargo fmt
+  sorts each block) -- past the threshold too, the 8th, the 95% then resting on Parts B and C's commits;
   (148-149) system-tests' `FleetConfig`, `GenesisAccountConfig`, `NodeConfig` and `EtheramGrpcNodeTimerConfig`
   (6 files name them) -- `system-tests/src` holds 20 files, the `directory-file-count` limit, so room is made
   first by a move of its own (the cluster config's files into a folder, their tests mirrored; the harness and
@@ -192,11 +193,11 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 145 on the branch; 6 past the threshold (4 planned, + `97225b7` for the dry4rust re-record,
-  `1d27ff1` for the two states' 36 accessors); bug fixes
+- **Commits:** 146 on the branch; 7 past the threshold (4 planned, + `97225b7` for the dry4rust re-record,
+  `1d27ff1` for the two states' 36 accessors, `3cf1ec6` for the transaction status's 33 importers); bug fixes
   2 (`eba863f`, `e1232ca`); the 140th (`f18f095`) ran all three stages, as every commit has; the 150th next
 - **Tests:** 3,440 at the base, 3,670 now (stage 5 465); removed under constraint 6: 1 (`2e6d484`, Q34)
-- **Offences:** 47 as configured, 258 everything on, shear 0; Grip 748.45 / Braintax 4,702.58 (0.1592;
+- **Offences:** 46 as configured, 257 everything on, shear 0; Grip 748.45 / Braintax 4,702.58 (0.1592;
   execution-types 38.62 / 102.22 at `618a5d2`; 37.67 / 99.93 and types 72.23 / 518.56 at `23c92f9`, the block's
   accessors;
   node 325.06 / 2,354.12 at `b440217`;
