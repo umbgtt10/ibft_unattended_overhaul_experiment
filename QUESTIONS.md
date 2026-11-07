@@ -50,6 +50,7 @@ After the run the owner takes each open entry -- implement, discuss, discard, po
 | 30 | commit 79, Part A | the EVM engine's `pub use` re-exports of the opcodes and `TinyEvmOpcode` -- a shim CLAUDE.md forbids -- counted as a second reader of ten opcodes commit 78 moved to a constants file; without the shim each has one reader | answered | nine go private into `tiny_evm_opcode.rs`, which alone matches on them, and `OPCODE_PUSH2` into the one test that assembles it, as stern's corrections say; no count moves, no test changes but for its imports |
 | 31 | commit 81, Part A | the diagnostic beacon's field table, `DIAGNOSTIC_FIELDS`: in a constants file, the only thing production reads it for -- `DIAGNOSTIC_MAX_BYTES` -- does not count, and stern's correction is to move the table into its test | answered | it stays beside `NodeDiagnostics`, its offence in the baseline as it was; the three byte bounds move to `diagnostic_constants.rs` and are paid |
 | 32 | commit 92, Part A | the bootstrapper's coordinator is built from what only peer discovery knows, and stern refuses anything but a parameter assigned to it, a factory's call included; the change reshapes seven recorded dry4rust groups | answered | `init` takes the coordinator; the bootstrapper's injected factory builds it, the protocol installs it; the dry4rust baseline re-recorded as entries 7, 13 and 26 did -- seven groups re-keyed, one paid group dropped, none added, 210 to 209 |
+| 33 | commit 96, Part A | `records-and-objects`' correction builds a getter-only config's `Default` by literal, and dry4rust pairs two such `Default`s -- the bootstrapping and the consensus timing configs, three fields each -- as near duplicates: alike in shape, with nothing to share | answered | the pair is recorded in the dry4rust baseline under `c2faba878ab6d286`, named here, every other group as it was -- 209 to 210 -- as the stern baseline takes an added offence named in `QUESTIONS.md`; a later commit can drop it |
 
 ## Interventions
 
@@ -671,3 +672,26 @@ the course the slice took and the run's recommendation; after the run, the owner
   `discovery_coordinator` delegating like `handle_retry` -- was removed instead: the trait impl holds the body.
   SETUP named this piece "likely past the threshold", and it is: 19 files and 548 lines, 137 of them the baseline.
 - **Commit:** 92.
+
+### 33. Two configs' defaults, alike in shape
+
+- **Raised:** commit 96, Part A, records and objects.
+- **What:** a getter-only struct's correction deletes its constructor, so its `Default` builds it by literal.
+  `ConsensusTimingConfig`'s (commit 95) and `BootstrappingConfig`'s (this commit) are each
+  `fn default() -> Self { Self { a: .., b: .., c: .. } }`, three fields of fixed values, and dry4rust reports them
+  as one near-duplicate group at 91% (`c2faba878ab6d286`). dry4rust normalizes names and values, so what it matches
+  is the shape of a three-field literal: the two share no field, no value and no meaning, and there is no part to
+  extract and hand in. The base's own baseline holds groups of this shape -- the builders' `Default`s, two groups of
+  three and six, and constructors that only copy their arguments in. Commit 95 met the same shape once, an exact
+  duplicate of a test helper building a `RecoveryRequest`, and removed it, the helper becoming the constant it was.
+  Here neither side has another form: each is a `Default` that production and tests in several crates call.
+- **Status:** answered.
+- **Answer:** the group is recorded in the dry4rust baseline (`cargo dry4rust baseline --path . --exclude-tests
+  --min-lines 5`), checked fingerprint by fingerprint against the copy kept in scratch: `c2faba878ab6d286` in, with
+  the two `Default`s as its members, and every other entry unchanged -- 209 to 210. The plan's own rule for the stern
+  baseline is the default taken: a commit whose offences fall may add one only when it is named in `QUESTIONS.md`,
+  and this one is. The gate still fails on any duplicate a change adds beyond those named here. The same answer
+  serves a later literal of this shape, each group named in its commit's message; one with a part to share is
+  shared instead. Left for whoever owns the tool: a body that is a struct literal alone could be out of the near
+  match, as code under five lines is.
+- **Commit:** 96.
