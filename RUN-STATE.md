@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `68620c3` Read and build the account through its accessors in node's, node-infra's and system-tests' tests (row 112)
+- **Last commit:** `31dea7c` Read and build the account through its accessors in validation's cluster tests (row 113)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -113,8 +113,10 @@ pushed with the record at every commit.
   plus execution-types', evm's and types' tests at `2e93617` (`refactoring`, fields still `pub`); the readers left
   are listed by compiling with the fields private (`cargo check --workspace --all-targets --keep-going
   --message-format short > overhaul-scratch/account-readers.txt`, then restoring `pub`); node's, node-infra's and
-  system-tests' tests and the trace driver at `68620c3` (`refactoring`); validation's tests are left (about 50 reads
-  and some literals), the last batch making the fields private (`rule-offence`); `RecoveryStateSnapshot` has eight fields, past clippy's
+  system-tests' tests and the trace driver at `68620c3` (`refactoring`); validation's cluster tests at `31dea7c`
+  (`refactoring`); validation's single-node tests are left (nine files: six reads, a nonce set after building,
+  18 literals), the last batch making the fields private (`rule-offence`, 11 files with `account.rs` and the
+  stern baseline -- one commit for all of validation would have been 19, past the threshold); `RecoveryStateSnapshot` has eight fields, past clippy's
   seven-argument limit for a constructor -- later; execution-types' `Account`, `Block`, `Transaction` read in
   some 70 files -- getters added first, readers moved a directory at a time in `refactoring`s, fields private last):
   `Account`, `Block` (~148 importers), `Transaction`, `TransactionReceipt` (execution-types),
@@ -123,7 +125,7 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 112 on the branch; 5 past the threshold (4 planned, + `97225b7` for the dry4rust re-record); bug fixes
+- **Commits:** 113 on the branch; 5 past the threshold (4 planned, + `97225b7` for the dry4rust re-record); bug fixes
   1 (`eba863f`); the 110th ran all three stages, as every commit has; the 120th next
 - **Tests:** 3,440 at the base, 3,650 now (stage 5 465); removed under constraint 6: 1 (`2e6d484`, Q34)
 - **Offences:** 71 as configured, 282 everything on, shear 0; Grip 659.84 / Braintax 4,524.25 (0.1458;
@@ -177,7 +179,7 @@ pushed with the record at every commit.
   slice's last; records and objects: fourteen records' fields public (`3b243b5`), two
   system-tests configs by literal (`64b9ab9`), the node's admission, timing and diagnostics configs (`c72cdf3`), the bootstrapping config (`64f562b`), the NewView message's fields (`2e6d484`), the validator set updates (`ef5f4d9`), the recovery requests (`a247cf2`), the recovery facts (`df27ed7`), the peers' recovery statuses (`12b0c09`), the last getter-only one; xtask's report and command outcome
   (`d09acfa`), the first objects; the cluster config and the fleet's block limits (`6c83656`), the prune plan and the retained counts (`1121282`), the in-flight slot (`8230a8a`), the recovery context (`97cd2da`), the protocol limits (`d8dc9d5`), the transaction receipt (`07f708e`), the in-memory states (`618894b`), the protocol config (`a2cfb60`), the account's accessors and its production readers (`2e93617`), its node, node-infra and system-tests
-  test readers (`68620c3`).
+  test readers (`68620c3`), validation's cluster tests (`31dea7c`).
 
 ## Next in line
 
