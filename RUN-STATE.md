@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `c83fba2` Bring the documents up to date with the execution seam (row 176)
+- **Last commit:** `a352577` Move the Ed25519 signature scheme out of node into node-infra (row 177)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -101,13 +101,20 @@ pushed with the record at every commit.
   crate's `src`, a manifest or a dev-dependency makes a commit `refactoring` (Q41); a contract is what every
   implementation already does -- read the default's answer first (the no-op reports nothing); a stern-clean
   rule can still be a dry4rust duplicate of a sibling's three-line idiom.
-- **Slice in progress:** Part B seam 2, `node`'s own dependencies (SETUP, *Part B*, step 2) -- `Chosen-By:
+  Part B seam 2, `node`'s own dependencies -- 1 commit, row 177 (`a352577`), 07:48Z to 07:51Z, `Chosen-By:
   no-scaffolding` (the three skipped-rule slices add scenario sources and tests in validation and system-tests
   that the seams to come reassemble -- Faction's cluster port, Beggar's recovery port, the observer's facets --
-  so after them each is written once; among the seams the set order puts step 2 next, not decided again),
-  `Over:` paired-test-file, tested-public-api, single-implemented-type. Next: `ed25519-dalek` out of `node` --
-  `Ed25519SignatureScheme` into node-infra's implementations beside `NoOpExecutionEngine`, its test with it;
-  node's certificate tests keep it through the dev-dependency on node-infra (SETUP: about 16 files, within).
+  so after them each is written once; among the seams the set order puts step 2 next, not decided again):
+  `Ed25519SignatureScheme` and its ten tests into node-infra's implementations, `ed25519-dalek` with it; `node`
+  depends on `etheram-core`, `types`, `faction`, `recovery-control` and `recovery-ibft`. Past the threshold, 25
+  files and 470 lines: SETUP counted about 16, the importers are 14 (Lesson: count a move's importers, registries
+  and manifests before trusting an estimate). No document says where the scheme lives; README's node-infra row
+  can name it at step 9.
+- **Slice in progress:** Part B seam 3, Faction (SETUP, *Part B*, step 3) -- `Chosen-By: owner-order` among the
+  bookkeepers (Faction, then Beggar, the certifier, consensus last), over the skipped-rule slices for seam 2's
+  reason. Next: read how `node` uses `faction` today -- the bootstrapper, its coordinator and factory, presence --
+  and plan the cluster port, its data model in `node`, the fixed-membership default in node-infra, the faction
+  plug-in, and a contract suite in `node-contracts`; characterization at the protocol's boundary first.
 - **Seam 1's detail:** Part B seam 1, execution, with `execution-types` dissolved (SETUP, *Part B*, step 1) --
   `Chosen-By: dependency` (every file the three skipped-rule slices add -- scenario sources, split-out types,
   tests -- would import `execution_types::` paths the merge then rewrites; merged first, each is written once),
@@ -313,11 +320,12 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 176 on the branch; 11 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
+- **Commits:** 177 on the branch; 12 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
   execution port's move, `4cfcce2` --, + `97225b7` for the dry4rust re-record, `1d27ff1` for the two states' 36
   accessors, `3cf1ec6` and `3433b15` for the transaction status's 33 importers and the timer key's 100, `2883602`
-  for the slot discovery's 11) -- 11 of 176 is 6.3%; the 95% holds at about 220 commits, SETUP's own reading of
-  the total, only if every commit from here is within it: no move across crates goes past it unsplit; bug fixes
+  for the slot discovery's 11, `a352577` for the Ed25519 scheme's 14, planned within by SETUP) -- 12 of 177 is
+  6.8%; the 95% needs about 240 commits with every commit from here within it: count a move's files first, and
+  shape the seams so a type is born where it ends; bug fixes
   2 (`eba863f`, `e1232ca`); the 150th (`7ffb333`) ran all three stages, Part A's end, the 160th (`6912269`) and
   the 170th (`2883602`); the 180th next
 - **Tests:** 3,440 at the base, 3,703 now (stage 5 465); removed under constraint 6: 1 (`2e6d484`, Q34)
@@ -407,7 +415,8 @@ pushed with the record at every commit.
   wiring -- `node` off evm (`142ce22`), the execution port into `node/src/traits` (`4cfcce2`), the
   TinyEvm slot discovery into evm (`2883602`), `node-contracts` with the contract's first two clauses (`3a96314`), its gas
   and mutation clauses (`a7bec37`), repeatability and the standard scenarios (`32ccbe1`), the engines running it
-  (`c40ab03`), the evm boundary gate (`bd30c4f`), the documents (`c83fba2`), the seam's last.
+  (`c40ab03`), the evm boundary gate (`bd30c4f`), the documents (`c83fba2`), the seam's last. `node`'s own dependencies: the Ed25519 scheme into
+  node-infra (`a352577`), the seam's one commit.
 
 ## Next in line
 
@@ -433,7 +442,8 @@ and `system-tests` (each `<scenario>_scenario_tests.rs` paired with a `<scenario
 its tests the cluster they start from), `tested-public-api` in `system-tests` (tests for the 20 functions no test
 calls), the eight `single-implemented-type` entries split; then the seams, 75 to 100 commits, in the owner's
 order -- ~~execution with `execution-types` dissolved into `types`~~ (done at `c83fba2`, 13 commits, `Chosen-By:
-dependency`), `node`'s own dependencies (in progress, `Chosen-By: no-scaffolding`), Faction, Beggar, the
+dependency`), ~~`node`'s own dependencies~~ (done at `a352577`, 1 commit, `Chosen-By: no-scaffolding`), Faction
+(in progress, `Chosen-By: owner-order`), Beggar, the
 certifier, consensus, the observer split by concern, the gates, an ADR and the living documents.
 
 Owed, for Part B's `tested-public-api` slice: `RuntimeTimerHarness::next_port` has no test (everything-on
