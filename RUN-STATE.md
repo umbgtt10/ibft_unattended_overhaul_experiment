@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `97441de` Give the vote tally a read that changes nothing (row 222)
+- **Last commit:** `1cd555a` Build the volatile state's tests through two helpers (row 223)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -143,9 +143,10 @@ pushed with the record at every commit.
   `QuorumTallyFactory` (`factories/`, a unit struct) -- done at `bd41a48`, nine tests; the port's export and restore
   now in the WAL's tuple-keyed form, so nothing converts. (e2) the read -- done at `97441de` (unplanned, Q49
   amended: `read(&self, TallyQuery::{Key, Exported})` beside the step, since the certificate and the volatile
-  snapshot read from `&self`; two tests renamed, `Maps:`). Next: (f0) volatile_state_tests through helpers
-  (`fresh_state(quorum)`, `restored_state(quorum, snapshot)`, path-rewriter over the ~45 `IbftVolatileState::new(`
-  and the `from_ibft_volatile_snapshot(` sites; `tests`); (f) the dependencies take the factory (30 sites, one line each, the seven dependency-helper pairs re-keyed as
+  snapshot read from `&self`; two tests renamed, `Maps:`). (f0) volatile_state_tests through helpers -- done at
+  `1cd555a` (`fresh_state(quorum)`, `restored_state(quorum, snapshot)`; the constructor-named test and the two
+  `from_snapshot` sites direct). Lesson: stage 1's checks and stage 2's dispatch went in one batch here -- they
+  passed, but dispatch the next stage only in a later turn. Next: (f) the dependencies take the factory (30 sites, one line each, the seven dependency-helper pairs re-keyed as
   Q46), the volatile state steps two tallies; (g) `VoteTracker` moved into `QuorumTally`; (h) `VoteTallyContract`;
   (i) the documents and the replayed-proposal open point retired. The plan of (b) was: the two red tests are in
   `overhaul-scratch/c219-ibft_cluster_message_ordering_tests.rs` (the whole file with them;
@@ -515,11 +516,11 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 222 on the branch; 13 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
+- **Commits:** 223 on the branch; 13 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
   execution port's move, `4cfcce2` --, + `97225b7` for the dry4rust re-record, `1d27ff1` for the two states' 36
   accessors, `3cf1ec6` and `3433b15` for the transaction status's 33 importers and the timer key's 100, `2883602`
   for the slot discovery's 11, `a352577` for the Ed25519 scheme's 14, planned within by SETUP, `d7d2c45` for
-  Faction's two implementations and their test files, Q43) -- 13 of 222 is 5.9%; the 95% now needs about 260
+  Faction's two implementations and their test files, Q43) -- 13 of 223 is 5.8%; the 95% now needs about 260
   commits, every one from here within it: count a move's files first, and
   shape the seams so a type is born where it ends; bug fixes
   6 (`eba863f`, `e1232ca`, `5013d0e`, `1e7ac29`, `643bfd5`, `8e1ca00`); the 150th (`7ffb333`) ran all three stages, Part A's end, the 160th (`6912269`) and
