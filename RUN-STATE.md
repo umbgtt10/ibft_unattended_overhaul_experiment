@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `3867552` Read the context snapshot through its getters in consensus (row 129)
+- **Last commit:** `2f65d20` Read and build the context snapshot through its accessors in the node (row 130)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -127,14 +127,13 @@ pushed with the record at every commit.
   constructor of 28 -- left in the baseline), `ContextSnapshot` (node; in progress: 13 getters, a `with_` per
   set field -- `as_variant` for the variant, `with_variant` being the constructor -- and `with_account`,
   `with_block`, `with_pending_transaction` for the 84 in-place inserts and pushes in tests, all at `b440217` with
-  the context's own tests; `consensus.rs` at `3867552`; next, from `git stash` ("c130-pending"): the other ten
-  production readers, already converted (dispatch, peer_discovery,
-  validation, recovery_host/snapshot, recovery_routing, diagnostics, new_view_validator, protocol,
-  recovery_intent_realization, pending_preprepare_replay_context) with the builder (in the stash too; a copy in
-  `overhaul-scratch/snapshot_context_builder.rs.c130`; it re-keys a dry4rust trio, `d0de4dcaee535de8` to
-  `7c1a07413735c63e`, Q35) -- a stash pop that conflicts on files HEAD has since formatted: take HEAD's and
-  `git stash drop`; then the tests (node 11 files ~200 sites, validation's `scenario_helpers.rs` and tests), the fields
-  private last), `IbftProtocol` (Q25) (node),
+  the context's own tests; `consensus.rs` at `3867552`; the other ten production readers and the builder at
+  `2f65d20` (three dry4rust groups re-keyed, members unchanged, Q35 -- re-record with `--path .` from the start
+  folder: an absolute path rewrites every closure's name); next the tests: node's
+  `snapshot_context_builder_tests.rs` (~120 reads, `replace_all` per field) alone, then validation_tests,
+  consensus_tests, dispatch_tests (two `ctx.variant =`, four `ctx.accounts.insert`), scenario_helpers, recovery_host's
+  routing/process/intent tests, pending_preprepare_replay_context_tests, diagnostics_tests; then validation's
+  `scenario_helpers.rs` and tests; the fields private last), `IbftProtocol` (Q25) (node),
   `RecoveryControl` (Q25) (recovery). SETUP's 6-10 for the slice is its commit range, not what is left
   (read wrongly here until row 114): the stern baseline is to end holding the cluster harness's time reads alone,
   so every object closes, the upper end of the range being the protocol's and control's types (Q25) and
@@ -156,9 +155,9 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 129 on the branch; 6 past the threshold (4 planned, + `97225b7` for the dry4rust re-record,
+- **Commits:** 130 on the branch; 6 past the threshold (4 planned, + `97225b7` for the dry4rust re-record,
   `1d27ff1` for the two states' 36 accessors); bug fixes
-  2 (`eba863f`, `e1232ca`); the 110th ran all three stages, as every commit has; the 120th next
+  2 (`eba863f`, `e1232ca`); the 130th (`2f65d20`) ran all three stages, as every commit has; the 140th next
 - **Tests:** 3,440 at the base, 3,661 now (stage 5 465); removed under constraint 6: 1 (`2e6d484`, Q34)
 - **Offences:** 65 as configured, 276 everything on, shear 0; Grip 734.29 / Braintax 4,676.19 (0.1570;
   node 325.06 / 2,354.12 at `b440217`;

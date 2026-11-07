@@ -769,7 +769,11 @@ the course the slice took and the run's recommendation; after the run, the owner
   and node's tests, reshaped alike by `with_active_validators`: `256b6ee250ec7b90` out, `53d1f2df9ed91e42` in; a
   near pair of test helpers paid beside it, 203 to 202. Commit 127 -- system-tests' `sample_hard_state` and
   `sample_locked_wal`, the same sample state in two test files, now `with_` chains: `68a95c56852dda33` out,
-  `defbb0eb7230cf71` in, 203 kept.
+  `defbb0eb7230cf71` in, 203 kept. Commit 130 -- the context snapshot's getters and `with_` chains reshape three
+  groups: the snapshot context builder's consensus-reply, recovery-response and request-status contexts
+  (`d0de4dcaee535de8` out, `7c1a07413735c63e` in), dispatch's commit and prepare handlers (`0f12aadf1ae33d5d` out,
+  `48bb57ae90e740a3` in) and validation's commit and prepare checks (`b4cf6cb55629bbab` out, `9178a547e5c34ac8` in),
+  each with the same members, 200 kept.
 
 ### 36. The hard state drops a pending block's transaction data
 
