@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `31dea7c` Read and build the account through its accessors in validation's cluster tests (row 113)
+- **Last commit:** `a449311` Keep the account's fields private; read and build it through its accessors (row 114)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -65,7 +65,7 @@ pushed with the record at every commit.
   Lessons: stern refuses anything but a parameter assigned to a trait-typed field, an injected factory's call
   included -- split build from install; a delegating trait-impl stub can be a dry4rust near duplicate of
   another, so let the impl hold the body; a planned past-threshold commit says so in `Threshold: exceeded --`.
-- **Slice in progress:** Part A slice 8, records and objects, a module at a time -- records-and-objects 11 left
+- **Slice in progress:** Part A slice 8, records and objects, a module at a time -- records-and-objects 10 left
   (`Chosen-By: no-scaffolding`; started 23:51:38Z; full list `overhaul-scratch/records-and-objects.txt`). Three
   kinds. (A) record with private fields -> make them `pub`: all 14 done (`3b243b5`). (B) getter-only -> delete
   the getters and constructor, `pub` fields, built by literal: all 11 done (`EtheramGrpcNodeTimerConfig`,
@@ -101,22 +101,25 @@ pushed with the record at every commit.
   209; `tested-public-api` counts calls per package -- the declaring package's own tests must call each getter);
   node-infra's three in-memory states at `618894b` (`open_queue`/`open_inbox`, `pop_*`, `push_response`, eight
   tests; three dry4rust groups paid, one re-keyed, 209 to 206); `IbftProtocolConfig` at `a2cfb60` (handed over as
-  `into_parts()` -> `IbftProtocolConfigParts`, the dependencies' shape); 11 left: `Account`, `Block`, `Transaction`
+  `into_parts()` -> `IbftProtocolConfigParts`, the dependencies' shape); `Account` at `a449311` (four commits,
+  rows 111-114); 10 left: `Block`, `Transaction`
   (execution-types), `NodeDiagnostics`, `ContextSnapshot`, `IbftProtocol` (Q25) (node),
   `RecoveryStateSnapshot`, `RecoveryControl` (Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types) -- the types' three built by literal in some 38 files, `..Default::default()`
   among them, which private fields forbid outside the crate: getters and constructors first, call sites in
-  `refactoring` batches, fields private last. SETUP predicts 6-10 left at the end, the upper end being the
-  protocol's and control's types (Q25) and `Block`/`Transaction`/`Account` ("every reader changes"); decision 1:
+  `refactoring` batches, fields private last. SETUP's 6-10 for the slice is its commit range, not what is left
+  (read wrongly here until row 114): the stern baseline is to end holding the cluster harness's time reads alone,
+  so every object closes, the upper end of the range being the protocol's and control's types (Q25) and
+  `Block`/`Transaction`/`Account` ("every reader changes"); decision 1:
   no behaviour moved only to change a type's kind -- so `NodeDiagnostics` (27 fields and one `const fn`) cannot be
-  made a record by moving its function out. `Account` in progress: its accessors and every production reader
+  made a record by moving its function out. How `Account` went: its accessors and every production reader
   plus execution-types', evm's and types' tests at `2e93617` (`refactoring`, fields still `pub`); the readers left
-  are listed by compiling with the fields private (`cargo check --workspace --all-targets --keep-going
-  --message-format short > overhaul-scratch/account-readers.txt`, then restoring `pub`); node's, node-infra's and
-  system-tests' tests and the trace driver at `68620c3` (`refactoring`); validation's cluster tests at `31dea7c`
-  (`refactoring`); validation's single-node tests are left (nine files: six reads, a nonce set after building,
-  18 literals), the last batch making the fields private (`rule-offence`, 11 files with `account.rs` and the
-  stern baseline -- one commit for all of validation would have been 19, past the threshold); `RecoveryStateSnapshot` has eight fields, past clippy's
+  listed by compiling with the fields private (`cargo check --workspace --all-targets --keep-going
+  --message-format short > overhaul-scratch/account-readers.txt`, then restoring `pub` -- struct literals'
+  E0451 surface only once the field reads' E0616 are gone, so grep for `Type {` too); node's, node-infra's and
+  system-tests' tests and the trace driver at `68620c3`; validation's cluster tests at `31dea7c`; the single-node
+  tests and the fields private at `a449311` (`rule-offence`, 11 files with `account.rs` and the stern baseline --
+  all of validation in one would have been 19, past the threshold); `RecoveryStateSnapshot` has eight fields, past clippy's
   seven-argument limit for a constructor -- later; execution-types' `Account`, `Block`, `Transaction` read in
   some 70 files -- getters added first, readers moved a directory at a time in `refactoring`s, fields private last):
   `Account`, `Block` (~148 importers), `Transaction`, `TransactionReceipt` (execution-types),
@@ -125,10 +128,10 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 113 on the branch; 5 past the threshold (4 planned, + `97225b7` for the dry4rust re-record); bug fixes
+- **Commits:** 114 on the branch; 5 past the threshold (4 planned, + `97225b7` for the dry4rust re-record); bug fixes
   1 (`eba863f`); the 110th ran all three stages, as every commit has; the 120th next
 - **Tests:** 3,440 at the base, 3,650 now (stage 5 465); removed under constraint 6: 1 (`2e6d484`, Q34)
-- **Offences:** 71 as configured, 282 everything on, shear 0; Grip 659.84 / Braintax 4,524.25 (0.1458;
+- **Offences:** 70 as configured, 281 everything on, shear 0; Grip 659.84 / Braintax 4,524.25 (0.1458;
   execution-types 17.72 / 66.79 at `2e93617`;
   node 301.27 / 2,300.34 at `a2cfb60`;
   node-infra 151.68 / 596.73 at `618894b`;
@@ -179,7 +182,7 @@ pushed with the record at every commit.
   slice's last; records and objects: fourteen records' fields public (`3b243b5`), two
   system-tests configs by literal (`64b9ab9`), the node's admission, timing and diagnostics configs (`c72cdf3`), the bootstrapping config (`64f562b`), the NewView message's fields (`2e6d484`), the validator set updates (`ef5f4d9`), the recovery requests (`a247cf2`), the recovery facts (`df27ed7`), the peers' recovery statuses (`12b0c09`), the last getter-only one; xtask's report and command outcome
   (`d09acfa`), the first objects; the cluster config and the fleet's block limits (`6c83656`), the prune plan and the retained counts (`1121282`), the in-flight slot (`8230a8a`), the recovery context (`97cd2da`), the protocol limits (`d8dc9d5`), the transaction receipt (`07f708e`), the in-memory states (`618894b`), the protocol config (`a2cfb60`), the account's accessors and its production readers (`2e93617`), its node, node-infra and system-tests
-  test readers (`68620c3`), validation's cluster tests (`31dea7c`).
+  test readers (`68620c3`), validation's cluster tests (`31dea7c`), its fields private (`a449311`).
 
 ## Next in line
 
