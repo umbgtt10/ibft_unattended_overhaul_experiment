@@ -278,3 +278,4 @@ commit_n,attempt,kind,stages,start,finish,outcome,refused_by,files_added,files_r
 272,1,rule-offence,"1, 2, 5",2026-11-07T16:11:32Z,2026-11-07T16:13:35Z,landed,,1,2,2,148,158
 273,1,refactoring,"1, 2, 5",2026-11-07T16:16:07Z,2026-11-07T16:18:11Z,landed,,0,0,2,116,114
 274,1,rule-offence,"1, 2, 5",2026-11-07T16:20:09Z,2026-11-07T16:22:15Z,landed,,0,1,2,95,112
+275,1,refactoring,"1, 2, 5",2026-11-07T16:24:34Z,2026-11-07T16:26:37Z,landed,,1,0,2,94,76
