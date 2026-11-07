@@ -222,3 +222,4 @@ commit_n,attempt,kind,stages,start,finish,outcome,refused_by,files_added,files_r
 216,1,refactoring,"1, 2, 5",2026-11-07T11:24:39Z,2026-11-07T11:26:28Z,landed,,0,0,5,94,0
 217,1,support,2,2026-11-07T11:27:59Z,2026-11-07T11:28:38Z,landed,,0,0,3,11,2
 218,1,tests,"1, 2",2026-11-07T11:36:58Z,2026-11-07T11:37:56Z,landed,,0,0,1,70,0
+219,1,bug-fix,"1, 2, 5",2026-11-07T11:45:18Z,2026-11-07T11:47:47Z,landed,,0,0,14,225,12
