@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `d4ec8e9` Take returned-mutations out of node's stand-down (row 327)
+- **Last commit:** `1fe8c46` Let the round driver return a round's steps for the cluster to play (row 328)
 - **Step now:** Part B step 8, the gates -- started 21:03Z, the scope Q56 (answered), the recovery crates' part
   Q57 (open: `node` keeps `recovery-control` and `recovery-ibft`, which the gate names as owed). In order: (a)
   `returned-mutations` paid in node (20, five files), then validation (17, three files, about 240 call sites in
@@ -25,11 +25,20 @@ pushed with the record at every commit.
   two account appliers and consensus's `apply_proposal_commitments` returning what they changed; message security's
   two certificate encoders returning bytes (the header one `concat`, the prepares one chain, since field by field it
   sat beside the WAL encoder's `encode_cert` as a near copy). (3) node's stand-down out -- `d4ec8e9` (`support`, stage 2, 3 files, 58 lines:
-  `stern4rust.toml`'s section and comment, CLAUDE.md, OPEN_POINTS' row; node applies all thirty-nine). Next:
-  validation's 17: `RoundDriver`'s 9 and the cluster helpers' 6 take the cluster by `&mut` -- as `IbftCluster`'s
-  own `&mut self` methods or by value; `drive_to_commit` and `advance_protocol_past_discovery` are recorded dry4rust
-  exact pairs with node's test copies (`bf88d45c0c9668dd`, `c225bf6e826907a1`), and the two `finalize_round_*`
-  a recorded near pair (`0bb0e887e401ad90`) -- reshaping one member reshapes the group; 219 call sites.
+  `stern4rust.toml`'s section and comment, CLAUDE.md, OPEN_POINTS' row; node applies all thirty-nine). (4) `RoundDriver`'s 9 -- `1fe8c46` (stages 1 and
+  2, 6 files, 196 lines; 17 to 8, everything on 50 to 41): each phase returns its `RoundStep`s (new record,
+  `validation/src/round_step.rs`, the message an `IbftPeerMessage` since clippy refuses a 360-byte variant), the
+  cluster's `play` applies them, `commit_round` and `commit_round_after_proposer_timer` play the plan; the two now a
+  90% near pair, entry 33's case, `9e7d7502ee4159aa` inserted by hand as the tool recorded it (a whole re-record
+  also rewrites every member name renamed since, 240 lines and no fingerprint; the scratch copy
+  `dry-baseline-before-c328.json`), 192 to 193. Next, the 8 left: the cluster helpers' 5
+  (`advance_cluster_past_discovery`, `commit_next`, `commit_many`, the two `finalize_round_*`) become `IbftCluster`'s
+  own `&mut self` methods -- by value would move the cluster out of the test-side helpers that hold it by `&mut`
+  -- in two commits of 18 files or fewer (the methods and the first callers a `refactoring`, the rest and the free
+  functions out a `rule-offence`); the two `finalize_round_*` are the recorded near pair `0bb0e887e401ad90`, re-keyed
+  as methods (entry 35); then the protocol drivers' 3 (`advance_protocol_past_discovery` in both helper files,
+  `drive_to_commit`) by value, `IbftProtocol` being node's -- their exact pairs with node's test copies
+  (`bf88d45c0c9668dd`, `c225bf6e826907a1`) become near ones, re-keyed as commit 120 did (entry 35).
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -899,19 +908,19 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 327 on the branch; 14 past the threshold (7 planned -- the 5th the merge, `8afa421`, the 6th the
+- **Commits:** 328 on the branch; 14 past the threshold (7 planned -- the 5th the merge, `8afa421`, the 6th the
   execution port's move, `4cfcce2` --, + `97225b7` for the dry4rust re-record, `1d27ff1` for the two states' 36
   accessors, `3cf1ec6` and `3433b15` for the transaction status's 33 importers and the timer key's 100, `2883602`
   for the slot discovery's 11, `a352577` for the Ed25519 scheme's 14, planned within by SETUP, `d7d2c45` for
   Faction's two implementations and their test files, Q43; the 7th planned, `6fc97b9`, `SledStorageInner`'s 678
-  lines, which `implemented-in-one-file` moves whole) -- 14 of 327 is 4.3%, 313 of 327 within; the 95% reached at the 260th (247 of 260 within), and it holds only while every
+  lines, which `implemented-in-one-file` moves whole) -- 14 of 328 is 4.3%, 314 of 328 within; the 95% reached at the 260th (247 of 260 within), and it holds only while every
   commit from here stays within: count a move's files first, and
   shape the seams so a type is born where it ends; bug fixes
   6 (`eba863f`, `e1232ca`, `5013d0e`, `1e7ac29`, `643bfd5`, `8e1ca00`); the 150th (`7ffb333`) ran all three stages, Part A's end, the 160th (`6912269`) and
   the 170th (`2883602`), the 180th (`b31593c`), the 190th (`c885cf9`), the 200th (`7508819`), the 210th
   (`e04403c`), the 220th (`e329250`), the 230th (`5ebe5f1`), the 240th (`18baf35`), the 250th (`8bdb859`), the 260th (`1fef15d`), the 270th (`fdd825e`), the 280th (`00c5f1b`), the 290th (`0b135b2`), the 300th (`2a7c601`), the 310th (`44b91f4`) and the 320th (`694fb62`); the 330th next
 - **Tests:** 3,440 at the base, 3,885 now (stage 5 511); removed under constraint 6: 1 (`2e6d484`, Q34)
-- **Offences:** 33 as configured (single-implemented-type 0), 50 everything on (returned-mutations 17, all validation's, from 37 at `6fc97b9`; paired-test-file 0, from 100 at `4a976c2`; tested-public-api 0,
+- **Offences:** 33 as configured (single-implemented-type 0), 41 everything on (returned-mutations 8, all validation's, from 37 at `6fc97b9`; paired-test-file 0, from 100 at `4a976c2`; tested-public-api 0,
   from 25 at `15e7d4d` and 17 at `ca72bf4`, Q52, Q54), shear 0; Grip 791.40 / Braintax 4,865.29 (0.1627 at `d517272`, node 331.86 / 2,338.42; 787.08 /
   4,869.10, 0.1616 at `508fa94`, node 327.54 / 2,342.23, the WAL encoder returning its bytes; 780.18 / 4,868.87, 0.1602 at `1f5213f`, the tracker into the tally, node-infra
   166.15 / 700.19 and node 320.64 / 2,342.00; 782.93 / 4,880.81, 0.1604 at `58844eb`, the tally port, node-infra

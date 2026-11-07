@@ -747,7 +747,11 @@ the course the slice took and the run's recommendation; after the run, the owner
   the old way; 196 to 193. Commit 187 -- node's recording observer gives its readiness record to node-faction's
   tests, and its `readiness_transition_observed` becomes an empty six-line method like the 42 of the group of empty
   observer methods, `d4439664a026e9d5`, which takes it as its 43rd member; the facet's members, renamed by 186, are
-  named again; 196 kept.
+  named again; 196 kept. Commit 328 -- `IbftCluster::commit_round` and `commit_round_after_proposer_timer`, each
+  building a round driver from the same five values and playing one of its two plans, recorded as the near pair
+  `9e7d7502ee4159aa`, 192 to 193. It was inserted by hand, entry for entry as the tool recorded it, because a whole
+  re-record also rewrites every member name renamed since the last recording, some 240 lines without a
+  fingerprint among them.
 
 ### 34. A getter's test the record-alone rule refuses
 
