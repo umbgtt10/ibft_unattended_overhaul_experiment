@@ -66,6 +66,7 @@ After the run the owner takes each open entry -- implement, discuss, discard, po
 | 46 | before commit 209, Part B, the Beggar seam | the dependencies taking the factory change 30 sites in 11 files, re-key the seven pairs the dry4rust baseline records for node's and validation's dependency helpers and pay an eighth, near the threshold whole; the factory's default, the one-line form, joins a recorded group of seven `empty_state` helpers | answered | two commits: the default first, its group recorded with an eighth member as entry 33 did, then the wiring with the seven pairs re-keyed as entry 35 did |
 | 47 | after commit 214, Part B, the certifier's seam | the seam SETUP names -- `node`'s `SignatureScheme` port, `Ed25519SignatureScheme` behind it in `node-infra`, every key derived from the peer id -- already stands; which of the seam's pieces are left, and whether the port takes a height | answered | the port is today's, with no height (decision 9; a height comes with the key variants, decision 5); the protocol boundary is characterized already; what is left is a contract suite every scheme runs -- what one member signs, every member accepts as that member's, for messages and certificates both -- and the documents |
 | 48 | after commit 217, Part B, the consensus seam | the one recorded bug in consensus's code: a buffered proposal is replayed under the context of the message that released it, without the accounts its transactions touch; SETUP fixes it by re-queuing, so the runtime builds it its own, and no action re-queues today | answered | a new `Action::RequeueMessage`, which the partitioner routes to the node's own work; `EtheramNode` serves re-queued messages before its event source; both buffers re-queue a held proposal and replay votes in place as now; the replay report gains a `Requeued` blocker; three consumer breaks, named in the commit |
+| 49 | after commit 219, Part B, the consensus seam | the port for "the quorum, the tallies and the decision", in the step shape (decision 9), when consensus is `IbftProtocol`'s own methods and its tallies two `VoteTracker`s inside the volatile state | answered | `VoteTally::step(TallyInput) -> TallyOutput`, one tally per phase, holding its quorum and answering whether a key has reached it; the volatile state the adapter, its methods unchanged, so consensus's code is not touched; the default `QuorumTally` in node-infra over today's tracker, built by a `VoteTallyFactory` the dependencies take; view changes stay evidence; a contract suite |
 
 ## Interventions
 
@@ -1197,3 +1198,47 @@ the course the slice took and the run's recommendation; after the run, the owner
     proposal, and a changed trace is accepted only where this commit explains it;
   - the port's design comes after the fix, in an entry of its own.
 - **Commit:** 218, 219.
+
+### 49. The consensus port: the quorum, the tallies and the decision, in the step shape
+
+- **Raised:** after commit 219, Part B, the consensus seam, its recorded bug fixed.
+- **What:** step 6 puts "the quorum, the tallies and the decision behind a port, in the shape agreed on 2026-10-18 -- a
+  step from inputs to outputs, time and randomness outside it". Decision 9 gives consensus the step shape where the
+  other bookkeepers kept their call sites' shape. Consensus today is `IbftProtocol`'s own methods, in `consensus.rs`.
+  Its tallies are two `VoteTracker`s, prepare and commit, inside `IbftVolatileState`, each built with the quorum.
+  Consensus reaches them through about ten volatile-state calls: record a vote; read a key's voters; ask whether a key
+  has its quorum; clear them for a new round; replace them at a new quorum when the membership changes; export and
+  restore them for the WAL's volatile snapshot. Only `IbftProtocol::new` builds the volatile state. The quorum itself,
+  ⌊2n/3⌋+1, is `ValidatorSet::quorum_size()` in `types`, and invariant 1 rests on it. The view-change proofs are
+  counted where they are kept, with their signatures, for the NewView's evidence.
+- **Status:** answered, from decision 9, the seam template and the house's precedents (entries 42, 44 and 47).
+- **Answer:**
+  - **the port is `VoteTally::step(TallyInput) -> TallyOutput`**, in `node/src/traits`, `#[must_use]`, one tally per
+    phase. Its inputs, in a data model under `node/src/ibft/tally/`, are:
+    - a vote cast for a key -- height, round, block hash -- by a voter;
+    - a key read;
+    - the round cleared;
+    - the tally resized to a new quorum;
+    - its votes exported for the snapshot, or restored from one.
+    Its outputs are a key's tally (its voters, and whether they reach the quorum), the export, or a bare
+    acknowledgement. No input carries a time or a random value. The tally holds its quorum, and "reached" is the
+    decision. The quorum's value stays `ValidatorSet`'s, handed in at construction and on each resize, so invariant 1
+    has one source and nothing in this seam can change it;
+  - **the volatile state is the adapter.** Its tally methods keep their signatures and step the port, so `consensus.rs`
+    and every test of consensus are untouched, and a characterization commit would only repeat the prepare- and
+    commit-quorum tests consensus already has, at both tiers;
+  - **the default is node-infra's `QuorumTally`**, today's tracker behind the port, built by a `VoteTallyFactory` (a
+    port beside it) that `IbftProtocolDependencies` takes, with a `Default`. That is entry 46's shape again: a one-line
+    site, and the dependency helpers' recorded dry4rust pairs re-keyed. The tracker first moves behind the port in
+    node-infra by delegation, and then wholly, so no commit holds a copy;
+  - **view changes stay where they are**: their proofs are the round change's evidence, kept with their signatures,
+    and the certifier's data rather than a tally;
+  - **a contract suite**, `VoteTallyContract`, in node-contracts: the quorum-th distinct voter reaches the quorum and
+    the one before does not; a voter counts once; keys do not mix; a cleared or resized tally starts empty; an export
+    restored answers as it did. `QuorumTally` runs it;
+  - **in order**: the port and its data model; the default by delegation, with its factory; the dependencies taking
+    the factory and the volatile state stepping the port; the tracker moved into the default; the contract and its
+    run; the documents, retiring the replayed-proposal open point with the rest;
+  - **the consumer's breaks** (decision 11): `IbftProtocolDependencies::new` gains the factory, and
+    `IbftVolatileState`'s constructors take the two tallies. Both are named in their commits.
+- **Commit:** 220 onward.
