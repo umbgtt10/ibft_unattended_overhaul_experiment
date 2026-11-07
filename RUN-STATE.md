@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `520ee10` Bring the gate documents up to date with the six gates and the 41-entry baseline (row 149)
+- **Last commit:** `7ffb333` Retire the three open points the overhaul closed into the history folder (row 150)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -78,17 +78,13 @@ pushed with the record at every commit.
   seven past the threshold by SETUP's provision (`TransactionStatus`, `TimerKey`). Lessons: `cargo xtask measure`
   reads the staged tree; a folder of records adds no file to a full directory; cargo fmt leaves over-long imports
   unsorted; never `--write-baseline` over a reported offence.
-- **Slice in progress:** Part A slice 10, living documents in `etheram-ibft`, any baseline re-recorded (SETUP: 1-2
-  commits) -- the last of Part A; then Part B. `Chosen-By: no-scaffolding`, `Over: none`. The gate documents at
-  `520ee10` (`support`: CLAUDE.md's six stage-2 gates and install lines, the baseline's 41 in CLAUDE.md,
-  stern4rust.toml and OPEN_POINTS -- with what the 41 are --, stern4rust.toml's stale package and rule counts, the
-  justfile's comment). Next and last (commit 150, the 150th and Part A's end, so stages 1, 2, 5): the three
-  OPEN_POINTS entries this run resolved, moved verbatim into `docs/history/[IMPLEMENTED]
-  RESOLVED-OPEN-POINTS-2026-11-07.md`, each followed by a **Closed:** line as the 2026-10-18 file does -- "Three
-  conflict-detection tests pass with blocks that are invalid anyway" (Part 0, `529bb6f`, `db8e4ba`, `da850ab`,
-  `33d610a`, `dfab36a`, `bc68c24`, Q4), "REMOVED: the harness helper tests" (`43ead85` five back, `41891d0` the
-  fallback behind a trait, `d2cbd53`/`eba863f`), "The retention tests race a deadline" (`7f2fed8` stall-based waits,
-  `e61f584` the wait's report, `f5a0be9` slotgate's 160 s).
+  Part A slice 10, living documents -- 2 commits, rows 149 and 150 (`520ee10`, `7ffb333`), against SETUP's 1-2;
+  `support`: CLAUDE.md's six stage-2 gates, the baseline's 41 (with what they are) in CLAUDE.md, stern4rust.toml
+  and OPEN_POINTS, stern4rust.toml's stale package and rule counts, the justfile's comment; the three open points
+  this run closed retired verbatim into `docs/history/[IMPLEMENTED] RESOLVED-OPEN-POINTS-2026-11-07.md`, each with
+  a **Closed:** line. **Part A is done.**
+- **Slice in progress:** none -- Part B begins. Read SETUP's *Part B: the restructuring* and *Choosing the next
+  slice*, and pick its first slice (`Next in line` lists them).
 - **Slice 9's detail:** record-home 23 (SETUP: 4-6
   commits; 13 records named in a crate's public API but declared in another type's file, 8 wire types used by
   several files but not `pub`, 2 records with one user in files of their own); listed in
@@ -208,10 +204,10 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 149 on the branch; 8 past the threshold (4 planned, + `97225b7` for the dry4rust re-record,
+- **Commits:** 150 on the branch; 8 past the threshold (4 planned, + `97225b7` for the dry4rust re-record,
   `1d27ff1` for the two states' 36 accessors, `3cf1ec6` and `3433b15` for the transaction status's 33 importers
   and the timer key's 100 -- 8 of 147 is 5.4%, so the 95% needs Parts B and C to add commits within it); bug fixes
-  2 (`eba863f`, `e1232ca`); the 140th (`f18f095`) ran all three stages, as every commit has; the 150th next
+  2 (`eba863f`, `e1232ca`); the 150th (`7ffb333`) ran all three stages, Part A's end; the 160th next
 - **Tests:** 3,440 at the base, 3,670 now (stage 5 465); removed under constraint 6: 1 (`2e6d484`, Q34)
 - **Offences:** 41 as configured, 252 everything on, shear 0; Grip 748.45 / Braintax 4,702.58 (0.1592;
   execution-types 38.62 / 102.22 at `618a5d2`; 37.67 / 99.93 and types 72.23 / 518.56 at `23c92f9`, the block's
@@ -240,7 +236,9 @@ pushed with the record at every commit.
 
 - **Started (UTC):** 2026-11-06T16:02:08Z; branch `unattended-overhaul` created from `8a775a2`.
 - **Part 0:** 25 commits, 16:09 to 17:50.
-- **Part A so far:** `--fix` (`03744d2`); the harness: five tests back (`43ead85`), the build fallback behind a
+- **Part A:** 125 commits, rows 26 to 150 (`03744d2` to `7ffb333`), 2026-11-06T17:50Z to 2026-11-07T05:14Z, against
+  SETUP's about 75 (60 to 95); offences 483 to 41 as configured and 696 to 252 everything on; tests 3,519 to 3,670;
+  8 commits past the threshold of 150. Its commits: `--fix` (`03744d2`); the harness: five tests back (`43ead85`), the build fallback behind a
   trait (`41891d0`), its `.exe` bug (`d2cbd53`, `eba863f`), stall-based waits (`7f2fed8`); xtask's timeless tests
   (`4d52581`); time behind ports: scratch names (`e950eb0`), the log's wall clock (`97225b7`), the timer's clock
   (`1b0171b`), the sleeper (`3e9c051`), the client-interface bus
@@ -274,8 +272,14 @@ pushed with the record at every commit.
   production readers (`ac456b9`), its system-tests and trace-driver readers (`cbbd2f6`), its fields private (`e39ac2c`); the recovery state snapshot (`525d620`); the world state snapshot's accessors and production readers
   (`439551b`), its fields private (`3afac18`); the hard state's and volatile snapshot's accessors, production
   readers and types tests (`1d27ff1`), their test readers (`278fb05`, `a7f097b`, `8d4b1cf`, `8843e5c`), their
-  fields private (`4612b79`); bugs found on the way: the hard state's dropped transaction data (`e1232ca`,
-  Q36).
+  fields private (`4612b79`); the context snapshot's accessors (`b440217`), its readers (`3867552`, `2f65d20`,
+  `3c58db8`, `d5048cc`, `a28e815`), its fields private (`70df3dd`); the block's accessors (`23c92f9`), its
+  readers (`618a5d2`, `65a4f5e`, `5f1c775`, `fd46022`, `f18f095`), its fields private (`ca372f1`), the slice's
+  last; record home: system-tests' wire types public (`72ebb5b`), the WAL field groups (`79526b2`), the context
+  header, inputs' parts and bytecode step (`d74cdc1`), the episode state (`dcd2720`), the transaction status
+  (`3cf1ec6`), the timer key (`3433b15`), system-tests' configs (`e7da3a4`), the slice's last; living documents:
+  the gate documents (`520ee10`), the three resolved open points retired (`7ffb333`), Part A's last; bugs found on
+  the way: the hard state's dropped transaction data (`e1232ca`, Q36).
 
 ## Next in line
 
@@ -290,15 +294,22 @@ Part A's slices, in order, with the criterion that put each there (`SETUP.md`, *
 | 5 | ~~named values for tuples~~ -- done at `abe8d70`, 7 commits | distinct-tuple-elements 11 | fastest-feedback |
 | 6 | ~~constants given one home~~ -- done at `8fd7429`, 12 commits; `DIAGNOSTIC_FIELDS` left (Q31) | shared-constants 91 | fastest-feedback |
 | 7 | ~~a trait-typed field only from a constructor parameter~~ -- done at `cec0c5b`, 5 commits | injected-dependencies 5 | no-scaffolding |
-| 8 | records and objects, a module at a time | records-and-objects 51 | no-scaffolding (last) |
-| 9 | each record in the module of what uses it | record-home 23 | no-scaffolding (last) |
-| 10 | living documents; the dry4rust baseline re-recorded | -- | -- |
+| 8 | ~~records and objects, a module at a time~~ -- done at `ca372f1`, 49 commits; 3 left (Q25, Q37) | records-and-objects 51 | no-scaffolding (last) |
+| 9 | ~~each record in the module of what uses it~~ -- done at `e7da3a4`, 7 commits; 1 left (Q25) | record-home 23 | no-scaffolding (last) |
+| 10 | ~~living documents~~ -- done at `7ffb333`, 2 commits | -- | no-scaffolding |
 
-Owed: `RuntimeTimerHarness::next_port` has no test (everything-on `tested-public-api`) -- Part B's slice; nor has
-`RuntimeTimerHarness::new`, which the tool stopped reporting at `3868a69` only because it matches calls by name and
-arity (seven arguments, like some other `new` a test calls) -- Part B's slice must test it all the same.
-Living documents owed: `stern4rust.toml`'s and `CLAUDE.md`'s "483"; stage 2's new gates (shear, dry4rust) in
-`CLAUDE.md` and the justfile.
+Part B's, as SETUP lists them (*Part B: the restructuring*; to be chosen one at a time by *Choosing the next
+slice*): the skipped rules, 20 to 30 commits -- `returned-mutations` in `evm` (the interpreter's 52 operations
+that take the machine by `&mut` become functions returning what they change), `paired-test-file` in `validation`
+and `system-tests` (each `<scenario>_scenario_tests.rs` paired with a `<scenario>_scenario.rs` in `src` that hands
+its tests the cluster they start from), `tested-public-api` in `system-tests` (tests for the 20 functions no test
+calls), the eight `single-implemented-type` entries split; then the seams, 75 to 100 commits, in the owner's
+order -- execution with `execution-types` dissolved into `types`, `node`'s own dependencies, Faction, Beggar, the
+certifier, consensus, the observer split by concern, the gates, an ADR and the living documents.
+
+Owed, for Part B's `tested-public-api` slice: `RuntimeTimerHarness::next_port` has no test (everything-on
+`tested-public-api`); nor has `RuntimeTimerHarness::new`, which the tool stopped reporting at `3868a69` only because
+it matches calls by name and arity (seven arguments, like some other `new` a test calls) -- test it all the same.
 
 ## Parked
 
