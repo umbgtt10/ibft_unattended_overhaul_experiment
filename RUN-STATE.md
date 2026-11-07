@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `0d46800` Give the recovery control factory the default every assembly builds (row 209)
+- **Last commit:** `e04403c` Let the protocol's dependencies take the recovery factory (row 210)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -180,11 +180,11 @@ pushed with the record at every commit.
   (unplanned, Trigger Q46: `RecoveryControlFactory::default()`, the one-line form for the 28 default sites; the
   dry4rust group `cf60ee414b625be5` of seven `empty_state` helpers recorded with it as an eighth member, as Q33 did).
   Lesson: `cargo dry4rust baseline --path <absolute>` writes closure names with the checkout's path -- restore
-  `closure at ./` (Edit, replace all) and read the diff before staging. The wiring is in `git stash` as
-  `c210-wiring` (11 files: every site through `RecoveryControlFactory::default()` but node's
-  `setup_dependencies_with_recorder` and `dependencies_around`, which take `new`; the imports fixed; clippy clean
-  on the whole). Next: (f4b) pop it, re-record the seven re-keyed pairs (Q46), commit 210 with all three stages.
-  The plan's (f4): `IbftProtocolDependencies` takes
+  `closure at ./` (Edit, replace all) and read the diff before staging. (f4b) the wiring -- done at `e04403c` (the
+  210th, all three stages): every site through `RecoveryControlFactory::default()` but node's
+  `setup_dependencies_with_recorder` and `dependencies_around`, which take `new`; the dry4rust baseline's seven
+  dependency-helper pairs re-keyed and the recorder helpers' near pair paid, 196 to 195. The plan's (f4), now
+  done: `IbftProtocolDependencies` takes
   the factory in place of the coordinator and the decision recorder (13 files build it: node-infra's protocol
   builder, node's three test helpers and its dependencies test, system-tests' protocol factory, validation's five),
   `into_parts(timing)` building through it; (f5) the documents (CLAUDE.md's recovery-boundary paragraph -- the
@@ -461,11 +461,11 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 209 on the branch; 13 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
+- **Commits:** 210 on the branch; 13 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
   execution port's move, `4cfcce2` --, + `97225b7` for the dry4rust re-record, `1d27ff1` for the two states' 36
   accessors, `3cf1ec6` and `3433b15` for the transaction status's 33 importers and the timer key's 100, `2883602`
   for the slot discovery's 11, `a352577` for the Ed25519 scheme's 14, planned within by SETUP, `d7d2c45` for
-  Faction's two implementations and their test files, Q43) -- 13 of 209 is 6.2%; the 95% now needs about 260
+  Faction's two implementations and their test files, Q43) -- 13 of 210 is 6.2%; the 95% now needs about 260
   commits, every one from here within it: count a move's files first, and
   shape the seams so a type is born where it ends; bug fixes
   5 (`eba863f`, `e1232ca`, `5013d0e`, `1e7ac29`, `643bfd5`); the 150th (`7ffb333`) ran all three stages, Part A's end, the 160th (`6912269`) and
@@ -494,13 +494,14 @@ pushed with the record at every commit.
   not scored;
   recovery/control 61.27 / 363.83 at `12b0c09`; recovery/ibft 48.77 / 245.23 and node 285.50 / 2,268.11 at `df27ed7`; recovery/control 62.22 / 365.78 at `a247cf2`; node 285.44 / 2,268.11 at `ef5f4d9`, 286.39 / 2,270.20 at `2e6d484`, 290.57 / 2,277.38 at `64f562b`, 292.63 / 2,284.79 at `c72cdf3`; before it 643.14 / 4,502.39, 0.1428;
   execution-types 64.14 to 56.14 at `069fd4c`, evm 503.97 to 500.25 at `1618598`, node 2295.50 to 2299.52 at
-  `cec0c5b` with the factory seam); dry4rust baseline 196 groups (199 at Part A's end; 196 to 193 at `73cb8eb`,
+  `cec0c5b` with the factory seam); dry4rust baseline 195 groups (199 at Part A's end; 196 to 193 at `73cb8eb`,
   six exact pairs unmatched and three near pairs recorded, Q33, and back to 196 at `b31593c`, the six re-keyed, Q35; two paid at `a022bd1`
   and one at `bf1b812`, the arithmetic copies; one re-formed at `68620c3`, Q35; two paid at `07f708e`, three paid and one re-keyed at `618894b`, two paid at
   `2e93617`), all matching (re-recorded at `cec0c5b`, Q32;
   one group added at `64f562b`, Q33; one added and one paid at `1121282`; one re-keyed and one added at `8230a8a`,
-  Q35, each copy kept in scratch as `dry-baseline-before-cN.json`; one re-keyed at `97cd2da`)
-- **Questions:** 41 answered, 3 open (9, 25, 37). **Interventions:** 0. **Waits:** 0.
+  Q35, each copy kept in scratch as `dry-baseline-before-cN.json`; one re-keyed at `97cd2da`; one grown by a member
+  at `0d46800`, Q46; seven re-keyed and one near pair paid at `e04403c`, Q46, 196 to 195)
+- **Questions:** 43 answered, 3 open (9, 25, 37). **Interventions:** 0. **Waits:** 0.
 
 ## The run so far
 
@@ -577,7 +578,7 @@ pushed with the record at every commit.
   their own kind (`1e7ac29`, a bug-fix), the last resort counted as blind (`643bfd5`, a bug-fix), the unavailable
   path's retry cancelled by the control layer (`a5e9b26`), the jump re-arming the layer's check (`4fbf853`), a pushed range pinned (`e248472`), the port's outcome must-use
   (`a8a1d57`), the factory port and its default (`835af20`, Q45), the factory's
-  `Default` (`0d46800`, Q46).
+  `Default` (`0d46800`, Q46), the dependencies taking the factory (`e04403c`).
 
 ## Next in line
 
