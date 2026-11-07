@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `356ecee` Test the fixed-membership coordinator's other answers (row 191)
+- **Last commit:** `44a0b7a` Let the bootstrapper builder choose a fixed membership (row 192)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -157,8 +157,16 @@ pushed with the record at every commit.
   `DuplicateMemberIgnored`, `JoinDenied`); (k1) `FixedMembershipBootstrappingCoordinator::new(local, members,
   threshold)` in node-infra's implementations (19 files there now), Faction's answers but joins (`JoinDenied`,
   a member's approval `DuplicateMemberIgnored`), ten tests -- done at `c885cf9`; (k2) its other thirteen
-  tests -- done at `356ecee` (`tests`, 23 in all); next (k3) a `FixedMembershipCoordinatorFactory` and the
-  builder's choice (a `MembershipVariant` in `variants/`, `with_membership`); (k) the fixed-membership default in
+  tests -- done at `356ecee` (`tests`, 23 in all); (k3) `FixedMembershipCoordinatorFactory` (the observer
+  unused: no readiness transitions) and the builder's choice, `MembershipVariant { Faction, Fixed }` in
+  `variants/`, `with_membership`, Faction the default -- done at `44a0b7a` (node-infra's implementations hold
+  20 files now, `directory-file-count`'s limit); next (l) `BootstrappingCoordinatorContract::new(factory,
+  observer)` in node-contracts' `src/bootstrapping/`: `check(local, validators, threshold, commands,
+  concluding_step)` -- the first local completion answers `BroadcastLocalReady`, `Concluded { Bootstrapped }`
+  exactly at the expected step (breaches `LocalReadyNotBroadcast`, `UnexpectedConclusion`, `MissedConclusion`,
+  each with its step), tested with stateless scripted coordinators (node-contracts dev-depending on node-infra for
+  `NoOpObserver`); then `check_standard_scenarios()` -- quorum on a ready, at local completion, through a
+  duplicate and a non-member, not before completion, after a missed deadline, a lone member at one; (k) the fixed-membership default in
   node-infra, a builder choice; (l) the bootstrapping contract in `node-contracts`, (m) run by both; (n) docs.
 - **Seam 1's detail:** Part B seam 1, execution, with `execution-types` dissolved (SETUP, *Part B*, step 1) --
   `Chosen-By: dependency` (every file the three skipped-rule slices add -- scenario sources, split-out types,
@@ -365,18 +373,18 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 191 on the branch; 13 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
+- **Commits:** 192 on the branch; 13 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
   execution port's move, `4cfcce2` --, + `97225b7` for the dry4rust re-record, `1d27ff1` for the two states' 36
   accessors, `3cf1ec6` and `3433b15` for the transaction status's 33 importers and the timer key's 100, `2883602`
   for the slot discovery's 11, `a352577` for the Ed25519 scheme's 14, planned within by SETUP, `d7d2c45` for
-  Faction's two implementations and their test files, Q43) -- 13 of 191 is 6.8%; the 95% now needs about 260
+  Faction's two implementations and their test files, Q43) -- 13 of 192 is 6.8%; the 95% now needs about 260
   commits, every one from here within it: count a move's files first, and
   shape the seams so a type is born where it ends; bug fixes
   2 (`eba863f`, `e1232ca`); the 150th (`7ffb333`) ran all three stages, Part A's end, the 160th (`6912269`) and
   the 170th (`2883602`), the 180th (`b31593c`) and the 190th (`c885cf9`); the 200th next
-- **Tests:** 3,440 at the base, 3,744 now (stage 5 465); removed under constraint 6: 1 (`2e6d484`, Q34)
-- **Offences:** 41 as configured, 195 everything on, shear 0; Grip 768.97 / Braintax 4,790.87 (0.1605 at `c885cf9`,
-  node-infra 160.72 / 669.63 with the fixed-membership coordinator; node-faction 10.25 / 53.45 at `082c59c`;
+- **Tests:** 3,440 at the base, 3,747 now (stage 5 465); removed under constraint 6: 1 (`2e6d484`, Q34)
+- **Offences:** 41 as configured, 195 everything on, shear 0; Grip 770.32 / Braintax 4,797.08 (0.1606 at `44a0b7a`,
+  node-infra 162.07 / 675.84 with the fixed membership; 160.72 / 669.63 at `c885cf9`; node-faction 10.25 / 53.45 at `082c59c`;
   node-infra
   152.08 / 598.27 at `d170c7e`; types
   110.85 / 628.07 at `8afa421`, execution-types scored inside it, the totals' Grip unchanged; evm
@@ -471,7 +479,8 @@ pushed with the record at every commit.
   translation (`17fd986`), its outcome and transition translations (`4b8a7a1`), the factory into it
   (`c43c0f2`), the peer-discovery facet (`a2f5f0e`), the
   coordinator and bridge into node-faction (`d7d2c45`), the port in node's vocabulary (`d1246b3`), the event's, `node` off
-  faction (`082c59c`), the fixed-membership coordinator (`c885cf9`), its other answers' tests (`356ecee`).
+  faction (`082c59c`), the fixed-membership coordinator (`c885cf9`), its other answers' tests (`356ecee`), the builder's
+  choice of it (`44a0b7a`).
 
 ## Next in line
 
