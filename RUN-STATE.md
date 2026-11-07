@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `daecdbd` Split the environment-backed transport tests by the two sources they test (row 247)
+- **Last commit:** `edb6880` Move the first half of the partition control's tests beside their source (row 248)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -223,8 +223,9 @@ pushed with the record at every commit.
   folder out -- `24be2f1` (166 lines; 94 to 93). Validation's harness moves are done. (p5) system-tests'
   `grpc_transport_bus_tests.rs` to `grpc_transport/` (a new test folder) and `shutdown_signal_tests.rs` to
   `partitionable_transport/` -- `10c5112` (262 lines; 93 to 91; a system-tests tests-only change runs stages 1, 2,
-  5). Next, system-tests' misplaced tests (lines): `partition_control_tests.rs` (186: two batches, its nine
-  `apply_control_line_*` and one `spawn_*` tests) to `partitionable_transport/`; `wire_ibft_message_tests.rs` (228:
+  5). Next, system-tests' misplaced tests (lines): `partition_control_tests.rs` (186: two batches; the first five
+  `apply_control_line_*` moved -- `edb6880`, `refactoring`, 183 lines, no count moving; next the other four and
+  `spawn_*`, the old file out, `rule-offence`) to `partitionable_transport/`; `wire_ibft_message_tests.rs` (228:
   two batches -- the helpers `block_carrying` and `board_certificate` are past dry4rust's five lines, so they move
   with the tests that use them, never copied) to `grpc_transport/`; (done: `env_backed_tests.rs` split by source --
   `daecdbd`, 255 lines, 91 to 90); `grpc_transport_tests.rs` (436) by source -- two `poll_*` to
@@ -609,11 +610,11 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 247 on the branch; 13 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
+- **Commits:** 248 on the branch; 13 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
   execution port's move, `4cfcce2` --, + `97225b7` for the dry4rust re-record, `1d27ff1` for the two states' 36
   accessors, `3cf1ec6` and `3433b15` for the transaction status's 33 importers and the timer key's 100, `2883602`
   for the slot discovery's 11, `a352577` for the Ed25519 scheme's 14, planned within by SETUP, `d7d2c45` for
-  Faction's two implementations and their test files, Q43) -- 13 of 247 is 5.3%; the 95% now needs about 260
+  Faction's two implementations and their test files, Q43) -- 13 of 248 is 5.2%; the 95% now needs about 260
   commits, every one from here within it: count a move's files first, and
   shape the seams so a type is born where it ends; bug fixes
   6 (`eba863f`, `e1232ca`, `5013d0e`, `1e7ac29`, `643bfd5`, `8e1ca00`); the 150th (`7ffb333`) ran all three stages, Part A's end, the 160th (`6912269`) and
