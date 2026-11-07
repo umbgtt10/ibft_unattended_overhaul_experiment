@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `73cb8eb` Build bootstrappers through a node-infra builder (row 179)
+- **Last commit:** `b31593c` Build node's test bootstrappers through the node-infra builder (row 180)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -126,9 +126,10 @@ pushed with the record at every commit.
   done at `951d746` (`tests`, eight tests of what Faction answers through the port); (b) node-infra's
   `BootstrapperBuilder` (`new`, `with_config`, `inactive`, `build() -> Bootstrapper`, Faction by default) with
   node-infra's protocol builder, system-tests' protocol factory and validation's three sources through it -- done at
-  `73cb8eb` (333 lines; dry4rust 196 to 193, Q33 taken again); (c) next, validation's five tests and node's four
-  test files through it -- node's `tests/ibft/protocol_helpers.rs` re-forms the six exact pairs with validation's
-  helpers, and its own active/inactive twins likely near pairs: re-record and name them; (d) node's data model in
+  `73cb8eb` (333 lines; dry4rust 196 to 193, Q33 taken again); (c) node's three test helpers through it -- done
+  at `b31593c` (dry4rust 193 to 196, the six exact pairs re-keyed, Q35; `bootstrapper_tests.rs` keeps the
+  constructors it tests, stern's `tested-public-api` refusing `inactive` untested); next, validation's five tests,
+  the finished files in `overhaul-scratch/c181-*.rs` (the two together were 372 lines); (d) node's data model in
   `bootstrapping/` (the six mirror types); (e) the `node-faction` crate with the translation, its tests asserting
   `{:?}` alike for every variant; (f) the factory into it, then (g) the bridge, (h) the coordinator as a wrapper
   struct -- its tests need a recording `ProtocolObserver` of their own; (i) the port's commands and outcomes in
@@ -339,14 +340,14 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 179 on the branch; 12 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
+- **Commits:** 180 on the branch; 12 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
   execution port's move, `4cfcce2` --, + `97225b7` for the dry4rust re-record, `1d27ff1` for the two states' 36
   accessors, `3cf1ec6` and `3433b15` for the transaction status's 33 importers and the timer key's 100, `2883602`
-  for the slot discovery's 11, `a352577` for the Ed25519 scheme's 14, planned within by SETUP) -- 12 of 179 is
+  for the slot discovery's 11, `a352577` for the Ed25519 scheme's 14, planned within by SETUP) -- 12 of 180 is
   6.7%; the 95% needs about 240 commits with every commit from here within it: count a move's files first, and
   shape the seams so a type is born where it ends; bug fixes
   2 (`eba863f`, `e1232ca`); the 150th (`7ffb333`) ran all three stages, Part A's end, the 160th (`6912269`) and
-  the 170th (`2883602`); the 180th next
+  the 170th (`2883602`) and the 180th (`b31593c`); the 190th next
 - **Tests:** 3,440 at the base, 3,716 now (stage 5 465); removed under constraint 6: 1 (`2e6d484`, Q34)
 - **Offences:** 41 as configured, 195 everything on, shear 0; Grip 756.25 / Braintax 4,700.53 (0.1609; node-infra
   152.08 / 598.27 at `d170c7e`; types
@@ -368,8 +369,8 @@ pushed with the record at every commit.
   not scored;
   recovery/control 61.27 / 363.83 at `12b0c09`; recovery/ibft 48.77 / 245.23 and node 285.50 / 2,268.11 at `df27ed7`; recovery/control 62.22 / 365.78 at `a247cf2`; node 285.44 / 2,268.11 at `ef5f4d9`, 286.39 / 2,270.20 at `2e6d484`, 290.57 / 2,277.38 at `64f562b`, 292.63 / 2,284.79 at `c72cdf3`; before it 643.14 / 4,502.39, 0.1428;
   execution-types 64.14 to 56.14 at `069fd4c`, evm 503.97 to 500.25 at `1618598`, node 2295.50 to 2299.52 at
-  `cec0c5b` with the factory seam); dry4rust baseline 193 groups (199 at Part A's end; 196 to 193 at `73cb8eb`,
-  six exact pairs unmatched and three near pairs recorded, Q33; two paid at `a022bd1`
+  `cec0c5b` with the factory seam); dry4rust baseline 196 groups (199 at Part A's end; 196 to 193 at `73cb8eb`,
+  six exact pairs unmatched and three near pairs recorded, Q33, and back to 196 at `b31593c`, the six re-keyed, Q35; two paid at `a022bd1`
   and one at `bf1b812`, the arithmetic copies; one re-formed at `68620c3`, Q35; two paid at `07f708e`, three paid and one re-keyed at `618894b`, two paid at
   `2e93617`), all matching (re-recorded at `cec0c5b`, Q32;
   one group added at `64f562b`, Q33; one added and one paid at `1121282`; one re-keyed and one added at `8230a8a`,
@@ -437,7 +438,7 @@ pushed with the record at every commit.
   and mutation clauses (`a7bec37`), repeatability and the standard scenarios (`32ccbe1`), the engines running it
   (`c40ab03`), the evm boundary gate (`bd30c4f`), the documents (`c83fba2`), the seam's last. `node`'s own dependencies: the Ed25519 scheme into
   node-infra (`a352577`), the seam's one commit. Faction: what it answers through the port (`951d746`), node-infra's
-  bootstrapper builder and its first six sites (`73cb8eb`).
+  bootstrapper builder and its first six sites (`73cb8eb`), node's test helpers through it (`b31593c`).
 
 ## Next in line
 

@@ -812,7 +812,17 @@ the course the slice took and the run's recommendation; after the run, the owner
   builder through one helper, which reshapes three groups of the recovery-host tests' `deliver` helpers alike: the
   exact `deliver` pair (`0c89ced451914a87` out, `9c4543b6454ba7bf` in), the exact `deliver_against` pair
   (`d1a94f3e0d71aeac` out, `f022dffb125ee388` in) and a near `deliver` pair (`32a5210819b973f6` out,
-  `5f1cfde88a32f74e` in), each the same two members; 196 kept.
+  `5f1cfde88a32f74e` in), each the same two members; 196 kept. Commits 179 and 180 -- validation's protocol helpers
+  and then node's build their bootstrapper through node-infra's `BootstrapperBuilder`, one group of six pairs
+  re-keyed across two commits as at 111 and 112: 179 leaves the six exact pairs of same-named helpers unmatched
+  and records three near pairs inside validation's file (entry 33), 196 to 193; 180 moves node's alike, and the six
+  match again -- `setup_dependencies` `0ab9c7fcd9432e87` to `4f8568ffaa402801`, `setup_hard_state_dependencies`
+  `ba63aeb784810c83` to `39828b559a465759`, `setup_dependencies_with_execution_engine` `fea83b57040d54cc` to
+  `3497b040b8f5d88d`, `setup_hard_state_dependencies_with_execution_engine` `1ff10db1564d649b` to
+  `ee17610101adb955`, `setup_dependencies_with_observer` `e060de14bcb416e6` to `993aecb9b6912fc8`,
+  `setup_dependencies_with_consensus_timing_policy` `cb09a6a75f1e5f01` to `b0b2f07b2272c23f` --, the three near
+  pairs fall away as their members rejoin those groups, and node's near pair of recorder helpers is re-keyed,
+  `30fa1cefabe768d5` to `f16f311374d1ad25`; 193 to 196, the members as at 178.
 
 ### 36. The hard state drops a pending block's transaction data
 
