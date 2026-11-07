@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `9c53182` Give the gRPC node's config a file of its own, beside its timer config (row 319)
+- **Last commit:** `694fb62` Move the gRPC node config's pure tests beside the config (row 320)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -155,9 +155,9 @@ pushed with the record at every commit.
   gone, two tests in `tests/single_node/restart_snapshot_tests.rs` -- done at `b36d898` (122 lines, 39 to 38;
   dry4rust 194 to 193, the two drops were a recorded pair). (5) `EtheramGrpcNodeConfig` into
   `src/config/etheram_grpc_node_config.rs` with seven reads for the node, one test of `new` reading all seven in a
-  new `tests/config/etheram_grpc_node_config_tests.rs` -- done at `9c53182` (280 lines, 38 to 37). Next (6): the
-  config's four pure tests (`protocol_config` and three builders) moved there from `etheram_grpc_node_tests.rs`
-  (`refactoring`; the genesis one builds a node and stays); then (7) `GrpcClientInterfaceState` into its own file
+  new `tests/config/etheram_grpc_node_config_tests.rs` -- done at `9c53182` (280 lines, 38 to 37). (6) the config's
+  four pure tests moved there (the genesis one builds a node and stays) -- done at `694fb62` (`refactoring`, 234
+  lines, 4 moved). Next (7) `GrpcClientInterfaceState` into its own file
   with `enqueue`, `pop_request`, `store_response`, `take_response`, each tested; (8) `GrpcClientInterfaceServiceImpl`
   into its own file, handed its clock and pause (it read the bus's), tested through `get_block` on an empty store;
   then `GrpcTransportService` and `SledStorageInner`.
@@ -859,16 +859,16 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 319 on the branch; 13 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
+- **Commits:** 320 on the branch; 13 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
   execution port's move, `4cfcce2` --, + `97225b7` for the dry4rust re-record, `1d27ff1` for the two states' 36
   accessors, `3cf1ec6` and `3433b15` for the transaction status's 33 importers and the timer key's 100, `2883602`
   for the slot discovery's 11, `a352577` for the Ed25519 scheme's 14, planned within by SETUP, `d7d2c45` for
-  Faction's two implementations and their test files, Q43) -- 13 of 319 is 4.1%; the 95% reached at the 260th (247 of 260 within), and it holds only while every
+  Faction's two implementations and their test files, Q43) -- 13 of 320 is 4.1%; the 95% reached at the 260th (247 of 260 within), and it holds only while every
   commit from here stays within: count a move's files first, and
   shape the seams so a type is born where it ends; bug fixes
   6 (`eba863f`, `e1232ca`, `5013d0e`, `1e7ac29`, `643bfd5`, `8e1ca00`); the 150th (`7ffb333`) ran all three stages, Part A's end, the 160th (`6912269`) and
   the 170th (`2883602`), the 180th (`b31593c`), the 190th (`c885cf9`), the 200th (`7508819`), the 210th
-  (`e04403c`), the 220th (`e329250`), the 230th (`5ebe5f1`), the 240th (`18baf35`), the 250th (`8bdb859`), the 260th (`1fef15d`), the 270th (`fdd825e`), the 280th (`00c5f1b`), the 290th (`0b135b2`), the 300th (`2a7c601`) and the 310th (`44b91f4`); the 320th next
+  (`e04403c`), the 220th (`e329250`), the 230th (`5ebe5f1`), the 240th (`18baf35`), the 250th (`8bdb859`), the 260th (`1fef15d`), the 270th (`fdd825e`), the 280th (`00c5f1b`), the 290th (`0b135b2`), the 300th (`2a7c601`), the 310th (`44b91f4`) and the 320th (`694fb62`); the 330th next
 - **Tests:** 3,440 at the base, 3,873 now (stage 5 499); removed under constraint 6: 1 (`2e6d484`, Q34)
 - **Offences:** 37 as configured (single-implemented-type 4), 74 everything on (paired-test-file 0, from 100 at `4a976c2`; tested-public-api 0,
   from 25 at `15e7d4d` and 17 at `ca72bf4`, Q52, Q54), shear 0; Grip 780.18 / Braintax 4,868.87 (0.1602 at `1f5213f`, the tracker into the tally, node-infra
