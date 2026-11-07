@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `a022bd1` Give the EVM's arithmetic to the machine state, through the word ALU (row 154)
+- **Last commit:** `bf1b812` Finish the EVM's arithmetic through the word ALU (row 155)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -100,8 +100,8 @@ pushed with the record at every commit.
   `bc9904f` (251 to 248); the arithmetic dispatcher through `TinyEvmWordAlu` with the ten `exec_*` gone, in two
   halves by dry4rust group (their tests renamed `execute_arithmetic_opcode_*`, each `Maps:`-ed -- a rename across
   files is not paired): the dispatcher and add, mul, sub, lt, gt at `a022bd1` (248 to 242; dry4rust 199 to 197,
-  the `exec_add`/`exec_mul`/`exec_sub` and `exec_lt`/`exec_gt` groups paid), then div, eq, iszero, and, or (the
-  `exec_and`/`exec_or` group); the environment; sload and
+  the `exec_add`/`exec_mul`/`exec_sub` and `exec_lt`/`exec_gt` groups paid), then div, eq, iszero, and, or at
+  `bf1b812` (242 to 237; dry4rust 197 to 196, the `exec_and`/`exec_or` group); the environment; sload and
   sstore; the memory dispatcher; mstore, mload and the two expansions; sha3 and its three helpers; `pop_word` last
   (every free operation calls it); then the engine's five; then `returned-mutations` out of evm's skip. A test
   whose `bool` and out-parameter merge into one `Option` loses one assertion: `Maps:` it to itself, Q38.
@@ -224,14 +224,14 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 154 on the branch; 8 past the threshold (4 planned, + `97225b7` for the dry4rust re-record,
+- **Commits:** 155 on the branch; 8 past the threshold (4 planned, + `97225b7` for the dry4rust re-record,
   `1d27ff1` for the two states' 36 accessors, `3cf1ec6` and `3433b15` for the transaction status's 33 importers
-  and the timer key's 100 -- 8 of 154 is 5.2%, so the 95% needs Parts B and C to add commits within it, and Part
+  and the timer key's 100 -- 8 of 155 is 5.2%, so the 95% needs Parts B and C to add commits within it, and Part
   B's two planned moves out of `execution-types` past it; keep every other commit within); bug fixes
   2 (`eba863f`, `e1232ca`); the 150th (`7ffb333`) ran all three stages, Part A's end; the 160th next
 - **Tests:** 3,440 at the base, 3,680 now (stage 5 465); removed under constraint 6: 1 (`2e6d484`, Q34)
-- **Offences:** 41 as configured, 242 everything on, shear 0; Grip 750.31 / Braintax 4,713.23 (0.1592; evm
-  36.15 / 508.72 at `a022bd1`; 36.69 / 517.12 at `bc9904f`; 37.41 / 522.15 at `0a38d3c`, the delegation layer's price, 34.29 / 498.16 at `3c21b53`;
+- **Offences:** 41 as configured, 237 everything on, shear 0; Grip 749.80 / Braintax 4,704.03 (0.1594; evm
+  35.64 / 499.52 at `bf1b812`; 36.15 / 508.72 at `a022bd1`; 36.69 / 517.12 at `bc9904f`; 37.41 / 522.15 at `0a38d3c`, the delegation layer's price, 34.29 / 498.16 at `3c21b53`;
   execution-types 38.62 / 102.22 at `618a5d2`; 37.67 / 99.93 and types 72.23 / 518.56 at `23c92f9`, the block's
   accessors;
   node 325.06 / 2,354.12 at `b440217`;
@@ -248,8 +248,8 @@ pushed with the record at every commit.
   not scored;
   recovery/control 61.27 / 363.83 at `12b0c09`; recovery/ibft 48.77 / 245.23 and node 285.50 / 2,268.11 at `df27ed7`; recovery/control 62.22 / 365.78 at `a247cf2`; node 285.44 / 2,268.11 at `ef5f4d9`, 286.39 / 2,270.20 at `2e6d484`, 290.57 / 2,277.38 at `64f562b`, 292.63 / 2,284.79 at `c72cdf3`; before it 643.14 / 4,502.39, 0.1428;
   execution-types 64.14 to 56.14 at `069fd4c`, evm 503.97 to 500.25 at `1618598`, node 2295.50 to 2299.52 at
-  `cec0c5b` with the factory seam); dry4rust baseline 197 groups (199 at Part A's end; two paid at `a022bd1`,
-  the arithmetic copies; one re-formed at `68620c3`, Q35; two paid at `07f708e`, three paid and one re-keyed at `618894b`, two paid at
+  `cec0c5b` with the factory seam); dry4rust baseline 196 groups (199 at Part A's end; two paid at `a022bd1`
+  and one at `bf1b812`, the arithmetic copies; one re-formed at `68620c3`, Q35; two paid at `07f708e`, three paid and one re-keyed at `618894b`, two paid at
   `2e93617`), all matching (re-recorded at `cec0c5b`, Q32;
   one group added at `64f562b`, Q33; one added and one paid at `1121282`; one re-keyed and one added at `8230a8a`,
   Q35, each copy kept in scratch as `dry-baseline-before-cN.json`; one re-keyed at `97cd2da`)
@@ -305,7 +305,7 @@ pushed with the record at every commit.
   the way: the hard state's dropped transaction data (`e1232ca`, Q36).
 - **Part B:** from row 151, 2026-11-07T05:33Z. The skipped rules: evm's `returned-mutations` -- the push's
   counter returned (`3c21b53`), the machine state (`0a38d3c`), push, dup and swap moved in (`bc9904f`), the
-  arithmetic's first half through the word ALU (`a022bd1`).
+  arithmetic's first half through the word ALU (`a022bd1`), its second (`bf1b812`).
 
 ## Next in line
 
