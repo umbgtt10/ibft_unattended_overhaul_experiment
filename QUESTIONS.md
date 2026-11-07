@@ -61,6 +61,7 @@ After the run the owner takes each open entry -- implement, discuss, discard, po
 | 41 | commit 171, Part B, the execution seam | the contract suite is test code with a `src`, a manifest and gate lists, which `tests` does not allow; and the no-op reports no results, which a one-result-per-transaction contract would refuse | answered | `refactoring`, `node-contracts/src` counting as production as `validation/src` does and a crate or dev-dependency edge being structure; the contract asks only what the protocol relies on and all three engines do, fewer results than transactions allowed |
 | 42 | before commit 179, Part B, the Faction seam | the bootstrapping port, the readiness event and three implementations speak `faction`'s types; 15 files build a bootstrapper with Faction's factory | answered | node mirrors the vocabulary that crosses the port, names and all, so the readiness log is unchanged; a `node-faction` plug-in holds the translation, the coordinator wrapper, the bridge and the factory; assemblies go through node-infra's `BootstrapperBuilder` first, the fixed-membership default its other choice |
 | 43 | commit 186, Part B, the Faction seam | the bridge's tests need an observer node-faction can build, 360 lines behind the full observer; the bridge's and the coordinator's moves each pass 360 lines, their test files counted twice | answered | the peer-discovery facet first, holding the readiness event, `ProtocolObserver` its subtrait; the two implementations then move in one commit past the threshold, the seam's one unsplittable move |
+| 44 | after commit 205, Part B, the Beggar seam | which trait is Beggar's port, where its vocabulary lives, and who builds the default, which `node`'s assembly builds today | answered | the port is today's call site, `RecoveryProcess`, which already admits a pushed transfer (pinned, not changed); its vocabulary stays in `recovery-control` until gate 8, after the observer split; `node` takes a `RecoveryProcessFactory` it hands its timing, node-infra's `RecoveryControlFactory` the default |
 
 ## Interventions
 
@@ -1032,3 +1033,40 @@ the course the slice took and the run's recommendation; after the run, the owner
     bridge's. The port and the event change vocabulary after it, each within the threshold, and `faction` leaves
     node's manifest with the last of them.
 - **Commit:** 186 onward.
+
+### 44. The Beggar seam's port: which trait it is, where its vocabulary lives, and who builds the default
+
+- **Raised:** after commit 205, Part B, the Beggar seam -- the characterization, the `#[must_use]`s, the peer
+  knowledge, the snapshot apply's split and the three recorded bugs done, the port itself next.
+- **What:** SETUP asks for "a port shaped by today's `recovery-control`, which becomes its default", whose trait
+  "must not fix who drives a transfer", and gate 8 for `node` on `etheram-core` and `types` alone. Today the
+  IBFT side, `recovery-ibft`'s `IbftRecovery`, already holds the control layer as a trait object,
+  `Box<dyn RecoveryProcess>` -- `process(ControlEvent) -> ControlOutcome` --, but `node`'s assembly builds the
+  default itself (`RecoveryControl::new(coordinator, timing, recorder)`), taking a `BoxedRecoveryCoordinator` and a
+  `BoxedDecisionRecorder` as its dependencies, and `node` names about thirty of `recovery-control`'s and
+  `recovery-ibft`'s types besides: the host's nine files, the timing config, and fourteen observation records in
+  `ProtocolObserver`. Three questions: which trait is the port, where its vocabulary lives, and who builds the
+  default.
+- **Status:** answered -- decision 9 (Beggar's port shaped by today's call sites), SETUP step 4's wording, and the
+  seam pattern CLAUDE.md and the Faction seam (entry 42) set: the contract on the consumer's side, the default
+  chosen by node-infra's builders.
+- **Answer:**
+  - the port is today's call site, `RecoveryProcess::process(ControlEvent) -> ControlOutcome`: the one trait the
+    IBFT side drives the control layer through, protocol-agnostic and on `etheram-core` alone, which a Beggar must
+    speak too. It already admits a pushed transfer -- a range arriving with nothing asked is admitted by its chain,
+    not by a request (`P1-ADR-OnlyTheChainAdmitsARecoveryResponse`), and every intent is optional -- so the step
+    pins that with a characterization rather than changing the trait, and gives `process` the `#[must_use]` the
+    coordinator's bools have;
+  - its vocabulary stays in `recovery-control` for now, the vocabulary crate and the default at once. Splitting the
+    two -- the event, the outcome, the intents, the snapshots and the observation records into a crate of their own
+    -- moves some thirty-five files and their tests, every line counted twice, and the fourteen observation records
+    in it are what step 7's observer split decides a home for; so it is gate 8's work (step 8), after the split,
+    with `recovery-ibft`'s place beside `node`;
+  - `node` stops building the default: a factory port, `RecoveryProcessFactory::build(self: Box<Self>, timing) ->
+    Box<dyn RecoveryProcess>`, in `node/src/traits`, taken by `IbftProtocolDependencies` in place of the coordinator
+    and the recorder; the protocol hands it the timing from its own config, so the timing keeps its one source.
+    node-infra's `RecoveryControlFactory` builds `RecoveryControl` over the coordinator and recorder it is given --
+    today's default, as `FactionCoordinatorFactory` builds Faction's. `node` then names no implementation of the
+    control layer, and the recovery boundary's assembly exemption has nothing left to exempt;
+  - breaks for the consumer (decision 11): `IbftProtocolDependencies::new`'s signature; named in its commit.
+- **Commit:** 206 onward.

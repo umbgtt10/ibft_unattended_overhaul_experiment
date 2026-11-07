@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `4fbf853` Let the control layer re-arm its own check on a snapshot jump (row 205)
+- **Last commit:** `e248472` Pin that the control layer applies a range nobody asked for (row 206)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -165,10 +165,17 @@ pushed with the record at every commit.
   realizes the outcome in its Act. (d4) the jump re-arms the layer's own check -- done at `4fbf853`:
   `ControlEvent::ChainJumped { to }` (a decision: `handle_chain_jumped` stands the layer at `to`, `ArmCheck`),
   `RecoveryEvent::SnapshotAdopted { height }`; the host pushes `round_entry_timers` and asks `process_recovery`.
-  The split is done. Next: the port's design, an entry of its own (Q44): node names ~30 recovery types (the host's nine files,
-  `ProtocolObserver`'s recovery events, the assembly); recovery-control must stay on etheram-core alone (the
-  vocabulary gate), so the Faction pattern -- node's own port vocabulary, an adapter crate translating -- is the
-  shape to weigh; gate 8 is checked at step 8, after the observer split (step 7) frees the observer's types.
+  The split is done. The port's design is Q44 (answered): the port is today's call site, `RecoveryProcess`
+  (it admits a pushed transfer: pinned, not changed); its vocabulary stays in recovery-control until gate 8, after
+  the observer split; `node` stops building the default. (f1) the push pinned -- done at `e248472` (`tests`,
+  `process_range_imported_with_nothing_asked_still_marks_the_import`). Next: (f2) `#[must_use]` on
+  `RecoveryProcess::process` and `IbftRecoveryProcess::process`; (f3) `RecoveryProcessFactory::build(self:
+  Box<Self>, timing: RecoveryTimingConfig) -> Box<dyn RecoveryProcess>` in `node/src/traits` and node-infra's
+  `RecoveryControlFactory::new(coordinator, recorder)` default, with tests; (f4) `IbftProtocolDependencies` takes
+  the factory in place of the coordinator and the decision recorder (13 files build it: node-infra's protocol
+  builder, node's three test helpers and its dependencies test, system-tests' protocol factory, validation's five),
+  `into_parts(timing)` building through it; (f5) the documents (CLAUDE.md's recovery-boundary paragraph -- the
+  assembly exemption -- RECOVERY-AS-BUILT §9, README).
 - **Faction's detail:** Part B seam 3, Faction (SETUP, *Part B*, step 3) -- `Chosen-By: owner-order` among the
   bookkeepers (Faction, then Beggar, the certifier, consensus last), over the skipped-rule slices for seam 2's
   reason; the design is Q42. `node` names faction in the port (`BootstrappingCoordinator::process(Command) ->
@@ -441,16 +448,16 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 205 on the branch; 13 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
+- **Commits:** 206 on the branch; 13 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
   execution port's move, `4cfcce2` --, + `97225b7` for the dry4rust re-record, `1d27ff1` for the two states' 36
   accessors, `3cf1ec6` and `3433b15` for the transaction status's 33 importers and the timer key's 100, `2883602`
   for the slot discovery's 11, `a352577` for the Ed25519 scheme's 14, planned within by SETUP, `d7d2c45` for
-  Faction's two implementations and their test files, Q43) -- 13 of 205 is 6.3%; the 95% now needs about 260
+  Faction's two implementations and their test files, Q43) -- 13 of 206 is 6.3%; the 95% now needs about 260
   commits, every one from here within it: count a move's files first, and
   shape the seams so a type is born where it ends; bug fixes
   5 (`eba863f`, `e1232ca`, `5013d0e`, `1e7ac29`, `643bfd5`); the 150th (`7ffb333`) ran all three stages, Part A's end, the 160th (`6912269`) and
   the 170th (`2883602`), the 180th (`b31593c`), the 190th (`c885cf9`) and the 200th (`7508819`); the 210th next
-- **Tests:** 3,440 at the base, 3,787 now (stage 5 465); removed under constraint 6: 1 (`2e6d484`, Q34)
+- **Tests:** 3,440 at the base, 3,788 now (stage 5 465); removed under constraint 6: 1 (`2e6d484`, Q34)
 - **Offences:** 41 as configured, 195 everything on, shear 0; Grip 773.51 / Braintax 4,811.48 (0.1608 at `9b496e6`, recovery/control 78.14 / 397.87 with
   `PeerKnowledge`; 770.32 / 4,797.08 at `44a0b7a`,
   node-infra 162.07 / 675.84 with the fixed membership; 160.72 / 669.63 at `c885cf9`; node-faction 10.25 / 53.45 at `082c59c`;
@@ -480,7 +487,7 @@ pushed with the record at every commit.
   `2e93617`), all matching (re-recorded at `cec0c5b`, Q32;
   one group added at `64f562b`, Q33; one added and one paid at `1121282`; one re-keyed and one added at `8230a8a`,
   Q35, each copy kept in scratch as `dry-baseline-before-cN.json`; one re-keyed at `97cd2da`)
-- **Questions:** 40 answered, 3 open (9, 25, 37). **Interventions:** 0. **Waits:** 0.
+- **Questions:** 41 answered, 3 open (9, 25, 37). **Interventions:** 0. **Waits:** 0.
 
 ## The run so far
 
@@ -555,7 +562,7 @@ pushed with the record at every commit.
   (`9b496e6`), its observations' tests (`fcb922a`), consensus's reaction to a snapshot jump
   (`7508819`), the timers a snapshot apply left unarmed (`5013d0e`, a bug-fix), recovery's replays under
   their own kind (`1e7ac29`, a bug-fix), the last resort counted as blind (`643bfd5`, a bug-fix), the unavailable
-  path's retry cancelled by the control layer (`a5e9b26`), the jump re-arming the layer's check (`4fbf853`).
+  path's retry cancelled by the control layer (`a5e9b26`), the jump re-arming the layer's check (`4fbf853`), a pushed range pinned (`e248472`).
 
 ## Next in line
 
