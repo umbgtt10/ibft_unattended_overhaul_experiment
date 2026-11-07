@@ -62,6 +62,7 @@ After the run the owner takes each open entry -- implement, discuss, discard, po
 | 42 | before commit 179, Part B, the Faction seam | the bootstrapping port, the readiness event and three implementations speak `faction`'s types; 15 files build a bootstrapper with Faction's factory | answered | node mirrors the vocabulary that crosses the port, names and all, so the readiness log is unchanged; a `node-faction` plug-in holds the translation, the coordinator wrapper, the bridge and the factory; assemblies go through node-infra's `BootstrapperBuilder` first, the fixed-membership default its other choice |
 | 43 | commit 186, Part B, the Faction seam | the bridge's tests need an observer node-faction can build, 360 lines behind the full observer; the bridge's and the coordinator's moves each pass 360 lines, their test files counted twice | answered | the peer-discovery facet first, holding the readiness event, `ProtocolObserver` its subtrait; the two implementations then move in one commit past the threshold, the seam's one unsplittable move |
 | 44 | after commit 205, Part B, the Beggar seam | which trait is Beggar's port, where its vocabulary lives, and who builds the default, which `node`'s assembly builds today | answered | the port is today's call site, `RecoveryProcess`, which already admits a pushed transfer (pinned, not changed); its vocabulary stays in `recovery-control` until gate 8, after the observer split; `node` takes a `RecoveryProcessFactory` it hands its timing, node-infra's `RecoveryControlFactory` the default |
+| 45 | commit 208, Part B, the Beggar seam | entry 44 put the factory port in `node/src/traits`, and stage 1's recovery boundary refuses `RecoveryProcess` in `node/src` outside the assembly | answered | the gate stands; the trait moves to `node/src/ibft/assembly/`, beside the dependencies that take it, and the rest of entry 44 is unchanged |
 
 ## Interventions
 
@@ -1070,3 +1071,27 @@ the course the slice took and the run's recommendation; after the run, the owner
     control layer, and the recovery boundary's assembly exemption has nothing left to exempt;
   - breaks for the consumer (decision 11): `IbftProtocolDependencies::new`'s signature; named in its commit.
 - **Commit:** 206 onward.
+
+### 45. The factory port's home: the node's recovery boundary refuses `node/src/traits`
+
+- **Raised:** commit 208, Part B, the Beggar seam -- the factory port and node-infra's default, the third step of
+  entry 44's answer.
+- **What:** entry 44 placed `RecoveryProcessFactory` in `node/src/traits`, and its `build` returns
+  `Box<dyn RecoveryProcess>`. Stage 1's `cargo xtask recovery-boundary` refused the commit's first attempt with two
+  findings, the import and the signature. Its node rule refuses `RecoveryProcess`, `ControlEvent`,
+  `ControlOutcome` and `ControlOutput` in `node/src` outside `node/src/ibft/assembly/`. The node drives recovery
+  through the IBFT side's entry point and makes none of the control layer's calls, and only the assembly may name the
+  layer's trait (RECOVERY-AS-BUILT.md section 9, "The IBFT side's one entry point"). Entry 44 missed this rule.
+  CLAUDE.md lists only the first one, which forbids `RecoveryControl`, `RecoveryState`, `RecoveryCoordinator` and
+  `BoxedRecoveryCoordinator`.
+- **Status:** answered. The gate is the house's, and a gate relaxed to fit a plan's detail buys a green stage with a
+  weaker boundary. The trait's folder was the detail: the port, the factory's shape, who takes it and the default all
+  stand.
+- **Answer:**
+  - the trait lives in `node/src/ibft/assembly/recovery_process_factory.rs`, beside `IbftProtocolDependencies`, which
+    takes it in the next commit;
+  - entry 44's last clause needs one correction. After that commit the assembly no longer names `RecoveryControl`,
+    `RecoveryState`, `RecoveryCoordinator` or `BoxedRecoveryCoordinator`. Its exemption from the first rule then
+    exempts nothing, and the documents step can say so. Its exemption from the node rule still covers the port's
+    name, until gate 8 moves the vocabulary out of `recovery-control`.
+- **Commit:** 208.

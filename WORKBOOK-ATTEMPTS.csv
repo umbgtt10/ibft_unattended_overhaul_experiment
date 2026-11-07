@@ -210,3 +210,5 @@ commit_n,attempt,kind,stages,start,finish,outcome,refused_by,files_added,files_r
 205,1,refactoring,"1, 2, 5",2026-11-07T10:20:31Z,2026-11-07T10:22:42Z,landed,,0,0,10,105,8
 206,1,tests,"1, 2",2026-11-07T10:27:02Z,2026-11-07T10:27:38Z,landed,,0,0,1,25,0
 207,1,refactoring,"1, 2, 5",2026-11-07T10:29:22Z,2026-11-07T10:30:58Z,landed,,0,0,2,8,1
+208,1,refactoring,"1, 2, 5",2026-11-07T10:36:25Z,2026-11-07T10:38:04Z,refused,"stage 1: recovery-boundary, RecoveryProcess named in node/src/traits, outside the assembly (stages 2 and 5 dispatched in the same batch ran after it, both passing)",5,0,3,173,0
+208,2,refactoring,"1, 2, 5",2026-11-07T10:39:16Z,2026-11-07T10:41:11Z,landed,,5,0,3,174,0
