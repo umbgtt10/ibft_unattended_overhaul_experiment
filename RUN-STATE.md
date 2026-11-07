@@ -6,7 +6,8 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `3e71f64` Bring the baseline's account up to date in every document that gives it (row 336)
+- **Last commit:** `7182924` Record why the protocol orchestrates its bookkeepers behind ports (row 337) -- **Part
+  B's last.**
 - **Step now:** Part B step 8, the gates -- started 21:03Z, the scope Q56 (answered), the recovery crates' part
   Q57 (open: `node` keeps `recovery-control` and `recovery-ibft`, which the gate names as owed). In order: (a)
   `returned-mutations` paid in node (20, five files), then validation (17, three files, about 240 call sites in
@@ -56,9 +57,14 @@ pushed with the record at every commit.
   **Step 8 is done** as Q56 scoped it: 11 commits, rows 325 to 335. **Step 9** (`Chosen-By: owner-order`): (1) the
   living documents -- `3e71f64` (`support`, stage 2, 4 files, 79 lines: `stern4rust.toml`'s baseline and
   `single-implemented-type` comments, CLAUDE.md's baseline paragraph, OPEN_POINTS' *Rules stood down and baselined*
-  at 33 with its last table row gone, README's node row naming its dependencies and the gate). Next: (2) an ADR in
-  `docs/ADRs/` for Part B's shape (the protocol orchestrating its bookkeepers behind ports, each seam's parts, the
-  gates that hold them, what is owed) and its index row; then Part C. Earlier plan, for the record: (8) the protocol drivers by value -- ibft_cluster_test_helpers' copy of
+  at 33 with its last table row gone, README's node row naming its dependencies and the gate). (2) the ADR -- `7182924`
+  (`support`, 2 files, 94 lines): `docs/ADRs/P1-ADR-TheProtocolOrchestratesItsBookkeepersBehindPorts.md` and its
+  index row; the commit ran stage 2 before it landed, and stages 1 and 5 ran on it after, for Part B's end (green,
+  511 of 511; the rule wants all three at a part's end, and the commit's `Stages: 2` says what ran before it).
+  **Part B is done: rows 151 to 337, 187 commits.** Next: **Part C**, the final checks (SETUP *Part C*): (1) the
+  base's system-tests against the final binary; (2) the traces against the corpus; (3) coverage function by
+  function; (4) start and end measured alike; (5) every commit re-derived from the history; then
+  `RESULT-SUMMARY.md`. Plan it first, in QUESTIONS (how each item is run with the tools the harness allows). Earlier plan, for the record: (8) the protocol drivers by value -- ibft_cluster_test_helpers' copy of
   `advance_protocol_past_discovery` folded into scenario_helpers' (the same context, built two ways), and
   `drive_to_commit` returning the protocol beside the hash. The 8 left before (5): the cluster helpers' 5
   (`advance_cluster_past_discovery`, `commit_next`, `commit_many`, the two `finalize_round_*`) become `IbftCluster`'s
@@ -937,12 +943,12 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 336 on the branch; 14 past the threshold (7 planned -- the 5th the merge, `8afa421`, the 6th the
+- **Commits:** 337 on the branch; 14 past the threshold (7 planned -- the 5th the merge, `8afa421`, the 6th the
   execution port's move, `4cfcce2` --, + `97225b7` for the dry4rust re-record, `1d27ff1` for the two states' 36
   accessors, `3cf1ec6` and `3433b15` for the transaction status's 33 importers and the timer key's 100, `2883602`
   for the slot discovery's 11, `a352577` for the Ed25519 scheme's 14, planned within by SETUP, `d7d2c45` for
   Faction's two implementations and their test files, Q43; the 7th planned, `6fc97b9`, `SledStorageInner`'s 678
-  lines, which `implemented-in-one-file` moves whole) -- 14 of 336 is 4.2%, 322 of 336 within; the 95% reached at the 260th (247 of 260 within), and it holds only while every
+  lines, which `implemented-in-one-file` moves whole) -- 14 of 337 is 4.2%, 323 of 337 within; the 95% reached at the 260th (247 of 260 within), and it holds only while every
   commit from here stays within: count a move's files first, and
   shape the seams so a type is born where it ends; bug fixes
   6 (`eba863f`, `e1232ca`, `5013d0e`, `1e7ac29`, `643bfd5`, `8e1ca00`); the 150th (`7ffb333`) ran all three stages, Part A's end, the 160th (`6912269`) and
@@ -1033,7 +1039,10 @@ pushed with the record at every commit.
   (`3cf1ec6`), the timer key (`3433b15`), system-tests' configs (`e7da3a4`), the slice's last; living documents:
   the gate documents (`520ee10`), the three resolved open points retired (`7ffb333`), Part A's last; bugs found on
   the way: the hard state's dropped transaction data (`e1232ca`, Q36).
-- **Part B:** from row 151, 2026-11-07T05:33Z. The skipped rules: evm's `returned-mutations` -- the push's
+- **Part B:** rows 151 to 337 (`3c21b53` to `7182924`), 2026-11-07T05:33Z to 22:14Z, 187 commits against SETUP's
+  about 100 (80 to 130); offences 41 to 33 as configured and 252 to 33 everything on; tests 3,670 to 3,890; 6
+  past the threshold (14 in all). Its last steps: the gates (step 8, Q56, rows 325 to 335) and an ADR with the
+  living documents (step 9, rows 336 and 337); entry 57, `node`'s recovery crates, open. The skipped rules: evm's `returned-mutations` -- the push's
   counter returned (`3c21b53`), the machine state (`0a38d3c`), push, dup and swap moved in (`bc9904f`), the
   arithmetic's first half through the word ALU (`a022bd1`), its second (`bf1b812`), the environment opcodes
   (`60b3373`), SLOAD and SSTORE (`78c9a21`), the memory dispatcher, MSTORE and MLOAD (`89735b7`), the memory
