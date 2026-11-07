@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `835af20` Give the recovery process a factory port, the control layer its default (row 208)
+- **Last commit:** `0d46800` Give the recovery control factory the default every assembly builds (row 209)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -176,7 +176,15 @@ pushed with the record at every commit.
   `RecoveryProcess` outside the assembly; the gate stands, the trait moved), node-infra's
   `RecoveryControlFactory::new(coordinator, recorder)` in a new `node-infra/src/factories/`, three tests. Lesson:
   dispatch a stage only after the previous one's check -- the refused attempt's stages 2 and 5 were dispatched in
-  its stage 1's batch and ran on a commit already refused. Next: (f4) `IbftProtocolDependencies` takes
+  its stage 1's batch and ran on a commit already refused. (f4a) the factory's default -- done at `0d46800`
+  (unplanned, Trigger Q46: `RecoveryControlFactory::default()`, the one-line form for the 28 default sites; the
+  dry4rust group `cf60ee414b625be5` of seven `empty_state` helpers recorded with it as an eighth member, as Q33 did).
+  Lesson: `cargo dry4rust baseline --path <absolute>` writes closure names with the checkout's path -- restore
+  `closure at ./` (Edit, replace all) and read the diff before staging. The wiring is in `git stash` as
+  `c210-wiring` (11 files: every site through `RecoveryControlFactory::default()` but node's
+  `setup_dependencies_with_recorder` and `dependencies_around`, which take `new`; the imports fixed; clippy clean
+  on the whole). Next: (f4b) pop it, re-record the seven re-keyed pairs (Q46), commit 210 with all three stages.
+  The plan's (f4): `IbftProtocolDependencies` takes
   the factory in place of the coordinator and the decision recorder (13 files build it: node-infra's protocol
   builder, node's three test helpers and its dependencies test, system-tests' protocol factory, validation's five),
   `into_parts(timing)` building through it; (f5) the documents (CLAUDE.md's recovery-boundary paragraph -- the
@@ -453,11 +461,11 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 208 on the branch; 13 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
+- **Commits:** 209 on the branch; 13 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
   execution port's move, `4cfcce2` --, + `97225b7` for the dry4rust re-record, `1d27ff1` for the two states' 36
   accessors, `3cf1ec6` and `3433b15` for the transaction status's 33 importers and the timer key's 100, `2883602`
   for the slot discovery's 11, `a352577` for the Ed25519 scheme's 14, planned within by SETUP, `d7d2c45` for
-  Faction's two implementations and their test files, Q43) -- 13 of 208 is 6.3%; the 95% now needs about 260
+  Faction's two implementations and their test files, Q43) -- 13 of 209 is 6.2%; the 95% now needs about 260
   commits, every one from here within it: count a move's files first, and
   shape the seams so a type is born where it ends; bug fixes
   5 (`eba863f`, `e1232ca`, `5013d0e`, `1e7ac29`, `643bfd5`); the 150th (`7ffb333`) ran all three stages, Part A's end, the 160th (`6912269`) and
@@ -568,7 +576,8 @@ pushed with the record at every commit.
   (`7508819`), the timers a snapshot apply left unarmed (`5013d0e`, a bug-fix), recovery's replays under
   their own kind (`1e7ac29`, a bug-fix), the last resort counted as blind (`643bfd5`, a bug-fix), the unavailable
   path's retry cancelled by the control layer (`a5e9b26`), the jump re-arming the layer's check (`4fbf853`), a pushed range pinned (`e248472`), the port's outcome must-use
-  (`a8a1d57`), the factory port and its default (`835af20`, Q45).
+  (`a8a1d57`), the factory port and its default (`835af20`, Q45), the factory's
+  `Default` (`0d46800`, Q46).
 
 ## Next in line
 

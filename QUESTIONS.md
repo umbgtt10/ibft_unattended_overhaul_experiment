@@ -63,6 +63,7 @@ After the run the owner takes each open entry -- implement, discuss, discard, po
 | 43 | commit 186, Part B, the Faction seam | the bridge's tests need an observer node-faction can build, 360 lines behind the full observer; the bridge's and the coordinator's moves each pass 360 lines, their test files counted twice | answered | the peer-discovery facet first, holding the readiness event, `ProtocolObserver` its subtrait; the two implementations then move in one commit past the threshold, the seam's one unsplittable move |
 | 44 | after commit 205, Part B, the Beggar seam | which trait is Beggar's port, where its vocabulary lives, and who builds the default, which `node`'s assembly builds today | answered | the port is today's call site, `RecoveryProcess`, which already admits a pushed transfer (pinned, not changed); its vocabulary stays in `recovery-control` until gate 8, after the observer split; `node` takes a `RecoveryProcessFactory` it hands its timing, node-infra's `RecoveryControlFactory` the default |
 | 45 | commit 208, Part B, the Beggar seam | entry 44 put the factory port in `node/src/traits`, and stage 1's recovery boundary refuses `RecoveryProcess` in `node/src` outside the assembly | answered | the gate stands; the trait moves to `node/src/ibft/assembly/`, beside the dependencies that take it, and the rest of entry 44 is unchanged |
+| 46 | before commit 209, Part B, the Beggar seam | the dependencies taking the factory change 30 sites in 11 files, re-key the seven pairs the dry4rust baseline records for node's and validation's dependency helpers and pay an eighth, near the threshold whole; the factory's default, the one-line form, joins a recorded group of seven `empty_state` helpers | answered | two commits: the default first, its group recorded with an eighth member as entry 33 did, then the wiring with the seven pairs re-keyed as entry 35 did |
 
 ## Interventions
 
@@ -1095,3 +1096,28 @@ the course the slice took and the run's recommendation; after the run, the owner
     exempts nothing, and the documents step can say so. Its exemption from the node rule still covers the port's
     name, until gate 8 moves the vocabulary out of `recovery-control`.
 - **Commit:** 208.
+
+### 46. The dependencies take the factory: 30 sites, eight recorded duplicate groups, one default
+
+- **Raised:** before commit 209, Part B, the Beggar seam -- the fourth step of entry 44's answer.
+- **What:** `IbftProtocolDependencies::new` gives up the coordinator and the decision recorder for one
+  `Box<dyn RecoveryProcessFactory>`. 30 sites in 11 files build it. 28 pass a fresh `RecoveryState` and a
+  `NoOpRecorder`; one passes its own recorder, and one test helper both. node's test helpers and validation's are
+  copies of each other: the dry4rust baseline records seven of them as exact pairs and two of node's as a near pair.
+  The same edit to both copies re-keys the seven pairs, the same members under new fingerprints, and pays the near
+  pair. Measured on the tree, with every site changed and the factory's default added: 184 lines in 13 files before
+  the baseline, about 360 with it.
+  The default -- `RecoveryControlFactory::default()`, the one-line form 28 sites take where `new` over the
+  pair is four -- joins `cf60ee414b625be5`, the group of the seven `empty_state` helpers in node's tests, which
+  build a different struct over two boxed fresh parts.
+- **Status:** answered. The split is the house's way under the threshold. Entry 33 is the precedent for recording
+  shape-alike members with nothing to share, and entry 35 the precedent for re-keyed pairs.
+- **Answer:**
+  - commit 209 adds the default and its test. The group is recorded with its eighth member: the same fingerprint, the
+    tool's re-record with its closure names put back to `./`, and a diff of that one entry;
+  - commit 210 is the wiring. The seven pairs are re-keyed, checked fingerprint by fingerprint, and the paid near pair
+    drops, 196 groups to 195;
+  - re-recording with `--path` absolute writes closure names absolute: 7 entries, 18 names, each carrying the
+    checkout's path. The house form is `./`, which the tool writes from the root. The prefix is restored and
+    the diff checked to hold only the group's change.
+- **Commit:** 209, 210.
