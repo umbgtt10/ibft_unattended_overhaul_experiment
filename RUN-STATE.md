@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `a28e815` Build the context snapshot through its accessors in validation's consensus and messaging tests (row 133)
+- **Last commit:** `70df3dd` Keep the context snapshot's fields private (row 134)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -65,7 +65,7 @@ pushed with the record at every commit.
   Lessons: stern refuses anything but a parameter assigned to a trait-typed field, an injected factory's call
   included -- split build from install; a delegating trait-impl stub can be a dry4rust near duplicate of
   another, so let the impl hold the body; a planned past-threshold commit says so in `Threshold: exceeded --`.
-- **Slice in progress:** Part A slice 8, records and objects, a module at a time -- records-and-objects 5 left
+- **Slice in progress:** Part A slice 8, records and objects, a module at a time -- records-and-objects 4 left
   (`Chosen-By: no-scaffolding`; started 23:51:38Z; full list `overhaul-scratch/records-and-objects.txt`). Three
   kinds. (A) record with private fields -> make them `pub`: all 14 done (`3b243b5`). (B) getter-only -> delete
   the getters and constructor, `pub` fields, built by literal: all 11 done (`EtheramGrpcNodeTimerConfig`,
@@ -123,19 +123,19 @@ pushed with the record at every commit.
   commit), node's tests `278fb05`, validation's `a7f097b`, `8d4b1cf`, `8843e5c`, system-tests' with the fields
   private `4612b79` (the last three split out of one 505-line commit -- a seventh past the threshold would break
   the 95%); a test-only commit runs stages 1 and 2;
-  5 left: `Block` (execution-types; ~148 importers, tests mutate its fields), `NodeDiagnostics` (Q37, open: a
-  constructor of 28 -- left in the baseline), `ContextSnapshot` (node; in progress: 13 getters, a `with_` per
-  set field -- `as_variant` for the variant, `with_variant` being the constructor -- and `with_account`,
-  `with_block`, `with_pending_transaction` for the 84 in-place inserts and pushes in tests, all at `b440217` with
-  the context's own tests; `consensus.rs` at `3867552`; the other ten production readers and the builder at
-  `2f65d20` (three dry4rust groups re-keyed, members unchanged, Q35 -- re-record with `--path .` from the start
-  folder: an absolute path rewrites every closure's name; the baseline holds 203 groups, not the 200 a failing check
-  reports suppressed); node's `snapshot_context_builder_tests.rs` at `3c58db8` (`replace_all` per field, then
-  `grep -n "^ *\.blocks\b\|..."` for chains rustfmt split across lines -- patterns ending in `$` are refused);
-  node's other tests with validation's `scenario_helpers.rs` (its dry4rust twin) at `d5048cc`; left, listed with the
-  fields private in `overhaul-scratch/context-readers-2.txt`: 168 reads in 16 validation test files --
-  consensus/ and messaging/ (9 files, 63) at `a28e815`; next prop_tests/, protocol/, recovery/ (7 files, 105), with
-  the fields private if the threshold allows (`rule-offence`, 65 to 64 configured, 276 to 275 everything on)),
+  `ContextSnapshot` at `70df3dd` (seven commits, rows 128-134: 13 getters, `as_variant`, a `with_` per set field
+  and `with_account`, `with_block`, `with_pending_transaction` for in-place inserts and pushes, with the context's
+  own tests at `b440217`; production readers `3867552`, `2f65d20`; tests `3c58db8`, `d5048cc`, `a28e815`; the last
+  validation tests with the fields private at `70df3dd`, `rule-offence`, 65 to 64 / 276 to 275 -- dry4rust
+  re-records from the start folder with `--path .`, an absolute path rewriting every closure's name, and the
+  baseline holds 203 groups, not the 200 a failing check reports suppressed; `replace_all` per field, then
+  `grep -n "^ *\.blocks\b\|..."` for chains rustfmt split -- patterns ending in `$` are refused; `x.with_y(x.z())`
+  moves before it borrows, so bind `x.z()` first; a `with_` replacing a collection holds what inserts did only
+  over a helper whose collections start empty -- check it);
+  4 left: `Block` (execution-types; ~148 importers, tests mutate its fields -- next, as `Account` went: getters and
+  the `with_` methods its writers need, execution-types' own tests calling each, then the readers a crate or
+  directory at a time, listed by compiling with the fields private -- execution-types' errors first, downstream
+  crates only once it compiles), `NodeDiagnostics` (Q37, open: a constructor of 28 -- left in the baseline),
   `IbftProtocol` (Q25) (node),
   `RecoveryControl` (Q25) (recovery). SETUP's 6-10 for the slice is its commit range, not what is left
   (read wrongly here until row 114): the stern baseline is to end holding the cluster harness's time reads alone,
@@ -158,11 +158,11 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 133 on the branch; 6 past the threshold (4 planned, + `97225b7` for the dry4rust re-record,
+- **Commits:** 134 on the branch; 6 past the threshold (4 planned, + `97225b7` for the dry4rust re-record,
   `1d27ff1` for the two states' 36 accessors); bug fixes
   2 (`eba863f`, `e1232ca`); the 130th (`2f65d20`) ran all three stages, as every commit has; the 140th next
 - **Tests:** 3,440 at the base, 3,661 now (stage 5 465); removed under constraint 6: 1 (`2e6d484`, Q34)
-- **Offences:** 65 as configured, 276 everything on, shear 0; Grip 734.29 / Braintax 4,676.19 (0.1570;
+- **Offences:** 64 as configured, 275 everything on, shear 0; Grip 734.29 / Braintax 4,676.19 (0.1570;
   node 325.06 / 2,354.12 at `b440217`;
   types 72.32 / 518.56 and node 300.17 at `1d27ff1`; types 39.26 / 453.13 at `439551b`;
   recovery/control 74.95 / 383.47 at `525d620`;
