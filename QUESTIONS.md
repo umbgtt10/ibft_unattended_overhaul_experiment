@@ -776,5 +776,9 @@ the course the slice took and the run's recommendation; after the run, the owner
   blocks gained a parent hash (`d809c18`), both layout bytes moved on -- `HARD_STATE_VERSION` 0x01 to 0x03,
   `WAL_V2_MAGIC` 0x02 to 0x04 -- "state in the 0x01 layout is refused, not misread". They move on again, 0x03 to
   0x05 and 0x04 to 0x06, past each other's old values as then. The tests that pinned the empty data check the data
-  restored; a round-trip test of each layout is the commit's test, red on its parent.
+  restored; a round-trip test of each layout is the commit's test, red on its parent. One of the three is renamed
+  for what it now checks, `encode_decode_pending_block_transaction_drops_transaction_data` to `..._keeps_...`, its
+  assertion the data written where it was the data lost; the commit's `Maps:` line names it. Not a
+  security-relevant finding: it takes the node's own restart while it holds a lock on a contract call, which no
+  peer or client can force, and what it costs is rounds, never a block that a quorum did not vote.
 - **Commit:** 116.
