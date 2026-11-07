@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `bf5c717` Run the bootstrapping contract's standard scenarios on both coordinators (row 194)
+- **Last commit:** `a4f3033` Bring the documents up to the Faction seam (row 195)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -108,9 +108,26 @@ pushed with the record at every commit.
   `Ed25519SignatureScheme` and its ten tests into node-infra's implementations, `ed25519-dalek` with it; `node`
   depends on `etheram-core`, `types`, `faction`, `recovery-control` and `recovery-ibft`. Past the threshold, 25
   files and 470 lines: SETUP counted about 16, the importers are 14 (Lesson: count a move's importers, registries
-  and manifests before trusting an estimate). No document says where the scheme lives; README's node-infra row
-  can name it at step 9.
-- **Slice in progress:** Part B seam 3, Faction (SETUP, *Part B*, step 3) -- `Chosen-By: owner-order` among the
+  and manifests before trusting an estimate). No document said where the scheme lives; README's node-infra row
+  names it since `a4f3033`.
+  Part B seam 3, Faction -- 18 commits, rows 178 to 195 (`951d746` to `a4f3033`), 07:58Z to 09:30Z, against
+  SETUP's share of the seams' 75-100; `Chosen-By: owner-order`, the design Q42, the observer facet and the
+  one move past the threshold Q43. `node` depends on no bootstrapping crate: its port
+  (`BootstrappingCoordinator::process(BootstrappingCommand) -> Vec<BootstrappingOutcome>`) and the readiness event
+  (`ReadinessTransitionObserved { command, transition: &ReadinessTransition }`) speak node's mirror of Faction's
+  names, so the readiness log reads as before; `node-faction` holds the translation, the coordinator wrapper, the
+  bridge and the factory, the one crate on `faction`; node-infra's `BootstrapperBuilder` chooses Faction (the
+  default) or `MembershipVariant::Fixed`, `FixedMembershipBootstrappingCoordinator` answering as Faction does but
+  refusing joins; `BootstrappingCoordinatorContract` in node-contracts, eight standard scenarios, passed by both.
+  Counts 41 and 195 throughout; tests 3,703 to 3,757; dry4rust 196. 1 commit past the threshold (`d7d2c45`).
+  Lessons: learn a black box's answers by driving it in scratch, never its sources -- the contract's scenarios
+  were each checked against those answers before the code; a mirror vocabulary with the same variant names keeps
+  every `{:?}` log line byte for byte, pinned by a Debug-identity test per variant; a new observer facet taken
+  first lets a plug-in's tests implement one method instead of 78; rustfmt wrapping a signature can push a
+  three-line getter into dry4rust's reach -- name the type instead; a type's test file wants its scenario helpers
+  to differ in data, not in code, or dry4rust pairs them.
+- **Slice in progress:** none chosen yet -- Beggar (SETUP, *Part B*, step 4) is next by the owner's order.
+- **Faction's detail:** Part B seam 3, Faction (SETUP, *Part B*, step 3) -- `Chosen-By: owner-order` among the
   bookkeepers (Faction, then Beggar, the certifier, consensus last), over the skipped-rule slices for seam 2's
   reason; the design is Q42. `node` names faction in the port (`BootstrappingCoordinator::process(Command) ->
   Vec<Outcome>`), the readiness event (`ReadinessTransitionObserved`, rendered field by field with `{:?}` by
@@ -170,13 +187,13 @@ pushed with the record at every commit.
   duplicate and a non-member, not before completion, after a missed deadline, nothing after the conclusion, the
   local peer's own ready counted once, a lone member at one -- run by both factories' test files
   (`check_standard_scenarios_<coordinator>_returns_ok`, node-faction dev-depending on node-contracts) -- done at
-  `bf5c717`, both passing; next (n) the documents: README (the opening's Faction sentence, `#![forbid(unsafe_code)]`
-  in 10 crates not 8, `no_std` adding node-contracts and node-faction, a `node-faction` row, node-infra's row with the
-  Ed25519 scheme, the fixed membership and `BootstrapperBuilder`, node-contracts' row with the bootstrapping suite,
-  the seams sentence), CLAUDE.md (eleven members, node-faction among those with no section, the bootstrapping
-  suite beside the execution one), `stern4rust.toml`'s comment list, OPEN_POINTS' package list and its point 3's
-  stale `bootstrapping_faction_coordinator.rs:18`; (k) the fixed-membership default in
-  node-infra, a builder choice; (l) the bootstrapping contract in `node-contracts`, (m) run by both; (n) docs.
+  `bf5c717`, both passing; (n) the documents -- done at `a4f3033` (`support`, stage 2): README (the opening's
+  Faction sentence, `#![forbid(unsafe_code)]` in 10 crates not 8, `no_std` adding node-contracts and node-faction, a
+  `node-faction` row, node's bootstrapping port, node-infra's row with the Ed25519 scheme, the fixed membership and
+  `BootstrapperBuilder`, node-contracts' row with the bootstrapping suite, the seams sentence), CLAUDE.md (eleven
+  members, node-faction among those with no section, the bootstrapping suite, a paragraph on the seam),
+  `stern4rust.toml`'s comment list, OPEN_POINTS' package list and its point 3's stale
+  `bootstrapping_faction_coordinator.rs:18`. The seam's last.
 - **Seam 1's detail:** Part B seam 1, execution, with `execution-types` dissolved (SETUP, *Part B*, step 1) --
   `Chosen-By: dependency` (every file the three skipped-rule slices add -- scenario sources, split-out types,
   tests -- would import `execution_types::` paths the merge then rewrites; merged first, each is written once),
@@ -382,11 +399,11 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 194 on the branch; 13 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
+- **Commits:** 195 on the branch; 13 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
   execution port's move, `4cfcce2` --, + `97225b7` for the dry4rust re-record, `1d27ff1` for the two states' 36
   accessors, `3cf1ec6` and `3433b15` for the transaction status's 33 importers and the timer key's 100, `2883602`
   for the slot discovery's 11, `a352577` for the Ed25519 scheme's 14, planned within by SETUP, `d7d2c45` for
-  Faction's two implementations and their test files, Q43) -- 13 of 194 is 6.7%; the 95% now needs about 260
+  Faction's two implementations and their test files, Q43) -- 13 of 195 is 6.7%; the 95% now needs about 260
   commits, every one from here within it: count a move's files first, and
   shape the seams so a type is born where it ends; bug fixes
   2 (`eba863f`, `e1232ca`); the 150th (`7ffb333`) ran all three stages, Part A's end, the 160th (`6912269`) and
@@ -490,7 +507,7 @@ pushed with the record at every commit.
   coordinator and bridge into node-faction (`d7d2c45`), the port in node's vocabulary (`d1246b3`), the event's, `node` off
   faction (`082c59c`), the fixed-membership coordinator (`c885cf9`), its other answers' tests (`356ecee`), the builder's
   choice of it (`44a0b7a`), the bootstrapping contract's check (`515d818`), its standard scenarios
-  run by both coordinators (`bf5c717`).
+  run by both coordinators (`bf5c717`), the documents (`a4f3033`), the seam's last.
 
 ## Next in line
 
@@ -516,8 +533,8 @@ and `system-tests` (each `<scenario>_scenario_tests.rs` paired with a `<scenario
 its tests the cluster they start from), `tested-public-api` in `system-tests` (tests for the 20 functions no test
 calls), the eight `single-implemented-type` entries split; then the seams, 75 to 100 commits, in the owner's
 order -- ~~execution with `execution-types` dissolved into `types`~~ (done at `c83fba2`, 13 commits, `Chosen-By:
-dependency`), ~~`node`'s own dependencies~~ (done at `a352577`, 1 commit, `Chosen-By: no-scaffolding`), Faction
-(in progress, `Chosen-By: owner-order`), Beggar, the
+dependency`), ~~`node`'s own dependencies~~ (done at `a352577`, 1 commit, `Chosen-By: no-scaffolding`), ~~Faction~~
+(done at `a4f3033`, 18 commits, `Chosen-By: owner-order`), Beggar, the
 certifier, consensus, the observer split by concern, the gates, an ADR and the living documents.
 
 Owed, for Part B's `tested-public-api` slice: `RuntimeTimerHarness::next_port` has no test (everything-on
