@@ -1384,4 +1384,14 @@ the course the slice took and the run's recommendation; after the run, the owner
     commit stays a `rule-offence` as long as the everything-on total falls;
   - **the `tested-public-api` slice, next, takes them** with the 17 it already had: a test of each that calls it
     directly, or the stand-down kept with its reason widened, decided there.
+  - **added at commit 271:** SETUP's `rule-offence` lets another rule's count rise only within the total's fall,
+    named here. So a source holds only what its tests start from: a harness call in a test's Act -- the operation
+    under test, such as `timer_restart`'s `build_restart_from_db` -- stays in the test. A commit whose rise would
+    match its fall is reshaped until the total falls. The calls the rule has stopped seeing, by commit:
+    - 267: `ClusterProcessHarnessBuilder::with_scheduled_validator_update`;
+    - 268: `ClusterProcessHarness::spawn_with_malicious_node`, `ClusterProcessHarness::spawn_with_env_extras_and_config`,
+      `ClusterConfigFile::with_block_limits`;
+    - 269: `ClusterProcessHarness::spawn_with_env_extras`;
+    - 271: `RuntimeTimerHarness::build_single_node`, `ClientProcessHarness::spawn_single_node`,
+      `ClientProcessHarness::spawn_single_node_with_default_config`.
 - **Commit:** 267 onward.
