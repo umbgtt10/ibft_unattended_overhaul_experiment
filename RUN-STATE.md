@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `462ec0d` Move the in-memory storage tests beside the sync storage trait they hold (row 261)
+- **Last commit:** `aa9982a` Rename the cluster harness's helper tests to the harness's test file (row 262)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -262,7 +262,8 @@ pushed with the record at every commit.
   done at `462ec0d` (a `git mv`, 176 lines, 84 to 83); next the cluster harness's two test files, both testing
   `src/cluster_process_harness.rs`, merged in name order into `tests/cluster_process_harness_tests.rs` in five
   commits: (1) `cluster_process_harness_helpers_tests.rs` (167; its `BUILT`, `EnvGuard`, `FakeBuild` and
-  `piped_stderr_of` with it) renamed whole (`rule-offence`, about 336 lines); then `tests/cluster/`'s file (637, no
+  `piped_stderr_of` with it) renamed whole (`rule-offence`, about 336 lines) -- done at `aa9982a` (a `git mv`, 336
+  lines, 83 to 82); then `tests/cluster/`'s file (637, no
   helpers) in four batches by its line ranges: (2) `client_addrs` to `get_heights` (15-171), (3) `heal` to `restart`
   (172-332), (4) the seven `shutdown_*` (333-481), (5) `spawn` to `wait` (482-637), the old file out
   (`rule-offence`). A file past ~180 lines moves in batches of tests (pairing by name, `moved`). Then the scenario sources: system-tests'
@@ -640,18 +641,18 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 261 on the branch; 13 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
+- **Commits:** 262 on the branch; 13 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
   execution port's move, `4cfcce2` --, + `97225b7` for the dry4rust re-record, `1d27ff1` for the two states' 36
   accessors, `3cf1ec6` and `3433b15` for the transaction status's 33 importers and the timer key's 100, `2883602`
   for the slot discovery's 11, `a352577` for the Ed25519 scheme's 14, planned within by SETUP, `d7d2c45` for
-  Faction's two implementations and their test files, Q43) -- 13 of 261 is 5.0%; the 95% reached at the 260th (247 of 260 within), and it holds only while every
+  Faction's two implementations and their test files, Q43) -- 13 of 262 is 5.0%; the 95% reached at the 260th (247 of 260 within), and it holds only while every
   commit from here stays within: count a move's files first, and
   shape the seams so a type is born where it ends; bug fixes
   6 (`eba863f`, `e1232ca`, `5013d0e`, `1e7ac29`, `643bfd5`, `8e1ca00`); the 150th (`7ffb333`) ran all three stages, Part A's end, the 160th (`6912269`) and
   the 170th (`2883602`), the 180th (`b31593c`), the 190th (`c885cf9`), the 200th (`7508819`), the 210th
   (`e04403c`), the 220th (`e329250`), the 230th (`5ebe5f1`), the 240th (`18baf35`), the 250th (`8bdb859`) and the 260th (`1fef15d`); the 270th next
 - **Tests:** 3,440 at the base, 3,834 now (stage 5 465); removed under constraint 6: 1 (`2e6d484`, Q34)
-- **Offences:** 41 as configured, 178 everything on (paired-test-file 83, from 100 at `4a976c2`), shear 0; Grip 780.18 / Braintax 4,868.87 (0.1602 at `1f5213f`, the tracker into the tally, node-infra
+- **Offences:** 41 as configured, 177 everything on (paired-test-file 82, from 100 at `4a976c2`), shear 0; Grip 780.18 / Braintax 4,868.87 (0.1602 at `1f5213f`, the tracker into the tally, node-infra
   166.15 / 700.19 and node 320.64 / 2,342.00; 782.93 / 4,880.81, 0.1604 at `58844eb`, the tally port, node-infra
   164.60 / 698.19 and node 324.94 / 2,355.94; 773.51 / 4,811.48, 0.1608 at `9b496e6`, recovery/control 78.14 / 397.87 with
   `PeerKnowledge`; 770.32 / 4,797.08 at `44a0b7a`,
