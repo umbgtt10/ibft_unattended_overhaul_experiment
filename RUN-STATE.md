@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `7508819` Give consensus its reaction to a snapshot jump (row 200)
+- **Last commit:** `5013d0e` Arm the round and recovery timers at the height a snapshot lands on (row 201)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -149,11 +149,10 @@ pushed with the record at every commit.
   seven tests -- done at `fcb922a` (`tests`). (d) the snapshot apply split -- done at `7508819` (the 200th,
   all three stages): `IbftProtocol::adopt_snapshot_jump(height, remaining_updates, adopted_validators)` in
   `consensus.rs`, plain data in; the host still fast-forwards with recovery-ibft's `ScheduledValidatorFastForward`
-  (moving it, 385 lines counted twice, would pass the threshold) and builds the outcome. Next (e1) the bug-fix,
-  test-first: a snapshot apply arms nothing at its new height -- the fix pushes `round_entry_timers(height, peer)`
-  and `recovery_actions().schedule_check(height)` after the apply, as the importer's `round_entry_actions` does;
-  check red on the parent in `overhaul-scratch/wt-parent`; the traces' snapshot scenarios may differ -- name them in
-  `Traces:`. Then (e2) recovery's message kinds reported as `PrePrepare` (OPEN_POINTS line ~137), (e3)
+  (moving it, 385 lines counted twice, would pass the threshold) and builds the outcome. (e1) the bug-fix --
+  done at `5013d0e`: after `AdoptSnapshot` the apply pushes `RecoveredBlockImporter::round_entry_actions(height,
+  peer)`; the test failed on the parent's sources at `TimeoutRound { height: 400, round: 0 }`; traces identical
+  (they hold no timers); bug fixes now 3. Next (e2) recovery's message kinds reported as `PrePrepare` (OPEN_POINTS line ~137), (e3)
   `requests_blind` (line ~164), (d3) the unavailable path's cancel as the control layer's intent.
 - **Faction's detail:** Part B seam 3, Faction (SETUP, *Part B*, step 3) -- `Chosen-By: owner-order` among the
   bookkeepers (Faction, then Beggar, the certifier, consensus last), over the skipped-rule slices for seam 2's
@@ -427,16 +426,16 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 200 on the branch; 13 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
+- **Commits:** 201 on the branch; 13 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
   execution port's move, `4cfcce2` --, + `97225b7` for the dry4rust re-record, `1d27ff1` for the two states' 36
   accessors, `3cf1ec6` and `3433b15` for the transaction status's 33 importers and the timer key's 100, `2883602`
   for the slot discovery's 11, `a352577` for the Ed25519 scheme's 14, planned within by SETUP, `d7d2c45` for
-  Faction's two implementations and their test files, Q43) -- 13 of 200 is 6.5%; the 95% now needs about 260
+  Faction's two implementations and their test files, Q43) -- 13 of 201 is 6.5%; the 95% now needs about 260
   commits, every one from here within it: count a move's files first, and
   shape the seams so a type is born where it ends; bug fixes
-  2 (`eba863f`, `e1232ca`); the 150th (`7ffb333`) ran all three stages, Part A's end, the 160th (`6912269`) and
+  3 (`eba863f`, `e1232ca`, `5013d0e`); the 150th (`7ffb333`) ran all three stages, Part A's end, the 160th (`6912269`) and
   the 170th (`2883602`), the 180th (`b31593c`), the 190th (`c885cf9`) and the 200th (`7508819`); the 210th next
-- **Tests:** 3,440 at the base, 3,773 now (stage 5 465); removed under constraint 6: 1 (`2e6d484`, Q34)
+- **Tests:** 3,440 at the base, 3,774 now (stage 5 465); removed under constraint 6: 1 (`2e6d484`, Q34)
 - **Offences:** 41 as configured, 195 everything on, shear 0; Grip 773.51 / Braintax 4,811.48 (0.1608 at `9b496e6`, recovery/control 78.14 / 397.87 with
   `PeerKnowledge`; 770.32 / 4,797.08 at `44a0b7a`,
   node-infra 162.07 / 675.84 with the fixed membership; 160.72 / 669.63 at `c885cf9`; node-faction 10.25 / 53.45 at `082c59c`;
@@ -539,7 +538,7 @@ pushed with the record at every commit.
   run by both coordinators (`bf5c717`), the documents (`a4f3033`), the seam's last. Beggar: the
   pruned-cluster join pinned (`187b65c`), `#[must_use]` on the state-deciding bools (`f2a36a8`), the peer knowledge
   (`9b496e6`), its observations' tests (`fcb922a`), consensus's reaction to a snapshot jump
-  (`7508819`).
+  (`7508819`), the timers a snapshot apply left unarmed (`5013d0e`, a bug-fix).
 
 ## Next in line
 
