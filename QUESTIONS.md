@@ -65,6 +65,7 @@ After the run the owner takes each open entry -- implement, discuss, discard, po
 | 45 | commit 208, Part B, the Beggar seam | entry 44 put the factory port in `node/src/traits`, and stage 1's recovery boundary refuses `RecoveryProcess` in `node/src` outside the assembly | answered | the gate stands; the trait moves to `node/src/ibft/assembly/`, beside the dependencies that take it, and the rest of entry 44 is unchanged |
 | 46 | before commit 209, Part B, the Beggar seam | the dependencies taking the factory change 30 sites in 11 files, re-key the seven pairs the dry4rust baseline records for node's and validation's dependency helpers and pay an eighth, near the threshold whole; the factory's default, the one-line form, joins a recorded group of seven `empty_state` helpers | answered | two commits: the default first, its group recorded with an eighth member as entry 33 did, then the wiring with the seven pairs re-keyed as entry 35 did |
 | 47 | after commit 214, Part B, the certifier's seam | the seam SETUP names -- `node`'s `SignatureScheme` port, `Ed25519SignatureScheme` behind it in `node-infra`, every key derived from the peer id -- already stands; which of the seam's pieces are left, and whether the port takes a height | answered | the port is today's, with no height (decision 9; a height comes with the key variants, decision 5); the protocol boundary is characterized already; what is left is a contract suite every scheme runs -- what one member signs, every member accepts as that member's, for messages and certificates both -- and the documents |
+| 48 | after commit 217, Part B, the consensus seam | the one recorded bug in consensus's code: a buffered proposal is replayed under the context of the message that released it, without the accounts its transactions touch; SETUP fixes it by re-queuing, so the runtime builds it its own, and no action re-queues today | answered | a new `Action::RequeueMessage`, which the partitioner routes to the node's own work; `EtheramNode` serves re-queued messages before its event source; both buffers re-queue a held proposal and replay votes in place as now; the replay report gains a `Requeued` blocker; three consumer breaks, named in the commit |
 
 ## Interventions
 
@@ -1162,3 +1163,37 @@ the course the slice took and the run's recommendation; after the run, the owner
     does;
   - then the documents.
 - **Commit:** 215 onward.
+
+### 48. The consensus seam's recorded bug: how a held proposal gets a context of its own
+
+- **Raised:** after commit 217, Part B, the consensus seam (SETUP, *Part B*, step 6), the certifier's seam done.
+- **What:** SETUP's step 6 names the one recorded bug in the code it moves: "a proposal held in a buffer and replayed
+  is judged today under its releaser's context, without the accounts its transactions touch; it is re-queued so the
+  runtime builds it its own -- fixed test-first". There are two buffers.
+  - The future-round buffer replays on a round advance, under whatever context advanced the round.
+  - The pending buffer holds, among votes ahead of their proposal, a later round's proposal that arrived before its
+    NewView. It replays on the NewView, under that context made header-only (`PendingPrePrepareReplayContext`).
+  Measured at the cluster tier with a block spending a funded account: delivered after its NewView it commits (pinned
+  at commit 218). Delivered ahead of its round, or ahead of its NewView, it is replayed under the releaser's context
+  and the node stays at height 0: two tests, red on the code as it stands. Nothing in the protocol can re-queue: its
+  one output is its actions, and none hands a message back.
+- **Status:** answered. SETUP names the fix's shape, and the house's way to give the runtime work is an action.
+- **Answer:**
+  - **`Action::RequeueMessage { source, message }`**, the held consensus message as it arrived, from the peer who
+    sent it. The action partitioner routes it to the node's own work, beside `ExecuteBlock`, so the partitioner's
+    three-way shape stands. `EtheramNode` keeps re-queued messages in a queue it serves before its event source, so
+    the next step judges the message under a context built for it, before anything else arrives;
+  - **both buffers re-queue a held proposal**, and replay a held vote in place as now. A vote needs no account, and
+    replaying it unchanged keeps every trace the corpus holds that has no held proposal;
+  - **the replay report** for a re-queued proposal says so, with a new blocker, `Requeued`, rather than
+    `ReplayProducedNoPrepare`, which would tell the reader a lie;
+  - **`ActionKind` gains `RequeueMessage`**, the observer's mirror of the action;
+  - **the consumer's breaks** (decision 11): the new action, the new action kind and the new blocker. A runtime that
+    partitions or matches actions itself, as the boards do, routes the new one;
+  - **what the fix changes**: a held proposal's judgement moves one step later, to the step that serves it with its
+    own context. Tests that drove the protocol directly and saw the old replay's actions in the releasing call now
+    see the re-queue there. Each is updated to the new behaviour, named in the commit: never relaxed, since what
+    replaced the old outcome is asserted as specifically. A trace changes only where the corpus holds a held
+    proposal, and a changed trace is accepted only where this commit explains it;
+  - the port's design comes after the fix, in an entry of its own.
+- **Commit:** 218, 219.

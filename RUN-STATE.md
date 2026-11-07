@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `b0756e2` Bring the documents up to the certifier's seam (row 217)
+- **Last commit:** `11bfec3` Pin that a proposal spending an account commits when it follows its NewView (row 218)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -126,8 +126,20 @@ pushed with the record at every commit.
   first lets a plug-in's tests implement one method instead of 78; rustfmt wrapping a signature can push a
   three-line getter into dry4rust's reach -- name the type instead; a type's test file wants its scenario helpers
   to differ in data, not in code, or dry4rust pairs them.
-- **Slice in progress:** Part B seam 5, the certifier (SETUP, *Part B*, step 5), started 11:15Z, design Q47 -- its
-  steps below, after Beggar's. Beggar, done: Part B seam 4 (SETUP, *Part B*, step 4) -- `Chosen-By: owner-order` (Faction,
+- **Slice in progress:** Part B seam 6, consensus (SETUP, *Part B*, step 6), started 11:29Z, `Chosen-By:
+  owner-order`, `Over:` the three skipped-rule slices. The bug first (Q48, answered): (a) the control -- done at
+  `11bfec3` (`tests`; `transfer_cluster()`, `transfer_block_for_round_one()` and
+  `pre_prepare_carrying_a_transfer_after_its_new_view_commits` in validation's
+  `cluster/consensus/ibft_cluster_message_ordering_tests.rs`). Next: (b) the bug-fix -- the two red tests are in
+  `overhaul-scratch/c219-ibft_cluster_message_ordering_tests.rs` (the whole file with them;
+  `future_round_pre_prepare_carrying_a_transfer_after_timeout_round_replays_and_commits` and
+  `unjustified_pre_prepare_carrying_a_transfer_replays_on_its_new_view_and_commits`, both failing at height 0 on
+  `11bfec3`'s sources) -- `cp` it back, then `Action::RequeueMessage { source, message }` (types), the partitioner
+  to executions, `EtheramNode`'s served-first queue, `ActionKind::RequeueMessage`, the blocker `Requeued`, both drains
+  re-queuing a `PrePrepare` and replaying votes in place; every exhaustive `Action` match (output dispatcher,
+  etheram_state, action_kind, partitioner, node's and validation's action helpers); then the tests that saw the old
+  replay updated. Then the port's design, its own entry. The certifier, done: Part B seam 5 (SETUP, *Part B*, step
+  5), started 11:15Z, design Q47 -- its steps below, after Beggar's. Beggar, done: Part B seam 4 (SETUP, *Part B*, step 4) -- `Chosen-By: owner-order` (Faction,
   Beggar, the certifier, consensus), `Over:` the three skipped-rule slices, the certifier, consensus; started
   09:31Z. SETUP's order: characterization, `#[must_use]`, peer knowledge out of `recovery_state.rs`, the
   snapshot apply split, three bugs test-first, the port shaped by today's `recovery-control` (its default),
@@ -486,11 +498,11 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 217 on the branch; 13 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
+- **Commits:** 218 on the branch; 13 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
   execution port's move, `4cfcce2` --, + `97225b7` for the dry4rust re-record, `1d27ff1` for the two states' 36
   accessors, `3cf1ec6` and `3433b15` for the transaction status's 33 importers and the timer key's 100, `2883602`
   for the slot discovery's 11, `a352577` for the Ed25519 scheme's 14, planned within by SETUP, `d7d2c45` for
-  Faction's two implementations and their test files, Q43) -- 13 of 217 is 6.0%; the 95% now needs about 260
+  Faction's two implementations and their test files, Q43) -- 13 of 218 is 6.0%; the 95% now needs about 260
   commits, every one from here within it: count a move's files first, and
   shape the seams so a type is born where it ends; bug fixes
   5 (`eba863f`, `e1232ca`, `5013d0e`, `1e7ac29`, `643bfd5`); the 150th (`7ffb333`) ran all three stages, Part A's end, the 160th (`6912269`) and
@@ -526,7 +538,7 @@ pushed with the record at every commit.
   one group added at `64f562b`, Q33; one added and one paid at `1121282`; one re-keyed and one added at `8230a8a`,
   Q35, each copy kept in scratch as `dry-baseline-before-cN.json`; one re-keyed at `97cd2da`; one grown by a member
   at `0d46800`, Q46; seven re-keyed and one near pair paid at `e04403c`, Q46, 196 to 195)
-- **Questions:** 44 answered, 3 open (9, 25, 37). **Interventions:** 0. **Waits:** 0.
+- **Questions:** 45 answered, 3 open (9, 25, 37). **Interventions:** 0. **Waits:** 0.
 
 ## The run so far
 
@@ -633,7 +645,8 @@ calls), the eight `single-implemented-type` entries split; then the seams, 75 to
 order -- ~~execution with `execution-types` dissolved into `types`~~ (done at `c83fba2`, 13 commits, `Chosen-By:
 dependency`), ~~`node`'s own dependencies~~ (done at `a352577`, 1 commit, `Chosen-By: no-scaffolding`), ~~Faction~~
 (done at `a4f3033`, 18 commits, `Chosen-By: owner-order`), ~~Beggar~~ (done at `52bc729`, 19 commits, `Chosen-By:
-owner-order`), ~~the certifier~~ (done at `b0756e2`, 3 commits, `Chosen-By: owner-order`), consensus, the observer split by concern, the gates, an ADR and the living documents.
+owner-order`), ~~the certifier~~ (done at `b0756e2`, 3 commits, `Chosen-By: owner-order`), consensus (in progress, `Chosen-By:
+owner-order`), the observer split by concern, the gates, an ADR and the living documents.
 
 Owed, for Part B's `tested-public-api` slice: `RuntimeTimerHarness::next_port` has no test (everything-on
 `tested-public-api`); nor has `RuntimeTimerHarness::new`, which the tool stopped reporting at `3868a69` only because
