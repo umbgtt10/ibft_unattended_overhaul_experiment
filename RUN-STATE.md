@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `bdf9fb9` Give validation's protocol dispatch and node tests a source of their own (row 304)
+- **Last commit:** `15e7d4d` Take paired-test-file out of validation's and system-tests' stand-down (row 305)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -126,6 +126,17 @@ pushed with the record at every commit.
   first lets a plug-in's tests implement one method instead of 78; rustfmt wrapping a signature can push a
   three-line getter into dry4rust's reach -- name the type instead; a type's test file wants its scenario helpers
   to differ in data, not in code, or dry4rust pairs them.
+  Part B slice 2, `paired-test-file` in validation and system-tests -- 64 commits, rows 242 to 305 (`4a976c2` to
+  `15e7d4d`), 13:53Z to 19:12Z, against SETUP's share of the skipped rules' 20-30 (one source per scenario test
+  file, 100 of them); 50 `rule-offence`, 12 `refactoring`, 1 `tests` (row 300, Q53), 1 `support` (the stand-down
+  out); paired-test-file 100 to 0, everything on 195 to 103 (tested-public-api 25, from 17 at `ca72bf4`, Q52), as
+  configured 41 throughout; tests 3,834 to 3,835; dry4rust 194. The commit messages' ordinals run one short of
+  the rows (`15e7d4d` counts sixty-two before it; there are sixty-three). Lessons: a source takes its test
+  file's stem path and holds that file's own Arrange helpers, else the start its tests repeat; a test double
+  stays test-side (`named-subject`); a builder a second source would copy goes to the shared helpers, or the
+  second source calls the first's rather than copy it; `tested-public-api` matches by name and arity, so a
+  test-side function of the same name hides an untested public one (Q53); rustfmt can turn two thin wrappers
+  into a dry4rust exact pair.
 - **Slice in progress:** Part B seam 6, consensus (SETUP, *Part B*, step 6), started 11:29Z, `Chosen-By:
   owner-order`, `Over:` the three skipped-rule slices. The bug first (Q48, answered): (a) the control -- done at
   `11bfec3` (`tests`; `transfer_cluster()`, `transfer_block_for_round_one()` and
@@ -399,9 +410,10 @@ pushed with the record at every commit.
   (v28) dispatch (`round_one_view_change(height)`, on the cluster helpers' `view_change_with_sequence`),
   etheram_node (`with_submitted_transaction(node, client_id, transaction)`, by value) and etheram_node_unit
   (`block_execution(block)`; `build_node` and the stubs stay) -- done at `bdf9fb9` (150 lines, 3 to 0).
-  paired-test-file is 0 with every rule on. Next (v29): the stand-down out of `stern4rust.toml` for validation
-  and system-tests (its comment paragraph too), CLAUDE.md's paragraph and OPEN_POINTS' table row, a `support`
-  commit on the template of `5c6e9eb` (Stages: 2). Then tested-public-api in system-tests. The slice's rule was:
+  paired-test-file is 0 with every rule on. (v29) the stand-down out of `stern4rust.toml` for validation and
+  system-tests (its comment paragraph says what made the rule fit), CLAUDE.md's paragraph and OPEN_POINTS' table
+  row (two rules stood down) -- done at `15e7d4d` (`support`, 35 lines, all three stages). **The slice is done.**
+  The slice's rule was:
   each source holds the file's own Arrange helpers if any, else the start its tests repeat; a test double struct stays test-side (`named-subject`);
   a start or builder another source would copy stays as lines in the tests. dry4rust's check now reads 194
   suppressed. The m4/m5 plan was, the same way,
@@ -779,11 +791,11 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 304 on the branch; 13 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
+- **Commits:** 305 on the branch; 13 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
   execution port's move, `4cfcce2` --, + `97225b7` for the dry4rust re-record, `1d27ff1` for the two states' 36
   accessors, `3cf1ec6` and `3433b15` for the transaction status's 33 importers and the timer key's 100, `2883602`
   for the slot discovery's 11, `a352577` for the Ed25519 scheme's 14, planned within by SETUP, `d7d2c45` for
-  Faction's two implementations and their test files, Q43) -- 13 of 304 is 4.3%; the 95% reached at the 260th (247 of 260 within), and it holds only while every
+  Faction's two implementations and their test files, Q43) -- 13 of 305 is 4.3%; the 95% reached at the 260th (247 of 260 within), and it holds only while every
   commit from here stays within: count a move's files first, and
   shape the seams so a type is born where it ends; bug fixes
   6 (`eba863f`, `e1232ca`, `5013d0e`, `1e7ac29`, `643bfd5`, `8e1ca00`); the 150th (`7ffb333`) ran all three stages, Part A's end, the 160th (`6912269`) and
@@ -915,7 +927,9 @@ pushed with the record at every commit.
   (`f3a66f4`), recovery's (`615232c`), consensus's, the composite left with no body
   (`9de46cf`), the output dispatcher narrowed to the refusals (`e4708ec`), the recovery
   observation dispatch to recovery (`d42690c`), the bootstrapper and its port to peer discovery (`18baf35`), the documents and the open
-  point retired (`301ffc3`), the split's last.
+  point retired (`301ffc3`), the split's last. The skipped rules again: `paired-test-file` -- the cluster
+  harness's tests beside their source (`4a976c2`), the first of 63 commits giving each scenario test file in
+  validation and system-tests its source (`bdf9fb9` the last), the stand-down out (`15e7d4d`), the slice's last.
 
 ## Next in line
 
@@ -936,9 +950,8 @@ Part A's slices, in order, with the criterion that put each there (`SETUP.md`, *
 
 Part B's, as SETUP lists them (*Part B: the restructuring*; to be chosen one at a time by *Choosing the next
 slice*): the skipped rules, 20 to 30 commits -- ~~`returned-mutations` in `evm`~~ (done at `5c6e9eb`, 13
-commits, `Chosen-By: risk`), `paired-test-file` in `validation`
-and `system-tests` (each `<scenario>_scenario_tests.rs` paired with a `<scenario>_scenario.rs` in `src` that hands
-its tests the cluster they start from), `tested-public-api` in `system-tests` (tests for the 20 functions no test
+commits, `Chosen-By: risk`), ~~`paired-test-file` in `validation`
+and `system-tests`~~ (done at `15e7d4d`, 64 commits, rows 242 to 305, `Chosen-By: risk`), `tested-public-api` in `system-tests` (tests for the 20 functions no test
 calls), the eight `single-implemented-type` entries split; then the seams, 75 to 100 commits, in the owner's
 order -- ~~execution with `execution-types` dissolved into `types`~~ (done at `c83fba2`, 13 commits, `Chosen-By:
 dependency`), ~~`node`'s own dependencies~~ (done at `a352577`, 1 commit, `Chosen-By: no-scaffolding`), ~~Faction~~
