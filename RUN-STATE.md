@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `d5048cc` Read and build the context snapshot through its accessors in node's tests (row 132)
+- **Last commit:** `a28e815` Build the context snapshot through its accessors in validation's consensus and messaging tests (row 133)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -133,9 +133,10 @@ pushed with the record at every commit.
   reports suppressed); node's `snapshot_context_builder_tests.rs` at `3c58db8` (`replace_all` per field, then
   `grep -n "^ *\.blocks\b\|..."` for chains rustfmt split across lines -- patterns ending in `$` are refused);
   node's other tests with validation's `scenario_helpers.rs` (its dry4rust twin) at `d5048cc`; left, listed with the
-  fields private in `overhaul-scratch/context-readers-2.txt`: 168 reads in 16 validation test files -- next
-  consensus/ and messaging/ (9 files, 63), then prop_tests/, protocol/, recovery/ (7 files, 105), then the fields
-  private (`rule-offence`, 65 to 64 configured, 276 to 275 everything on)), `IbftProtocol` (Q25) (node),
+  fields private in `overhaul-scratch/context-readers-2.txt`: 168 reads in 16 validation test files --
+  consensus/ and messaging/ (9 files, 63) at `a28e815`; next prop_tests/, protocol/, recovery/ (7 files, 105), with
+  the fields private if the threshold allows (`rule-offence`, 65 to 64 configured, 276 to 275 everything on)),
+  `IbftProtocol` (Q25) (node),
   `RecoveryControl` (Q25) (recovery). SETUP's 6-10 for the slice is its commit range, not what is left
   (read wrongly here until row 114): the stern baseline is to end holding the cluster harness's time reads alone,
   so every object closes, the upper end of the range being the protocol's and control's types (Q25) and
@@ -157,7 +158,7 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 132 on the branch; 6 past the threshold (4 planned, + `97225b7` for the dry4rust re-record,
+- **Commits:** 133 on the branch; 6 past the threshold (4 planned, + `97225b7` for the dry4rust re-record,
   `1d27ff1` for the two states' 36 accessors); bug fixes
   2 (`eba863f`, `e1232ca`); the 130th (`2f65d20`) ran all three stages, as every commit has; the 140th next
 - **Tests:** 3,440 at the base, 3,661 now (stage 5 465); removed under constraint 6: 1 (`2e6d484`, Q34)
