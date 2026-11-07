@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `60b3373` Move the EVM's environment opcodes into the machine state (row 156)
+- **Last commit:** `78c9a21` Move the EVM's SLOAD and SSTORE into the machine state (row 157)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -102,7 +102,8 @@ pushed with the record at every commit.
   files is not paired): the dispatcher and add, mul, sub, lt, gt at `a022bd1` (248 to 242; dry4rust 199 to 197,
   the `exec_add`/`exec_mul`/`exec_sub` and `exec_lt`/`exec_gt` groups paid), then div, eq, iszero, and, or at
   `bf1b812` (242 to 237; dry4rust 197 to 196, the `exec_and`/`exec_or` group); the environment at `60b3373`
-  (237 to 232; private `address_word` and `calldata_word`); sload and
+  (237 to 232; private `address_word` and `calldata_word`); sload and sstore at `78c9a21` (232 to 228; getters
+  `local_storage`, `mutations`) -- then
   sstore; the memory dispatcher; mstore, mload and the two expansions; sha3 and its three helpers; `pop_word` last
   (every free operation calls it); then the engine's five; then `returned-mutations` out of evm's skip. A test
   whose `bool` and out-parameter merge into one `Option` loses one assertion: `Maps:` it to itself, Q38.
@@ -225,14 +226,14 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 156 on the branch; 8 past the threshold (4 planned, + `97225b7` for the dry4rust re-record,
+- **Commits:** 157 on the branch; 8 past the threshold (4 planned, + `97225b7` for the dry4rust re-record,
   `1d27ff1` for the two states' 36 accessors, `3cf1ec6` and `3433b15` for the transaction status's 33 importers
-  and the timer key's 100 -- 8 of 156 is 5.1%, so the 95% needs Parts B and C to add commits within it, and Part
+  and the timer key's 100 -- 8 of 157 is 5.1%, so the 95% needs Parts B and C to add commits within it, and Part
   B's two planned moves out of `execution-types` past it; keep every other commit within); bug fixes
   2 (`eba863f`, `e1232ca`); the 150th (`7ffb333`) ran all three stages, Part A's end; the 160th next
 - **Tests:** 3,440 at the base, 3,680 now (stage 5 465); removed under constraint 6: 1 (`2e6d484`, Q34)
-- **Offences:** 41 as configured, 232 everything on, shear 0; Grip 750.86 / Braintax 4,699.77 (0.1598; evm
-  36.70 / 495.26 at `60b3373`, the calldata loop in a private helper; 35.64 / 499.52 at `bf1b812`; 36.15 / 508.72 at `a022bd1`; 36.69 / 517.12 at `bc9904f`; 37.41 / 522.15 at `0a38d3c`, the delegation layer's price, 34.29 / 498.16 at `3c21b53`;
+- **Offences:** 41 as configured, 228 everything on, shear 0; Grip 752.22 / Braintax 4,700.06 (0.1600; evm
+  38.06 / 495.55 at `78c9a21`; 36.70 / 495.26 at `60b3373`, the calldata loop in a private helper; 35.64 / 499.52 at `bf1b812`; 36.15 / 508.72 at `a022bd1`; 36.69 / 517.12 at `bc9904f`; 37.41 / 522.15 at `0a38d3c`, the delegation layer's price, 34.29 / 498.16 at `3c21b53`;
   execution-types 38.62 / 102.22 at `618a5d2`; 37.67 / 99.93 and types 72.23 / 518.56 at `23c92f9`, the block's
   accessors;
   node 325.06 / 2,354.12 at `b440217`;
@@ -307,7 +308,7 @@ pushed with the record at every commit.
 - **Part B:** from row 151, 2026-11-07T05:33Z. The skipped rules: evm's `returned-mutations` -- the push's
   counter returned (`3c21b53`), the machine state (`0a38d3c`), push, dup and swap moved in (`bc9904f`), the
   arithmetic's first half through the word ALU (`a022bd1`), its second (`bf1b812`), the environment opcodes
-  (`60b3373`).
+  (`60b3373`), SLOAD and SSTORE (`78c9a21`).
 
 ## Next in line
 
