@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `2a7c601` Test that the signature-scheme protocol helper starts at genesis with four validators (row 300)
+- **Last commit:** `7197697` Give validation's single-node injection and WAL-writer tests a source holding their start (row 301)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -389,10 +389,11 @@ pushed with the record at every commit.
   had one; stern's `tested-public-api` matches by name and arity and counted the local helper. Lesson: a test-side
   helper sharing a `src` function's name and arity hides that function from `tested-public-api`. (v24) the 300th
   commit, an unplanned `tests` commit (QUESTIONS.md entry 53), gave `setup_protocol_with_signature_scheme` a direct
-  test -- done at `2a7c601` (12 lines, tests 3,834 to 3,835). Next (v25...): injection (the parked
-  `protocol_signing_with`, the proptests and the wal_writer tests calling it -- all four wal_writer tests open on it
-  -- wal_writer's own source then its WAL-action filter if dry4rust does not pair it with dirty_tracking's counter),
-  then dispatch, etheram_node, etheram_node_unit and recovery (4), 9 files -- each source holds the file's own
+  test -- done at `2a7c601` (12 lines, tests 3,834 to 3,835). (v25) injection (`protocol_signing_with`, the proptests'
+  copy gone, the proptests and wal_writer's four tests calling it) and wal_writer (`wal_checkpoints(actions)`) --
+  done at `7197697` (156 lines, 9 to 7). Next (v26...): single_node persistence (`restore_protocol_from_restored_state`,
+  moved), reexecution, replay, recovery, dispatch, etheram_node and etheram_node_unit (its `build_node` stands on
+  test-side stub types, so it stays), 7 files -- each source holds the file's own
   Arrange helpers if any, else the start its tests repeat; a test double struct stays test-side (`named-subject`);
   a start or builder another source would copy stays as lines in the tests. dry4rust's check now reads 194
   suppressed. The m4/m5 plan was, the same way,
@@ -770,18 +771,18 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 300 on the branch; 13 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
+- **Commits:** 301 on the branch; 13 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
   execution port's move, `4cfcce2` --, + `97225b7` for the dry4rust re-record, `1d27ff1` for the two states' 36
   accessors, `3cf1ec6` and `3433b15` for the transaction status's 33 importers and the timer key's 100, `2883602`
   for the slot discovery's 11, `a352577` for the Ed25519 scheme's 14, planned within by SETUP, `d7d2c45` for
-  Faction's two implementations and their test files, Q43) -- 13 of 300 is 4.3%; the 95% reached at the 260th (247 of 260 within), and it holds only while every
+  Faction's two implementations and their test files, Q43) -- 13 of 301 is 4.3%; the 95% reached at the 260th (247 of 260 within), and it holds only while every
   commit from here stays within: count a move's files first, and
   shape the seams so a type is born where it ends; bug fixes
   6 (`eba863f`, `e1232ca`, `5013d0e`, `1e7ac29`, `643bfd5`, `8e1ca00`); the 150th (`7ffb333`) ran all three stages, Part A's end, the 160th (`6912269`) and
   the 170th (`2883602`), the 180th (`b31593c`), the 190th (`c885cf9`), the 200th (`7508819`), the 210th
   (`e04403c`), the 220th (`e329250`), the 230th (`5ebe5f1`), the 240th (`18baf35`), the 250th (`8bdb859`), the 260th (`1fef15d`), the 270th (`fdd825e`), the 280th (`00c5f1b`), the 290th (`0b135b2`) and the 300th (`2a7c601`); the 310th next
 - **Tests:** 3,440 at the base, 3,835 now (stage 5 465); removed under constraint 6: 1 (`2e6d484`, Q34)
-- **Offences:** 41 as configured, 112 everything on (paired-test-file 9, from 100 at `4a976c2`; tested-public-api 25,
+- **Offences:** 41 as configured, 110 everything on (paired-test-file 7, from 100 at `4a976c2`; tested-public-api 25,
   from 17 at `ca72bf4`, Q52), shear 0; Grip 780.18 / Braintax 4,868.87 (0.1602 at `1f5213f`, the tracker into the tally, node-infra
   166.15 / 700.19 and node 320.64 / 2,342.00; 782.93 / 4,880.81, 0.1604 at `58844eb`, the tally port, node-infra
   164.60 / 698.19 and node 324.94 / 2,355.94; 773.51 / 4,811.48, 0.1608 at `9b496e6`, recovery/control 78.14 / 397.87 with
