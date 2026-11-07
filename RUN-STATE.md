@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `23c92f9` Give the block its accessors (row 135)
+- **Last commit:** `618a5d2` Read the block through its getters in node's sources (row 136)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -136,10 +136,13 @@ pushed with the record at every commit.
   `with_state_root`, `with_transactions`, `with_gas_limit`, `with_post_state_root`, `with_receipts_root` beside
   `with_parent_hash`, eight tests, with evm's, types' and recovery-ibft's sources and types' tests at `23c92f9`; the
   readers surface a compile layer at a time with the fields private -- the next layer's list in
-  `overhaul-scratch/block-readers-next.txt`: node's sources (39 in 9 files; `apply_proposal_commitments` keeps its
-  `&mut Block`, which returning a value would turn into an everything-on `returned-mutations` move, so it assigns
-  back a `with_` chain) and recovery-ibft's tests (16 in 7), then node-infra, node's tests, system-tests,
-  validation; the fields private last), `NodeDiagnostics` (Q37, open: a constructor of 28 -- left in the baseline),
+  `overhaul-scratch/block-readers-next.txt`; node's sources and node-infra's storage at `618a5d2`, with
+  `with_proposer` (`apply_proposal_commitments` keeps its `&mut Block`, which returning a value would turn into an
+  everything-on `returned-mutations` move, so it assigns back a `with_` chain); next recovery-ibft's tests, already
+  converted, in `git stash` ("c137-pending") -- split off for 19 files -- with node-infra's tests; then node's tests
+  with validation's sources (their helper twins are recorded dry4rust pairs: scenario, action, recovery helpers);
+  then system-tests' sources; then the next layer -- validation's and system-tests' tests; the fields private
+  last), `NodeDiagnostics` (Q37, open: a constructor of 28 -- left in the baseline),
   `IbftProtocol` (Q25) (node),
   `RecoveryControl` (Q25) (recovery). SETUP's 6-10 for the slice is its commit range, not what is left
   (read wrongly here until row 114): the stern baseline is to end holding the cluster harness's time reads alone,
@@ -162,12 +165,13 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 135 on the branch; 6 past the threshold (4 planned, + `97225b7` for the dry4rust re-record,
+- **Commits:** 136 on the branch; 6 past the threshold (4 planned, + `97225b7` for the dry4rust re-record,
   `1d27ff1` for the two states' 36 accessors); bug fixes
   2 (`eba863f`, `e1232ca`); the 130th (`2f65d20`) ran all three stages, as every commit has; the 140th next
-- **Tests:** 3,440 at the base, 3,669 now (stage 5 465); removed under constraint 6: 1 (`2e6d484`, Q34)
-- **Offences:** 64 as configured, 275 everything on, shear 0; Grip 747.50 / Braintax 4,700.28 (0.1590;
-  execution-types 37.67 / 99.93 and types 72.23 / 518.56 at `23c92f9`, the block's fifteen accessors;
+- **Tests:** 3,440 at the base, 3,670 now (stage 5 465); removed under constraint 6: 1 (`2e6d484`, Q34)
+- **Offences:** 64 as configured, 275 everything on, shear 0; Grip 748.45 / Braintax 4,702.58 (0.1592;
+  execution-types 38.62 / 102.22 at `618a5d2`; 37.67 / 99.93 and types 72.23 / 518.56 at `23c92f9`, the block's
+  accessors;
   node 325.06 / 2,354.12 at `b440217`;
   types 72.32 / 518.56 and node 300.17 at `1d27ff1`; types 39.26 / 453.13 at `439551b`;
   recovery/control 74.95 / 383.47 at `525d620`;
