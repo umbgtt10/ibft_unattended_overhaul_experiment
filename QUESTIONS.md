@@ -51,6 +51,7 @@ After the run the owner takes each open entry -- implement, discuss, discard, po
 | 31 | commit 81, Part A | the diagnostic beacon's field table, `DIAGNOSTIC_FIELDS`: in a constants file, the only thing production reads it for -- `DIAGNOSTIC_MAX_BYTES` -- does not count, and stern's correction is to move the table into its test | answered | it stays beside `NodeDiagnostics`, its offence in the baseline as it was; the three byte bounds move to `diagnostic_constants.rs` and are paid |
 | 32 | commit 92, Part A | the bootstrapper's coordinator is built from what only peer discovery knows, and stern refuses anything but a parameter assigned to it, a factory's call included; the change reshapes seven recorded dry4rust groups | answered | `init` takes the coordinator; the bootstrapper's injected factory builds it, the protocol installs it; the dry4rust baseline re-recorded as entries 7, 13 and 26 did -- seven groups re-keyed, one paid group dropped, none added, 210 to 209 |
 | 33 | commit 96, Part A | `records-and-objects`' correction builds a getter-only config's `Default` by literal, and dry4rust pairs two such `Default`s -- the bootstrapping and the consensus timing configs, three fields each -- as near duplicates: alike in shape, with nothing to share | answered | the pair is recorded in the dry4rust baseline under `c2faba878ab6d286`, named here, every other group as it was -- 209 to 210 -- as the stern baseline takes an added offence named in `QUESTIONS.md`; a later commit can drop it |
+| 34 | commit 97, Part A | `NewViewMessageFields` loses its five getters, and `behaviour-tests` refuses one of the five getter tests, `view_change_proofs_returns_the_proofs_the_new_view_carries`, as a test of the record alone | answered | removed under constraint 6's licence, mapped to `change_senders_collects_one_entry_per_distinct_proof_sender`, which checks that what the validator reads from the proofs is the proofs the fields were built with; the other four, which the gate does not refuse, read the fields |
 
 ## Interventions
 
@@ -695,3 +696,29 @@ the course the slice took and the run's recommendation; after the run, the owner
   shared instead. Left for whoever owns the tool: a body that is a struct literal alone could be out of the near
   match, as code under five lines is.
 - **Commit:** 96.
+
+### 34. A getter's test the record-alone rule refuses
+
+- **Raised:** commit 97, Part A, records and objects.
+- **What:** `NewViewMessageFields` -- the NewView message's parts, borrowed, as dispatch hands them to consensus
+  and the validator -- had public fields and five getters that only read them: a `records-and-objects` offence
+  ("getter-only"). With the getters gone, its five getter tests in `dispatch_tests.rs` read the fields, and
+  `behaviour-tests` refuses one of them,
+  `node/tests/ibft/ibft_protocol/dispatch_tests.rs::view_change_proofs_returns_the_proofs_the_new_view_carries`:
+  "tests `NewViewMessageFields` alone: it calls nothing of its package but a record's accessors and derived
+  traits"; its correction is to test the behaviour that uses the record and check there what this test checked.
+- **Status:** answered.
+- **Answer:** the test is removed, under constraint 6's licence -- "a test of a record alone that
+  `behaviour-tests` refuses, above all". No move keeps it: moved anywhere, it still reads a field of a record and
+  nothing else. No rewrite keeps it under its name: the behaviour that reads the proofs is the validator's
+  `change_senders`, and a test of that is a test of the validator, in its own file. That test exists:
+  `node/tests/ibft/ibft_protocol/new_view_validator_tests.rs::change_senders_collects_one_entry_per_distinct_proof_sender`
+  builds the fields with proofs from senders 3, 1 and 2 and checks the validator reads exactly those three, so
+  what the removed test claimed -- the fields carry the proofs they were built with, to whatever reads them -- is
+  still checked, through the behaviour; the commit's `Maps:` line points there. The only other route, the getter
+  kept and the offence left in the baseline, would keep a test of an accessor no code needs. The other four getter
+  tests -- height, round, certificate and signature -- are as much tests of the record alone, but the gate does
+  not refuse them, and the licence covers only what a gate forces, so they stay, reading the fields, their
+  assertions the same. Left for whoever owns the rule: the five are built alike, through the same helper, and
+  its report does not say what sets the fifth apart.
+- **Commit:** 97.

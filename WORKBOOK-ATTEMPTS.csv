@@ -99,3 +99,4 @@ commit_n,attempt,kind,stages,start,finish,outcome,refused_by,files_added,files_r
 94,1,rule-offence,"1, 2, 5",2026-11-06T23:57:54Z,2026-11-06T23:59:18Z,landed,,0,0,6,26,49
 95,1,rule-offence,"1, 2, 5",2026-11-07T00:07:10Z,2026-11-07T00:08:58Z,landed,,0,0,17,162,119
 96,1,rule-offence,"1, 2, 5",2026-11-07T00:15:29Z,2026-11-07T00:17:19Z,landed,,0,0,11,93,55
+97,1,rule-offence,"1, 2, 5",2026-11-07T00:21:52Z,2026-11-07T00:23:31Z,landed,,0,0,5,57,99
