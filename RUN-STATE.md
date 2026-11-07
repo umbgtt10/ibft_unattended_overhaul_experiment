@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `f2f5e31` Build validation's test bootstrappers through the node-infra builder (row 181)
+- **Last commit:** `a59c662` Give node its own vocabulary for the bootstrapping port (row 182)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -131,7 +131,9 @@ pushed with the record at every commit.
   constructors it tests, stern's `tested-public-api` refusing `inactive` untested); validation's five tests -- done
   at `f2f5e31` (171 lines; the two together were 372); the factory is now named by node-infra's builder, its own
   file and test, and `bootstrapper_tests.rs` (and NoOp's own file and test); (d) node's data model in
-  `bootstrapping/` (the six mirror types); (e) the `node-faction` crate with the translation, its tests asserting
+  `bootstrapping/` -- done at `a59c662` (six files, no tests: records and enums alone, twin4rust passing
+  type-only files; `ReadinessView { peer_state, concluded, required_count }`, `ReadinessTransition {
+  previous_view, outputs, new_view }`); (e) next, the `node-faction` crate with the translation, its tests asserting
   `{:?}` alike for every variant; (f) the factory into it, then (g) the bridge, (h) the coordinator as a wrapper
   struct -- its tests need a recording `ProtocolObserver` of their own; (i) the port's commands and outcomes in
   node's vocabulary, then (j) the event's, `faction` out of node's manifest; (k) the fixed-membership default in
@@ -341,10 +343,10 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 181 on the branch; 12 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
+- **Commits:** 182 on the branch; 12 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
   execution port's move, `4cfcce2` --, + `97225b7` for the dry4rust re-record, `1d27ff1` for the two states' 36
   accessors, `3cf1ec6` and `3433b15` for the transaction status's 33 importers and the timer key's 100, `2883602`
-  for the slot discovery's 11, `a352577` for the Ed25519 scheme's 14, planned within by SETUP) -- 12 of 181 is
+  for the slot discovery's 11, `a352577` for the Ed25519 scheme's 14, planned within by SETUP) -- 12 of 182 is
   6.6%; the 95% needs about 240 commits with every commit from here within it: count a move's files first, and
   shape the seams so a type is born where it ends; bug fixes
   2 (`eba863f`, `e1232ca`); the 150th (`7ffb333`) ran all three stages, Part A's end, the 160th (`6912269`) and
@@ -440,7 +442,7 @@ pushed with the record at every commit.
   (`c40ab03`), the evm boundary gate (`bd30c4f`), the documents (`c83fba2`), the seam's last. `node`'s own dependencies: the Ed25519 scheme into
   node-infra (`a352577`), the seam's one commit. Faction: what it answers through the port (`951d746`), node-infra's
   bootstrapper builder and its first six sites (`73cb8eb`), node's test helpers through it (`b31593c`), validation's tests through it
-  (`f2f5e31`).
+  (`f2f5e31`), node's vocabulary for the port (`a59c662`).
 
 ## Next in line
 
