@@ -747,4 +747,6 @@ the course the slice took and the run's recommendation; after the run, the owner
 - **Commit:** 105.
 - **Taken again:** commit 106 -- the recovery context's getters reshape the recorded pair of test recorders,
   `CapturingIbftRecorder::record` in node's and in recovery-ibft's tests, byte-identical still: re-keyed,
-  `554acb512b3900bf` out and `52e6f1f4d2dbe8d5` in, 211 kept.
+  `554acb512b3900bf` out and `52e6f1f4d2dbe8d5` in, 211 kept. Commit 109 -- the in-memory timer's and client
+  interface's constructors, which open their node's queue through the state now, stay a pair: `b616d1a56a23b852`
+  out, `5482cacfc35dcbd4` in; three groups paid beside it, 209 to 206.
