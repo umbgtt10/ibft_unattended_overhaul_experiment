@@ -810,7 +810,12 @@ the course the slice took and the run's recommendation; after the run, the owner
   call it change alike: validation's two `signed_cluster` (`a1656c4334251d5a` out, `44ee19ccebeaaf99` in), and the
   safety proptest's `cluster` with the handoff tests' `behind_node` (`7968e9b638e2af74` out, `5aac1a3a2c1fa890`
   in); 193 kept. Commit 331 -- the two `finalize_round_*` become the cluster's methods and stay a near pair:
-  `0bb0e887e401ad90` out, `b949f32b1ba5b332` in, the same two; 193 kept. Commit 122 -- the pair of `setup_restored_protocol_with_fallback_validators`, in validation's sources
+  `0bb0e887e401ad90` out, `b949f32b1ba5b332` in, the same two; 193 kept. Commit 332 -- validation's
+  `advance_protocol_past_discovery` takes the protocol by value and node's test copy keeps `&mut`, so their exact
+  pair becomes a near one, as commit 120's did: `c225bf6e826907a1` out, `f55ea457dff04545` in. The two scenario
+  starts wrapping it reshape alike in validation alone, so the four-member exact group `5bd522c610139462` splits:
+  node's two stay under it and validation's two are `066c4a68ee0ff20b`. That is the same duplication in two
+  groups, 193 to 194. Commit 122 -- the pair of `setup_restored_protocol_with_fallback_validators`, in validation's sources
   and node's tests, reshaped alike by `with_active_validators`: `256b6ee250ec7b90` out, `53d1f2df9ed91e42` in; a
   near pair of test helpers paid beside it, 203 to 202. Commit 127 -- system-tests' `sample_hard_state` and
   `sample_locked_wal`, the same sample state in two test files, now `with_` chains: `68a95c56852dda33` out,
