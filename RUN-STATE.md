@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `0476b72` Give node-contracts what every signature scheme owes the protocol (row 215)
+- **Last commit:** `1f3b0f3` Run the signature scheme contract on every scheme the house builds (row 216)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -207,9 +207,9 @@ pushed with the record at every commit.
   (a) the contract suite -- done at `0476b72`: `SignatureSchemeContract::new(BTreeMap<PeerId, BoxedSignatureScheme>)`,
   `check(data)`, `check_standard_scenarios()` (empty, `b"prepare"`, a 32-byte hash, 1 KiB), breach
   `SignatureContractBreach::{MessageSignatureRefused, CertificateSignatureRefused} { signer, verifier }`, in
-  `node-contracts/src/certification/`, five tests over a scripted scheme. Next: (b) Ed25519 (node-infra's test file),
-  the no-op and the switched scheme (node's test files; `node` takes `node-contracts` as a dev-dependency) run it;
-  (c) the documents (CLAUDE.md's node-contracts paragraph, README's node-contracts row). The plan of (f7) was: the `#[must_use]` entry (`f2a36a8`, `a8a1d57`) and the retention-and-snapshot join, and the peer
+  `node-contracts/src/certification/`, five tests over a scripted scheme. (b) Ed25519 (node-infra's test file),
+  the no-op and the switched scheme, verified and bypassed (node's test files; `node` takes `node-contracts` as a
+  dev-dependency), run it -- done at `1f3b0f3`, the members built inside each test body. Next: (c) the documents (CLAUDE.md's node-contracts paragraph, README's node-contracts row). The plan of (f7) was: the `#[must_use]` entry (`f2a36a8`, `a8a1d57`) and the retention-and-snapshot join, and the peer
   knowledge entry updated (`9b496e6`); then the certifier's seam.
 - **Faction's detail:** Part B seam 3, Faction (SETUP, *Part B*, step 3) -- `Chosen-By: owner-order` among the
   bookkeepers (Faction, then Beggar, the certifier, consensus last), over the skipped-rule slices for seam 2's
@@ -483,11 +483,11 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 215 on the branch; 13 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
+- **Commits:** 216 on the branch; 13 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
   execution port's move, `4cfcce2` --, + `97225b7` for the dry4rust re-record, `1d27ff1` for the two states' 36
   accessors, `3cf1ec6` and `3433b15` for the transaction status's 33 importers and the timer key's 100, `2883602`
   for the slot discovery's 11, `a352577` for the Ed25519 scheme's 14, planned within by SETUP, `d7d2c45` for
-  Faction's two implementations and their test files, Q43) -- 13 of 215 is 6.0%; the 95% now needs about 260
+  Faction's two implementations and their test files, Q43) -- 13 of 216 is 6.0%; the 95% now needs about 260
   commits, every one from here within it: count a move's files first, and
   shape the seams so a type is born where it ends; bug fixes
   5 (`eba863f`, `e1232ca`, `5013d0e`, `1e7ac29`, `643bfd5`); the 150th (`7ffb333`) ran all three stages, Part A's end, the 160th (`6912269`) and
