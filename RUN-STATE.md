@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `c2dcdfb` Move the client interface's RPC helpers into its fixture and its balance tests beside the bus (row 256)
+- **Last commit:** `a710993` Move the client interface's block RPC tests beside the bus (row 257)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -246,8 +246,9 @@ pushed with the record at every commit.
   old file out (`rule-offence`) -- done at `f0d60b9` (178 lines, 87 to 86); (2) the 11 RPC tests test the service, `GrpcClientInterfaceServiceImpl` in
   `grpc_client_interface_bus.rs`, so they go into `grpc_client_interface_bus_tests.rs` in name order, in four batches:
   the helpers (`block_on`, `build_bus`, `connect_client`, `wait_for_polled_request`, `POLL_TIMEOUT_MS`) into the
-  fixture with the two `get_balance_*` -- done at `c2dcdfb` (265 lines, 86 holding); the four `get_block_*`; the two `get_height_*` and the first `submit_*`; the
-  last two `submit_*`, the old file out (`rule-offence`); `tests/infra/factories_tests.rs` (71) and
+  fixture with the two `get_balance_*` -- done at `c2dcdfb` (265 lines, 86 holding); the four `get_block_*` -- done
+  at `a710993` (297 lines, 86 holding); the two `get_height_*` (regrouped at 257 so each family moves whole:
+  about 125 lines); the three `submit_*`, the old file out (`rule-offence`, about 260 lines); `tests/infra/factories_tests.rs` (71) and
   `tests/infra/storage/in_memory_storage_tests.rs` (87) by what they test; `tests/cluster_process_harness_helpers_tests.rs`
   (167) and `tests/cluster/cluster_process_harness_tests.rs` (637) into `tests/cluster_process_harness_tests.rs`. A
   file past ~180 lines moves in batches of tests (pairing by name, `moved`). Then the scenario sources: system-tests'
@@ -625,11 +626,11 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 256 on the branch; 13 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
+- **Commits:** 257 on the branch; 13 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
   execution port's move, `4cfcce2` --, + `97225b7` for the dry4rust re-record, `1d27ff1` for the two states' 36
   accessors, `3cf1ec6` and `3433b15` for the transaction status's 33 importers and the timer key's 100, `2883602`
   for the slot discovery's 11, `a352577` for the Ed25519 scheme's 14, planned within by SETUP, `d7d2c45` for
-  Faction's two implementations and their test files, Q43) -- 13 of 256 is 5.1%; the 95% now needs about 260
+  Faction's two implementations and their test files, Q43) -- 13 of 257 is 5.1%; the 95% now needs about 260
   commits, every one from here within it: count a move's files first, and
   shape the seams so a type is born where it ends; bug fixes
   6 (`eba863f`, `e1232ca`, `5013d0e`, `1e7ac29`, `643bfd5`, `8e1ca00`); the 150th (`7ffb333`) ran all three stages, Part A's end, the 160th (`6912269`) and
