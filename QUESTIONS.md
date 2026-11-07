@@ -70,6 +70,7 @@ After the run the owner takes each open entry -- implement, discuss, discard, po
 | 50 | after commit 231, Part B, the observer | step 7 splits `ProtocolObserver` -- 77 declared, one inherited -- into five concerns under a composite with no body (decision 10); which facet each method joins, when the diagnostic beacon fits none of the five, and in what order | answered | six facets in `node/src/observer/`: peer discovery widened, consensus with message admission, the buffers, the timers' dispatch and the pool, recovery with snapshot, retention, the refusals, and the beacon alone; `ProtocolObserver` the composite, an empty `impl` per implementor; one facet a commit from the trait's tail, consensus last; then the bootstrapper, the recovery dispatch and the reporting output each narrowed to its facet; then the documents |
 | 51 | after commit 241, Part B, the skipped rules | `paired-test-file` reports 100 test files in validation and system-tests; SETUP pairs each `<scenario>_scenario_tests.rs` with a `<scenario>_scenario.rs`, but renaming the scenario tests counts about 30,000 lines twice under `--no-renames`, far past the threshold | answered | a scenario source takes the test file's own stem, no test renamed, holding the cluster or node its tests start from; a test of a source at another path moves to that path; `rule-offence` commits, the moves first, then the sources a folder at a time; the stand-down out at zero |
 | 52 | commit 267, Part B, the skipped rules | entry 51's sources make the harness calls a scenario's tests made, and `tested-public-api`, stood down in system-tests, matches a call by name and arity: `with_scheduled_validator_update` lost its only direct caller, 17 to 18, and other calls only scenario setups make will follow | answered | the sources stay as entry 51 has them, since every such call is still driven by the same test one call deeper and no visibility changes; each commit names what the rule stops seeing; the `tested-public-api` slice, next, takes them with the 17 |
+| 53 | commit 299, Part B, the skipped rules | removing the peer-message proptests' local copy of the protocol-injection source's start shows `protocol_helpers::setup_protocol_with_signature_scheme` never had a direct test: `tested-public-api` matches by name and arity and had counted the same-named local helper's calls | answered | an unplanned `tests` commit, the 300th, gives the helper a direct test in `protocol_helpers_tests.rs`; then the injection source lands with the proptests on it; nothing is renamed or imported under the old name to keep the collision working |
 
 ## Interventions
 
@@ -1395,3 +1396,23 @@ the course the slice took and the run's recommendation; after the run, the owner
     - 271: `RuntimeTimerHarness::build_single_node`, `ClientProcessHarness::spawn_single_node`,
       `ClientProcessHarness::spawn_single_node_with_default_config`.
 - **Commit:** 267 onward.
+
+### 53. A public helper counted as tested through a same-named local function
+
+- **Raised:** at commit 299, Part B, the skipped rules, giving the protocol-injection tests their source.
+- **What:** the injection test starts from the four-validator protocol past discovery, under the default config,
+  signing with an injected scheme. As a source function, dry4rust finds that start an exact copy of
+  `setup_protocol_with_signature_scheme`, a local helper in the peer-message proptests. Folding the copy into the
+  source, with the proptests calling it, leaves stern's `tested-public-api`, applied in validation as configured,
+  reporting `protocol_helpers::setup_protocol_with_signature_scheme`. That is a different function: no discovery,
+  and the validation-limit config. It never had a direct test. The rule matches a call by name and arity, and had
+  counted the proptests' nine calls of their local helper as its own.
+- **Status:** answered, from CLAUDE.md's *Do not buy a green gate with lost coverage*: call it from a test.
+- **Answer:**
+  - **a `tests` commit, the 300th, gives the helper a direct test** in `protocol_helpers_tests.rs`, the helpers'
+    own test file, beside the tests of its hard-state sibling. It is unplanned, which is why it is recorded here;
+  - **then the injection source lands** with the proptests calling it, so the start has one definition;
+  - **nothing is renamed or imported under the old name**: either would keep the gate green by the same collision
+    that hid the gap;
+  - other same-named pairs may hide others. The `tested-public-api` slice can look for them.
+- **Commit:** 300.
