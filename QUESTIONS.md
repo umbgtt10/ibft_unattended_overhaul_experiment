@@ -730,7 +730,10 @@ the course the slice took and the run's recommendation; after the run, the owner
   `_with_observer`) and `b90d9211dac07c91` (the two `_with_execution_engine`). Sharing was measured and refused: a
   delegating helper of five lines or more differs from its twin by the same `inactive()`. The same commit's six
   exact pairs between those helpers and node's test helpers of the same name no longer match, node's still building
-  the old way; 196 to 193.
+  the old way; 196 to 193. Commit 187 -- node's recording observer gives its readiness record to node-faction's
+  tests, and its `readiness_transition_observed` becomes an empty six-line method like the 42 of the group of empty
+  observer methods, `d4439664a026e9d5`, which takes it as its 43rd member; the facet's members, renamed by 186, are
+  named again; 196 kept.
 
 ### 34. A getter's test the record-alone rule refuses
 
