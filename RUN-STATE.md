@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `8d4b1cf` Read and build the hard state and the volatile snapshot through their accessors in validation's recovery tests (row 125)
+- **Last commit:** `8843e5c` Read and build the hard state and the volatile snapshot through their accessors in validation's protocol tests (row 126)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -121,10 +121,8 @@ pushed with the record at every commit.
   `1d27ff1` with every production reader and the types crate's tests (`refactoring`, past the threshold, 859
   lines -- tested-public-api wants the crate's own tests calling all 36 methods in the same commit); node's 11
   test files at `278fb05` (stages 1, 2 -- tests and a baseline only); ten of validation's at `a7f097b`; persistence,
-  re-execution, malicious-block at `8d4b1cf`; the rest is converted and waits in `git stash` ("c126-c127-pending",
-  the types' fields `pub` in it): next commit 126 stages validation's `ibft_protocol_tests` and `validation_tests`
-  (re-record dry4rust: a near pair, validation's `sample_hard_state` and types' `base_state`, Q33), stash the
-  rest, gates, stages 1 and 2; then commit 127 pops system-tests' `sled_storage_tests` and `restart_tests` (their
+  re-execution, malicious-block at `8d4b1cf`; validation's protocol and validation tests at `8843e5c` (a
+  near pair recorded, Q33, 202 to 203); the rest waits in `git stash` ("c127-pending"): commit 127 pops system-tests' `sled_storage_tests` and `restart_tests` (their
   pair re-keyed, Q35), makes both types' fields private, stern `--write-baseline` (67 to 65), stages 1, 2, 5 --
   the combined commit was 505 lines and a seventh past the threshold would break the 95%; to list readers
   (`overhaul-scratch/state-readers.txt`; literals surface after the reads), in batches within the threshold, then
@@ -156,7 +154,7 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 125 on the branch; 6 past the threshold (4 planned, + `97225b7` for the dry4rust re-record,
+- **Commits:** 126 on the branch; 6 past the threshold (4 planned, + `97225b7` for the dry4rust re-record,
   `1d27ff1` for the two states' 36 accessors); bug fixes
   2 (`eba863f`, `e1232ca`); the 110th ran all three stages, as every commit has; the 120th next
 - **Tests:** 3,440 at the base, 3,655 now (stage 5 465); removed under constraint 6: 1 (`2e6d484`, Q34)
