@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `30f99fd` Give validation's single-node signature and protocol tests a source holding their start (row 298)
+- **Last commit:** `b36f1a7` Give validation's single-node validation and dirty-tracking tests a source of their own (row 299)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -380,11 +380,17 @@ pushed with the record at every commit.
   return two contexts in one tuple, which `distinct-tuple-elements` refuses) -- done at `b6a5959` (321 lines, 16 to
   13). (v22) signature (`setup_ed25519_follower`; its payload helpers stay, one writing through `&mut`) and
   ibft_protocol (`sample_hard_state`, moved) -- done at `30f99fd` (120 lines, 13 to 11); single_node messaging is
-  done. Next (v23...): injection (`protocol_signing_with(scheme)`, the protocol past discovery under an injected
-  scheme -- `setup_protocol_with_signature_scheme_past_discovery` uses `setup_config()`'s validation limits, not the
-  default config, so it is no substitute) and validation (`new_view_message`, `prepared_certificate`, moved), then
-  dispatch, etheram_node, etheram_node_unit, dirty_tracking, wal_writer and recovery (4), 11 files -- each source
-  holds the file's own
+  done. (v23) validation (`new_view_message`, `prepared_certificate`, moved) and dirty_tracking
+  (`wal_action_count`, moved -- the file's one helper, read by every assertion, its tests' starts all generic) --
+  done at `b36f1a7` (122 lines, 11 to 9). Injection was tried and parked
+  (`overhaul-scratch/ibft_protocol_injection.rs.draft`): its `protocol_signing_with(scheme)` is an exact copy of the
+  peer-message proptests' local `setup_protocol_with_signature_scheme`, and removing that copy left
+  `protocol_helpers::setup_protocol_with_signature_scheme` (same name, same arity) without a test call -- it never
+  had one; stern's `tested-public-api` matches by name and arity and counted the local helper. Lesson: a test-side
+  helper sharing a `src` function's name and arity hides that function from `tested-public-api`. Next (v24...): the
+  300th commit, a `tests` commit giving `setup_protocol_with_signature_scheme` a direct test in
+  `protocol_helpers_tests.rs`; then injection with the proptests on the source; then dispatch, etheram_node,
+  etheram_node_unit, wal_writer and recovery (4), 9 files -- each source holds the file's own
   Arrange helpers if any, else the start its tests repeat; a test double struct stays test-side (`named-subject`);
   a start or builder another source would copy stays as lines in the tests. dry4rust's check now reads 194
   suppressed. The m4/m5 plan was, the same way,
@@ -762,18 +768,18 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 298 on the branch; 13 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
+- **Commits:** 299 on the branch; 13 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
   execution port's move, `4cfcce2` --, + `97225b7` for the dry4rust re-record, `1d27ff1` for the two states' 36
   accessors, `3cf1ec6` and `3433b15` for the transaction status's 33 importers and the timer key's 100, `2883602`
   for the slot discovery's 11, `a352577` for the Ed25519 scheme's 14, planned within by SETUP, `d7d2c45` for
-  Faction's two implementations and their test files, Q43) -- 13 of 298 is 4.4%; the 95% reached at the 260th (247 of 260 within), and it holds only while every
+  Faction's two implementations and their test files, Q43) -- 13 of 299 is 4.3%; the 95% reached at the 260th (247 of 260 within), and it holds only while every
   commit from here stays within: count a move's files first, and
   shape the seams so a type is born where it ends; bug fixes
   6 (`eba863f`, `e1232ca`, `5013d0e`, `1e7ac29`, `643bfd5`, `8e1ca00`); the 150th (`7ffb333`) ran all three stages, Part A's end, the 160th (`6912269`) and
   the 170th (`2883602`), the 180th (`b31593c`), the 190th (`c885cf9`), the 200th (`7508819`), the 210th
   (`e04403c`), the 220th (`e329250`), the 230th (`5ebe5f1`), the 240th (`18baf35`), the 250th (`8bdb859`), the 260th (`1fef15d`), the 270th (`fdd825e`), the 280th (`00c5f1b`) and the 290th (`0b135b2`); the 300th next
 - **Tests:** 3,440 at the base, 3,834 now (stage 5 465); removed under constraint 6: 1 (`2e6d484`, Q34)
-- **Offences:** 41 as configured, 114 everything on (paired-test-file 11, from 100 at `4a976c2`; tested-public-api 25,
+- **Offences:** 41 as configured, 112 everything on (paired-test-file 9, from 100 at `4a976c2`; tested-public-api 25,
   from 17 at `ca72bf4`, Q52), shear 0; Grip 780.18 / Braintax 4,868.87 (0.1602 at `1f5213f`, the tracker into the tally, node-infra
   166.15 / 700.19 and node 320.64 / 2,342.00; 782.93 / 4,880.81, 0.1604 at `58844eb`, the tally port, node-infra
   164.60 / 698.19 and node 324.94 / 2,355.94; 773.51 / 4,811.48, 0.1608 at `9b496e6`, recovery/control 78.14 / 397.87 with
