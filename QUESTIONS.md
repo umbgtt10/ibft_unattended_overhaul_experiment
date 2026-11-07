@@ -806,7 +806,10 @@ the course the slice took and the run's recommendation; after the run, the owner
   again as `5666a931299b8d2e`, 204 to 205. Commit 120 -- the world state snapshot's constructor reshapes the pair of
   `snapshot` test helpers in node's and recovery-ibft's tests alike, from an exact pair to a near one:
   `c983291a4180624d` out, `a17c620ba9f6cd6b` in, 203 kept; the two live in two crates' tests and share nothing they
-  could import. Commit 122 -- the pair of `setup_restored_protocol_with_fallback_validators`, in validation's sources
+  could import. Commit 329 -- the cluster's drive past peer discovery becomes its own method, and two pairs that
+  call it change alike: validation's two `signed_cluster` (`a1656c4334251d5a` out, `44ee19ccebeaaf99` in), and the
+  safety proptest's `cluster` with the handoff tests' `behind_node` (`7968e9b638e2af74` out, `5aac1a3a2c1fa890`
+  in); 193 kept. Commit 122 -- the pair of `setup_restored_protocol_with_fallback_validators`, in validation's sources
   and node's tests, reshaped alike by `with_active_validators`: `256b6ee250ec7b90` out, `53d1f2df9ed91e42` in; a
   near pair of test helpers paid beside it, 203 to 202. Commit 127 -- system-tests' `sample_hard_state` and
   `sample_locked_wal`, the same sample state in two test files, now `with_` chains: `68a95c56852dda33` out,

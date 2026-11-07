@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `1fe8c46` Let the round driver return a round's steps for the cluster to play (row 328)
+- **Last commit:** `462cbe0` Give the cluster its own method for driving past peer discovery (row 329)
 - **Step now:** Part B step 8, the gates -- started 21:03Z, the scope Q56 (answered), the recovery crates' part
   Q57 (open: `node` keeps `recovery-control` and `recovery-ibft`, which the gate names as owed). In order: (a)
   `returned-mutations` paid in node (20, five files), then validation (17, three files, about 240 call sites in
@@ -31,7 +31,12 @@ pushed with the record at every commit.
   cluster's `play` applies them, `commit_round` and `commit_round_after_proposer_timer` play the plan; the two now a
   90% near pair, entry 33's case, `9e7d7502ee4159aa` inserted by hand as the tool recorded it (a whole re-record
   also rewrites every member name renamed since, 240 lines and no fingerprint; the scratch copy
-  `dry-baseline-before-c328.json`), 192 to 193. Next, the 8 left: the cluster helpers' 5
+  `dry-baseline-before-c328.json`), 192 to 193. (5) `IbftCluster::advance_past_discovery` -- `462cbe0`
+  (`refactoring`, 17 files, 226 lines; the free function a three-line delegate; two recorded exact pairs re-keyed,
+  entry 35: `signed_cluster` `a1656c4334251d5a` to `44ee19ccebeaaf99`, `cluster`/`behind_node` `7968e9b638e2af74`
+  to `5aac1a3a2c1fa890`). Next: (6) the last three files' callers (`ibft_cluster_recovery_handoff.rs`,
+  `ibft_cluster_retention_tests.rs`, `round_driver_tests.rs`) with `commit_next` and `commit_many` as methods, the
+  three free functions out, README's example (`rule-offence`, 3 paid). The 8 left before (5): the cluster helpers' 5
   (`advance_cluster_past_discovery`, `commit_next`, `commit_many`, the two `finalize_round_*`) become `IbftCluster`'s
   own `&mut self` methods -- by value would move the cluster out of the test-side helpers that hold it by `&mut`
   -- in two commits of 18 files or fewer (the methods and the first callers a `refactoring`, the rest and the free
@@ -908,12 +913,12 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 328 on the branch; 14 past the threshold (7 planned -- the 5th the merge, `8afa421`, the 6th the
+- **Commits:** 329 on the branch; 14 past the threshold (7 planned -- the 5th the merge, `8afa421`, the 6th the
   execution port's move, `4cfcce2` --, + `97225b7` for the dry4rust re-record, `1d27ff1` for the two states' 36
   accessors, `3cf1ec6` and `3433b15` for the transaction status's 33 importers and the timer key's 100, `2883602`
   for the slot discovery's 11, `a352577` for the Ed25519 scheme's 14, planned within by SETUP, `d7d2c45` for
   Faction's two implementations and their test files, Q43; the 7th planned, `6fc97b9`, `SledStorageInner`'s 678
-  lines, which `implemented-in-one-file` moves whole) -- 14 of 328 is 4.3%, 314 of 328 within; the 95% reached at the 260th (247 of 260 within), and it holds only while every
+  lines, which `implemented-in-one-file` moves whole) -- 14 of 329 is 4.3%, 315 of 329 within; the 95% reached at the 260th (247 of 260 within), and it holds only while every
   commit from here stays within: count a move's files first, and
   shape the seams so a type is born where it ends; bug fixes
   6 (`eba863f`, `e1232ca`, `5013d0e`, `1e7ac29`, `643bfd5`, `8e1ca00`); the 150th (`7ffb333`) ran all three stages, Part A's end, the 160th (`6912269`) and
