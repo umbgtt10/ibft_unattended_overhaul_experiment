@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `d2ce806` Move the cluster harness's last nine cluster tests into its test file, the old file out (row 266)
+- **Last commit:** `ca72bf4` Give eight of the system tests' cluster scenarios a source holding their cluster (row 267)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -273,7 +273,17 @@ pushed with the record at every commit.
   `moved`). The 81 left are all scenario tests, each to get a source named for its stem: system-tests'
   `tests/cluster/*` (17) and `tests/single_node/*` (11), validation's `tests/cluster/**` (24: consensus 8, execution
   6, faults 3, recovery 6, `ibft_cluster_five_node`) and `tests/single_node/**` (29: consensus 8, messaging 9,
-  protocol 8, recovery 4). Lesson: `grep -v -x -F -f` here does not drop blank lines, so count a move's lines with
+  protocol 8, recovery 4). The sources' shape: a file of free functions (no subject type, as
+  validation's `src/scenario_helpers.rs`), each handing the cluster a test starts from, `test_name` last as in
+  `spawn`; a constant only the build reads moves in private, one the tests also assert on stays in the test and is
+  passed in; up to eight a commit (8 sources, 8 tests, the folder's `mod.rs` and its parent registry: 18 files).
+  (s1) system-tests' first eight -- `src/cluster/` (convergence, startup, client_visibility, visibility_consistency,
+  future_round_coverage, retention, snapshot_recovery, validator_set_update) -- done at `ca72bf4` (218 lines, 81 to
+  73). Q52 (answered): `tested-public-api` (stood down in system-tests) matches by name and arity, so a harness call
+  moved into a source leaves its sight -- `with_scheduled_validator_update`, 17 to 18; name each such loss in the
+  commit; the `tested-public-api` slice takes them. Next (s2): the other nine of system-tests' `tests/cluster/*`
+  (block_transaction_bound, byzantine, clock_drift, five_node_partition, genesis_account, recovery_chunking, restart,
+  three_node_partition, transaction_payload_bound), the three with their own spawn helper moving it in. Lesson: `grep -v -x -F -f` here does not drop blank lines, so count a move's lines with
   `grep -c "."`. Lesson: a blocklist hit can be a phrase, not a word -- test candidate phrases from a scratch file through
   the same grep, never reading the list, then reword and amend the unpushed commit. The
   plan of (f) was: the dependencies take the factory (30 sites, one line each, the seven dependency-helper pairs re-keyed as
@@ -646,18 +656,19 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 266 on the branch; 13 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
+- **Commits:** 267 on the branch; 13 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
   execution port's move, `4cfcce2` --, + `97225b7` for the dry4rust re-record, `1d27ff1` for the two states' 36
   accessors, `3cf1ec6` and `3433b15` for the transaction status's 33 importers and the timer key's 100, `2883602`
   for the slot discovery's 11, `a352577` for the Ed25519 scheme's 14, planned within by SETUP, `d7d2c45` for
-  Faction's two implementations and their test files, Q43) -- 13 of 266 is 4.9%; the 95% reached at the 260th (247 of 260 within), and it holds only while every
+  Faction's two implementations and their test files, Q43) -- 13 of 267 is 4.9%; the 95% reached at the 260th (247 of 260 within), and it holds only while every
   commit from here stays within: count a move's files first, and
   shape the seams so a type is born where it ends; bug fixes
   6 (`eba863f`, `e1232ca`, `5013d0e`, `1e7ac29`, `643bfd5`, `8e1ca00`); the 150th (`7ffb333`) ran all three stages, Part A's end, the 160th (`6912269`) and
   the 170th (`2883602`), the 180th (`b31593c`), the 190th (`c885cf9`), the 200th (`7508819`), the 210th
   (`e04403c`), the 220th (`e329250`), the 230th (`5ebe5f1`), the 240th (`18baf35`), the 250th (`8bdb859`) and the 260th (`1fef15d`); the 270th next
 - **Tests:** 3,440 at the base, 3,834 now (stage 5 465); removed under constraint 6: 1 (`2e6d484`, Q34)
-- **Offences:** 41 as configured, 176 everything on (paired-test-file 81, from 100 at `4a976c2`), shear 0; Grip 780.18 / Braintax 4,868.87 (0.1602 at `1f5213f`, the tracker into the tally, node-infra
+- **Offences:** 41 as configured, 169 everything on (paired-test-file 73, from 100 at `4a976c2`; tested-public-api 18,
+  from 17 at `ca72bf4`, Q52), shear 0; Grip 780.18 / Braintax 4,868.87 (0.1602 at `1f5213f`, the tracker into the tally, node-infra
   166.15 / 700.19 and node 320.64 / 2,342.00; 782.93 / 4,880.81, 0.1604 at `58844eb`, the tally port, node-infra
   164.60 / 698.19 and node 324.94 / 2,355.94; 773.51 / 4,811.48, 0.1608 at `9b496e6`, recovery/control 78.14 / 397.87 with
   `PeerKnowledge`; 770.32 / 4,797.08 at `44a0b7a`,
@@ -689,7 +700,7 @@ pushed with the record at every commit.
   one group added at `64f562b`, Q33; one added and one paid at `1121282`; one re-keyed and one added at `8230a8a`,
   Q35, each copy kept in scratch as `dry-baseline-before-cN.json`; one re-keyed at `97cd2da`; one grown by a member
   at `0d46800`, Q46; seven re-keyed and one near pair paid at `e04403c`, Q46, 196 to 195)
-- **Questions:** 48 answered, 3 open (9, 25, 37). **Interventions:** 0. **Waits:** 0.
+- **Questions:** 49 answered, 3 open (9, 25, 37). **Interventions:** 0. **Waits:** 0.
 
 ## The run so far
 

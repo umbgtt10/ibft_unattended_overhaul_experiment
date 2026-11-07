@@ -69,6 +69,7 @@ After the run the owner takes each open entry -- implement, discuss, discard, po
 | 49 | after commit 219, Part B, the consensus seam | the port for "the quorum, the tallies and the decision", in the step shape (decision 9), when consensus is `IbftProtocol`'s own methods and its tallies two `VoteTracker`s inside the volatile state | answered | `VoteTally::step(TallyInput) -> TallyOutput`, one tally per phase, holding its quorum and answering whether a key has reached it; the volatile state the adapter, its methods unchanged, so consensus's code is not touched; the default `QuorumTally` in node-infra over today's tracker, built by a `VoteTallyFactory` the dependencies take; view changes stay evidence; a contract suite |
 | 50 | after commit 231, Part B, the observer | step 7 splits `ProtocolObserver` -- 77 declared, one inherited -- into five concerns under a composite with no body (decision 10); which facet each method joins, when the diagnostic beacon fits none of the five, and in what order | answered | six facets in `node/src/observer/`: peer discovery widened, consensus with message admission, the buffers, the timers' dispatch and the pool, recovery with snapshot, retention, the refusals, and the beacon alone; `ProtocolObserver` the composite, an empty `impl` per implementor; one facet a commit from the trait's tail, consensus last; then the bootstrapper, the recovery dispatch and the reporting output each narrowed to its facet; then the documents |
 | 51 | after commit 241, Part B, the skipped rules | `paired-test-file` reports 100 test files in validation and system-tests; SETUP pairs each `<scenario>_scenario_tests.rs` with a `<scenario>_scenario.rs`, but renaming the scenario tests counts about 30,000 lines twice under `--no-renames`, far past the threshold | answered | a scenario source takes the test file's own stem, no test renamed, holding the cluster or node its tests start from; a test of a source at another path moves to that path; `rule-offence` commits, the moves first, then the sources a folder at a time; the stand-down out at zero |
+| 52 | commit 267, Part B, the skipped rules | entry 51's sources make the harness calls a scenario's tests made, and `tested-public-api`, stood down in system-tests, matches a call by name and arity: `with_scheduled_validator_update` lost its only direct caller, 17 to 18, and other calls only scenario setups make will follow | answered | the sources stay as entry 51 has them, since every such call is still driven by the same test one call deeper and no visibility changes; each commit names what the rule stops seeing; the `tested-public-api` slice, next, takes them with the 17 |
 
 ## Interventions
 
@@ -1358,3 +1359,29 @@ the course the slice took and the run's recommendation; after the run, the owner
     scenario files becomes one function in `scenario_helpers.rs` that the sources call, rather than a recorded
     duplicate.
 - **Commit:** 242 onward.
+
+### 52. The scenario sources and `tested-public-api` in system-tests
+
+- **Raised:** at commit 267, Part B, the skipped rules, the first commit of entry 51's scenario sources.
+- **What:** a scenario source makes the harness call its tests made: `ClusterProcessHarnessBuilder::new(..)
+  .with_scheduled_validator_update(..).spawn()` moved from `validator_set_update_tests.rs` into
+  `src/cluster/validator_set_update.rs`. `tested-public-api` is stood down in system-tests, but with every rule on it
+  counts a public function no test calls. It matches a call by name and arity, so it no longer sees one for
+  `with_scheduled_validator_update`, and its count rises from 17 to 18. `with_retention` and
+  `with_min_servable_history` moved too, but `ClusterConfigFile`'s same-named methods have tests the rule matches.
+  Other calls only scenario setups make will follow as their sources land, among them
+  `spawn_with_malicious_node`, `spawn_with_env_extras`, `spawn_with_env_extras_and_config` and
+  `with_certificate_check_bypassed`. The next slice in `Over:` is `tested-public-api` in system-tests.
+- **Status:** answered, from SETUP's slice, entry 51 and CLAUDE.md's *Do not buy a green gate with lost coverage*.
+- **Answer:**
+  - **the sources stay as entry 51 has them**, each handing its tests the cluster they start from. SETUP's slice
+    asks exactly that, and the alternatives are worse: a source the tests do not call is empty, and one that hands
+    back a half-built builder for the test to finish keeps the setup in the test;
+  - **no coverage is lost and no visibility changes**: every such call is still made by the same test, one call
+    deeper, through a public function of the package. CLAUDE.md's rule is about dropping a function to
+    `pub(crate)` to quiet the gate, which none of this does;
+  - **each commit names what the rule stops seeing**, so the count's rise is accounted for where it happens. A
+    commit stays a `rule-offence` as long as the everything-on total falls;
+  - **the `tested-public-api` slice, next, takes them** with the 17 it already had: a test of each that calls it
+    directly, or the stand-down kept with its reason widened, decided there.
+- **Commit:** 267 onward.
