@@ -6,8 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `d517272` Hand node's last four mutated parameters back as return values (row 326; the
-  subject's "four" is wrong: the parameters were nine, in four files -- pushed, so it stands)
+- **Last commit:** `d4ec8e9` Take returned-mutations out of node's stand-down (row 327)
 - **Step now:** Part B step 8, the gates -- started 21:03Z, the scope Q56 (answered), the recovery crates' part
   Q57 (open: `node` keeps `recovery-control` and `recovery-ibft`, which the gate names as owed). In order: (a)
   `returned-mutations` paid in node (20, five files), then validation (17, three files, about 240 call sites in
@@ -21,11 +20,12 @@ pushed with the record at every commit.
   everything on 70 to 59; the `push_tagged` / `append_raw_record` dry4rust pair paid, 193 to 192, the baseline as
   recorded; `tagged` one `concat`, since as a buffer pushed and extended it was an exact copy of types' test helper
   `entry`; one test renamed, `Maps:`). (2) node's other nine -- `d517272` (5 files, 142 lines; 26 to 17, everything
-  on 59 to 50; node holds none): the commitments verifier's two maps one private `PostState`, by value; validation's
+  on 59 to 50; node holds none; its subject's "four mutated parameters" is wrong -- nine, in four files -- and
+  stands, pushed): the commitments verifier's two maps one private `PostState`, by value; validation's
   two account appliers and consensus's `apply_proposal_commitments` returning what they changed; message security's
   two certificate encoders returning bytes (the header one `concat`, the prepares one chain, since field by field it
-  sat beside the WAL encoder's `encode_cert` as a near copy). Next: (3) node's stand-down out (`support`, stage 2:
-  `stern4rust.toml`'s comment and section, CLAUDE.md's "node stands down returned-mutations alone"); then
+  sat beside the WAL encoder's `encode_cert` as a near copy). (3) node's stand-down out -- `d4ec8e9` (`support`, stage 2, 3 files, 58 lines:
+  `stern4rust.toml`'s section and comment, CLAUDE.md, OPEN_POINTS' row; node applies all thirty-nine). Next:
   validation's 17: `RoundDriver`'s 9 and the cluster helpers' 6 take the cluster by `&mut` -- as `IbftCluster`'s
   own `&mut self` methods or by value; `drive_to_commit` and `advance_protocol_past_discovery` are recorded dry4rust
   exact pairs with node's test copies (`bf88d45c0c9668dd`, `c225bf6e826907a1`), and the two `finalize_round_*`
@@ -899,12 +899,12 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 326 on the branch; 14 past the threshold (7 planned -- the 5th the merge, `8afa421`, the 6th the
+- **Commits:** 327 on the branch; 14 past the threshold (7 planned -- the 5th the merge, `8afa421`, the 6th the
   execution port's move, `4cfcce2` --, + `97225b7` for the dry4rust re-record, `1d27ff1` for the two states' 36
   accessors, `3cf1ec6` and `3433b15` for the transaction status's 33 importers and the timer key's 100, `2883602`
   for the slot discovery's 11, `a352577` for the Ed25519 scheme's 14, planned within by SETUP, `d7d2c45` for
   Faction's two implementations and their test files, Q43; the 7th planned, `6fc97b9`, `SledStorageInner`'s 678
-  lines, which `implemented-in-one-file` moves whole) -- 14 of 326 is 4.3%, 312 of 326 within; the 95% reached at the 260th (247 of 260 within), and it holds only while every
+  lines, which `implemented-in-one-file` moves whole) -- 14 of 327 is 4.3%, 313 of 327 within; the 95% reached at the 260th (247 of 260 within), and it holds only while every
   commit from here stays within: count a move's files first, and
   shape the seams so a type is born where it ends; bug fixes
   6 (`eba863f`, `e1232ca`, `5013d0e`, `1e7ac29`, `643bfd5`, `8e1ca00`); the 150th (`7ffb333`) ran all three stages, Part A's end, the 160th (`6912269`) and
