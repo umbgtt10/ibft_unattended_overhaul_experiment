@@ -745,3 +745,6 @@ the course the slice took and the run's recommendation; after the run, the owner
   each a three-line wrapper around a helper that is the same shape again. The literal pair is entry 33's case and
   is recorded as `f280cde3a9b5c133`, named in the commit's message. 210 to 211.
 - **Commit:** 105.
+- **Taken again:** commit 106 -- the recovery context's getters reshape the recorded pair of test recorders,
+  `CapturingIbftRecorder::record` in node's and in recovery-ibft's tests, byte-identical still: re-keyed,
+  `554acb512b3900bf` out and `52e6f1f4d2dbe8d5` in, 211 kept.
