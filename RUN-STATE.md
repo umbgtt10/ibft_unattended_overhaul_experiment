@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `ffb6f45` Give node-contracts what every vote tally owes consensus in its counting (row 228)
+- **Last commit:** `ab2d884` Hold a cleared, resized or restored vote tally to the tally contract (row 229)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -162,15 +162,16 @@ pushed with the record at every commit.
   (`FlawedTally { casts, flaw, inner, quorum }`, `Flaw` one variant per flaw, `FlawedFactory`). (h1) the counting
   clauses -- done at `ffb6f45` (`check(quorum, casts)`: each cast's answer and each cast key's later read against
   the contract's own distinct set per key; `NotTallied`, `QuorumMissed`, `QuorumReachedEarly`,
-  `VotersMisreported`, each `{ key, voters }`; seven tests; 348 lines). Next: (h2) the private counting split
-  out as `counted(quorum, tally, casts) -> Result<Box<dyn VoteTally>, _>` (no `&mut` parameter), and
-  `check_cleared(quorum, casts)` (count, clear, count again), `check_resized(quorum, resized_to, casts)` (count,
-  resize, count again at the new quorum), `check_restored(quorum, casts)` (count, export, restore a fresh tally,
-  each key read as the original's: `NotExported`, `RestoredDiffers { key }`); flaws `KeepsVotesOnClear`,
-  `IgnoresResize`, `KeepsQuorumOnResize` (resize stepped as a clear), `RestoresNothing`, `ExportsNothing`; (h3)
-  standard scenarios at quorums 1, 3, 5, 7 (n = 1, 4, 7, 10): one past the quorum on one key, each voter twice,
-  four keys interleaved (height, round, block apart, voters offset per key), each through all four checks, the
-  resize to quorum + 2; `QuorumTallyFactory` runs them in node-infra. The
+  `VotersMisreported`, each `{ key, voters }`; seven tests; 348 lines). (h2) the cleared, resized and restored
+  checks -- done at `ab2d884` (the private `counted(quorum, tally, casts) -> Result<Box<dyn VoteTally>, _>`;
+  `check_cleared`, `check_resized(quorum, resized_to, casts)`, `check_restored`; `NotExported`,
+  `RestoredDiffers { key }`; eight tests, 211 lines). Next: (h3, the 230th, all three stages) standard scenarios at
+  quorums 1, 3, 5, 7 (n = 1, 4, 7, 10): one past the quorum on one key, each voter twice, four keys interleaved
+  (height, round, block apart, voters offset 100 per key), each through `check`, `check_cleared`, `check_resized`
+  to quorum + 2 and to `quorum.saturating_sub(2).max(1)` (a membership three larger or smaller) and
+  `check_restored`; two node-contracts tests (flawless, mixing keys: `VotersMisreported` at height 5, voters 1);
+  `QuorumTallyFactory` runs them in `node-infra/tests/factories/quorum_tally_factory_tests.rs`. Then (i) the
+  documents. The
   plan of (f) was: the dependencies take the factory (30 sites, one line each, the seven dependency-helper pairs re-keyed as
   Q46), the volatile state steps two tallies; (g) `VoteTracker` moved into `QuorumTally`; (h) `VoteTallyContract`;
   (i) the documents and the replayed-proposal open point retired. The plan of (b) was: the two red tests are in
@@ -541,17 +542,17 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 228 on the branch; 13 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
+- **Commits:** 229 on the branch; 13 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
   execution port's move, `4cfcce2` --, + `97225b7` for the dry4rust re-record, `1d27ff1` for the two states' 36
   accessors, `3cf1ec6` and `3433b15` for the transaction status's 33 importers and the timer key's 100, `2883602`
   for the slot discovery's 11, `a352577` for the Ed25519 scheme's 14, planned within by SETUP, `d7d2c45` for
-  Faction's two implementations and their test files, Q43) -- 13 of 228 is 5.7%; the 95% now needs about 260
+  Faction's two implementations and their test files, Q43) -- 13 of 229 is 5.7%; the 95% now needs about 260
   commits, every one from here within it: count a move's files first, and
   shape the seams so a type is born where it ends; bug fixes
   6 (`eba863f`, `e1232ca`, `5013d0e`, `1e7ac29`, `643bfd5`, `8e1ca00`); the 150th (`7ffb333`) ran all three stages, Part A's end, the 160th (`6912269`) and
   the 170th (`2883602`), the 180th (`b31593c`), the 190th (`c885cf9`), the 200th (`7508819`), the 210th
   (`e04403c`) and the 220th (`e329250`); the 230th next
-- **Tests:** 3,440 at the base, 3,823 now (stage 5 465); removed under constraint 6: 1 (`2e6d484`, Q34)
+- **Tests:** 3,440 at the base, 3,831 now (stage 5 465); removed under constraint 6: 1 (`2e6d484`, Q34)
 - **Offences:** 41 as configured, 195 everything on, shear 0; Grip 780.18 / Braintax 4,868.87 (0.1602 at `1f5213f`, the tracker into the tally, node-infra
   166.15 / 700.19 and node 320.64 / 2,342.00; 782.93 / 4,880.81, 0.1604 at `58844eb`, the tally port, node-infra
   164.60 / 698.19 and node 324.94 / 2,355.94; 773.51 / 4,811.48, 0.1608 at `9b496e6`, recovery/control 78.14 / 397.87 with
@@ -669,7 +670,8 @@ pushed with the record at every commit.
   proposal requeued (`8e1ca00`, a bug-fix), the tally port (`e329250`), node-infra's tally behind it (`bd41a48`),
   the port's read (`97441de`, Q49 amended), the volatile state's tests through helpers (`1cd555a`), the wiring
   (`58844eb`), the dependencies' hand-over pinned (`6de5afa`), eight of the tracker's tests onto the tally
-  (`c24eaaa`), the tracker wholly into it (`1f5213f`), the tally contract's counting clauses (`ffb6f45`).
+  (`c24eaaa`), the tracker wholly into it (`1f5213f`), the tally contract's counting clauses (`ffb6f45`), its cleared, resized and
+  restored checks (`ab2d884`).
 
 ## Next in line
 
