@@ -64,6 +64,7 @@ After the run the owner takes each open entry -- implement, discuss, discard, po
 | 44 | after commit 205, Part B, the Beggar seam | which trait is Beggar's port, where its vocabulary lives, and who builds the default, which `node`'s assembly builds today | answered | the port is today's call site, `RecoveryProcess`, which already admits a pushed transfer (pinned, not changed); its vocabulary stays in `recovery-control` until gate 8, after the observer split; `node` takes a `RecoveryProcessFactory` it hands its timing, node-infra's `RecoveryControlFactory` the default |
 | 45 | commit 208, Part B, the Beggar seam | entry 44 put the factory port in `node/src/traits`, and stage 1's recovery boundary refuses `RecoveryProcess` in `node/src` outside the assembly | answered | the gate stands; the trait moves to `node/src/ibft/assembly/`, beside the dependencies that take it, and the rest of entry 44 is unchanged |
 | 46 | before commit 209, Part B, the Beggar seam | the dependencies taking the factory change 30 sites in 11 files, re-key the seven pairs the dry4rust baseline records for node's and validation's dependency helpers and pay an eighth, near the threshold whole; the factory's default, the one-line form, joins a recorded group of seven `empty_state` helpers | answered | two commits: the default first, its group recorded with an eighth member as entry 33 did, then the wiring with the seven pairs re-keyed as entry 35 did |
+| 47 | after commit 214, Part B, the certifier's seam | the seam SETUP names -- `node`'s `SignatureScheme` port, `Ed25519SignatureScheme` behind it in `node-infra`, every key derived from the peer id -- already stands; which of the seam's pieces are left, and whether the port takes a height | answered | the port is today's, with no height (decision 9; a height comes with the key variants, decision 5); the protocol boundary is characterized already; what is left is a contract suite every scheme runs -- what one member signs, every member accepts as that member's, for messages and certificates both -- and the documents |
 
 ## Interventions
 
@@ -1121,3 +1122,43 @@ the course the slice took and the run's recommendation; after the run, the owner
     checkout's path. The house form is `./`, which the tool writes from the root. The prefix is restored and
     the diff checked to hold only the group's change.
 - **Commit:** 209, 210.
+
+### 47. The certifier's seam: what is left when the port and its default already stand
+
+- **Raised:** after commit 214, Part B, the certifier's seam (SETUP, *Part B*, step 5), the Beggar seam done.
+- **What:** step 5 names the seam as "`node`'s `SignatureScheme` port, with `Ed25519SignatureScheme` -- in
+  `node-infra` since step 2 -- behind it, deriving every key from the peer id as now", the seam only (decision 5).
+  Both pieces stand already. The port has been in `node/src/ibft/crypto` since the base, shaped by its call sites:
+  `sign`, `verify_for_peer` and `verify_commit_certificate_signature`, the last asked by name so a scheme can answer a
+  certificate apart. The Ed25519 implementation has been in node-infra since `a352577`, which took `ed25519-dalek` out
+  of `node`'s tree. The seam template (*Part B*) asks for characterization at the protocol's boundary, the port and its
+  data model in `node`, today's logic as the default in node-infra, a contract suite in `node-contracts` every
+  implementation runs, and the translation in a plug-in crate. Two questions: which of those are left, and whether
+  the port, whose concern is whose key is valid at which height, takes the height.
+- **Status:** answered, from decisions 5 and 9 and the seams already built (entries 41 to 44).
+- **Answer:**
+  - **the port is today's `SignatureScheme`, unchanged, with no height.** Decision 9 shapes the certifier's port by
+    today's call sites, and none asks for a height: every key is derived from the peer id and valid at every height,
+    which is what the protocol does. A height parameter would be a signature change at every verify site, with
+    nothing reading it. It comes with the key variants, which are later work (decision 5);
+  - **the boundary is characterized already**, at both tiers, so no characterization commit is owed. Certificates
+    signed by a quorum with their own keys verify, and one carrying a signature its signer never made is refused
+    (`commit_certificate_verifier_tests`, `validation_tests`). Invalid and forged signatures are refused in every
+    message kind (validation's single-node signature and validation tests, and its cluster byzantine tests). A
+    cluster recovers blocks committed under real signatures (`ibft_cluster_recovery_tests`);
+  - **the data model is `types`' `SignatureBytes`** already, and **the default is node-infra's**: the builder's
+    default is the no-op and its variant chooses Ed25519. `NoOpSignatureScheme` stays in `node`, the protocol's own
+    no-op as `NoOpBootstrappingCoordinator` is: 43 files name it, and nothing in step 5 or gate 8 asks it moved. Gate
+    8's "no crypto implementation in its tree" holds, since it computes nothing;
+  - **no plug-in crate**: step 5 places Ed25519 in node-infra, the assembly. A key-variant plug-in comes with the
+    variants;
+  - **what is left is a contract suite**, `SignatureSchemeContract`, in a `certification` module of `node-contracts`.
+    It asks what the protocol relies on and every scheme gives, as entry 41's execution suite does: over a set of
+    members, each with its scheme, whatever one member signs every member's scheme accepts as that member's, both as
+    a message's signature and as a commit certificate's. A quorum is counted from other members' signatures, so a
+    scheme refusing them would stall every round. Refusal is not asked: the no-op accepts everything, and safety
+    rests on the scheme a deployment chooses. Ed25519, the no-op and the switched measurement control run it from
+    their own tests. `node` takes `node-contracts` as a dev-dependency for the two of them, as node-infra already
+    does;
+  - then the documents.
+- **Commit:** 215 onward.

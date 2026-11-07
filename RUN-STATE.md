@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `52bc729` Make accepting a peer message must-use (row 214)
+- **Last commit:** `0476b72` Give node-contracts what every signature scheme owes the protocol (row 215)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -126,7 +126,8 @@ pushed with the record at every commit.
   first lets a plug-in's tests implement one method instead of 78; rustfmt wrapping a signature can push a
   three-line getter into dry4rust's reach -- name the type instead; a type's test file wants its scenario helpers
   to differ in data, not in code, or dry4rust pairs them.
-- **Slice in progress:** Part B seam 4, Beggar (SETUP, *Part B*, step 4) -- `Chosen-By: owner-order` (Faction,
+- **Slice in progress:** Part B seam 5, the certifier (SETUP, *Part B*, step 5), started 11:15Z, design Q47 -- its
+  steps below, after Beggar's. Beggar, done: Part B seam 4 (SETUP, *Part B*, step 4) -- `Chosen-By: owner-order` (Faction,
   Beggar, the certifier, consensus), `Over:` the three skipped-rule slices, the certifier, consensus; started
   09:31Z. SETUP's order: characterization, `#[must_use]`, peer knowledge out of `recovery_state.rs`, the
   snapshot apply split, three bugs test-first, the port shaped by today's `recovery-control` (its default),
@@ -200,8 +201,15 @@ pushed with the record at every commit.
   note; the move checked the same way, nothing missing). (f8) `#[must_use]` on
   `IbftProtocol::accept_peer_message` -- done at `52bc729` (SETUP's "any bool whose falsity means 'I declined to
   change state'", the one the old entry named; four dispatch tests took `let _ =`; the history's closing note
-  updated). **The Beggar seam is done**: 19 commits, rows 196 to 214 (`187b65c` to `52bc729`), 09:33Z to 11:14Z. Next: the
-  certifier's seam (SETUP Part B step 5). The plan of (f7) was: the `#[must_use]` entry (`f2a36a8`, `a8a1d57`) and the retention-and-snapshot join, and the peer
+  updated). **The Beggar seam is done**: 19 commits, rows 196 to 214 (`187b65c` to `52bc729`), 09:33Z to 11:14Z.
+  **The certifier's seam** (SETUP Part B step 5), `Chosen-By: owner-order`, design Q47 (answered): the port is today's
+  `SignatureScheme`, no height; the boundary characterized already; Ed25519 stays in node-infra, the no-op in node.
+  (a) the contract suite -- done at `0476b72`: `SignatureSchemeContract::new(BTreeMap<PeerId, BoxedSignatureScheme>)`,
+  `check(data)`, `check_standard_scenarios()` (empty, `b"prepare"`, a 32-byte hash, 1 KiB), breach
+  `SignatureContractBreach::{MessageSignatureRefused, CertificateSignatureRefused} { signer, verifier }`, in
+  `node-contracts/src/certification/`, five tests over a scripted scheme. Next: (b) Ed25519 (node-infra's test file),
+  the no-op and the switched scheme (node's test files; `node` takes `node-contracts` as a dev-dependency) run it;
+  (c) the documents (CLAUDE.md's node-contracts paragraph, README's node-contracts row). The plan of (f7) was: the `#[must_use]` entry (`f2a36a8`, `a8a1d57`) and the retention-and-snapshot join, and the peer
   knowledge entry updated (`9b496e6`); then the certifier's seam.
 - **Faction's detail:** Part B seam 3, Faction (SETUP, *Part B*, step 3) -- `Chosen-By: owner-order` among the
   bookkeepers (Faction, then Beggar, the certifier, consensus last), over the skipped-rule slices for seam 2's
@@ -475,11 +483,11 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 214 on the branch; 13 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
+- **Commits:** 215 on the branch; 13 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
   execution port's move, `4cfcce2` --, + `97225b7` for the dry4rust re-record, `1d27ff1` for the two states' 36
   accessors, `3cf1ec6` and `3433b15` for the transaction status's 33 importers and the timer key's 100, `2883602`
   for the slot discovery's 11, `a352577` for the Ed25519 scheme's 14, planned within by SETUP, `d7d2c45` for
-  Faction's two implementations and their test files, Q43) -- 13 of 214 is 6.1%; the 95% now needs about 260
+  Faction's two implementations and their test files, Q43) -- 13 of 215 is 6.0%; the 95% now needs about 260
   commits, every one from here within it: count a move's files first, and
   shape the seams so a type is born where it ends; bug fixes
   5 (`eba863f`, `e1232ca`, `5013d0e`, `1e7ac29`, `643bfd5`); the 150th (`7ffb333`) ran all three stages, Part A's end, the 160th (`6912269`) and
@@ -515,7 +523,7 @@ pushed with the record at every commit.
   one group added at `64f562b`, Q33; one added and one paid at `1121282`; one re-keyed and one added at `8230a8a`,
   Q35, each copy kept in scratch as `dry-baseline-before-cN.json`; one re-keyed at `97cd2da`; one grown by a member
   at `0d46800`, Q46; seven re-keyed and one near pair paid at `e04403c`, Q46, 196 to 195)
-- **Questions:** 43 answered, 3 open (9, 25, 37). **Interventions:** 0. **Waits:** 0.
+- **Questions:** 44 answered, 3 open (9, 25, 37). **Interventions:** 0. **Waits:** 0.
 
 ## The run so far
 
@@ -621,8 +629,8 @@ its tests the cluster they start from), `tested-public-api` in `system-tests` (t
 calls), the eight `single-implemented-type` entries split; then the seams, 75 to 100 commits, in the owner's
 order -- ~~execution with `execution-types` dissolved into `types`~~ (done at `c83fba2`, 13 commits, `Chosen-By:
 dependency`), ~~`node`'s own dependencies~~ (done at `a352577`, 1 commit, `Chosen-By: no-scaffolding`), ~~Faction~~
-(done at `a4f3033`, 18 commits, `Chosen-By: owner-order`), Beggar (in progress, `Chosen-By: owner-order`), the
-certifier, consensus, the observer split by concern, the gates, an ADR and the living documents.
+(done at `a4f3033`, 18 commits, `Chosen-By: owner-order`), ~~Beggar~~ (done at `52bc729`, 19 commits, `Chosen-By:
+owner-order`), the certifier (in progress, `Chosen-By: owner-order`), consensus, the observer split by concern, the gates, an ADR and the living documents.
 
 Owed, for Part B's `tested-public-api` slice: `RuntimeTimerHarness::next_port` has no test (everything-on
 `tested-public-api`); nor has `RuntimeTimerHarness::new`, which the tool stopped reporting at `3868a69` only because
