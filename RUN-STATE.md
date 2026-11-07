@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `8afa421` Dissolve execution-types into types (row 164)
+- **Last commit:** `de03fb2` Bring the documents up to date with execution-types dissolved (row 165)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -100,10 +100,10 @@ pushed with the record at every commit.
   one past `directory-subfolder-count`'s five), its tests under `types/tests/execution`; the 312-file path rewrite
   by a scratch program, `overhaul-scratch/path-rewriter` (`cargo run --manifest-path .../Cargo.toml -- <root>
   <old prefix> <new prefix> [<only under>]`), rustfmt resorting imports and four sorted by hand; xtask's three
-  package lists and the justfile's stage-1 lines follow. (2) next, `support`: the documents naming the crate --
-  CLAUDE.md (the "no section" list), `stern4rust.toml`'s comments, README, `docs/OPEN_POINTS.md` (the leaf
-  `types` it asks for is reached), TEST-LADDER, IBFT-SPEC-COVERAGE, RECOVERY-AS-BUILT and the live ADRs; history
-  files stay as written. (3) `ExecutionEngine` into `node/src/traits` (22 importers, the second planned past the
+  package lists and the justfile's stage-1 lines follow. (2) the documents naming the crate -- done at `de03fb2`
+  (`support`, stage 2): CLAUDE.md, `stern4rust.toml`'s comments, README, IBFT-SPEC-COVERAGE, RECOVERY-AS-BUILT,
+  two ADRs' paths; the leaf-`types` open point retired into the 2026-11-07 history file; TEST-LADDER's dated
+  measurement and the history files left as written. (3) next, `ExecutionEngine` into `node/src/traits` (22 importers, the second planned past the
   threshold); (4) evm a plug-in on `node` for the port and `types` for the data model -- `node` depends on `evm`
   today, which goes first; `NoOpExecutionEngine` the default in node-infra; (5) the contract suite in a
   `node-contracts` crate, run by both engines and the no-op; (6) the boundary check beside `cargo xtask
@@ -259,9 +259,9 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 164 on the branch; 9 past the threshold (5 planned -- the 5th the merge, `8afa421` --, +
+- **Commits:** 165 on the branch; 9 past the threshold (5 planned -- the 5th the merge, `8afa421` --, +
   `97225b7` for the dry4rust re-record, `1d27ff1` for the two states' 36 accessors, `3cf1ec6` and `3433b15` for
-  the transaction status's 33 importers and the timer key's 100 -- 9 of 164 is 5.5%, the `ExecutionEngine` move
+  the transaction status's 33 importers and the timer key's 100 -- 9 of 165 is 5.5%, the `ExecutionEngine` move
   planned to make it 10, so the 95% needs Parts B and C to add commits within it, and Part
   B's two planned moves out of `execution-types` past it; keep every other commit within); bug fixes
   2 (`eba863f`, `e1232ca`); the 150th (`7ffb333`) ran all three stages, Part A's end, and the 160th (`6912269`);
@@ -347,7 +347,7 @@ pushed with the record at every commit.
   (`60b3373`), SLOAD and SSTORE (`78c9a21`), the memory dispatcher, MSTORE and MLOAD (`89735b7`), the memory
   window and its expansion (`ba4e857`), SHA3 with its expansion and word charge (`6912269`), SHA3's window and the
   word pop (`e444f5b`), the engine's working state (`36c3d9e`), the stand-down out (`5c6e9eb`), the slice's last.
-  The execution seam: `execution-types` dissolved into `types` (`8afa421`).
+  The execution seam: `execution-types` dissolved into `types` (`8afa421`), the documents after it (`de03fb2`).
 
 ## Next in line
 
