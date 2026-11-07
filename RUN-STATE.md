@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `12b0c09` Build the peers' recovery statuses by literal (row 101)
+- **Last commit:** `d09acfa` Keep the fields of xtask's report and command outcome private (row 102)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -65,7 +65,7 @@ pushed with the record at every commit.
   Lessons: stern refuses anything but a parameter assigned to a trait-typed field, an injected factory's call
   included -- split build from install; a delegating trait-impl stub can be a dry4rust near duplicate of
   another, so let the impl hold the body; a planned past-threshold commit says so in `Threshold: exceeded --`.
-- **Slice in progress:** Part A slice 8, records and objects, a module at a time -- records-and-objects 26 left
+- **Slice in progress:** Part A slice 8, records and objects, a module at a time -- records-and-objects 23 left
   (`Chosen-By: no-scaffolding`; started 23:51:38Z; full list `overhaul-scratch/records-and-objects.txt`). Three
   kinds. (A) record with private fields -> make them `pub`: all 14 done (`3b243b5`). (B) getter-only -> delete
   the getters and constructor, `pub` fields, built by literal: all 11 done (`EtheramGrpcNodeTimerConfig`,
@@ -85,18 +85,21 @@ pushed with the record at every commit.
   at `64f562b` -- the group is recorded in the dry4rust baseline, named in its message and in Q33 (209 to 210),
   which serves later literals of the shape, (C)'s constructors among them; one with a part to share is shared. (C)
   object exposing `pub` fields -> private fields, a getter for each reader, a constructor for each builder (26,
-  not 23 as first counted; next: xtask's three -- `CrapReport`/`CrapFunction` built by serde alone, so getters
-  only; `CommandOutcome` has its constructor): `ClusterConfig`, `FleetBlockLimits`
+  not 23 as first counted; xtask's three done at `d09acfa` -- serde builds the report, so getters only; xtask now
+  holds no offence; 23 left; next: system-tests' `FleetBlockLimits` and `ClusterConfig`, whose tests mutate
+  its fields to make invalid configs and will build each through a constructor instead -- the harness reads
+  it, so stage 5 three times): `ClusterConfig`, `FleetBlockLimits`
   (system-tests), `Account`, `Block` (~148 importers), `Transaction`, `TransactionReceipt` (execution-types),
-  `CrapFunction`, `CrapReport`, `CommandOutcome` (xtask), `IbftProtocolConfig`, `IbftProtocolLimits`,
+  `IbftProtocolConfig`, `IbftProtocolLimits`,
   `IbftProtocol` (with Q25), `NodeDiagnostics`, `ContextSnapshot`, `PrunePlan`, `RetainedCounts` (node),
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 101 on the branch; 5 past the threshold (4 planned, + `97225b7` for the dry4rust re-record); bug fixes
+- **Commits:** 102 on the branch; 5 past the threshold (4 planned, + `97225b7` for the dry4rust re-record); bug fixes
   1 (`eba863f`); the 100th ran all three stages, as every commit has; the 110th next
 - **Tests:** 3,440 at the base, 3,635 now (stage 5 463); removed under constraint 6: 1 (`2e6d484`, Q34)
-- **Offences:** 86 as configured, 297 everything on, shear 0; Grip 628.09 / Braintax 4,464.98 (0.1407;
+- **Offences:** 83 as configured, 294 everything on, shear 0; Grip 628.09 / Braintax 4,464.98 (0.1407 -- xtask is
+  not scored;
   recovery/control 61.27 / 363.83 at `12b0c09`; recovery/ibft 48.77 / 245.23 and node 285.50 / 2,268.11 at `df27ed7`; recovery/control 62.22 / 365.78 at `a247cf2`; node 285.44 / 2,268.11 at `ef5f4d9`, 286.39 / 2,270.20 at `2e6d484`, 290.57 / 2,277.38 at `64f562b`, 292.63 / 2,284.79 at `c72cdf3`; before it 643.14 / 4,502.39, 0.1428;
   execution-types 64.14 to 56.14 at `069fd4c`, evm 503.97 to 500.25 at `1618598`, node 2295.50 to 2299.52 at
   `cec0c5b` with the factory seam); dry4rust baseline 210 groups, all matching (re-recorded at `cec0c5b`, Q32;
@@ -135,7 +138,8 @@ pushed with the record at every commit.
   (`8fd7429`), the slice's last; injected dependencies: the EVM engines composed in evm and node-infra
   (`e4de9df`), and in validation's helpers and single-node tests (`c576a8a`), their `Default` out (`1618598`); the bootstrapper's coordinator factory (`3505d8d`), the bootstrapper handed its coordinator (`cec0c5b`), the
   slice's last; records and objects: fourteen records' fields public (`3b243b5`), two
-  system-tests configs by literal (`64b9ab9`), the node's admission, timing and diagnostics configs (`c72cdf3`), the bootstrapping config (`64f562b`), the NewView message's fields (`2e6d484`), the validator set updates (`ef5f4d9`), the recovery requests (`a247cf2`), the recovery facts (`df27ed7`), the peers' recovery statuses (`12b0c09`), the last getter-only one.
+  system-tests configs by literal (`64b9ab9`), the node's admission, timing and diagnostics configs (`c72cdf3`), the bootstrapping config (`64f562b`), the NewView message's fields (`2e6d484`), the validator set updates (`ef5f4d9`), the recovery requests (`a247cf2`), the recovery facts (`df27ed7`), the peers' recovery statuses (`12b0c09`), the last getter-only one; xtask's report and command outcome
+  (`d09acfa`), the first objects.
 
 ## Next in line
 
