@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `2e9d93b` Move the gRPC transport's helpers into a fixture and its poll tests beside their source (row 252)
+- **Last commit:** `cd3b27b` Move four of the gRPC transport's send tests beside the outgoing half's source (row 253)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -235,7 +235,8 @@ pushed with the record at every commit.
   `tests/infra/storage/in_memory_storage_fixture.rs` is one), and its two `poll_*` tests to
   `grpc_transport/grpc_transport_incoming_tests.rs` (`refactoring`) -- done at `2e9d93b` (263 lines, 88 holding;
   the constants stay private in the fixture, as only its helpers read them); (2) four `send_*` to
-  `grpc_transport/grpc_transport_outgoing_tests.rs`; (3) the other four, the old file out (`rule-offence`);
+  `grpc_transport/grpc_transport_outgoing_tests.rs` -- done at `cd3b27b` (the first four in name order, 330 lines,
+  88 holding); (3) the other four, the old file out (`rule-offence`);
   `tests/infra/io/client_interface/` `client_interface_factories_tests.rs` (80, two factories) and
   `grpc_client_interface_tests.rs` (475) by source; `tests/infra/factories_tests.rs` (71) and
   `tests/infra/storage/in_memory_storage_tests.rs` (87) by what they test; `tests/cluster_process_harness_helpers_tests.rs`
@@ -615,11 +616,11 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 252 on the branch; 13 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
+- **Commits:** 253 on the branch; 13 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
   execution port's move, `4cfcce2` --, + `97225b7` for the dry4rust re-record, `1d27ff1` for the two states' 36
   accessors, `3cf1ec6` and `3433b15` for the transaction status's 33 importers and the timer key's 100, `2883602`
   for the slot discovery's 11, `a352577` for the Ed25519 scheme's 14, planned within by SETUP, `d7d2c45` for
-  Faction's two implementations and their test files, Q43) -- 13 of 252 is 5.2%; the 95% now needs about 260
+  Faction's two implementations and their test files, Q43) -- 13 of 253 is 5.1%; the 95% now needs about 260
   commits, every one from here within it: count a move's files first, and
   shape the seams so a type is born where it ends; bug fixes
   6 (`eba863f`, `e1232ca`, `5013d0e`, `1e7ac29`, `643bfd5`, `8e1ca00`); the 150th (`7ffb333`) ran all three stages, Part A's end, the 160th (`6912269`) and
