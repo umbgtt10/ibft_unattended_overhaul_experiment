@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `91267e9` Give validation's client and transaction scenarios a source holding their start (row 284)
+- **Last commit:** `dcb3302` Give validation's malicious-block and partition scenarios a source holding their start (row 285)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -341,10 +341,12 @@ pushed with the record at every commit.
   `cluster_past_discovery_funding(from, balance)` when dry4rust paired the transaction start with message
   validation's at 90%, and a client test calls it directly. Lesson: a source start differing from another only in
   its arguments is a dry4rust near duplicate -- the start goes into the shared helpers with a direct test call, and
-  the sources fix its arguments. Next (v9...): faults -- malicious_block (its funded cluster, and `funded_block`;
-  `valid_conflicting_blocks` returns `(Block, Block)`, refused in `src` by `distinct-tuple-elements`, so it stays),
-  partition (the five-validator start is shared with five_node and recovery, and is one identifier from
-  `cluster_past_discovery`, so it goes into the shared helpers), byzantine (`signed_cluster`); then recovery,
+  the sources fix its arguments. (v9) the shared `cluster_past_discovery_of(validator_ids, genesis)`, both earlier
+  starts on it; malicious_block (`funded_cluster`, `funded_block` moved; `valid_conflicting_blocks` returns
+  `(Block, Block)`, refused in `src` by `distinct-tuple-elements`, so it stays) and partition
+  (`five_node_cluster_isolating_node_four`; the rest call `cluster_past_discovery_of(five_validators(), vec![])`) --
+  done at `dcb3302` (7 files, 213 lines, 39 to 37). Next (v10...): byzantine (`signed_cluster`, moved;
+  `with_signature_scheme_factory` keeps direct test calls in message_validation and recovery); then recovery,
   five_node, then single_node's four folders. The m4/m5 plan was, the same way,
   single_node `restart` (two `new_*`) into `tests/etheram_grpc_node_tests.rs`; then validation, where
   `tested-public-api` applies as configured, so a displaced call there fails stage 2. Lesson: `grep -v -x -F -f` here does not drop blank lines, so count a move's lines with
@@ -720,18 +722,18 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 284 on the branch; 13 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
+- **Commits:** 285 on the branch; 13 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
   execution port's move, `4cfcce2` --, + `97225b7` for the dry4rust re-record, `1d27ff1` for the two states' 36
   accessors, `3cf1ec6` and `3433b15` for the transaction status's 33 importers and the timer key's 100, `2883602`
   for the slot discovery's 11, `a352577` for the Ed25519 scheme's 14, planned within by SETUP, `d7d2c45` for
-  Faction's two implementations and their test files, Q43) -- 13 of 284 is 4.6%; the 95% reached at the 260th (247 of 260 within), and it holds only while every
+  Faction's two implementations and their test files, Q43) -- 13 of 285 is 4.6%; the 95% reached at the 260th (247 of 260 within), and it holds only while every
   commit from here stays within: count a move's files first, and
   shape the seams so a type is born where it ends; bug fixes
   6 (`eba863f`, `e1232ca`, `5013d0e`, `1e7ac29`, `643bfd5`, `8e1ca00`); the 150th (`7ffb333`) ran all three stages, Part A's end, the 160th (`6912269`) and
   the 170th (`2883602`), the 180th (`b31593c`), the 190th (`c885cf9`), the 200th (`7508819`), the 210th
   (`e04403c`), the 220th (`e329250`), the 230th (`5ebe5f1`), the 240th (`18baf35`), the 250th (`8bdb859`), the 260th (`1fef15d`), the 270th (`fdd825e`) and the 280th (`00c5f1b`); the 290th next
 - **Tests:** 3,440 at the base, 3,834 now (stage 5 465); removed under constraint 6: 1 (`2e6d484`, Q34)
-- **Offences:** 41 as configured, 142 everything on (paired-test-file 39, from 100 at `4a976c2`; tested-public-api 25,
+- **Offences:** 41 as configured, 140 everything on (paired-test-file 37, from 100 at `4a976c2`; tested-public-api 25,
   from 17 at `ca72bf4`, Q52), shear 0; Grip 780.18 / Braintax 4,868.87 (0.1602 at `1f5213f`, the tracker into the tally, node-infra
   166.15 / 700.19 and node 320.64 / 2,342.00; 782.93 / 4,880.81, 0.1604 at `58844eb`, the tally port, node-infra
   164.60 / 698.19 and node 324.94 / 2,355.94; 773.51 / 4,811.48, 0.1608 at `9b496e6`, recovery/control 78.14 / 397.87 with
