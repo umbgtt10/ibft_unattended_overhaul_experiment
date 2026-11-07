@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `1f3b0f3` Run the signature scheme contract on every scheme the house builds (row 216)
+- **Last commit:** `b0756e2` Bring the documents up to the certifier's seam (row 217)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -209,7 +209,10 @@ pushed with the record at every commit.
   `SignatureContractBreach::{MessageSignatureRefused, CertificateSignatureRefused} { signer, verifier }`, in
   `node-contracts/src/certification/`, five tests over a scripted scheme. (b) Ed25519 (node-infra's test file),
   the no-op and the switched scheme, verified and bypassed (node's test files; `node` takes `node-contracts` as a
-  dev-dependency), run it -- done at `1f3b0f3`, the members built inside each test body. Next: (c) the documents (CLAUDE.md's node-contracts paragraph, README's node-contracts row). The plan of (f7) was: the `#[must_use]` entry (`f2a36a8`, `a8a1d57`) and the retention-and-snapshot join, and the peer
+  dev-dependency), run it -- done at `1f3b0f3`, the members built inside each test body. (c) -- done at `b0756e2`
+  (`support`, stage 2; CERTIFICATE-CHECK-SCHEME.md gained a bracketed note too). **The certifier's seam is done**: 3
+  commits, rows 215 to 217, 11:15Z to 11:28Z. Next: consensus (SETUP Part B step 6), last of the bookkeepers -- the
+  step shape agreed on 2026-10-18 (decision 9), and the replayed-proposal bug-fix test-first. The plan of (c) was: the documents (CLAUDE.md's node-contracts paragraph, README's node-contracts row). The plan of (f7) was: the `#[must_use]` entry (`f2a36a8`, `a8a1d57`) and the retention-and-snapshot join, and the peer
   knowledge entry updated (`9b496e6`); then the certifier's seam.
 - **Faction's detail:** Part B seam 3, Faction (SETUP, *Part B*, step 3) -- `Chosen-By: owner-order` among the
   bookkeepers (Faction, then Beggar, the certifier, consensus last), over the skipped-rule slices for seam 2's
@@ -483,11 +486,11 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 216 on the branch; 13 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
+- **Commits:** 217 on the branch; 13 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
   execution port's move, `4cfcce2` --, + `97225b7` for the dry4rust re-record, `1d27ff1` for the two states' 36
   accessors, `3cf1ec6` and `3433b15` for the transaction status's 33 importers and the timer key's 100, `2883602`
   for the slot discovery's 11, `a352577` for the Ed25519 scheme's 14, planned within by SETUP, `d7d2c45` for
-  Faction's two implementations and their test files, Q43) -- 13 of 216 is 6.0%; the 95% now needs about 260
+  Faction's two implementations and their test files, Q43) -- 13 of 217 is 6.0%; the 95% now needs about 260
   commits, every one from here within it: count a move's files first, and
   shape the seams so a type is born where it ends; bug fixes
   5 (`eba863f`, `e1232ca`, `5013d0e`, `1e7ac29`, `643bfd5`); the 150th (`7ffb333`) ran all three stages, Part A's end, the 160th (`6912269`) and
@@ -630,7 +633,7 @@ calls), the eight `single-implemented-type` entries split; then the seams, 75 to
 order -- ~~execution with `execution-types` dissolved into `types`~~ (done at `c83fba2`, 13 commits, `Chosen-By:
 dependency`), ~~`node`'s own dependencies~~ (done at `a352577`, 1 commit, `Chosen-By: no-scaffolding`), ~~Faction~~
 (done at `a4f3033`, 18 commits, `Chosen-By: owner-order`), ~~Beggar~~ (done at `52bc729`, 19 commits, `Chosen-By:
-owner-order`), the certifier (in progress, `Chosen-By: owner-order`), consensus, the observer split by concern, the gates, an ADR and the living documents.
+owner-order`), ~~the certifier~~ (done at `b0756e2`, 3 commits, `Chosen-By: owner-order`), consensus, the observer split by concern, the gates, an ADR and the living documents.
 
 Owed, for Part B's `tested-public-api` slice: `RuntimeTimerHarness::next_port` has no test (everything-on
 `tested-public-api`); nor has `RuntimeTimerHarness::new`, which the tool stopped reporting at `3868a69` only because
