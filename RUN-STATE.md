@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `3cf1ec6` Give the transaction status a file of its own (row 146)
+- **Last commit:** `3433b15` Give the timer key a file of its own beside the timer event (row 147)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -84,14 +84,15 @@ pushed with the record at every commit.
   258) -- `RecoveryMessageFields` stays, its one user `dispatch.rs` being one of `IbftProtocol`'s implementation
   files with no type of its own, so `named-subject` refuses it there: it waits on Q25 (noted there);
   `TransactionStatus` into `execution/transaction_status.rs` at `3cf1ec6` (33 importers, past the threshold by
-  SETUP's provision, the 7th). Next: (147) `TimerKey` into `types/src/io/timer_key.rs`, beside `TimerEvent` (~96
-  single-line imports `action::TimerKey` and 8 grouped `action::{Action, TimerKey}`, written out as two; cargo fmt
-  sorts each block) -- past the threshold too, the 8th, the 95% then resting on Parts B and C's commits;
-  (148-149) system-tests' `FleetConfig`, `GenesisAccountConfig`, `NodeConfig` and `EtheramGrpcNodeTimerConfig`
-  (6 files name them) -- `system-tests/src` holds 20 files, the `directory-file-count` limit, so room is made
-  first by a move of its own (the cluster config's files into a folder, their tests mirrored; the harness and
-  its builder import them, so stage 5 runs three times). A record moves without a re-export shim, each move
-  updating every importer at once.
+  SETUP's provision, the 7th); `TimerKey` into `types/src/io/timer_key.rs`, beside `TimerEvent`, at `3433b15` (100
+  importers, the 8th past the threshold, the 95% now resting on Parts B and C's commits; cargo fmt leaves files
+  with over-long import lines unsorted -- stern's `ordered-imports` finds them; never `--write-baseline` over a
+  reported offence: done once here, caught and undone before the commit). Next and last: (148) system-tests'
+  `FleetConfig`, `GenesisAccountConfig`, `NodeConfig` and `EtheramGrpcNodeTimerConfig` (6 files name them) into a
+  new folder `system-tests/src/config/` -- `system-tests/src` holds 20 files, the `directory-file-count` limit,
+  which counts files, not folders; the harness imports `ClusterConfig` alone, so it is untouched and stage 5 runs
+  once. Then record-home holds `RecoveryMessageFields` alone (Q25), and slice 9 closes. A record moves without a
+  re-export shim, each move updating every importer at once.
 - **Slice 8's detail** (records and objects, a module at a time -- `Chosen-By: no-scaffolding`; started 23:51:38Z;
   full list `overhaul-scratch/records-and-objects.txt`). Three
   kinds. (A) record with private fields -> make them `pub`: all 14 done (`3b243b5`). (B) getter-only -> delete
@@ -193,11 +194,12 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 146 on the branch; 7 past the threshold (4 planned, + `97225b7` for the dry4rust re-record,
-  `1d27ff1` for the two states' 36 accessors, `3cf1ec6` for the transaction status's 33 importers); bug fixes
+- **Commits:** 147 on the branch; 8 past the threshold (4 planned, + `97225b7` for the dry4rust re-record,
+  `1d27ff1` for the two states' 36 accessors, `3cf1ec6` and `3433b15` for the transaction status's 33 importers
+  and the timer key's 100 -- 8 of 147 is 5.4%, so the 95% needs Parts B and C to add commits within it); bug fixes
   2 (`eba863f`, `e1232ca`); the 140th (`f18f095`) ran all three stages, as every commit has; the 150th next
 - **Tests:** 3,440 at the base, 3,670 now (stage 5 465); removed under constraint 6: 1 (`2e6d484`, Q34)
-- **Offences:** 46 as configured, 257 everything on, shear 0; Grip 748.45 / Braintax 4,702.58 (0.1592;
+- **Offences:** 45 as configured, 256 everything on, shear 0; Grip 748.45 / Braintax 4,702.58 (0.1592;
   execution-types 38.62 / 102.22 at `618a5d2`; 37.67 / 99.93 and types 72.23 / 518.56 at `23c92f9`, the block's
   accessors;
   node 325.06 / 2,354.12 at `b440217`;
