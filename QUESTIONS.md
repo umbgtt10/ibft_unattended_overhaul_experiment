@@ -709,7 +709,8 @@ the course the slice took and the run's recommendation; after the run, the owner
   types' `checkpoint_state` test helpers, four-step `with_` chains in two crates' tests, recorded as
   `ce4117ea3c05a62b`; the near pair the first formed as a literal, `9e0b49ae282799b9`, paid; 202 kept. Commit 126
   -- validation's `sample_hard_state` and types' `base_state`, full seven-field chains, recorded as the near pair
-  `9940b28a2a188433`, 202 to 203.
+  `9940b28a2a188433`, 202 to 203. Commit 128 -- seven of the context snapshot's multi-line `with_` methods join
+  `63532d7dea94bfeb`, 19 members to 26.
 
 ### 34. A getter's test the record-alone rule refuses
 

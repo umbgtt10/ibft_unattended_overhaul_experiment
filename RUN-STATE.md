@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `4612b79` Keep the hard state's and the volatile snapshot's fields private (row 127)
+- **Last commit:** `b440217` Give the context snapshot its accessors (row 128)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -124,8 +124,17 @@ pushed with the record at every commit.
   private `4612b79` (the last three split out of one 505-line commit -- a seventh past the threshold would break
   the 95%); a test-only commit runs stages 1 and 2;
   5 left: `Block` (execution-types; ~148 importers, tests mutate its fields), `NodeDiagnostics` (Q37, open: a
-  constructor of 28 -- left in the baseline), `ContextSnapshot` (node; 13 fields read across the protocol, 84
-  in-place mutations in 21 test files, 68 of them `ctx.accounts.insert`), `IbftProtocol` (Q25) (node),
+  constructor of 28 -- left in the baseline), `ContextSnapshot` (node; in progress: 13 getters, a `with_` per
+  set field -- `as_variant` for the variant, `with_variant` being the constructor -- and `with_account`,
+  `with_block`, `with_pending_transaction` for the 84 in-place inserts and pushes in tests, all at `b440217` with
+  the context's own tests; next, from `git stash` ("c129-c130-pending"): the production readers, already
+  converted -- `consensus.rs` (70 sites) alone as commit 129, then the other ten files (dispatch, peer_discovery,
+  validation, recovery_host/snapshot, recovery_routing, diagnostics, new_view_validator, protocol,
+  recovery_intent_realization, pending_preprepare_replay_context) with the builder, whose converted copy is in
+  `overhaul-scratch/snapshot_context_builder.rs.c130` (`cp` it back; it re-keys a dry4rust trio,
+  `d0de4dcaee535de8` to `7c1a07413735c63e`, Q35) -- stash pop puts both batches back: stage one batch, stash the
+  other; then the tests (node 11 files ~200 sites, validation's `scenario_helpers.rs` and tests), the fields
+  private last), `IbftProtocol` (Q25) (node),
   `RecoveryControl` (Q25) (recovery). SETUP's 6-10 for the slice is its commit range, not what is left
   (read wrongly here until row 114): the stern baseline is to end holding the cluster harness's time reads alone,
   so every object closes, the upper end of the range being the protocol's and control's types (Q25) and
@@ -147,11 +156,12 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 127 on the branch; 6 past the threshold (4 planned, + `97225b7` for the dry4rust re-record,
+- **Commits:** 128 on the branch; 6 past the threshold (4 planned, + `97225b7` for the dry4rust re-record,
   `1d27ff1` for the two states' 36 accessors); bug fixes
   2 (`eba863f`, `e1232ca`); the 110th ran all three stages, as every commit has; the 120th next
-- **Tests:** 3,440 at the base, 3,655 now (stage 5 465); removed under constraint 6: 1 (`2e6d484`, Q34)
-- **Offences:** 65 as configured, 276 everything on, shear 0; Grip 709.40 / Braintax 4,620.41 (0.1535;
+- **Tests:** 3,440 at the base, 3,661 now (stage 5 465); removed under constraint 6: 1 (`2e6d484`, Q34)
+- **Offences:** 65 as configured, 276 everything on, shear 0; Grip 734.29 / Braintax 4,676.19 (0.1570;
+  node 325.06 / 2,354.12 at `b440217`;
   types 72.32 / 518.56 and node 300.17 at `1d27ff1`; types 39.26 / 453.13 at `439551b`;
   recovery/control 74.95 / 383.47 at `525d620`;
   types 35.46 / 447.16 at `e1232ca`; execution-types 24.37 / 75.83 and evm 34.29 / 498.07 at `ac456b9`;
