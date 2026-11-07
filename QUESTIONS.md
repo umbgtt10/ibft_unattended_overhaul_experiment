@@ -58,6 +58,7 @@ After the run the owner takes each open entry -- implement, discuss, discard, po
 | 38 | commit 151, Part B, the skipped rules | the EVM interpreter's operations "become functions that return what they change" (`SETUP.md`): threaded by value, a dispatcher that declines an opcode consumes the stack it was handed; as the machine's own methods, their tests can preset and read nothing | answered | the machine's changing parts become one object, `TinyEvmMachineState`, and the operations its `&mut self` methods -- the house's own shape, the storage-slot analyzer's -- returning a value where they compute one; the counter stays with the machine, the push returning where it goes next; a `bool` and an out-parameter merged into one returned `Option` take their tests' two assertions into one, each mapped to itself |
 | 39 | before commit 166, Part B, the execution seam | `node` depends on `evm` in production: its storage access plan asks evm's `TinyEvmStorageSlotAnalyzer` which contract storage a transaction touches, so moving `ExecutionEngine` into `node` -- evm depending on `node` for it -- would close a cycle | answered | the analysis becomes a port of its own, `StorageSlotDiscovery`, in a new `node/src/traits`, injected through the constructors of the node and the snapshot context builder; evm implements it with today's analyzer, so every engine keeps today's plan; `node` keeps evm as a dev-dependency only, and the execution port follows into the same folder |
 | 40 | commit 170, Part B, the execution seam | `SETUP.md` keeps "`NoOpExecutionEngine` the default in `node-infra`", but both builders default to evm's `ValueTransferEngine`, so node-infra depends on evm in production | answered | read as the port's default implementation staying in node-infra; the builders' defaults stay evm's value transfer -- changing them changes what every default-built node executes; node-infra is the assembly, not a plug-in, so step 8's gate holds |
+| 41 | commit 171, Part B, the execution seam | the contract suite is test code with a `src`, a manifest and gate lists, which `tests` does not allow; and the no-op reports no results, which a one-result-per-transaction contract would refuse | answered | `refactoring`, `node-contracts/src` counting as production as `validation/src` does and a crate or dev-dependency edge being structure; the contract asks only what the protocol relies on and all three engines do, fewer results than transactions allowed |
 
 ## Interventions
 
@@ -926,3 +927,25 @@ the course the slice took and the run's recommendation; after the run, the owner
   another" still holds with node-infra choosing among evm's engines. Whether an assembly crate may name a plug-in
   at all is the owner's to settle at that gate.
 - **Commit:** 170 (no change made).
+
+### 41. The contract suite's kind, and what it may ask of an engine
+
+- **Raised:** commit 171, Part B, the execution seam -- opening `node-contracts`.
+- **What:** two things the plan leaves to the run. First, the kind: the suite is test code, but `tests` allows
+  only `tests/` directories and no tooling (*What each kind allows*), while the crate has a `src` the engines' tests
+  call, a manifest, and its place in stage 1's lists; and SETUP counts `validation/src` and `system-tests/src` as
+  production for these checks. Second, the contract: "what every engine owes the protocol", run by both engines
+  and the no-op -- but the no-op reports no transaction result at all, so a contract asking for one result per
+  transaction would fail the default.
+- **Status:** answered -- the house has a clear default for both: SETUP's own reading of a test crate's `src`, the
+  merge's precedent for gate lists that follow a structure change (commit 164), and a contract that holds of every
+  implementation it is run against.
+- **Answer:** the kind is `refactoring` for the crate and for the commit that links the engines' tests to it:
+  `node-contracts/src` counts as production as `validation/src` does, a new crate or dev-dependency edge is
+  structure, and neither moves a count, a default or an assertion; the clause commits that only grow the crate's
+  `src` and tests are `refactoring` by the same reading. The contract asks what the protocol relies on and all
+  three engines do: results never outnumber the transactions; result i is credited to transaction i's sender; its
+  gas stays within that transaction's limit; every mutation names a sender or recipient of the block, a storage
+  write a recipient -- the access plan loads nothing else; and the same inputs give the same results. Fewer results
+  than transactions stays allowed: the no-op's answer, which the suite's own tests pin.
+- **Commit:** 171 onward.

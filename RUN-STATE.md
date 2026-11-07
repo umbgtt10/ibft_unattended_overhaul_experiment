@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `2883602` Move the TinyEvm slot discovery into evm (row 170)
+- **Last commit:** `3a96314` Add node-contracts with the execution contract's first two clauses (row 171)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -121,16 +121,23 @@ pushed with the record at every commit.
   the threshold: 28 files, 94 lines; evm depends on `node` for it now); (4) evm a plug-in -- its manifest already
   `node`, `types` and its two hashing crates; `TinyEvmStorageSlotDiscovery` into `evm/src/tiny_evm` at `2883602`
   (`refactoring`, unplanned, Trigger Q39; 21 files, past the threshold: 11 importers, system-tests taking evm);
-  `NoOpExecutionEngine` stays node-infra's, the builders' defaults evm's value transfer (Q40) -- done; (5) next,
-  the contract suite in a `node-contracts` crate, run by both engines and the no-op -- what all three satisfy
+  `NoOpExecutionEngine` stays node-infra's, the builders' defaults evm's value transfer (Q40) -- done; (5) the
+  contract suite in a `node-contracts` crate, run by both engines and the no-op -- what all three satisfy
   (the no-op returns no results at all): results never outnumber the transactions, result i is transaction i's
   sender's, gas within each transaction's limit, mutations naming only a sender or recipient of the block (a
   storage write only a recipient -- the access plan loads nothing else), and the same inputs giving the same
-  results; `ExecutionEngineContract::new(engine)`, `check(block, accounts, storage) -> Result<(),
-  ExecutionContractBreach>` and `check_standard_scenarios()`, tested against fakes in its own tests, then one test
-  each in the three engines' test files; the crate in stage 1's test, no_std and test-layout lists (xtask's
-  `NOT_SHIPPED` already names it); (6) the boundary check beside `cargo xtask recovery-boundary`: evm imports only
-  `types`' execution module.
+  results; every commit of it `refactoring` (Q41: `tests` allows `tests/` alone, and a test crate's `src` counts
+  as production). (5a) the crate -- `no_std`, `etheram_ibft_node_contracts`, `src/execution/` -- with
+  `ExecutionEngineContract::new(engine)`, `check(block, accounts, storage) -> Result<(), ExecutionContractBreach>`
+  and the first two clauses, four tests against a scripted engine (`fn(&Block) -> ExecutionResult`), in stage 1's
+  no_std, test and test-layout lists -- done at `3a96314` (272 lines); (5b) next, the gas and mutation clauses
+  (`GasAboveLimit`, `MutationOutsideBlock`, each with the result's index; `check_transaction_result` takes the
+  block); (5c) repeatability (`NotRepeatable`, a second fake whose answer changes per call) and
+  `check_standard_scenarios()` over private scenarios -- empty block, a transfer, a zero gas limit, a relay A to B
+  to C, a call carrying data to a contract holding storage; (5d) the three engines' test files each run it, the
+  workspace dependency and evm's and node-infra's dev-dependencies with them; (5e) the documents naming the
+  members; (6) the boundary check beside `cargo xtask recovery-boundary`: evm imports only `types`' execution
+  module.
 - **Slice 1's detail:** `Chosen-By: risk` (the largest of the
   skipped rules' pieces, and the one most likely to surprise), `Over:` the other three skipped-rule slices and the
   execution seam; started 05:33:28Z. 57 offences with the rule on (list:
@@ -282,10 +289,10 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 170 on the branch; 11 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
+- **Commits:** 171 on the branch; 11 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
   execution port's move, `4cfcce2` --, + `97225b7` for the dry4rust re-record, `1d27ff1` for the two states' 36
   accessors, `3cf1ec6` and `3433b15` for the transaction status's 33 importers and the timer key's 100, `2883602`
-  for the slot discovery's 11 -- 11 of 170 is 6.5%; every other commit planned within it, the 95% holds at about
+  for the slot discovery's 11 -- 11 of 171 is 6.4%; every other commit planned within it, the 95% holds at about
   220 commits -- SETUP's own reading of the total -- so no further move across crates goes past it unsplit, so the 95% needs Parts B and C to add commits within it, and Part
   B's two planned moves out of `execution-types` past it; keep every other commit within); bug fixes
   2 (`eba863f`, `e1232ca`); the 150th (`7ffb333`) ran all three stages, Part A's end, and the 160th (`6912269`);
@@ -316,7 +323,7 @@ pushed with the record at every commit.
   `2e93617`), all matching (re-recorded at `cec0c5b`, Q32;
   one group added at `64f562b`, Q33; one added and one paid at `1121282`; one re-keyed and one added at `8230a8a`,
   Q35, each copy kept in scratch as `dry-baseline-before-cN.json`; one re-keyed at `97cd2da`)
-- **Questions:** 37 answered, 3 open (9, 25, 37). **Interventions:** 0. **Waits:** 0.
+- **Questions:** 38 answered, 3 open (9, 25, 37). **Interventions:** 0. **Waits:** 0.
 
 ## The run so far
 
@@ -375,7 +382,7 @@ pushed with the record at every commit.
   The execution seam: `execution-types` dissolved into `types` (`8afa421`), the documents after it (`de03fb2`),
   node's test context builders through one helper (`8ef334d`, Q39), the slot discovery port (`d170c7e`), its
   wiring -- `node` off evm (`142ce22`), the execution port into `node/src/traits` (`4cfcce2`), the
-  TinyEvm slot discovery into evm (`2883602`).
+  TinyEvm slot discovery into evm (`2883602`), `node-contracts` with the contract's first two clauses (`3a96314`).
 
 ## Next in line
 
