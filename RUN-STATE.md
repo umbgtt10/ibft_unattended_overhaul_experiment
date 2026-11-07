@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `2f65d20` Read and build the context snapshot through its accessors in the node (row 130)
+- **Last commit:** `3c58db8` Read the context snapshot through its getters in the builder's tests (row 131)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -129,8 +129,10 @@ pushed with the record at every commit.
   `with_block`, `with_pending_transaction` for the 84 in-place inserts and pushes in tests, all at `b440217` with
   the context's own tests; `consensus.rs` at `3867552`; the other ten production readers and the builder at
   `2f65d20` (three dry4rust groups re-keyed, members unchanged, Q35 -- re-record with `--path .` from the start
-  folder: an absolute path rewrites every closure's name); next the tests: node's
-  `snapshot_context_builder_tests.rs` (~120 reads, `replace_all` per field) alone, then validation_tests,
+  folder: an absolute path rewrites every closure's name; the baseline holds 203 groups, not the 200 a failing check
+  reports suppressed); node's `snapshot_context_builder_tests.rs` at `3c58db8` (`replace_all` per field, then
+  `grep -n "^ *\.blocks\b\|..."` for chains rustfmt split across lines -- patterns ending in `$` are refused); next
+  validation_tests,
   consensus_tests, dispatch_tests (two `ctx.variant =`, four `ctx.accounts.insert`), scenario_helpers, recovery_host's
   routing/process/intent tests, pending_preprepare_replay_context_tests, diagnostics_tests; then validation's
   `scenario_helpers.rs` and tests; the fields private last), `IbftProtocol` (Q25) (node),
@@ -155,7 +157,7 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 130 on the branch; 6 past the threshold (4 planned, + `97225b7` for the dry4rust re-record,
+- **Commits:** 131 on the branch; 6 past the threshold (4 planned, + `97225b7` for the dry4rust re-record,
   `1d27ff1` for the two states' 36 accessors); bug fixes
   2 (`eba863f`, `e1232ca`); the 130th (`2f65d20`) ran all three stages, as every commit has; the 140th next
 - **Tests:** 3,440 at the base, 3,661 now (stage 5 465); removed under constraint 6: 1 (`2e6d484`, Q34)

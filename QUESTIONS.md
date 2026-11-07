@@ -773,7 +773,9 @@ the course the slice took and the run's recommendation; after the run, the owner
   groups: the snapshot context builder's consensus-reply, recovery-response and request-status contexts
   (`d0de4dcaee535de8` out, `7c1a07413735c63e` in), dispatch's commit and prepare handlers (`0f12aadf1ae33d5d` out,
   `48bb57ae90e740a3` in) and validation's commit and prepare checks (`b4cf6cb55629bbab` out, `9178a547e5c34ac8` in),
-  each with the same members, 200 kept.
+  each with the same members, 203 kept. (Commit 130's message says the baseline still holds 200 groups: 200 is what
+  the failing check suppressed beside the three it could not match, and the baseline holds 203 -- counted in the
+  file at commit 131.)
 
 ### 36. The hard state drops a pending block's transaction data
 
