@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `a352577` Move the Ed25519 signature scheme out of node into node-infra (row 177)
+- **Last commit:** `951d746` Pin what Faction answers through the bootstrapping port (row 178)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -112,9 +112,26 @@ pushed with the record at every commit.
   can name it at step 9.
 - **Slice in progress:** Part B seam 3, Faction (SETUP, *Part B*, step 3) -- `Chosen-By: owner-order` among the
   bookkeepers (Faction, then Beggar, the certifier, consensus last), over the skipped-rule slices for seam 2's
-  reason. Next: read how `node` uses `faction` today -- the bootstrapper, its coordinator and factory, presence --
-  and plan the cluster port, its data model in `node`, the fixed-membership default in node-infra, the faction
-  plug-in, and a contract suite in `node-contracts`; characterization at the protocol's boundary first.
+  reason; the design is Q42. `node` names faction in the port (`BootstrappingCoordinator::process(Command) ->
+  Vec<Outcome>`), the readiness event (`ReadinessTransitionObserved`, rendered field by field with `{:?}` by
+  system-tests' logging observer), and three implementations (Faction as coordinator, the observer bridge, the
+  factory); 15 files build a bootstrapper with `NoOpBootstrappingCoordinator` + `FactionCoordinatorFactory`.
+  Faction's vocabulary, from the compiler (`overhaul-scratch/faction-probe`): Command -- ParticipationObserved,
+  ReadyObserved, LocalParticipationCompleted, DeadlineExpired, JoinRequested, JoinApproved, JoinRejected (each a
+  `peer_id: u64` where it has a field), Probe; Outcome -- ParticipationAccepted, ReadyAccepted,
+  DuplicateParticipationIgnored, DuplicateReadyIgnored, NonMemberIgnored, LocalParticipationCompleted,
+  BroadcastLocalReady, AcknowledgeRejoin, DeadlineMissed { confirmed_count: usize }, EmitJoinRequest,
+  MemberAdmitted, DuplicateMemberIgnored, JoinDenied, Concluded { mode }; Conclusion -- Bootstrapped; PeerState --
+  Fresh, Pinging, Collecting, Bootstrapped, TimedOut. Steps, each within the threshold: (a) characterization --
+  done at `951d746` (`tests`, eight tests of what Faction answers through the port); (b) next, node-infra's
+  `BootstrapperBuilder` (`new`, `with_config`, `inactive`, `build() -> Bootstrapper`, Faction by default) with
+  node-infra's protocol builder, system-tests' protocol factory and validation's three sources through it; (c)
+  validation's five tests and node's four test files through it; (d) node's data model in
+  `bootstrapping/` (the six mirror types); (e) the `node-faction` crate with the translation, its tests asserting
+  `{:?}` alike for every variant; (f) the factory into it, then (g) the bridge, (h) the coordinator as a wrapper
+  struct -- its tests need a recording `ProtocolObserver` of their own; (i) the port's commands and outcomes in
+  node's vocabulary, then (j) the event's, `faction` out of node's manifest; (k) the fixed-membership default in
+  node-infra, a builder choice; (l) the bootstrapping contract in `node-contracts`, (m) run by both; (n) docs.
 - **Seam 1's detail:** Part B seam 1, execution, with `execution-types` dissolved (SETUP, *Part B*, step 1) --
   `Chosen-By: dependency` (every file the three skipped-rule slices add -- scenario sources, split-out types,
   tests -- would import `execution_types::` paths the merge then rewrites; merged first, each is written once),
@@ -320,15 +337,15 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 177 on the branch; 12 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
+- **Commits:** 178 on the branch; 12 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
   execution port's move, `4cfcce2` --, + `97225b7` for the dry4rust re-record, `1d27ff1` for the two states' 36
   accessors, `3cf1ec6` and `3433b15` for the transaction status's 33 importers and the timer key's 100, `2883602`
-  for the slot discovery's 11, `a352577` for the Ed25519 scheme's 14, planned within by SETUP) -- 12 of 177 is
-  6.8%; the 95% needs about 240 commits with every commit from here within it: count a move's files first, and
+  for the slot discovery's 11, `a352577` for the Ed25519 scheme's 14, planned within by SETUP) -- 12 of 178 is
+  6.7%; the 95% needs about 240 commits with every commit from here within it: count a move's files first, and
   shape the seams so a type is born where it ends; bug fixes
   2 (`eba863f`, `e1232ca`); the 150th (`7ffb333`) ran all three stages, Part A's end, the 160th (`6912269`) and
   the 170th (`2883602`); the 180th next
-- **Tests:** 3,440 at the base, 3,703 now (stage 5 465); removed under constraint 6: 1 (`2e6d484`, Q34)
+- **Tests:** 3,440 at the base, 3,711 now (stage 5 465); removed under constraint 6: 1 (`2e6d484`, Q34)
 - **Offences:** 41 as configured, 195 everything on, shear 0; Grip 756.25 / Braintax 4,700.53 (0.1609; node-infra
   152.08 / 598.27 at `d170c7e`; types
   110.85 / 628.07 at `8afa421`, execution-types scored inside it, the totals' Grip unchanged; evm
@@ -354,7 +371,7 @@ pushed with the record at every commit.
   `2e93617`), all matching (re-recorded at `cec0c5b`, Q32;
   one group added at `64f562b`, Q33; one added and one paid at `1121282`; one re-keyed and one added at `8230a8a`,
   Q35, each copy kept in scratch as `dry-baseline-before-cN.json`; one re-keyed at `97cd2da`)
-- **Questions:** 38 answered, 3 open (9, 25, 37). **Interventions:** 0. **Waits:** 0.
+- **Questions:** 39 answered, 3 open (9, 25, 37). **Interventions:** 0. **Waits:** 0.
 
 ## The run so far
 
@@ -416,7 +433,7 @@ pushed with the record at every commit.
   TinyEvm slot discovery into evm (`2883602`), `node-contracts` with the contract's first two clauses (`3a96314`), its gas
   and mutation clauses (`a7bec37`), repeatability and the standard scenarios (`32ccbe1`), the engines running it
   (`c40ab03`), the evm boundary gate (`bd30c4f`), the documents (`c83fba2`), the seam's last. `node`'s own dependencies: the Ed25519 scheme into
-  node-infra (`a352577`), the seam's one commit.
+  node-infra (`a352577`), the seam's one commit. Faction: what it answers through the port (`951d746`).
 
 ## Next in line
 

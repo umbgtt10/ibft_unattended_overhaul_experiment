@@ -59,6 +59,7 @@ After the run the owner takes each open entry -- implement, discuss, discard, po
 | 39 | before commit 166, Part B, the execution seam | `node` depends on `evm` in production: its storage access plan asks evm's `TinyEvmStorageSlotAnalyzer` which contract storage a transaction touches, so moving `ExecutionEngine` into `node` -- evm depending on `node` for it -- would close a cycle | answered | the analysis becomes a port of its own, `StorageSlotDiscovery`, in a new `node/src/traits`, injected through the constructors of the node and the snapshot context builder; evm implements it with today's analyzer, so every engine keeps today's plan; `node` keeps evm as a dev-dependency only, and the execution port follows into the same folder |
 | 40 | commit 170, Part B, the execution seam | `SETUP.md` keeps "`NoOpExecutionEngine` the default in `node-infra`", but both builders default to evm's `ValueTransferEngine`, so node-infra depends on evm in production | answered | read as the port's default implementation staying in node-infra; the builders' defaults stay evm's value transfer -- changing them changes what every default-built node executes; node-infra is the assembly, not a plug-in, so step 8's gate holds |
 | 41 | commit 171, Part B, the execution seam | the contract suite is test code with a `src`, a manifest and gate lists, which `tests` does not allow; and the no-op reports no results, which a one-result-per-transaction contract would refuse | answered | `refactoring`, `node-contracts/src` counting as production as `validation/src` does and a crate or dev-dependency edge being structure; the contract asks only what the protocol relies on and all three engines do, fewer results than transactions allowed |
+| 42 | before commit 179, Part B, the Faction seam | the bootstrapping port, the readiness event and three implementations speak `faction`'s types; 15 files build a bootstrapper with Faction's factory | answered | node mirrors the vocabulary that crosses the port, names and all, so the readiness log is unchanged; a `node-faction` plug-in holds the translation, the coordinator wrapper, the bridge and the factory; assemblies go through node-infra's `BootstrapperBuilder` first, the fixed-membership default its other choice |
 
 ## Interventions
 
@@ -949,3 +950,37 @@ the course the slice took and the run's recommendation; after the run, the owner
   write a recipient -- the access plan loads nothing else; and the same inputs give the same results. Fewer results
   than transactions stays allowed: the no-op's answer, which the suite's own tests pin.
 - **Commit:** 171 onward.
+
+### 42. The Faction seam: whose vocabulary the port speaks, where the plug-in lives, and how assemblies reach it
+
+- **Raised:** before commit 179, Part B, the Faction seam -- after characterizing the port at 178.
+- **What:** `node` names `faction`'s types in three places: the port, `BootstrappingCoordinator::process(Command)
+  -> Vec<Outcome>`; the readiness event `ReadinessTransitionObserved { command, transition }`, which system-tests'
+  logging observer renders field by field with `{:?}`; and three implementations -- Faction as the coordinator,
+  the observer bridge, the factory. SETUP asks for the cluster port, a faction plug-in depending on `node`, and a
+  fixed-membership default, ports "shaped by today's call sites" (decision 9). Three questions follow: what the
+  port's data model is, where the translation goes, and how 15 files that build a bootstrapper with
+  `NoOpBootstrappingCoordinator` and `FactionCoordinatorFactory` reach the plug-in without one move past the
+  threshold.
+- **Status:** answered -- decision 9 and CLAUDE.md's seam layout (trait, data model parallel to the protocol,
+  implementation in its own area) settle the first two; the house's builders and variants in node-infra, which
+  already choose the execution engine and the signature scheme, settle the third.
+- **Answer:**
+  - the data model is node's own mirror of what crosses the port today: `BootstrappingCommand` (Faction's eight
+    commands), `BootstrappingOutcome` (its fourteen outcomes), `BootstrappingConclusion` (one),
+    `BootstrappingPeerState` (five), and for the event `ReadinessView` (the peer state, concluded, the required
+    count -- the three things any observer reads) and `ReadinessTransition` (previous view, outputs, new view).
+    Variant and field names are Faction's, so `{:?}` renders as before and the readiness log line stays byte for
+    byte; the names were learned from the compiler's exhaustiveness errors in a scratch crate
+    (`overhaul-scratch/faction-probe`), not from Faction's sources;
+  - the plug-in is a new crate, `node-faction` (`etheram_ibft_node_faction`), on `node` and `faction`: the
+    translation both ways, the coordinator -- a wrapper struct, since a third crate may not implement `node`'s
+    trait for `faction`'s type --, the observer bridge and the factory;
+  - assemblies first build their bootstrapper through node-infra's `BootstrapperBuilder` (Faction by default,
+    inactive for a restored node), so the factory's later move rewrites one import; the fixed-membership default
+    is the builder's other choice;
+  - the fixed-membership default answers as Faction did at 178 for a membership fixed at the validator set, joins
+    refused; a contract suite in `node-contracts` pins what both owe the bootstrapper;
+  - breaks for the consumer (decision 11): the port's signature, the readiness event's field types, and the
+    factory's path; each named in its commit.
+- **Commit:** 179 onward.
