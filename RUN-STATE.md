@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `4cfcce2` Move the execution port into node's traits (row 169)
+- **Last commit:** `2883602` Move the TinyEvm slot discovery into evm (row 170)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -115,12 +115,22 @@ pushed with the record at every commit.
   `&dyn StorageSlotDiscovery`, `EtheramNode::new` (after the engine) and `SnapshotContextBuilder::new` (third)
   handed it, `node` keeping evm in dev-dependencies only, nothing in `node/src` naming evm; call sites: node-infra's two builders, validation's cluster builder and test node, two
   validation node tests, system-tests' gRPC node and context factory, node's helpers and the context builder's
-  own tests with custom limits and the access plan's tests; (3d) the access plan renamed off `TinyEvm` if it reads
-  wrong then; (3e) next,
-  `ExecutionEngine` into `node/src/traits` (22 importers, the second planned past the threshold); (4) evm a
-  plug-in on `node` for the port and `types` for the data model; `NoOpExecutionEngine` the default in node-infra; (5) the contract suite in a
-  `node-contracts` crate, run by both engines and the no-op; (6) the boundary check beside `cargo xtask
-  recovery-boundary`: evm imports only `types`' execution module.
+  own tests with custom limits and the access plan's tests; (3d) the access plan's `TinyEvm` name kept: every
+  assembly plans with the TinyEvm analysis, and a rename moves the file and its tests -- past the threshold for a
+  name; (3e) `ExecutionEngine` into `node/src/traits` -- done at `4cfcce2` (`refactoring`, the second planned past
+  the threshold: 28 files, 94 lines; evm depends on `node` for it now); (4) evm a plug-in -- its manifest already
+  `node`, `types` and its two hashing crates; `TinyEvmStorageSlotDiscovery` into `evm/src/tiny_evm` at `2883602`
+  (`refactoring`, unplanned, Trigger Q39; 21 files, past the threshold: 11 importers, system-tests taking evm);
+  `NoOpExecutionEngine` stays node-infra's, the builders' defaults evm's value transfer (Q40) -- done; (5) next,
+  the contract suite in a `node-contracts` crate, run by both engines and the no-op -- what all three satisfy
+  (the no-op returns no results at all): results never outnumber the transactions, result i is transaction i's
+  sender's, gas within each transaction's limit, mutations naming only a sender or recipient of the block (a
+  storage write only a recipient -- the access plan loads nothing else), and the same inputs giving the same
+  results; `ExecutionEngineContract::new(engine)`, `check(block, accounts, storage) -> Result<(),
+  ExecutionContractBreach>` and `check_standard_scenarios()`, tested against fakes in its own tests, then one test
+  each in the three engines' test files; the crate in stage 1's test, no_std and test-layout lists (xtask's
+  `NOT_SHIPPED` already names it); (6) the boundary check beside `cargo xtask recovery-boundary`: evm imports only
+  `types`' execution module.
 - **Slice 1's detail:** `Chosen-By: risk` (the largest of the
   skipped rules' pieces, and the one most likely to surprise), `Over:` the other three skipped-rule slices and the
   execution seam; started 05:33:28Z. 57 offences with the rule on (list:
@@ -272,10 +282,11 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 169 on the branch; 10 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
+- **Commits:** 170 on the branch; 11 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
   execution port's move, `4cfcce2` --, + `97225b7` for the dry4rust re-record, `1d27ff1` for the two states' 36
-  accessors, `3cf1ec6` and `3433b15` for the transaction status's 33 importers and the timer key's 100 -- 10 of 169
-  is 5.9%; every other commit planned within it, the 95% holds at about 200 commits, so the 95% needs Parts B and C to add commits within it, and Part
+  accessors, `3cf1ec6` and `3433b15` for the transaction status's 33 importers and the timer key's 100, `2883602`
+  for the slot discovery's 11 -- 11 of 170 is 6.5%; every other commit planned within it, the 95% holds at about
+  220 commits -- SETUP's own reading of the total -- so no further move across crates goes past it unsplit, so the 95% needs Parts B and C to add commits within it, and Part
   B's two planned moves out of `execution-types` past it; keep every other commit within); bug fixes
   2 (`eba863f`, `e1232ca`); the 150th (`7ffb333`) ran all three stages, Part A's end, and the 160th (`6912269`);
   the 170th next
@@ -305,7 +316,7 @@ pushed with the record at every commit.
   `2e93617`), all matching (re-recorded at `cec0c5b`, Q32;
   one group added at `64f562b`, Q33; one added and one paid at `1121282`; one re-keyed and one added at `8230a8a`,
   Q35, each copy kept in scratch as `dry-baseline-before-cN.json`; one re-keyed at `97cd2da`)
-- **Questions:** 36 answered, 3 open (9, 25, 37). **Interventions:** 0. **Waits:** 0.
+- **Questions:** 37 answered, 3 open (9, 25, 37). **Interventions:** 0. **Waits:** 0.
 
 ## The run so far
 
@@ -363,7 +374,8 @@ pushed with the record at every commit.
   word pop (`e444f5b`), the engine's working state (`36c3d9e`), the stand-down out (`5c6e9eb`), the slice's last.
   The execution seam: `execution-types` dissolved into `types` (`8afa421`), the documents after it (`de03fb2`),
   node's test context builders through one helper (`8ef334d`, Q39), the slot discovery port (`d170c7e`), its
-  wiring -- `node` off evm (`142ce22`), the execution port into `node/src/traits` (`4cfcce2`).
+  wiring -- `node` off evm (`142ce22`), the execution port into `node/src/traits` (`4cfcce2`), the
+  TinyEvm slot discovery into evm (`2883602`).
 
 ## Next in line
 

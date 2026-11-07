@@ -57,6 +57,7 @@ After the run the owner takes each open entry -- implement, discuss, discard, po
 | 37 | before commit 120, Part A | `NodeDiagnostics` has one associated `const fn` and 28 public fields, nearly all `u32`, built in one place: its correction wants a constructor, and a positional one of 28 would be past every precedent -- the house's largest allowed constructor takes twelve -- and swaps two counters without a compiler noticing | open | the type stays as it is, its offence in the baseline, and the slice goes on with the others; recommended: group the fields into the records the type's own comments already name -- chain position, chain progress, peers, the recovery slot, recovery counters, the protocol's census -- each a record of a few fields, and give `NodeDiagnostics` a constructor of the sequence and the six records |
 | 38 | commit 151, Part B, the skipped rules | the EVM interpreter's operations "become functions that return what they change" (`SETUP.md`): threaded by value, a dispatcher that declines an opcode consumes the stack it was handed; as the machine's own methods, their tests can preset and read nothing | answered | the machine's changing parts become one object, `TinyEvmMachineState`, and the operations its `&mut self` methods -- the house's own shape, the storage-slot analyzer's -- returning a value where they compute one; the counter stays with the machine, the push returning where it goes next; a `bool` and an out-parameter merged into one returned `Option` take their tests' two assertions into one, each mapped to itself |
 | 39 | before commit 166, Part B, the execution seam | `node` depends on `evm` in production: its storage access plan asks evm's `TinyEvmStorageSlotAnalyzer` which contract storage a transaction touches, so moving `ExecutionEngine` into `node` -- evm depending on `node` for it -- would close a cycle | answered | the analysis becomes a port of its own, `StorageSlotDiscovery`, in a new `node/src/traits`, injected through the constructors of the node and the snapshot context builder; evm implements it with today's analyzer, so every engine keeps today's plan; `node` keeps evm as a dev-dependency only, and the execution port follows into the same folder |
+| 40 | commit 170, Part B, the execution seam | `SETUP.md` keeps "`NoOpExecutionEngine` the default in `node-infra`", but both builders default to evm's `ValueTransferEngine`, so node-infra depends on evm in production | answered | read as the port's default implementation staying in node-infra; the builders' defaults stay evm's value transfer -- changing them changes what every default-built node executes; node-infra is the assembly, not a plug-in, so step 8's gate holds |
 
 ## Interventions
 
@@ -902,4 +903,26 @@ the course the slice took and the run's recommendation; after the run, the owner
   `ExecutionEngine` follows into the same folder. The constructor change reaches 58 constructions of the context
   builder in node's tests, so a helper that builds it goes first (commit 166), and the port's commit writes the
   new argument once.
-- **Commit:** 166 onward.
+- **Commit:** 166 onward. The adapter, `TinyEvmStorageSlotDiscovery`, was first written in node-infra (commit 167):
+  evm could not depend on `node` while `node` still depended on evm. Once the execution port's move made evm depend
+  on `node` (169), it moved into evm, as the answer has it (170) -- 21 files, past the threshold: a move across
+  crates updates its 11 importers at once and cannot be split without a duplicate or a shim.
+
+### 40. "`NoOpExecutionEngine` stays the default in `node-infra`", where the builders default to evm's engine
+
+- **Raised:** commit 170, Part B, the execution seam -- making evm a plug-in.
+- **What:** `SETUP.md` has evm become a plug-in while "`NoOpExecutionEngine` stays the default in `node-infra`",
+  and describes the no-op as the default today. It is the port's one implementation in node-infra, but neither
+  builder picks it unless asked: `EtheramNodeBuilder::new` and `ExecutionEngineBuilder::default` both build evm's
+  `ValueTransferEngine`, and system-tests' gRPC node takes `ExecutionEngineBuilder::default()`. So node-infra
+  depends on evm in production -- for the builders' `TinyEvm` and `ValueTransfer` variants, and now their slot
+  discovery -- and will after the seam.
+- **Status:** answered -- the house has a clear default: a refactoring moves no behaviour, and the plan asks for
+  none here.
+- **Answer:** read as the port's default implementation staying where it is, in node-infra, and not moving into
+  evm with the engines. The builders' defaults stay evm's value transfer: making the no-op their default would
+  change what every default-built node executes -- system-tests' among them -- which is a behaviour change, not
+  this seam's. node-infra is the defaults and the assembly, not a plug-in, so Part B step 8's "no plug-in depends on
+  another" still holds with node-infra choosing among evm's engines. Whether an assembly crate may name a plug-in
+  at all is the owner's to settle at that gate.
+- **Commit:** 170 (no change made).
