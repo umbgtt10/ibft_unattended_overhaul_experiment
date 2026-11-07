@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `c40ab03` Run the execution contract against both engines and the no-op (row 174)
+- **Last commit:** `bd30c4f` Hold evm to the execution model and ports with a boundary gate (row 175)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -137,9 +137,14 @@ pushed with the record at every commit.
   private `ExecutionScenario`s -- empty block, a transfer, a zero gas limit, a relay A to B to C, a call storing 42
   at slot 0 of a contract holding storage, 100,000 gas each -- done at `32ccbe1`, three tests; (5d) the three
   engines' test files each run it (`check_standard_scenarios_<engine>_returns_ok`), the workspace dependency and
-  evm's and node-infra's dev-dependencies with them -- done at `c40ab03`, all three passing; (5e) next, the
-  documents naming the members and the crates (CLAUDE.md, README, stern4rust.toml's comment, OPEN_POINTS); (6) the boundary check beside `cargo xtask recovery-boundary`: evm imports only `types`' execution
-  module.
+  evm's and node-infra's dev-dependencies with them -- done at `c40ab03`, all three passing; (6) the boundary
+  check -- `cargo xtask evm-boundary` in stage 1, an allow-list `SourceRule` (`xtask/src/source/allowed_paths.rs`):
+  over `evm/src`, `etheram_ibft_types` only under `execution::`, `etheram_ibft_node` only under its two execution
+  ports -- done at `bd30c4f` (`support`, seven tests; an injected WAL path reported at its line, the source
+  restored; a first `is_allowed` duplicated `ForbiddenIdentifiers::is_exempt` exactly, so inlined); (7) next, the
+  documents, the seam's last: the members and crates (CLAUDE.md, README, stern4rust.toml's comment, the justfile's
+  header), the new gate beside the recovery boundary in CLAUDE.md, the slot port and the contract suite where the
+  living documents describe execution.
 - **Slice 1's detail:** `Chosen-By: risk` (the largest of the
   skipped rules' pieces, and the one most likely to surprise), `Over:` the other three skipped-rule slices and the
   execution seam; started 05:33:28Z. 57 offences with the rule on (list:
@@ -291,10 +296,10 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 174 on the branch; 11 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
+- **Commits:** 175 on the branch; 11 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
   execution port's move, `4cfcce2` --, + `97225b7` for the dry4rust re-record, `1d27ff1` for the two states' 36
   accessors, `3cf1ec6` and `3433b15` for the transaction status's 33 importers and the timer key's 100, `2883602`
-  for the slot discovery's 11 -- 11 of 174 is 6.3%; every other commit planned within it, the 95% holds at about
+  for the slot discovery's 11 -- 11 of 175 is 6.3%; every other commit planned within it, the 95% holds at about
   220 commits -- SETUP's own reading of the total -- so no further move across crates goes past it unsplit, so the 95% needs Parts B and C to add commits within it, and Part
   B's two planned moves out of `execution-types` past it; keep every other commit within); bug fixes
   2 (`eba863f`, `e1232ca`); the 150th (`7ffb333`) ran all three stages, Part A's end, and the 160th (`6912269`);
@@ -386,7 +391,7 @@ pushed with the record at every commit.
   wiring -- `node` off evm (`142ce22`), the execution port into `node/src/traits` (`4cfcce2`), the
   TinyEvm slot discovery into evm (`2883602`), `node-contracts` with the contract's first two clauses (`3a96314`), its gas
   and mutation clauses (`a7bec37`), repeatability and the standard scenarios (`32ccbe1`), the engines running it
-  (`c40ab03`).
+  (`c40ab03`), the evm boundary gate (`bd30c4f`).
 
 ## Next in line
 
