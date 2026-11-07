@@ -6,7 +6,23 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `6fc97b9` Give the sled store's inner type a file of its own (row 324)
+- **Last commit:** `508fa94` Return the WAL record encoder's bytes rather than write a buffer (row 325)
+- **Step now:** Part B step 8, the gates -- started 21:03Z, the scope Q56 (answered), the recovery crates' part
+  Q57 (open: `node` keeps `recovery-control` and `recovery-ibft`, which the gate names as owed). In order: (a)
+  `returned-mutations` paid in node (20, five files), then validation (17, three files, about 240 call sites in
+  about 55 files: owned forms first, callers in batches, the `&mut` forms last), then both stand-downs out
+  (`support`); (b) `cargo xtask dependency-boundary` in stage 1 over `cargo metadata --no-deps`, an allow-list of
+  production dependencies for each crate on node's path and each plug-in (node: etheram-core, types and the two
+  recovery crates, owed; types: etheram-core, tiny-keccak; recovery-control: etheram-core; recovery-ibft:
+  etheram-core, recovery-control, types; evm: node, primitive-types, tiny-keccak, types; node-faction:
+  etheram-core, faction, node); (c) the baseline as it is (13 held by Q9, Q25, Q37, Q31); then step 9. Done: (1)
+  node's WAL record encoder returns its bytes -- `508fa94` (3 files, 339 lines; returned-mutations 37 to 26,
+  everything on 70 to 59; the `push_tagged` / `append_raw_record` dry4rust pair paid, 193 to 192, the baseline as
+  recorded; `tagged` one `concat`, since as a buffer pushed and extended it was an exact copy of types' test helper
+  `entry`; one test renamed, `Maps:`). Next: node's other nine -- the commitments verifier's 4 (a private record of
+  the two post maps, by value, as evm's `WorkingState`), validation's 2 account appliers and consensus's
+  `apply_proposal_commitments` (returning the block), message security's 2 certificate encoders (returning bytes;
+  the payloads' `capacity == len` tests must hold).
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -93,7 +109,8 @@ pushed with the record at every commit.
   half, and copying them back for the second.
   Part B seam 1, execution, with `execution-types` dissolved -- 13 commits, rows 164 to 176 (`8afa421` to
   `c83fba2`), 06:33Z to 07:44Z; counts 41 and 195 throughout, tests 3,680 to 3,703; `types` depends on
-  `etheram-core` alone, `node` on no evm in production, evm on `node` for its two ports and `types` for the
+  `etheram-core` and `tiny-keccak` (which `execution-types` brought; recorded here as `etheram-core` alone until
+  Q56 measured it), `node` on no evm in production, evm on `node` for its two ports and `types` for the
   model, held by `cargo xtask evm-boundary`; `node-contracts` holds the execution contract all three engines
   pass. 3 commits past the threshold (the merge and the port's move, planned; the slot discovery's move, Q39).
   Lessons: a move across crates updates every importer at once and cannot be split without a duplicate or a
@@ -875,20 +892,21 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 324 on the branch; 14 past the threshold (7 planned -- the 5th the merge, `8afa421`, the 6th the
+- **Commits:** 325 on the branch; 14 past the threshold (7 planned -- the 5th the merge, `8afa421`, the 6th the
   execution port's move, `4cfcce2` --, + `97225b7` for the dry4rust re-record, `1d27ff1` for the two states' 36
   accessors, `3cf1ec6` and `3433b15` for the transaction status's 33 importers and the timer key's 100, `2883602`
   for the slot discovery's 11, `a352577` for the Ed25519 scheme's 14, planned within by SETUP, `d7d2c45` for
   Faction's two implementations and their test files, Q43; the 7th planned, `6fc97b9`, `SledStorageInner`'s 678
-  lines, which `implemented-in-one-file` moves whole) -- 14 of 324 is 4.3%, 310 of 324 within; the 95% reached at the 260th (247 of 260 within), and it holds only while every
+  lines, which `implemented-in-one-file` moves whole) -- 14 of 325 is 4.3%, 311 of 325 within; the 95% reached at the 260th (247 of 260 within), and it holds only while every
   commit from here stays within: count a move's files first, and
   shape the seams so a type is born where it ends; bug fixes
   6 (`eba863f`, `e1232ca`, `5013d0e`, `1e7ac29`, `643bfd5`, `8e1ca00`); the 150th (`7ffb333`) ran all three stages, Part A's end, the 160th (`6912269`) and
   the 170th (`2883602`), the 180th (`b31593c`), the 190th (`c885cf9`), the 200th (`7508819`), the 210th
   (`e04403c`), the 220th (`e329250`), the 230th (`5ebe5f1`), the 240th (`18baf35`), the 250th (`8bdb859`), the 260th (`1fef15d`), the 270th (`fdd825e`), the 280th (`00c5f1b`), the 290th (`0b135b2`), the 300th (`2a7c601`), the 310th (`44b91f4`) and the 320th (`694fb62`); the 330th next
 - **Tests:** 3,440 at the base, 3,885 now (stage 5 511); removed under constraint 6: 1 (`2e6d484`, Q34)
-- **Offences:** 33 as configured (single-implemented-type 0), 70 everything on (paired-test-file 0, from 100 at `4a976c2`; tested-public-api 0,
-  from 25 at `15e7d4d` and 17 at `ca72bf4`, Q52, Q54), shear 0; Grip 780.18 / Braintax 4,868.87 (0.1602 at `1f5213f`, the tracker into the tally, node-infra
+- **Offences:** 33 as configured (single-implemented-type 0), 59 everything on (returned-mutations 26, from 37 at `6fc97b9`; paired-test-file 0, from 100 at `4a976c2`; tested-public-api 0,
+  from 25 at `15e7d4d` and 17 at `ca72bf4`, Q52, Q54), shear 0; Grip 787.08 / Braintax 4,869.10 (0.1616 at `508fa94`, node 327.54 / 2,342.23, the
+  WAL encoder returning its bytes; 780.18 / 4,868.87, 0.1602 at `1f5213f`, the tracker into the tally, node-infra
   166.15 / 700.19 and node 320.64 / 2,342.00; 782.93 / 4,880.81, 0.1604 at `58844eb`, the tally port, node-infra
   164.60 / 698.19 and node 324.94 / 2,355.94; 773.51 / 4,811.48, 0.1608 at `9b496e6`, recovery/control 78.14 / 397.87 with
   `PeerKnowledge`; 770.32 / 4,797.08 at `44a0b7a`,
@@ -920,7 +938,7 @@ pushed with the record at every commit.
   one group added at `64f562b`, Q33; one added and one paid at `1121282`; one re-keyed and one added at `8230a8a`,
   Q35, each copy kept in scratch as `dry-baseline-before-cN.json`; one re-keyed at `97cd2da`; one grown by a member
   at `0d46800`, Q46; seven re-keyed and one near pair paid at `e04403c`, Q46, 196 to 195)
-- **Questions:** 52 answered, 3 open (9, 25, 37). **Interventions:** 0. **Waits:** 0.
+- **Questions:** 53 answered, 4 open (9, 25, 37, 57). **Interventions:** 0. **Waits:** 0.
 
 ## The run so far
 

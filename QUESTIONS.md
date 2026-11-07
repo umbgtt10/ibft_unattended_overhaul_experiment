@@ -73,6 +73,8 @@ After the run the owner takes each open entry -- implement, discuss, discard, po
 | 53 | commit 299, Part B, the skipped rules | removing the peer-message proptests' local copy of the protocol-injection source's start shows `protocol_helpers::setup_protocol_with_signature_scheme` never had a direct test: `tested-public-api` matches by name and arity and had counted the same-named local helper's calls | answered | an unplanned `tests` commit, the 300th, gives the helper a direct test in `protocol_helpers_tests.rs`; then the injection source lands with the proptests on it; nothing is renamed or imported under the old name to keep the collision working |
 | 54 | commit 306, Part B, the skipped rules | with every rule on, `tested-public-api` counts 25 public functions in system-tests no test calls: five pure, six on the gRPC node and its config, two run loops reading stdin, twelve that start node processes | answered | each gets a direct test, none made private: the pure five first; the node's in process, the config read through a new `protocol_config()`; the run loops handed their commands as a parameter; the process starters a smoke test each; the stand-down out at zero |
 | 55 | commit 313, Part B, the skipped rules | an update to the set the protocol already has fires no event, and the cluster scenario named `..._fires_event_and_cluster_continues_committing` schedules exactly that, asserting only progress | answered | the builder's test narrows the set to `[1, 2]` and asserts each node logs the update; the scenario is left as it is, its name claiming more than it checks, listed in the final report |
+| 56 | after commit 324, Part B, step 8 | the gates: `node` on `etheram-core` and `types` alone, no plug-in on another, every rule on, nothing baselined but the time reads. Measured: `node` still depends on both recovery crates, `returned-mutations` is stood down in `node` and `validation` (37), and entries 9, 25, 31 and 37 hold 13 baseline entries | answered | `returned-mutations` paid, `node` then `validation`, and the stand-downs out; a dependency gate in stage 1 over `cargo metadata`, with allow-lists for the crates on `node`'s path and for the plug-ins, the recovery crates named as owed (entry 57); the baseline as it is; crap, twin and iceberg keep their scopes |
+| 57 | after commit 324, Part B, step 8 | `node` depends on `recovery-ibft`, which SETUP's count left out, and through it on `recovery-control`. The gate needs either `recovery-ibft` in `node` with the control vocabulary mirrored, or `recovery-ibft` as a plug-in behind a wider port: sixty to ninety commits either way. `types` also brings in `tiny-keccak` | open | `node` keeps both crates, and the gate names them as owed. Recommended: `recovery-ibft` into `node`, the control vocabulary mirrored and translated by a plug-in, `recovery-control` unchanged; the hash stays in `types` |
 
 ## Interventions
 
@@ -1476,3 +1478,94 @@ the course the slice took and the run's recommendation; after the run, the owner
     what it schedules is a change to an existing test that this slice does not need. Its name claims more than it
     checks, and the final report lists it among what the gates could not see.
 - **Commit:** 313.
+
+### 56. The gates: what step 8 asks, and what the run can pay
+
+- **Raised:** after commit 324, Part B, step 8, the gates, with the skipped rules' four slices done.
+- **What:** step 8 asks four things. Measured at `6fc97b9`:
+  - **`node` on `etheram-core` and `types` alone**, with no bookkeeper and no crypto implementation in its tree. `node`
+    depends on both, and on `recovery-control` and `recovery-ibft` besides. `faction` and `ed25519-dalek` have been out of
+    its tree since the Faction seam and step 2. Through `types`, its tree also holds `tiny-keccak`, the keccak behind the
+    block and state hashes. Step 1 expected `types` on `etheram-core` alone, but `execution-types` brought
+    `tiny-keccak` in with it at `8afa421`, and RUN-STATE repeated step 1's expectation as fact;
+  - **no plug-in depends on another, `evm` included**: `evm` depends on `node`, `types`, `tiny-keccak` and
+    `primitive-types`, and `node-faction` on `node`, `etheram-core` and `faction`. Neither names the other, and
+    `node-infra` is the assembly (entry 40). Only the manifests hold this; no gate does;
+  - **every rule on, nothing skipped**: `stern4rust.toml` stands `returned-mutations` down in `node` and
+    `validation`, 37 offences with every rule on:
+    - `node` has 20 in five files: the WAL record encoder's 11 buffer writers, the block commitments verifier's 4,
+      the message security's 2 certificate encoders, validation's 2 account appliers and consensus's 1;
+    - `validation` has 17 in three files: the cluster test helpers' 6, the round driver's 9 and the scenario
+      helpers' 2. Their callers are about 240 sites in about 55 files;
+  - **nothing baselined but the cluster harness's time reads**: the stern baseline holds 33 entries, the 20 time
+    reads and 13 others. Entries 9, 25 and 37 are open and hold 12 of the 13:
+    - entry 9: the wake signal's 6;
+    - entry 25: 5, the two `implemented-in-one-file`, two `records-and-objects` and one `record-home`;
+    - entry 37: `NodeDiagnostics`.
+
+    The 13th is `DIAGNOSTIC_FIELDS`, which entry 31 answered stays.
+- **Status:** answered for the parts the house has a default for. The recovery crates' part is entry 57, open.
+- **Answer:**
+  - **`returned-mutations` is paid in `node`, then in `validation`**, then both stand-downs come out. That is
+    CLAUDE.md's rule ("no `&mut` input parameters; prefer return values"), and entry 38 set the pattern in `evm`:
+    - a function that writes into a buffer returns what it wrote;
+    - a driver that advances a cluster takes the cluster and hands it back;
+    - where a group of functions shares state, they become `&mut self` methods of the object that holds it.
+
+    A driver with many callers gets its owned form first, and its callers move over in batches within the
+    threshold. The `&mut` form goes last, with its offence. Each commit is a `rule-offence` naming the rule. The
+    everything-on total falls, and the configured count stays at 33 until the stand-down goes;
+  - **a dependency gate, `cargo xtask dependency-boundary`**, in stage 1 beside the other three boundaries. It
+    reads `cargo metadata --no-deps`. Each crate on `node`'s production path and each plug-in has an allow-list of
+    production dependencies: `node`, `types`, `recovery-control`, `recovery-ibft`, `evm` and `node-faction`. A new
+    dependency fails the gate, and so does a plug-in naming another. `node`'s list holds the two recovery crates,
+    owed to entry 57;
+  - **the baseline stays as it is**: its 13 go with the entries that hold them, and none is re-recorded as owed;
+  - **"nothing skipped" is read as stern's rules**: once the stand-downs are out, `stern4rust.toml` stands nothing
+    down. `system-tests` excludes `**/generated/**`, which is `prost`'s output, and that excludes files rather than
+    skipping rules (CLAUDE.md). crap4rust, twin4rust and iceberg4rust keep their package lists, which are each
+    tool's scope: validation and system-tests cover clusters rather than files (`xtask/src/main.rs`), and
+    `node-contracts` exists only to test;
+  - then step 9: an ADR and the living documents.
+- **Commit:** 325 onward.
+
+### 57. `node`'s recovery crates: where `recovery-ibft` goes, and the control layer's vocabulary
+
+- **Raised:** after commit 324, Part B, step 8, the gates (entry 56).
+- **What:** step 8 wants `node` on `etheram-core` and `types` alone:
+  - **what step 2 counted**: it counted what would be left as those two and "the two bookkeepers the next steps take
+    out: `faction` and `recovery-control`". But at the base `node` also depends on `recovery-ibft`, the IBFT side of
+    recovery: response and snapshot verification, serving and the import checks, 6,497 lines with its tests.
+    `recovery-ibft` depends on `recovery-control`, so while `node` depends on it, the bookkeeper is in `node`'s tree;
+  - **what entry 44 deferred**: it kept the control layer's vocabulary in `recovery-control` until gate 8, "with
+    `recovery-ibft`'s place beside `node`";
+  - **who names the two crates**: 21 files in `node/src` import from them -- the recovery host, the assembly, the
+    protocol, the diagnostics and the recovery observer's events. 37 files outside them do too: node's tests,
+    node-infra, validation, system-tests, xtask's tests and a document.
+
+  Two shapes satisfy the gate, and they lead to different code:
+  - **`recovery-ibft` into `node`**, as the protocol's own side of recovery. `node` then mirrors the control
+    vocabulary that crosses the port, as entry 42 did for Faction: the event, the outcome, the intents, the
+    observations and the timing. A plug-in on `node` and `recovery-control` translates both ways and holds the
+    factory. `recovery-control` stays as it is, on `etheram-core` alone;
+  - **`recovery-ibft` as the plug-in**, on `node` and `recovery-control`, as `node-faction` is on `faction`. `node`
+    then needs a port for what it calls of the IBFT side -- its entry point, the responders, the verifiers and the
+    snapshot server -- and their data model, a wider port than the control layer's one trait.
+
+  Either shape moves most of `recovery-ibft`'s 6,497 lines, each counted twice, and updates the 37 files outside
+  the two crates and `node/src`: some sixty to ninety commits, several of them past the threshold. Either also
+  re-aims the recovery-boundary and vocabulary gates and rewrites RECOVERY-AS-BUILT's section 9. The hash in `types`
+  is a smaller question of the same kind: read strictly, "no crypto implementation" would put the block hash behind
+  a port of its own.
+- **Status:** open: a design choice the plan did not foresee, between two shapes with no house default. Each is a
+  redesign of recovery's layout.
+- **Course taken:** `node` keeps both recovery crates, and the dependency gate (entry 56) names them as owed.
+  `tiny-keccak` stays in `types`, also named in the gate.
+- **Recommendation:** the first shape:
+  - **`recovery-ibft` belongs in `node`**: what it does is check recovery against IBFT's own certificates, validator
+    sets and blocks, which is protocol code. The port SETUP's step 4 named is the control layer's trait, which
+    `recovery-ibft` drives rather than implements;
+  - **the mirror keeps the log**: mirrored in `node`, names and all, the recovery log reads as it did (entry 42);
+  - **the hash stays in `types`**: it is the identity of the data model that every node and the consumer share.
+    SETUP's crypto implementations are the signing schemes, which step 2 and the certifier's seam put behind
+    `SignatureScheme`.
