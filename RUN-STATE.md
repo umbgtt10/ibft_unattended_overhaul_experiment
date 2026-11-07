@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `1883033` Move the binary's startup and shutdown tests beside its main (row 272)
+- **Last commit:** `7c6aca5` Move the client interface's run-forever helpers and balance test beside the binary's main (row 273)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -302,7 +302,9 @@ pushed with the record at every commit.
   shape (timer_restart's restart in its source too) left the total flat at 161, so a source holds only what its tests
   start from and a harness call in the Act stays in the test; Q52 keeps the running list. The two moves by Q51's
   second rule: (m1) `startup` and `shutdown` into a new `tests/main_tests.rs` -- done at `1883033` (5 files, 306
-  lines, 57 to 55); next (m2, m3) `client_interface` (217, `main_*`, its helpers with its first batch) into it, and
+  lines, 57 to 55); (m2) `client_interface`'s four helpers (public for now, the old file importing them from
+  `crate::main_tests`; a copy would grow dry4rust's recorded `block_on` pair) and its balance test -- done at
+  `7c6aca5` (230 lines, 55 holding); next (m3) its last two tests, the old file out, the helpers private again, and
   single_node `restart` (two `new_*`) into `tests/etheram_grpc_node_tests.rs`; then validation, where
   `tested-public-api` applies as configured, so a displaced call there fails stage 2. Lesson: `grep -v -x -F -f` here does not drop blank lines, so count a move's lines with
   `grep -c "."`. Lesson: a blocklist hit can be a phrase, not a word -- test candidate phrases from a scratch file through
@@ -677,11 +679,11 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 272 on the branch; 13 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
+- **Commits:** 273 on the branch; 13 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
   execution port's move, `4cfcce2` --, + `97225b7` for the dry4rust re-record, `1d27ff1` for the two states' 36
   accessors, `3cf1ec6` and `3433b15` for the transaction status's 33 importers and the timer key's 100, `2883602`
   for the slot discovery's 11, `a352577` for the Ed25519 scheme's 14, planned within by SETUP, `d7d2c45` for
-  Faction's two implementations and their test files, Q43) -- 13 of 272 is 4.8%; the 95% reached at the 260th (247 of 260 within), and it holds only while every
+  Faction's two implementations and their test files, Q43) -- 13 of 273 is 4.8%; the 95% reached at the 260th (247 of 260 within), and it holds only while every
   commit from here stays within: count a move's files first, and
   shape the seams so a type is born where it ends; bug fixes
   6 (`eba863f`, `e1232ca`, `5013d0e`, `1e7ac29`, `643bfd5`, `8e1ca00`); the 150th (`7ffb333`) ran all three stages, Part A's end, the 160th (`6912269`) and
