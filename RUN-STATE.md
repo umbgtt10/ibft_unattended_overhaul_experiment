@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `d170c7e` Give node a port for the storage slots a contract's bytecode touches (row 167)
+- **Last commit:** `142ce22` Hand the node and its context builder the storage slot port (row 168)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -111,12 +111,12 @@ pushed with the record at every commit.
   dry4rust `deliver` groups re-keyed, Q35); (3b) the port `StorageSlotDiscovery` (`storage_slots(bytecode) ->
   Option<Vec<Hash>>`, `node/src/traits/storage_slot_discovery.rs`) and its default `TinyEvmStorageSlotDiscovery`
   in node-infra's implementations -- not evm: evm cannot depend on `node` while `node` depends on evm -- two
-  tests, unused yet -- done at `d170c7e`; (3c) next, the wiring (16 files): the access plan taking `&dyn
-  StorageSlotDiscovery`, `EtheramNode::new` and `SnapshotContextBuilder::new` handed it, `node` keeping evm in
-  dev-dependencies only; call sites: node-infra's two builders, validation's cluster builder and test node, two
+  tests, unused yet -- done at `d170c7e`; (3c) the wiring -- done at `142ce22` (15 files): the access plan taking
+  `&dyn StorageSlotDiscovery`, `EtheramNode::new` (after the engine) and `SnapshotContextBuilder::new` (third)
+  handed it, `node` keeping evm in dev-dependencies only, nothing in `node/src` naming evm; call sites: node-infra's two builders, validation's cluster builder and test node, two
   validation node tests, system-tests' gRPC node and context factory, node's helpers and the context builder's
   own tests with custom limits and the access plan's tests; (3d) the access plan renamed off `TinyEvm` if it reads
-  wrong then; (3e)
+  wrong then; (3e) next,
   `ExecutionEngine` into `node/src/traits` (22 importers, the second planned past the threshold); (4) evm a
   plug-in on `node` for the port and `types` for the data model; `NoOpExecutionEngine` the default in node-infra; (5) the contract suite in a
   `node-contracts` crate, run by both engines and the no-op; (6) the boundary check beside `cargo xtask
@@ -272,9 +272,9 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 167 on the branch; 9 past the threshold (5 planned -- the 5th the merge, `8afa421` --, +
+- **Commits:** 168 on the branch; 9 past the threshold (5 planned -- the 5th the merge, `8afa421` --, +
   `97225b7` for the dry4rust re-record, `1d27ff1` for the two states' 36 accessors, `3cf1ec6` and `3433b15` for
-  the transaction status's 33 importers and the timer key's 100 -- 9 of 167 is 5.4%, the `ExecutionEngine` move
+  the transaction status's 33 importers and the timer key's 100 -- 9 of 168 is 5.4%, the `ExecutionEngine` move
   planned to make it 10, so the 95% needs Parts B and C to add commits within it, and Part
   B's two planned moves out of `execution-types` past it; keep every other commit within); bug fixes
   2 (`eba863f`, `e1232ca`); the 150th (`7ffb333`) ran all three stages, Part A's end, and the 160th (`6912269`);
@@ -362,7 +362,8 @@ pushed with the record at every commit.
   window and its expansion (`ba4e857`), SHA3 with its expansion and word charge (`6912269`), SHA3's window and the
   word pop (`e444f5b`), the engine's working state (`36c3d9e`), the stand-down out (`5c6e9eb`), the slice's last.
   The execution seam: `execution-types` dissolved into `types` (`8afa421`), the documents after it (`de03fb2`),
-  node's test context builders through one helper (`8ef334d`, Q39), the slot discovery port (`d170c7e`).
+  node's test context builders through one helper (`8ef334d`, Q39), the slot discovery port (`d170c7e`), its
+  wiring -- `node` off evm (`142ce22`).
 
 ## Next in line
 
