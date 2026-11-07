@@ -705,7 +705,9 @@ the course the slice took and the run's recommendation; after the run, the owner
   `InFlightSlot::request` and `ContextSnapshot::header`, each a three-field literal of its own fields, recorded as
   `f280cde3a9b5c133` (entry 35). Commit 122 -- the hard state's and the volatile snapshot's `with_` methods, sixteen
   multi-line one-field struct updates, join `63532d7dea94bfeb`, 3 members to 19: each sets its own field of its own
-  type, and the only shared part is the struct-update syntax itself.
+  type, and the only shared part is the struct-update syntax itself. Commit 123 -- node's `sample_hard_state` and
+  types' `checkpoint_state` test helpers, four-step `with_` chains in two crates' tests, recorded as
+  `ce4117ea3c05a62b`; the near pair the first formed as a literal, `9e0b49ae282799b9`, paid; 202 kept.
 
 ### 34. A getter's test the record-alone rule refuses
 
