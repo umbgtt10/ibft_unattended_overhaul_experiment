@@ -145,3 +145,4 @@ commit_n,attempt,kind,stages,start,finish,outcome,refused_by,files_added,files_r
 140,1,refactoring,"1, 2, 5",2026-11-07T04:26:33Z,2026-11-07T04:27:58Z,landed,,0,0,11,43,85
 141,1,rule-offence,"1, 2, 5",2026-11-07T04:30:44Z,2026-11-07T04:32:24Z,landed,,0,0,15,64,80
 142,1,rule-offence,"1, 2, 5",2026-11-07T04:35:24Z,2026-11-07T04:37:07Z,landed,,0,0,9,8,16
+143,1,rule-offence,"1, 2, 5",2026-11-07T04:39:03Z,2026-11-07T04:40:38Z,landed,,4,0,3,79,35

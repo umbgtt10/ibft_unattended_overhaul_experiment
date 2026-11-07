@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `72ebb5b` Make system-tests' eight shared wire types public (row 142)
+- **Last commit:** `79526b2` Give the WAL cursor's four field groups files of their own (row 143)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -78,11 +78,15 @@ pushed with the record at every commit.
   `overhaul-scratch/record-home.txt` (`cargo stern4rust --rule record-home --baseline <empty> --offence-threshold
   0`); `Over: living documents`, the one other Part A slice that can come next. The 8 wire types made `pub` at
   `72ebb5b` (63 to 55 / 274 to 266) -- `cargo xtask measure` reads the staged tree, so `git add` before it.
-  Next: types' four WAL field groups out of `cursor.rs` into `state/wal_*_fields.rs` (their one user; named in the
-  cursor's public methods, so `pub` in files of their own, no tests -- a record gets none); then the other moves
-  (`TimerKey` has ~100 importers: a planned past-threshold commit of its own, saying why -- the 7th, 95% still
-  holds at 143+); the two one-user records into their users. A record moves without a re-export shim, each move
-  updating every importer at once.
+  types' four WAL field groups into `state/wal_*_fields.rs` at `79526b2` (55 to 51 / 266 to 262; no test files --
+  twin4rust asks none of a record). Next, in this order: (144) node's `ContextHeader` (only context_snapshot.rs),
+  node-infra's `EtheramNodeInfrastructureInputsParts` (only its own file) and evm's `BytecodeStep` (4 files), each
+  into a file of its own; (145) system-tests' `FleetConfig`, `GenesisAccountConfig`, `NodeConfig` and
+  `EtheramGrpcNodeTimerConfig` (6 files name them); (146) the one-user `EpisodeState` into episode_tracker.rs and
+  `RecoveryMessageFields` into dispatch.rs; (147) `TransactionStatus` (33 files) and (148) `TimerKey` (~100), each
+  past the threshold in a commit of its own that says why (SETUP's own provision) -- the 7th and 8th past it, the
+  95% then resting on Parts B and C's commits. A record moves without a re-export shim, each move updating every
+  importer at once.
 - **Slice 8's detail** (records and objects, a module at a time -- `Chosen-By: no-scaffolding`; started 23:51:38Z;
   full list `overhaul-scratch/records-and-objects.txt`). Three
   kinds. (A) record with private fields -> make them `pub`: all 14 done (`3b243b5`). (B) getter-only -> delete
@@ -184,11 +188,11 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 142 on the branch; 6 past the threshold (4 planned, + `97225b7` for the dry4rust re-record,
+- **Commits:** 143 on the branch; 6 past the threshold (4 planned, + `97225b7` for the dry4rust re-record,
   `1d27ff1` for the two states' 36 accessors); bug fixes
   2 (`eba863f`, `e1232ca`); the 140th (`f18f095`) ran all three stages, as every commit has; the 150th next
 - **Tests:** 3,440 at the base, 3,670 now (stage 5 465); removed under constraint 6: 1 (`2e6d484`, Q34)
-- **Offences:** 55 as configured, 266 everything on, shear 0; Grip 748.45 / Braintax 4,702.58 (0.1592;
+- **Offences:** 51 as configured, 262 everything on, shear 0; Grip 748.45 / Braintax 4,702.58 (0.1592;
   execution-types 38.62 / 102.22 at `618a5d2`; 37.67 / 99.93 and types 72.23 / 518.56 at `23c92f9`, the block's
   accessors;
   node 325.06 / 2,354.12 at `b440217`;
