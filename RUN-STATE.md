@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `462cbe0` Give the cluster its own method for driving past peer discovery (row 329)
+- **Last commit:** `729dae4` Drive the cluster's commits through its own methods (row 330)
 - **Step now:** Part B step 8, the gates -- started 21:03Z, the scope Q56 (answered), the recovery crates' part
   Q57 (open: `node` keeps `recovery-control` and `recovery-ibft`, which the gate names as owed). In order: (a)
   `returned-mutations` paid in node (20, five files), then validation (17, three files, about 240 call sites in
@@ -34,9 +34,13 @@ pushed with the record at every commit.
   `dry-baseline-before-c328.json`), 192 to 193. (5) `IbftCluster::advance_past_discovery` -- `462cbe0`
   (`refactoring`, 17 files, 226 lines; the free function a three-line delegate; two recorded exact pairs re-keyed,
   entry 35: `signed_cluster` `a1656c4334251d5a` to `44ee19ccebeaaf99`, `cluster`/`behind_node` `7968e9b638e2af74`
-  to `5aac1a3a2c1fa890`). Next: (6) the last three files' callers (`ibft_cluster_recovery_handoff.rs`,
-  `ibft_cluster_retention_tests.rs`, `round_driver_tests.rs`) with `commit_next` and `commit_many` as methods, the
-  three free functions out, README's example (`rule-offence`, 3 paid). The 8 left before (5): the cluster helpers' 5
+  to `5aac1a3a2c1fa890`). (6) the last three files' callers with `commit_next` and `commit_many` as
+  `IbftCluster`'s methods, the three free functions out, README's example and its stale test path -- `729dae4`,
+  the 330th, all stages (6 files, 132 lines; 8 to 5, everything on 41 to 38). Next: (7) the two `finalize_round_*`
+  as `IbftCluster` methods (`validators().len()` participants, as before), 13 callers' files, the near pair
+  `0bb0e887e401ad90` re-keyed (16 files); (8) the protocol drivers by value -- ibft_cluster_test_helpers' copy of
+  `advance_protocol_past_discovery` folded into scenario_helpers' (the same context, built two ways), and
+  `drive_to_commit` returning the protocol beside the hash. The 8 left before (5): the cluster helpers' 5
   (`advance_cluster_past_discovery`, `commit_next`, `commit_many`, the two `finalize_round_*`) become `IbftCluster`'s
   own `&mut self` methods -- by value would move the cluster out of the test-side helpers that hold it by `&mut`
   -- in two commits of 18 files or fewer (the methods and the first callers a `refactoring`, the rest and the free
@@ -913,19 +917,19 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 329 on the branch; 14 past the threshold (7 planned -- the 5th the merge, `8afa421`, the 6th the
+- **Commits:** 330 on the branch; 14 past the threshold (7 planned -- the 5th the merge, `8afa421`, the 6th the
   execution port's move, `4cfcce2` --, + `97225b7` for the dry4rust re-record, `1d27ff1` for the two states' 36
   accessors, `3cf1ec6` and `3433b15` for the transaction status's 33 importers and the timer key's 100, `2883602`
   for the slot discovery's 11, `a352577` for the Ed25519 scheme's 14, planned within by SETUP, `d7d2c45` for
   Faction's two implementations and their test files, Q43; the 7th planned, `6fc97b9`, `SledStorageInner`'s 678
-  lines, which `implemented-in-one-file` moves whole) -- 14 of 329 is 4.3%, 315 of 329 within; the 95% reached at the 260th (247 of 260 within), and it holds only while every
+  lines, which `implemented-in-one-file` moves whole) -- 14 of 330 is 4.2%, 316 of 330 within; the 95% reached at the 260th (247 of 260 within), and it holds only while every
   commit from here stays within: count a move's files first, and
   shape the seams so a type is born where it ends; bug fixes
   6 (`eba863f`, `e1232ca`, `5013d0e`, `1e7ac29`, `643bfd5`, `8e1ca00`); the 150th (`7ffb333`) ran all three stages, Part A's end, the 160th (`6912269`) and
   the 170th (`2883602`), the 180th (`b31593c`), the 190th (`c885cf9`), the 200th (`7508819`), the 210th
-  (`e04403c`), the 220th (`e329250`), the 230th (`5ebe5f1`), the 240th (`18baf35`), the 250th (`8bdb859`), the 260th (`1fef15d`), the 270th (`fdd825e`), the 280th (`00c5f1b`), the 290th (`0b135b2`), the 300th (`2a7c601`), the 310th (`44b91f4`) and the 320th (`694fb62`); the 330th next
+  (`e04403c`), the 220th (`e329250`), the 230th (`5ebe5f1`), the 240th (`18baf35`), the 250th (`8bdb859`), the 260th (`1fef15d`), the 270th (`fdd825e`), the 280th (`00c5f1b`), the 290th (`0b135b2`), the 300th (`2a7c601`), the 310th (`44b91f4`), the 320th (`694fb62`) and the 330th (`729dae4`); the 340th next
 - **Tests:** 3,440 at the base, 3,885 now (stage 5 511); removed under constraint 6: 1 (`2e6d484`, Q34)
-- **Offences:** 33 as configured (single-implemented-type 0), 41 everything on (returned-mutations 8, all validation's, from 37 at `6fc97b9`; paired-test-file 0, from 100 at `4a976c2`; tested-public-api 0,
+- **Offences:** 33 as configured (single-implemented-type 0), 38 everything on (returned-mutations 5, all validation's, from 37 at `6fc97b9`; paired-test-file 0, from 100 at `4a976c2`; tested-public-api 0,
   from 25 at `15e7d4d` and 17 at `ca72bf4`, Q52, Q54), shear 0; Grip 791.40 / Braintax 4,865.29 (0.1627 at `d517272`, node 331.86 / 2,338.42; 787.08 /
   4,869.10, 0.1616 at `508fa94`, node 327.54 / 2,342.23, the WAL encoder returning its bytes; 780.18 / 4,868.87, 0.1602 at `1f5213f`, the tracker into the tally, node-infra
   166.15 / 700.19 and node 320.64 / 2,342.00; 782.93 / 4,880.81, 0.1604 at `58844eb`, the tally port, node-infra

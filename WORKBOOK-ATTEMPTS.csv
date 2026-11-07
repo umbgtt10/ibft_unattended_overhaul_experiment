@@ -333,3 +333,4 @@ commit_n,attempt,kind,stages,start,finish,outcome,refused_by,files_added,files_r
 327,1,support,2,2026-11-07T21:25:04Z,2026-11-07T21:25:40Z,landed,,0,0,3,27,31
 328,1,rule-offence,"1, 2",2026-11-07T21:34:21Z,2026-11-07T21:35:32Z,landed,,1,0,5,133,63
 329,1,refactoring,"1, 2",2026-11-07T21:41:15Z,2026-11-07T21:42:20Z,landed,,0,0,17,108,118
+330,1,rule-offence,"1, 2, 5",2026-11-07T21:44:45Z,2026-11-07T21:46:37Z,landed,,0,0,6,64,68
