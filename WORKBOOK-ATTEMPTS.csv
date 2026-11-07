@@ -250,3 +250,4 @@ commit_n,attempt,kind,stages,start,finish,outcome,refused_by,files_added,files_r
 244,1,rule-offence,"1, 2",2026-11-07T14:00:18Z,2026-11-07T14:01:17Z,landed,,1,2,2,105,111
 245,1,rule-offence,"1, 2",2026-11-07T14:02:39Z,2026-11-07T14:03:38Z,landed,,1,2,1,80,86
 246,1,rule-offence,"1, 2, 5",2026-11-07T14:06:06Z,2026-11-07T14:07:52Z,landed,,3,2,2,134,128
+247,1,rule-offence,"1, 2, 5",2026-11-07T14:09:36Z,2026-11-07T14:11:22Z,landed,,2,1,2,132,123
