@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `5f1c775` Build the block through its accessors in node's tests and validation's helpers (row 138)
+- **Last commit:** `fd46022` Read and build the block through its accessors in system-tests and the trace driver (row 139)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -140,12 +140,13 @@ pushed with the record at every commit.
   `with_proposer` (`apply_proposal_commitments` keeps its `&mut Block`, which returning a value would turn into an
   everything-on `returned-mutations` move, so it assigns back a `with_` chain); recovery-ibft's and node-infra's
   tests at `65a4f5e` (dry4rust 203 to 202; `commit_certificate_for` out of its group of three until its node and
-  validation twins move, Q35); node's tests with validation's sources at `5f1c775` (201 groups); left, in
-  `overhaul-scratch/block-readers-next.txt`: system-tests' sources (21 in 3 files; `WireBlock`'s `From<Block>`
-  takes the transactions `.iter().cloned()` -- `From<Transaction>` copies the data out anyway -- and its reverse is
-  `Block::new` plus `with_`, as the cursor's) with the trace driver (8), then system-tests' tests, then
-  validation's tests (~80 in 20 files, in two or three commits; its two `anchor()`s a near pair until they move);
-  the fields private last), `NodeDiagnostics` (Q37, open: a constructor of 28 -- left in the baseline),
+  validation twins move, Q35); node's tests with validation's sources at `5f1c775` (201 groups); system-tests'
+  sources and tests and the trace driver at `fd46022` (200 groups); left, in
+  `overhaul-scratch/block-readers-next.txt`: validation's tests only -- single_node/ (10 files, 30 reads, and five
+  `Block {` literals in pre_prepare_tests and validation_tests that surface as E0451 after) as commit 140, the
+  140th, so stages 1, 2 and 5; then cluster/ and harness/ (11 files, ~46, a literal in gas_price_tests; its two
+  `anchor()`s a near pair until they move) with the fields private (`rule-offence`)), `NodeDiagnostics` (Q37,
+  open: a constructor of 28 -- left in the baseline),
   `IbftProtocol` (Q25) (node),
   `RecoveryControl` (Q25) (recovery). SETUP's 6-10 for the slice is its commit range, not what is left
   (read wrongly here until row 114): the stern baseline is to end holding the cluster harness's time reads alone,
@@ -168,7 +169,7 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 138 on the branch; 6 past the threshold (4 planned, + `97225b7` for the dry4rust re-record,
+- **Commits:** 139 on the branch; 6 past the threshold (4 planned, + `97225b7` for the dry4rust re-record,
   `1d27ff1` for the two states' 36 accessors); bug fixes
   2 (`eba863f`, `e1232ca`); the 130th (`2f65d20`) ran all three stages, as every commit has; the 140th next
 - **Tests:** 3,440 at the base, 3,670 now (stage 5 465); removed under constraint 6: 1 (`2e6d484`, Q34)
