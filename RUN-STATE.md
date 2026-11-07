@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `1f04448` Bring the documents up to the consensus seam, and retire its open point (row 231)
+- **Last commit:** `bb1a03c` Split the output dimensions' refusals out of the observer into a facet (row 232)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -183,7 +183,12 @@ pushed with the record at every commit.
   `node-infra/src/implementations/no_op_observer.rs`, `system-tests/src/infra/observer/logging_observer.rs`,
   `validation/src/prune_recording_observer.rs`, `node/tests/ibft/recording_observer.rs`,
   `validation/tests/single_node/protocol/{dispatch_tests,etheram_node_unit_tests}.rs`, and
-  `node-faction/tests/bootstrapping_observer_bridge_tests.rs` (the facet alone). Next: (a). The
+  `node-faction/tests/bootstrapping_observer_bridge_tests.rs` (the facet alone). (a) the refusals -- done at
+  `bb1a03c` (60 lines; nothing else needed changing, a `dyn ProtocolObserver` reaching its supertraits' methods).
+  Next: (b) the beacon, `DiagnosticsObserver` with `diagnostics_sampled` and its comment. node's test
+  `RecordingObserver` lists its own order (diagnostics, history, snapshot_applied at its tail), so there a method
+  moves. Lesson: a blocklist hit can be a phrase, not a word -- test candidate phrases from a scratch file through
+  the same grep, never reading the list, then reword and amend the unpushed commit. The
   plan of (f) was: the dependencies take the factory (30 sites, one line each, the seven dependency-helper pairs re-keyed as
   Q46), the volatile state steps two tallies; (g) `VoteTracker` moved into `QuorumTally`; (h) `VoteTallyContract`;
   (i) the documents and the replayed-proposal open point retired. The plan of (b) was: the two red tests are in
@@ -554,11 +559,11 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 231 on the branch; 13 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
+- **Commits:** 232 on the branch; 13 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
   execution port's move, `4cfcce2` --, + `97225b7` for the dry4rust re-record, `1d27ff1` for the two states' 36
   accessors, `3cf1ec6` and `3433b15` for the transaction status's 33 importers and the timer key's 100, `2883602`
   for the slot discovery's 11, `a352577` for the Ed25519 scheme's 14, planned within by SETUP, `d7d2c45` for
-  Faction's two implementations and their test files, Q43) -- 13 of 231 is 5.6%; the 95% now needs about 260
+  Faction's two implementations and their test files, Q43) -- 13 of 232 is 5.6%; the 95% now needs about 260
   commits, every one from here within it: count a move's files first, and
   shape the seams so a type is born where it ends; bug fixes
   6 (`eba863f`, `e1232ca`, `5013d0e`, `1e7ac29`, `643bfd5`, `8e1ca00`); the 150th (`7ffb333`) ran all three stages, Part A's end, the 160th (`6912269`) and
@@ -684,7 +689,7 @@ pushed with the record at every commit.
   (`58844eb`), the dependencies' hand-over pinned (`6de5afa`), eight of the tracker's tests onto the tally
   (`c24eaaa`), the tracker wholly into it (`1f5213f`), the tally contract's counting clauses (`ffb6f45`), its cleared, resized and
   restored checks (`ab2d884`), its standard scenarios, run by the default (`5ebe5f1`), the documents and the open
-  point retired (`1f04448`), the seam's last.
+  point retired (`1f04448`), the seam's last. The observer: the refusals' facet (`bb1a03c`).
 
 ## Next in line
 
