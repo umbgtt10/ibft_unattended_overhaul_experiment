@@ -71,6 +71,7 @@ After the run the owner takes each open entry -- implement, discuss, discard, po
 | 51 | after commit 241, Part B, the skipped rules | `paired-test-file` reports 100 test files in validation and system-tests; SETUP pairs each `<scenario>_scenario_tests.rs` with a `<scenario>_scenario.rs`, but renaming the scenario tests counts about 30,000 lines twice under `--no-renames`, far past the threshold | answered | a scenario source takes the test file's own stem, no test renamed, holding the cluster or node its tests start from; a test of a source at another path moves to that path; `rule-offence` commits, the moves first, then the sources a folder at a time; the stand-down out at zero |
 | 52 | commit 267, Part B, the skipped rules | entry 51's sources make the harness calls a scenario's tests made, and `tested-public-api`, stood down in system-tests, matches a call by name and arity: `with_scheduled_validator_update` lost its only direct caller, 17 to 18, and other calls only scenario setups make will follow | answered | the sources stay as entry 51 has them, since every such call is still driven by the same test one call deeper and no visibility changes; each commit names what the rule stops seeing; the `tested-public-api` slice, next, takes them with the 17 |
 | 53 | commit 299, Part B, the skipped rules | removing the peer-message proptests' local copy of the protocol-injection source's start shows `protocol_helpers::setup_protocol_with_signature_scheme` never had a direct test: `tested-public-api` matches by name and arity and had counted the same-named local helper's calls | answered | an unplanned `tests` commit, the 300th, gives the helper a direct test in `protocol_helpers_tests.rs`; then the injection source lands with the proptests on it; nothing is renamed or imported under the old name to keep the collision working |
+| 54 | commit 306, Part B, the skipped rules | with every rule on, `tested-public-api` counts 25 public functions in system-tests no test calls: five pure, six on the gRPC node and its config, two run loops reading stdin, twelve that start node processes | answered | each gets a direct test, none made private: the pure five first; the node's in process, the config read through a new `protocol_config()`; the run loops handed their commands as a parameter; the process starters a smoke test each; the stand-down out at zero |
 
 ## Interventions
 
@@ -1416,3 +1417,40 @@ the course the slice took and the run's recommendation; after the run, the owner
     that hid the gap;
   - other same-named pairs may hide others. The `tested-public-api` slice can look for them.
 - **Commit:** 300.
+
+### 54. What each of system-tests' 25 untested public functions gets
+
+- **Raised:** at commit 306, Part B, the skipped rules, the first of the `tested-public-api` slice in system-tests.
+- **What:** with every rule on, the rule counts 25 public functions in system-tests that no test calls, by name and
+  arity. They are the 17 entry 52 started from, the 8 its scenario sources added, and RUN-STATE's owed note adds
+  `RuntimeTimerHarness::new`, hidden only by an arity match. They fall into four groups. Five are pure: a config
+  builder, a command parser and three codecs. Six belong to the gRPC node:
+  - four config builders, which copy one field each into a config whose fields are private;
+  - its timer-config constructor and its step.
+  
+  Two are the run loops of the gRPC node and the malicious node. Both read their commands from the process's stdin,
+  so a test that calls them returns only when stdin ends. The other twelve start node processes: the client
+  harness's four spawners, its address and its connection, the cluster harness's three spawners, the builder's
+  validator-update option, and the timer harness's single-node build and port.
+- **Status:** answered, from SETUP's slice ("tests for the functions no test calls"), entry 52 and CLAUDE.md's *Do not
+  buy a green gate with lost coverage*.
+- **Answer:**
+  - **every one gets a test that calls it directly** and asserts what it does. None is made private and none is
+    deleted;
+  - **the pure five first**, in one commit, `tests/` alone;
+  - **the gRPC node's six**:
+    - the constructor and the step are tested in process, on a scratch database, as the node's restart tests are;
+    - the genesis builder is read back from the store the node writes;
+    - the other three builders write only into the protocol's options. So a `refactoring` commit first gives the
+      config one public read, `protocol_config()`, and the node builds from it. Their tests then read it;
+  - **the two run loops take their commands as a parameter**, a `BufRead` the binary hands stdin. The gRPC node
+    passes it to the control thread, which reads from it as it read from stdin. The change comes first, as a
+    `refactoring`, and the control thread's existing spawn test hands it an empty reader. The tests then hand each
+    loop "shutdown" and assert what it did before returning;
+  - **the twelve that start processes each get a smoke test** in their harness's test file. Each test starts a node
+    through the function and asserts that the node answers, or for the port, that the port is free. Stage 5's job
+    count grows by about a dozen;
+  - **the stand-down comes out at zero**, with the config's comment, CLAUDE.md and the open points' table;
+  - each commit stays a `rule-offence` naming `tested-public-api`. The rule is stood down as configured, so the
+    configured count stays 41 and the everything-on total falls.
+- **Commit:** 306 onward.

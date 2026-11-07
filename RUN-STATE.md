@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `15e7d4d` Take paired-test-file out of validation's and system-tests' stand-down (row 305)
+- **Last commit:** `c1028e1` Test the five pure system-tests functions no test called (row 306)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -137,7 +137,20 @@ pushed with the record at every commit.
   second source calls the first's rather than copy it; `tested-public-api` matches by name and arity, so a
   test-side function of the same name hides an untested public one (Q53); rustfmt can turn two thin wrappers
   into a dry4rust exact pair.
-- **Slice in progress:** Part B seam 6, consensus (SETUP, *Part B*, step 6), started 11:29Z, `Chosen-By:
+- **Slice in progress:** Part B slice 3, `tested-public-api` in system-tests (SETUP, *Part B*, the skipped rules),
+  started 19:16Z, `Chosen-By: risk`, `Over:` the eight single-implemented-type entries; the plan is Q54. 25 with
+  every rule on at `15e7d4d`, plus `RuntimeTimerHarness::new` (the owed note below). The list: `overhaul-scratch/
+  tpa-list/report.txt`, from an export with `EVERYTHING_ON` as its config and `--rule tested-public-api --package
+  system-tests --baseline <empty>`. (1) the pure five (`ClusterConfigFile::with_block_limits`,
+  `PartitionControlCommand::parse` in a new test file, the commit-certificate codec pair,
+  `encode_receipts_summary_response`) -- done at `c1028e1` (10 tests, 141 lines, 25 to 20; stern wants a test
+  file's tests in alphabetic order). Next (2): the gRPC node's constructor with a timer config and `step_once`, in
+  process on a scratch db as `etheram_grpc_node_tests.rs` does; then (3) a `refactoring` giving
+  `EtheramGrpcNodeConfig` a public `protocol_config()` the node builds from, and (4) the four builders' tests
+  (genesis read back from the store); (5) a `refactoring` handing both run loops their commands as a `BufRead`
+  (the control thread's too; its spawn test hands it an empty reader), then (6) their tests; (7) the twelve
+  process starters, a smoke test each, a harness at a time; (8) the stand-down out.
+  Before it, Part B seam 6, consensus (SETUP, *Part B*, step 6), started 11:29Z, `Chosen-By:
   owner-order`, `Over:` the three skipped-rule slices. The bug first (Q48, answered): (a) the control -- done at
   `11bfec3` (`tests`; `transfer_cluster()`, `transfer_block_for_round_one()` and
   `pre_prepare_carrying_a_transfer_after_its_new_view_commits` in validation's
@@ -791,19 +804,19 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 305 on the branch; 13 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
+- **Commits:** 306 on the branch; 13 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
   execution port's move, `4cfcce2` --, + `97225b7` for the dry4rust re-record, `1d27ff1` for the two states' 36
   accessors, `3cf1ec6` and `3433b15` for the transaction status's 33 importers and the timer key's 100, `2883602`
   for the slot discovery's 11, `a352577` for the Ed25519 scheme's 14, planned within by SETUP, `d7d2c45` for
-  Faction's two implementations and their test files, Q43) -- 13 of 305 is 4.3%; the 95% reached at the 260th (247 of 260 within), and it holds only while every
+  Faction's two implementations and their test files, Q43) -- 13 of 306 is 4.2%; the 95% reached at the 260th (247 of 260 within), and it holds only while every
   commit from here stays within: count a move's files first, and
   shape the seams so a type is born where it ends; bug fixes
   6 (`eba863f`, `e1232ca`, `5013d0e`, `1e7ac29`, `643bfd5`, `8e1ca00`); the 150th (`7ffb333`) ran all three stages, Part A's end, the 160th (`6912269`) and
   the 170th (`2883602`), the 180th (`b31593c`), the 190th (`c885cf9`), the 200th (`7508819`), the 210th
   (`e04403c`), the 220th (`e329250`), the 230th (`5ebe5f1`), the 240th (`18baf35`), the 250th (`8bdb859`), the 260th (`1fef15d`), the 270th (`fdd825e`), the 280th (`00c5f1b`), the 290th (`0b135b2`) and the 300th (`2a7c601`); the 310th next
-- **Tests:** 3,440 at the base, 3,835 now (stage 5 465); removed under constraint 6: 1 (`2e6d484`, Q34)
-- **Offences:** 41 as configured, 103 everything on (paired-test-file 0, from 100 at `4a976c2`; tested-public-api 25,
-  from 17 at `ca72bf4`, Q52), shear 0; Grip 780.18 / Braintax 4,868.87 (0.1602 at `1f5213f`, the tracker into the tally, node-infra
+- **Tests:** 3,440 at the base, 3,845 now (stage 5 475); removed under constraint 6: 1 (`2e6d484`, Q34)
+- **Offences:** 41 as configured, 98 everything on (paired-test-file 0, from 100 at `4a976c2`; tested-public-api 20,
+  from 25 at `15e7d4d` and 17 at `ca72bf4`, Q52, Q54), shear 0; Grip 780.18 / Braintax 4,868.87 (0.1602 at `1f5213f`, the tracker into the tally, node-infra
   166.15 / 700.19 and node 320.64 / 2,342.00; 782.93 / 4,880.81, 0.1604 at `58844eb`, the tally port, node-infra
   164.60 / 698.19 and node 324.94 / 2,355.94; 773.51 / 4,811.48, 0.1608 at `9b496e6`, recovery/control 78.14 / 397.87 with
   `PeerKnowledge`; 770.32 / 4,797.08 at `44a0b7a`,
@@ -835,7 +848,7 @@ pushed with the record at every commit.
   one group added at `64f562b`, Q33; one added and one paid at `1121282`; one re-keyed and one added at `8230a8a`,
   Q35, each copy kept in scratch as `dry-baseline-before-cN.json`; one re-keyed at `97cd2da`; one grown by a member
   at `0d46800`, Q46; seven re-keyed and one near pair paid at `e04403c`, Q46, 196 to 195)
-- **Questions:** 49 answered, 3 open (9, 25, 37). **Interventions:** 0. **Waits:** 0.
+- **Questions:** 51 answered, 3 open (9, 25, 37). **Interventions:** 0. **Waits:** 0.
 
 ## The run so far
 
