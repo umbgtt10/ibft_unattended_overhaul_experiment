@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `05df3c9` Move the cluster harness's first seven cluster tests into its test file (row 263)
+- **Last commit:** `b9fed05` Move the cluster harness's next seven cluster tests into its test file (row 264)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -266,7 +266,7 @@ pushed with the record at every commit.
   lines, 83 to 82); then `tests/cluster/`'s file (637, no
   helpers) in four batches by its line ranges: (2) `client_addrs` to `get_heights` (15-171) -- done at `05df3c9`
   (320 lines, 82 holding), (3) `heal` to `restart`
-  (172-332), (4) the seven `shutdown_*` (333-481), (5) `spawn` to `wait` (482-637), the old file out
+  (172-332) -- done at `b9fed05` (326 lines, 82 holding), (4) the seven `shutdown_*` (333-481), (5) `spawn` to `wait` (482-637), the old file out
   (`rule-offence`). A file past ~180 lines moves in batches of tests (pairing by name, `moved`). Then the scenario sources: system-tests'
   `tests/cluster/*` (19 left) and `tests/single_node/*` (11), validation's `tests/cluster/**` and
   `tests/single_node/**`. Lesson: `grep -v -x -F -f` here does not drop blank lines, so count a move's lines with
@@ -642,11 +642,11 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 263 on the branch; 13 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
+- **Commits:** 264 on the branch; 13 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
   execution port's move, `4cfcce2` --, + `97225b7` for the dry4rust re-record, `1d27ff1` for the two states' 36
   accessors, `3cf1ec6` and `3433b15` for the transaction status's 33 importers and the timer key's 100, `2883602`
   for the slot discovery's 11, `a352577` for the Ed25519 scheme's 14, planned within by SETUP, `d7d2c45` for
-  Faction's two implementations and their test files, Q43) -- 13 of 263 is 4.9%; the 95% reached at the 260th (247 of 260 within), and it holds only while every
+  Faction's two implementations and their test files, Q43) -- 13 of 264 is 4.9%; the 95% reached at the 260th (247 of 260 within), and it holds only while every
   commit from here stays within: count a move's files first, and
   shape the seams so a type is born where it ends; bug fixes
   6 (`eba863f`, `e1232ca`, `5013d0e`, `1e7ac29`, `643bfd5`, `8e1ca00`); the 150th (`7ffb333`) ran all three stages, Part A's end, the 160th (`6912269`) and
