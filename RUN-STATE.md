@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `9f89a10` Give validation's recovery-handoff and snapshot scenarios a source holding their start (row 287)
+- **Last commit:** `6baf3aa` Give validation's replay and retention scenarios a source holding their start (row 288)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -350,10 +350,13 @@ pushed with the record at every commit.
   (100 lines, 37 to 36). (v11) recovery_handoff (`server_at`, moved) and snapshot
   (`cluster_holding_stale_account(stale)` on the shared start) -- done at `9f89a10` (75 lines, 36 to 34); dry4rust's
   suppressed groups fell from 195 to 194, the snapshot file's `cluster` / `cluster_holding_stale_state` pair gone,
-  the baseline left as recorded. Next (v12...): replay (the height-zero commit and height-one proposal its two
-  cross-height tests share) and retention (`retained`, `retained_with_accounts`, moved; the telemetry test keeps
-  `with_retention_window` as a direct call), then persistence, recovery; then five_node, then single_node's four
-  folders. dry4rust's check now reads 194 suppressed. The m4/m5 plan was, the same way,
+  the baseline left as recorded. (v12) replay (`cluster_holding_height_one_proposal`, `height_one_proposal`) and
+  retention (`retained`, `retained_with_accounts`, moved; the telemetry test keeps `with_retention_window` as a
+  direct call) -- done at `6baf3aa` (166 lines, 34 to 32). Next (v13...): recovery (`transaction_chain`, moved with
+  its comment -- a pure fixture six tests import; `pruned_cluster_with_node_four_behind` needs the `&mut`
+  `route_full_round_four_nodes` and stays; its `signed_cluster` is an exact copy of byzantine's, left as the baseline
+  records it), then persistence (its tests start from a test-side `MiniNode` struct, not the cluster -- the design
+  is still open), five_node, then single_node's four folders. dry4rust's check now reads 194 suppressed. The m4/m5 plan was, the same way,
   single_node `restart` (two `new_*`) into `tests/etheram_grpc_node_tests.rs`; then validation, where
   `tested-public-api` applies as configured, so a displaced call there fails stage 2. Lesson: `grep -v -x -F -f` here does not drop blank lines, so count a move's lines with
   `grep -c "."`. Lesson: a blocklist hit can be a phrase, not a word -- test candidate phrases from a scratch file through
@@ -728,18 +731,18 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 287 on the branch; 13 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
+- **Commits:** 288 on the branch; 13 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
   execution port's move, `4cfcce2` --, + `97225b7` for the dry4rust re-record, `1d27ff1` for the two states' 36
   accessors, `3cf1ec6` and `3433b15` for the transaction status's 33 importers and the timer key's 100, `2883602`
   for the slot discovery's 11, `a352577` for the Ed25519 scheme's 14, planned within by SETUP, `d7d2c45` for
-  Faction's two implementations and their test files, Q43) -- 13 of 287 is 4.5%; the 95% reached at the 260th (247 of 260 within), and it holds only while every
+  Faction's two implementations and their test files, Q43) -- 13 of 288 is 4.5%; the 95% reached at the 260th (247 of 260 within), and it holds only while every
   commit from here stays within: count a move's files first, and
   shape the seams so a type is born where it ends; bug fixes
   6 (`eba863f`, `e1232ca`, `5013d0e`, `1e7ac29`, `643bfd5`, `8e1ca00`); the 150th (`7ffb333`) ran all three stages, Part A's end, the 160th (`6912269`) and
   the 170th (`2883602`), the 180th (`b31593c`), the 190th (`c885cf9`), the 200th (`7508819`), the 210th
   (`e04403c`), the 220th (`e329250`), the 230th (`5ebe5f1`), the 240th (`18baf35`), the 250th (`8bdb859`), the 260th (`1fef15d`), the 270th (`fdd825e`) and the 280th (`00c5f1b`); the 290th next
 - **Tests:** 3,440 at the base, 3,834 now (stage 5 465); removed under constraint 6: 1 (`2e6d484`, Q34)
-- **Offences:** 41 as configured, 137 everything on (paired-test-file 34, from 100 at `4a976c2`; tested-public-api 25,
+- **Offences:** 41 as configured, 135 everything on (paired-test-file 32, from 100 at `4a976c2`; tested-public-api 25,
   from 17 at `ca72bf4`, Q52), shear 0; Grip 780.18 / Braintax 4,868.87 (0.1602 at `1f5213f`, the tracker into the tally, node-infra
   166.15 / 700.19 and node 320.64 / 2,342.00; 782.93 / 4,880.81, 0.1604 at `58844eb`, the tally port, node-infra
   164.60 / 698.19 and node 324.94 / 2,355.94; 773.51 / 4,811.48, 0.1608 at `9b496e6`, recovery/control 78.14 / 397.87 with
