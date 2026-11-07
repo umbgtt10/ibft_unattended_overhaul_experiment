@@ -60,6 +60,7 @@ After the run the owner takes each open entry -- implement, discuss, discard, po
 | 40 | commit 170, Part B, the execution seam | `SETUP.md` keeps "`NoOpExecutionEngine` the default in `node-infra`", but both builders default to evm's `ValueTransferEngine`, so node-infra depends on evm in production | answered | read as the port's default implementation staying in node-infra; the builders' defaults stay evm's value transfer -- changing them changes what every default-built node executes; node-infra is the assembly, not a plug-in, so step 8's gate holds |
 | 41 | commit 171, Part B, the execution seam | the contract suite is test code with a `src`, a manifest and gate lists, which `tests` does not allow; and the no-op reports no results, which a one-result-per-transaction contract would refuse | answered | `refactoring`, `node-contracts/src` counting as production as `validation/src` does and a crate or dev-dependency edge being structure; the contract asks only what the protocol relies on and all three engines do, fewer results than transactions allowed |
 | 42 | before commit 179, Part B, the Faction seam | the bootstrapping port, the readiness event and three implementations speak `faction`'s types; 15 files build a bootstrapper with Faction's factory | answered | node mirrors the vocabulary that crosses the port, names and all, so the readiness log is unchanged; a `node-faction` plug-in holds the translation, the coordinator wrapper, the bridge and the factory; assemblies go through node-infra's `BootstrapperBuilder` first, the fixed-membership default its other choice |
+| 43 | commit 186, Part B, the Faction seam | the bridge's tests need an observer node-faction can build, 360 lines behind the full observer; the bridge's and the coordinator's moves each pass 360 lines, their test files counted twice | answered | the peer-discovery facet first, holding the readiness event, `ProtocolObserver` its subtrait; the two implementations then move in one commit past the threshold, the seam's one unsplittable move |
 
 ## Interventions
 
@@ -1001,3 +1002,30 @@ the course the slice took and the run's recommendation; after the run, the owner
   - breaks for the consumer (decision 11): the port's signature, the readiness event's field types, and the
     factory's path; each named in its commit.
 - **Commit:** 179 onward.
+
+### 43. The Faction implementations' moves: an observer facet taken early, and one move past the threshold
+
+- **Raised:** commit 186, Part B, the Faction seam -- planning the bridge's and the coordinator's moves into
+  node-faction.
+- **What:** two costs the plan did not foresee. The observer bridge's nine tests record what it reports through
+  node's own test `RecordingObserver`, which node-faction's tests cannot reach; behind the 78-method
+  `ProtocolObserver`, an observer of their own is about 360 lines, 77 methods of it doing nothing -- a commit's
+  threshold by itself. And the bridge's test file is 205 lines and the Faction coordinator's 212 (eight of them
+  pinned at 178): a move counts each line twice, so each move passes 360 lines on its own, and neither can be split
+  -- a test file pairs with its source, and the alternatives a second copy of the code or of its tests.
+- **Status:** answered -- the plan's own criteria settle the first (`dependency` ranks above the order of steps:
+  the plug-in's bridge builds on the observer facet); the threshold's own wording the second ("a commit past it
+  lands when its gates pass, and says why").
+- **Answer:**
+  - the observer split's first facet comes now (commit 186): `PeerDiscoveryObserver`, the facet step 7 names for peer
+    discovery, holding the readiness event alone, with `ProtocolObserver` its subtrait -- the composite decision 10
+    describes, every implementor implementing the facet in an `impl` of its own. The bridge is handed the facet, and
+    node-faction's tests record readiness through a few lines. Step 7 adds the other discovery events to the facet
+    and splits the rest; the consumer's observer follows in the same batch;
+  - the bridge and the coordinator move in one commit, past the threshold on lines, rather than two: both are
+    Faction's implementations leaving `node`, one concern, and the commit is the seam's one move that cannot be
+    split. The coordinator becomes a wrapper struct, a third crate not being allowed to implement `node`'s trait
+    for `faction`'s type; node's recording observer gives its readiness part to node-faction's tests with the
+    bridge's. The port and the event change vocabulary after it, each within the threshold, and `faction` leaves
+    node's manifest with the last of them.
+- **Commit:** 186 onward.

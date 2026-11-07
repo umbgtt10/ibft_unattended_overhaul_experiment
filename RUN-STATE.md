@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `c43c0f2` Move Faction's coordinator factory into node-faction (row 185)
+- **Last commit:** `a2f5f0e` Split the readiness event out of the observer into a peer-discovery facet (row 186)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -138,7 +138,11 @@ pushed with the record at every commit.
   `{:?}` alike for every variant -- the commands both ways done at `17fd986`, the outcomes and the transition at
   `4b8a7a1` (`Transition::previous_view()` returns its view by value); (f) the factory into it -- done at `c43c0f2`
   (15 files; node-faction on etheram-core too, node-infra on node-faction, node and node-faction dev-depending on
-  each other's neighbours); (g) next, the bridge, (h) the coordinator as a wrapper
+  each other's neighbours); (g0) the peer-discovery facet (Q43) -- done at `a2f5f0e` (`PeerDiscoveryObserver` with
+  the readiness event, `ProtocolObserver` its subtrait, six implementors; `Chosen-By: dependency`, unplanned); (g)
+  next, the bridge and (h) the coordinator in one commit, past the threshold (Q43): the bridge on `Arc<dyn
+  PeerDiscoveryObserver>` (the factory upcasts), node-faction's tests recording readiness through a few lines,
+  node's recording observer giving up its readiness part, (h) the coordinator as a wrapper
   struct -- its tests need a recording `ProtocolObserver` of their own; (i) the port's commands and outcomes in
   node's vocabulary, then (j) the event's, `faction` out of node's manifest; (k) the fixed-membership default in
   node-infra, a builder choice; (l) the bootstrapping contract in `node-contracts`, (m) run by both; (n) docs.
@@ -347,11 +351,11 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 185 on the branch; 12 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
+- **Commits:** 186 on the branch; 12 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
   execution port's move, `4cfcce2` --, + `97225b7` for the dry4rust re-record, `1d27ff1` for the two states' 36
   accessors, `3cf1ec6` and `3433b15` for the transaction status's 33 importers and the timer key's 100, `2883602`
-  for the slot discovery's 11, `a352577` for the Ed25519 scheme's 14, planned within by SETUP) -- 12 of 185 is
-  6.5%; the 95% needs about 240 commits with every commit from here within it: count a move's files first, and
+  for the slot discovery's 11, `a352577` for the Ed25519 scheme's 14, planned within by SETUP) -- 12 of 186 is
+  6.5%, the Faction implementations' move the 13th (Q43); the 95% needs about 240 commits with every commit from here within it: count a move's files first, and
   shape the seams so a type is born where it ends; bug fixes
   2 (`eba863f`, `e1232ca`); the 150th (`7ffb333`) ran all three stages, Part A's end, the 160th (`6912269`) and
   the 170th (`2883602`) and the 180th (`b31593c`); the 190th next
@@ -382,7 +386,7 @@ pushed with the record at every commit.
   `2e93617`), all matching (re-recorded at `cec0c5b`, Q32;
   one group added at `64f562b`, Q33; one added and one paid at `1121282`; one re-keyed and one added at `8230a8a`,
   Q35, each copy kept in scratch as `dry-baseline-before-cN.json`; one re-keyed at `97cd2da`)
-- **Questions:** 39 answered, 3 open (9, 25, 37). **Interventions:** 0. **Waits:** 0.
+- **Questions:** 40 answered, 3 open (9, 25, 37). **Interventions:** 0. **Waits:** 0.
 
 ## The run so far
 
@@ -448,7 +452,7 @@ pushed with the record at every commit.
   bootstrapper builder and its first six sites (`73cb8eb`), node's test helpers through it (`b31593c`), validation's tests through it
   (`f2f5e31`), node's vocabulary for the port (`a59c662`), `node-faction` with the command
   translation (`17fd986`), its outcome and transition translations (`4b8a7a1`), the factory into it
-  (`c43c0f2`).
+  (`c43c0f2`), the peer-discovery facet (`a2f5f0e`).
 
 ## Next in line
 
