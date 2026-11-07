@@ -809,7 +809,8 @@ the course the slice took and the run's recommendation; after the run, the owner
   could import. Commit 329 -- the cluster's drive past peer discovery becomes its own method, and two pairs that
   call it change alike: validation's two `signed_cluster` (`a1656c4334251d5a` out, `44ee19ccebeaaf99` in), and the
   safety proptest's `cluster` with the handoff tests' `behind_node` (`7968e9b638e2af74` out, `5aac1a3a2c1fa890`
-  in); 193 kept. Commit 122 -- the pair of `setup_restored_protocol_with_fallback_validators`, in validation's sources
+  in); 193 kept. Commit 331 -- the two `finalize_round_*` become the cluster's methods and stay a near pair:
+  `0bb0e887e401ad90` out, `b949f32b1ba5b332` in, the same two; 193 kept. Commit 122 -- the pair of `setup_restored_protocol_with_fallback_validators`, in validation's sources
   and node's tests, reshaped alike by `with_active_validators`: `256b6ee250ec7b90` out, `53d1f2df9ed91e42` in; a
   near pair of test helpers paid beside it, 203 to 202. Commit 127 -- system-tests' `sample_hard_state` and
   `sample_locked_wal`, the same sample state in two test files, now `with_` chains: `68a95c56852dda33` out,
