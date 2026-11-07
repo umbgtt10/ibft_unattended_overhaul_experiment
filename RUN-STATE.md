@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `d5ff011` Read a v0 symbol's path by its grammar: generics left out, back-references followed (row 347)
+- **Last commit:** `2f7a771` Record coverage function by function: none covered at the base is lost (row 348)
 - **Part C now** (Q58, the plan): the report is `docs/history/[IMPLEMENTED] OVERHAUL-2026-11-FINAL-CHECKS.md` in
   etheram-ibft, a section per check. (1) black-box: expected failures (none) committed at `9bac4a1`; the run --
   `cargo test --manifest-path overhaul-scratch/blackbox-8a775a2/Cargo.toml -p system-tests --config
@@ -46,8 +46,12 @@ pushed with the record at every commit.
   uncovered at the end). Result (`coverage-b939d2f-by-function.txt`): 38 uncovered at the end, all uncovered at the
   base; 35 covered at the base not found at the end (getters turned fields, `new`s turned literals, `VoteTracker`
   into `QuorumTally`, `push_tagged` into `tagged`, evm's `exec_*` and result builders into the machine);
-  none covered at the base and uncovered at the end. Next: the report's section 3, each of the 73 with its reason.
-  Next after (3): the rest of (4),
+  none covered at the base and uncovered at the end. The report's section 3 -- `2f7a771` (`support`, stage 2, 99
+  lines): per crate base and end, the 38 and the 35 each with its reason or successor, the tool's correction, and
+  the inventory base to end (`cargo xtask test-diff 8a775a2 d5ff011 --message overhaul-scratch/all-messages.txt`,
+  every message of the branch: 3,440 to 3,920, 508 added, 28 removed, 225 moved, 468 changed, 2 fewer; the one
+  reported unmapped is `85986a6`'s Maps line under the path it had then, the test moved at `1fef15d`). **(3) is
+  done.** Next after (3): the rest of (4),
   (5) the re-derivation with another subcommand, in chunks committed to the record. Scratch: `blackbox-8a775a2` (with a target dir)
   and `blackbox-8a775a2.tar` can go when Part C ends.
 - **Step now:** Part B step 8, the gates -- started 21:03Z, the scope Q56 (answered), the recovery crates' part
@@ -985,12 +989,12 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 347 on the branch; 14 past the threshold (7 planned -- the 5th the merge, `8afa421`, the 6th the
+- **Commits:** 348 on the branch; 14 past the threshold (7 planned -- the 5th the merge, `8afa421`, the 6th the
   execution port's move, `4cfcce2` --, + `97225b7` for the dry4rust re-record, `1d27ff1` for the two states' 36
   accessors, `3cf1ec6` and `3433b15` for the transaction status's 33 importers and the timer key's 100, `2883602`
   for the slot discovery's 11, `a352577` for the Ed25519 scheme's 14, planned within by SETUP, `d7d2c45` for
   Faction's two implementations and their test files, Q43; the 7th planned, `6fc97b9`, `SledStorageInner`'s 678
-  lines, which `implemented-in-one-file` moves whole) -- 14 of 347 is 4.0%, 333 of 347 within; the 95% reached at the 260th (247 of 260 within), and it holds only while every
+  lines, which `implemented-in-one-file` moves whole) -- 14 of 348 is 4.0%, 334 of 348 within; the 95% reached at the 260th (247 of 260 within), and it holds only while every
   commit from here stays within: count a move's files first, and
   shape the seams so a type is born where it ends; bug fixes
   6 (`eba863f`, `e1232ca`, `5013d0e`, `1e7ac29`, `643bfd5`, `8e1ca00`); the 150th (`7ffb333`) ran all three stages, Part A's end, the 160th (`6912269`) and
