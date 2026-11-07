@@ -204,3 +204,4 @@ commit_n,attempt,kind,stages,start,finish,outcome,refused_by,files_added,files_r
 199,1,tests,"1, 2",2026-11-07T09:49:15Z,2026-11-07T09:49:51Z,landed,,0,0,1,98,0
 200,1,refactoring,"1, 2, 5",2026-11-07T09:54:49Z,2026-11-07T09:56:35Z,landed,,0,0,3,61,19
 201,1,bug-fix,"1, 2, 5",2026-11-07T09:58:57Z,2026-11-07T10:00:37Z,landed,,0,0,2,41,0
+202,1,bug-fix,"1, 2, 5",2026-11-07T10:04:34Z,2026-11-07T10:06:39Z,landed,,2,0,7,160,8
