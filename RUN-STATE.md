@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `618894b` Keep the in-memory states' queues private; open and pop them through methods (row 109)
+- **Last commit:** `a2cfb60` Keep the protocol config's fields private; hand them over as parts (row 110)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -65,7 +65,7 @@ pushed with the record at every commit.
   Lessons: stern refuses anything but a parameter assigned to a trait-typed field, an injected factory's call
   included -- split build from install; a delegating trait-impl stub can be a dry4rust near duplicate of
   another, so let the impl hold the body; a planned past-threshold commit says so in `Threshold: exceeded --`.
-- **Slice in progress:** Part A slice 8, records and objects, a module at a time -- records-and-objects 12 left
+- **Slice in progress:** Part A slice 8, records and objects, a module at a time -- records-and-objects 11 left
   (`Chosen-By: no-scaffolding`; started 23:51:38Z; full list `overhaul-scratch/records-and-objects.txt`). Three
   kinds. (A) record with private fields -> make them `pub`: all 14 done (`3b243b5`). (B) getter-only -> delete
   the getters and constructor, `pub` fields, built by literal: all 11 done (`EtheramGrpcNodeTimerConfig`,
@@ -100,12 +100,16 @@ pushed with the record at every commit.
   `07f708e` (28 test literals now `new(..)`, the trace driver reading the getters, two dry4rust groups paid, 211 to
   209; `tested-public-api` counts calls per package -- the declaring package's own tests must call each getter);
   node-infra's three in-memory states at `618894b` (`open_queue`/`open_inbox`, `pop_*`, `push_response`, eight
-  tests; three dry4rust groups paid, one re-keyed, 209 to 206); 12 left: `Account`, `Block`, `Transaction`
-  (execution-types), `IbftProtocolConfig`, `NodeDiagnostics`, `ContextSnapshot`, `IbftProtocol` (Q25) (node),
+  tests; three dry4rust groups paid, one re-keyed, 209 to 206); `IbftProtocolConfig` at `a2cfb60` (handed over as
+  `into_parts()` -> `IbftProtocolConfigParts`, the dependencies' shape); 11 left: `Account`, `Block`, `Transaction`
+  (execution-types), `NodeDiagnostics`, `ContextSnapshot`, `IbftProtocol` (Q25) (node),
   `RecoveryStateSnapshot`, `RecoveryControl` (Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types) -- the types' three built by literal in some 38 files, `..Default::default()`
   among them, which private fields forbid outside the crate: getters and constructors first, call sites in
-  `refactoring` batches, fields private last; `RecoveryStateSnapshot` has eight fields, past clippy's
+  `refactoring` batches, fields private last. SETUP predicts 6-10 left at the end, the upper end being the
+  protocol's and control's types (Q25) and `Block`/`Transaction`/`Account` ("every reader changes"); decision 1:
+  no behaviour moved only to change a type's kind -- so `NodeDiagnostics` (27 fields and one `const fn`) cannot be
+  made a record by moving its function out. Next: `Account` (two fields; getters first in a `refactoring`); `RecoveryStateSnapshot` has eight fields, past clippy's
   seven-argument limit for a constructor -- later; execution-types' `Account`, `Block`, `Transaction` read in
   some 70 files -- getters added first, readers moved a directory at a time in `refactoring`s, fields private last):
   `Account`, `Block` (~148 importers), `Transaction`, `TransactionReceipt` (execution-types),
@@ -114,10 +118,11 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 109 on the branch; 5 past the threshold (4 planned, + `97225b7` for the dry4rust re-record); bug fixes
-  1 (`eba863f`); the 100th ran all three stages, as every commit has; the 110th next
-- **Tests:** 3,440 at the base, 3,647 now (stage 5 465); removed under constraint 6: 1 (`2e6d484`, Q34)
-- **Offences:** 72 as configured, 283 everything on, shear 0; Grip 653.34 / Braintax 4,513.53 (0.1448;
+- **Commits:** 110 on the branch; 5 past the threshold (4 planned, + `97225b7` for the dry4rust re-record); bug fixes
+  1 (`eba863f`); the 110th ran all three stages, as every commit has; the 120th next
+- **Tests:** 3,440 at the base, 3,649 now (stage 5 465); removed under constraint 6: 1 (`2e6d484`, Q34)
+- **Offences:** 71 as configured, 282 everything on, shear 0; Grip 657.14 / Braintax 4,519.57 (0.1454;
+  node 301.27 / 2,300.34 at `a2cfb60`;
   node-infra 151.68 / 596.73 at `618894b`;
   execution-types 14.87 / 62.11 at `07f708e`;
   node 297.47 / 2,294.30 at `d8dc9d5`; recovery/ibft 51.62 / 249.41 at `97cd2da`;
@@ -164,7 +169,7 @@ pushed with the record at every commit.
   (`e4de9df`), and in validation's helpers and single-node tests (`c576a8a`), their `Default` out (`1618598`); the bootstrapper's coordinator factory (`3505d8d`), the bootstrapper handed its coordinator (`cec0c5b`), the
   slice's last; records and objects: fourteen records' fields public (`3b243b5`), two
   system-tests configs by literal (`64b9ab9`), the node's admission, timing and diagnostics configs (`c72cdf3`), the bootstrapping config (`64f562b`), the NewView message's fields (`2e6d484`), the validator set updates (`ef5f4d9`), the recovery requests (`a247cf2`), the recovery facts (`df27ed7`), the peers' recovery statuses (`12b0c09`), the last getter-only one; xtask's report and command outcome
-  (`d09acfa`), the first objects; the cluster config and the fleet's block limits (`6c83656`), the prune plan and the retained counts (`1121282`), the in-flight slot (`8230a8a`), the recovery context (`97cd2da`), the protocol limits (`d8dc9d5`), the transaction receipt (`07f708e`), the in-memory states (`618894b`).
+  (`d09acfa`), the first objects; the cluster config and the fleet's block limits (`6c83656`), the prune plan and the retained counts (`1121282`), the in-flight slot (`8230a8a`), the recovery context (`97cd2da`), the protocol limits (`d8dc9d5`), the transaction receipt (`07f708e`), the in-memory states (`618894b`), the protocol config (`a2cfb60`).
 
 ## Next in line
 
