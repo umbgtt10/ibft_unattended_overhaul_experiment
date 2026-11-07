@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `64b9ab9` Build the gRPC node's timer config and the fleet's protocol config by literal (row 94)
+- **Last commit:** `c72cdf3` Build the node's admission, timing and diagnostics configs by literal (row 95)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -65,15 +65,19 @@ pushed with the record at every commit.
   Lessons: stern refuses anything but a parameter assigned to a trait-typed field, an injected factory's call
   included -- split build from install; a delegating trait-impl stub can be a dry4rust near duplicate of
   another, so let the impl hold the body; a planned past-threshold commit says so in `Threshold: exceeded --`.
-- **Slice in progress:** Part A slice 8, records and objects, a module at a time -- records-and-objects 35 left
+- **Slice in progress:** Part A slice 8, records and objects, a module at a time -- records-and-objects 32 left
   (`Chosen-By: no-scaffolding`; started 23:51:38Z; full list `overhaul-scratch/records-and-objects.txt`). Three
   kinds. (A) record with private fields -> make them `pub`: all 14 done (`3b243b5`). (B) getter-only -> delete
-  the getters and constructor, `pub` fields, built by literal (9 left; `EtheramGrpcNodeTimerConfig`,
-  `FleetProtocolConfig` done at `64b9ab9`): `ConsensusAdmissionConfig`, `ConsensusTimingConfig`, `DiagnosticsConfig`,
-  `BootstrappingConfig`, `NewViewMessageFields`, `ValidatorSetUpdate` (node), `RecoveryFacts`,
+  the getters and constructor, `pub` fields, built by literal (6 left; `EtheramGrpcNodeTimerConfig`,
+  `FleetProtocolConfig` done at `64b9ab9`, `ConsensusAdmissionConfig`, `ConsensusTimingConfig`, `DiagnosticsConfig`
+  at `c72cdf3`): `BootstrappingConfig`, `NewViewMessageFields`, `ValidatorSetUpdate` (node), `RecoveryFacts`,
   `PeerRecoveryStatus`, `RecoveryRequest` (recovery; `::new` called 63, 32, 99 and 33 times for
   `ValidatorSetUpdate`, `RecoveryFacts`, `PeerRecoveryStatus`, `RecoveryRequest` -- batches) -- a test that only read a getter keeps its assertion on
-  the field unless `behaviour-tests` then refuses it as a record-alone test (constraint 6, QUESTIONS). (C)
+  the field unless `behaviour-tests` then refuses it as a record-alone test (constraint 6, QUESTIONS); it did not
+  for the three at `c72cdf3`. Lessons there: a getter gone can un-test a same-named method elsewhere
+  (`tested-public-api` matches by name: `IbftProtocol::propose_interval_ms` needed a node test); a `Default`
+  turned literal can become a dry4rust exact duplicate of a test helper building another record by literal --
+  the helper, a fixed value, became a `const`. (C)
   object exposing `pub` fields -> private fields, getters, a constructor (23): `ClusterConfig`, `FleetBlockLimits`
   (system-tests), `Account`, `Block` (~148 importers), `Transaction`, `TransactionReceipt` (execution-types),
   `CrapFunction`, `CrapReport`, `CommandOutcome` (xtask), `IbftProtocolConfig`, `IbftProtocolLimits`,
@@ -81,10 +85,11 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 94 on the branch; 5 past the threshold (4 planned, + `97225b7` for the dry4rust re-record); bug fixes
+- **Commits:** 95 on the branch; 5 past the threshold (4 planned, + `97225b7` for the dry4rust re-record); bug fixes
   1 (`eba863f`); the 90th ran all three stages, as every commit has; the 100th next
-- **Tests:** 3,440 at the base, 3,635 now (stage 5 463)
-- **Offences:** 95 as configured, 306 everything on, shear 0; Grip 643.14 / Braintax 4,502.39 (0.1428;
+- **Tests:** 3,440 at the base, 3,636 now (stage 5 463)
+- **Offences:** 92 as configured, 303 everything on, shear 0; Grip 637.63 / Braintax 4,487.65 (0.1421; node
+  292.63 / 2,284.79 at `c72cdf3`; before it 643.14 / 4,502.39, 0.1428;
   execution-types 64.14 to 56.14 at `069fd4c`, evm 503.97 to 500.25 at `1618598`, node 2295.50 to 2299.52 at
   `cec0c5b` with the factory seam); dry4rust baseline 209 groups, all matching (re-recorded at `cec0c5b`, Q32)
 - **Questions:** 30 answered, 2 open (9, 25). **Interventions:** 0. **Waits:** 0.
@@ -121,7 +126,7 @@ pushed with the record at every commit.
   (`8fd7429`), the slice's last; injected dependencies: the EVM engines composed in evm and node-infra
   (`e4de9df`), and in validation's helpers and single-node tests (`c576a8a`), their `Default` out (`1618598`); the bootstrapper's coordinator factory (`3505d8d`), the bootstrapper handed its coordinator (`cec0c5b`), the
   slice's last; records and objects: fourteen records' fields public (`3b243b5`), two
-  system-tests configs by literal (`64b9ab9`).
+  system-tests configs by literal (`64b9ab9`), the node's admission, timing and diagnostics configs (`c72cdf3`).
 
 ## Next in line
 
