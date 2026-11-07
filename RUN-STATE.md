@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `24be2f1` Move the round driver's tests beside their source, and retire the harness folder (row 245)
+- **Last commit:** `10c5112` Move the gRPC transport bus's and the shutdown signal's tests beside their sources (row 246)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -220,10 +220,17 @@ pushed with the record at every commit.
   `tests/ibft_cluster_tests.rs` -- `4a976c2` (270 lines; 100 to 98); (p2) the in-memory transport's and the test
   node's tests to `tests/` -- `857cb80` (288 lines; 98 to 96); (p3) the protocol helpers' tests, the setup tests
   merged in, to `tests/` -- `f4888b4` (216 lines; 96 to 94); (p4) the round driver's tests to `tests/`, the harness
-  folder out -- `24be2f1` (166 lines; 94 to 93). Validation's harness moves are done. Next: system-tests' misplaced
-  tests (lines): `tests/infra/io/transport/` `shutdown_signal_tests.rs` (40) and `partition_control_tests.rs` (186)
-  to `partitionable_transport/`, `grpc_transport_bus_tests.rs` (86) and `wire_ibft_message_tests.rs` (228) to
-  `grpc_transport/`, `env_backed_tests.rs` (122) and `grpc_transport_tests.rs` (436) by what they test;
+  folder out -- `24be2f1` (166 lines; 94 to 93). Validation's harness moves are done. (p5) system-tests'
+  `grpc_transport_bus_tests.rs` to `grpc_transport/` (a new test folder) and `shutdown_signal_tests.rs` to
+  `partitionable_transport/` -- `10c5112` (262 lines; 93 to 91; a system-tests tests-only change runs stages 1, 2,
+  5). Next, system-tests' misplaced tests (lines): `partition_control_tests.rs` (186: two batches, its nine
+  `apply_control_line_*` and one `spawn_*` tests) to `partitionable_transport/`; `wire_ibft_message_tests.rs` (228:
+  two batches -- the helpers `block_carrying` and `board_certificate` are past dry4rust's five lines, so they move
+  with the tests that use them, never copied) to `grpc_transport/`; `env_backed_tests.rs` (122) splits by source --
+  three `from_env` tests to `transport_backend_tests.rs`, four `initialize_from_env` tests to
+  `partitionable_transport/partition_table_tests.rs`; `grpc_transport_tests.rs` (436) by source -- two `poll_*` to
+  `grpc_transport/grpc_transport_incoming_tests.rs`, eight `send_*` to `grpc_transport_outgoing_tests.rs`, its
+  helpers with the tests that use them;
   `tests/infra/io/client_interface/` `client_interface_factories_tests.rs` (80, two factories) and
   `grpc_client_interface_tests.rs` (475) by source; `tests/infra/factories_tests.rs` (71) and
   `tests/infra/storage/in_memory_storage_tests.rs` (87) by what they test; `tests/cluster_process_harness_helpers_tests.rs`
@@ -603,18 +610,18 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 245 on the branch; 13 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
+- **Commits:** 246 on the branch; 13 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
   execution port's move, `4cfcce2` --, + `97225b7` for the dry4rust re-record, `1d27ff1` for the two states' 36
   accessors, `3cf1ec6` and `3433b15` for the transaction status's 33 importers and the timer key's 100, `2883602`
   for the slot discovery's 11, `a352577` for the Ed25519 scheme's 14, planned within by SETUP, `d7d2c45` for
-  Faction's two implementations and their test files, Q43) -- 13 of 245 is 5.3%; the 95% now needs about 260
+  Faction's two implementations and their test files, Q43) -- 13 of 246 is 5.3%; the 95% now needs about 260
   commits, every one from here within it: count a move's files first, and
   shape the seams so a type is born where it ends; bug fixes
   6 (`eba863f`, `e1232ca`, `5013d0e`, `1e7ac29`, `643bfd5`, `8e1ca00`); the 150th (`7ffb333`) ran all three stages, Part A's end, the 160th (`6912269`) and
   the 170th (`2883602`), the 180th (`b31593c`), the 190th (`c885cf9`), the 200th (`7508819`), the 210th
   (`e04403c`), the 220th (`e329250`), the 230th (`5ebe5f1`) and the 240th (`18baf35`); the 250th next
 - **Tests:** 3,440 at the base, 3,834 now (stage 5 465); removed under constraint 6: 1 (`2e6d484`, Q34)
-- **Offences:** 41 as configured, 188 everything on (paired-test-file 93, from 100 at `4a976c2`), shear 0; Grip 780.18 / Braintax 4,868.87 (0.1602 at `1f5213f`, the tracker into the tally, node-infra
+- **Offences:** 41 as configured, 186 everything on (paired-test-file 91, from 100 at `4a976c2`), shear 0; Grip 780.18 / Braintax 4,868.87 (0.1602 at `1f5213f`, the tracker into the tally, node-infra
   166.15 / 700.19 and node 320.64 / 2,342.00; 782.93 / 4,880.81, 0.1604 at `58844eb`, the tally port, node-infra
   164.60 / 698.19 and node 324.94 / 2,355.94; 773.51 / 4,811.48, 0.1608 at `9b496e6`, recovery/control 78.14 / 397.87 with
   `PeerKnowledge`; 770.32 / 4,797.08 at `44a0b7a`,
