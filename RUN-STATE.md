@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `aa22f24` Test the cluster harness's three spawners and the builder's validator update (row 313)
+- **Last commit:** `c3f0fb8` Take tested-public-api out of system-tests' stand-down (row 314)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -137,7 +137,14 @@ pushed with the record at every commit.
   second source calls the first's rather than copy it; `tested-public-api` matches by name and arity, so a
   test-side function of the same name hides an untested public one (Q53); rustfmt can turn two thin wrappers
   into a dry4rust exact pair.
-- **Slice in progress:** Part B slice 3, `tested-public-api` in system-tests (SETUP, *Part B*, the skipped rules),
+- **Slice done:** Part B slice 3, `tested-public-api` in system-tests -- 9 commits, rows 306 to 314 (`c1028e1` to
+  `c3f0fb8`), 19:16Z to 20:01Z; 6 `rule-offence`, 2 `refactoring`, 1 `support`; tested-public-api 25 to 0 with every
+  rule on, everything on 103 to 78, as configured 41 throughout; tests 3,835 to 3,866 (stage 5 465 to 496).
+  Lessons: a harness function testable only by starting a process still gets a deterministic smoke test, from a
+  node held short of its quorum; a loop that reads stdin takes its reader as a parameter; an in-process node's
+  transport is a no-op unless the backend variable says grpc; an update to the set the protocol already has fires
+  no event (Q55). Its account, from its start:
+  Part B slice 3, `tested-public-api` in system-tests (SETUP, *Part B*, the skipped rules),
   started 19:16Z, `Chosen-By: risk`, `Over:` the eight single-implemented-type entries; the plan is Q54. 25 with
   every rule on at `15e7d4d`, plus `RuntimeTimerHarness::new` (the owed note below). The list: `overhaul-scratch/
   tpa-list/report.txt`, from an export with `EVERYTHING_ON` as its config and `--rule tested-public-api --package
@@ -170,9 +177,10 @@ pushed with the record at every commit.
   `ClusterConfigFile::new(2)` path (node ids [1, 2]), `spawn_with_malicious_node(3, 4, ..)` (honest [1, 2, 3],
   `malicious_node_started peer_id=4` in stdout) -- and the builder's `with_scheduled_validator_update` in a new
   `cluster_process_harness_builder_tests.rs` (`"validator_set_updated"` logged once the cluster passes the
-  height). Next (9): the stand-down out, a `support` commit -- `stern4rust.toml` (the top comment's paragraph on
-  the rule, the system-tests section's comment and `skip`), CLAUDE.md (the `system-tests` paragraph and "wherever
-  the rule runs"), OPEN_POINTS (the row, "two rules" to one, the worth section's last line).
+  height). (9) the stand-down out -- done at `c3f0fb8` (`support`, 64 lines: `stern4rust.toml`'s system-tests
+  section keeps only the `generated` exclusion, CLAUDE.md and OPEN_POINTS say so, one rule stood down).
+  **The slice is done.** Next: the eight `single-implemented-type` entries (SETUP, the skipped rules' last), then
+  the gates (step 8; returned-mutations in node and validation is its question).
   Before it, Part B seam 6, consensus (SETUP, *Part B*, step 6), started 11:29Z, `Chosen-By:
   owner-order`, `Over:` the three skipped-rule slices. The bug first (Q48, answered): (a) the control -- done at
   `11bfec3` (`tests`; `transfer_cluster()`, `transfer_block_for_round_one()` and
@@ -827,11 +835,11 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 313 on the branch; 13 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
+- **Commits:** 314 on the branch; 13 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
   execution port's move, `4cfcce2` --, + `97225b7` for the dry4rust re-record, `1d27ff1` for the two states' 36
   accessors, `3cf1ec6` and `3433b15` for the transaction status's 33 importers and the timer key's 100, `2883602`
   for the slot discovery's 11, `a352577` for the Ed25519 scheme's 14, planned within by SETUP, `d7d2c45` for
-  Faction's two implementations and their test files, Q43) -- 13 of 313 is 4.2%; the 95% reached at the 260th (247 of 260 within), and it holds only while every
+  Faction's two implementations and their test files, Q43) -- 13 of 314 is 4.1%; the 95% reached at the 260th (247 of 260 within), and it holds only while every
   commit from here stays within: count a move's files first, and
   shape the seams so a type is born where it ends; bug fixes
   6 (`eba863f`, `e1232ca`, `5013d0e`, `1e7ac29`, `643bfd5`, `8e1ca00`); the 150th (`7ffb333`) ran all three stages, Part A's end, the 160th (`6912269`) and
@@ -987,8 +995,8 @@ Part A's slices, in order, with the criterion that put each there (`SETUP.md`, *
 Part B's, as SETUP lists them (*Part B: the restructuring*; to be chosen one at a time by *Choosing the next
 slice*): the skipped rules, 20 to 30 commits -- ~~`returned-mutations` in `evm`~~ (done at `5c6e9eb`, 13
 commits, `Chosen-By: risk`), ~~`paired-test-file` in `validation`
-and `system-tests`~~ (done at `15e7d4d`, 64 commits, rows 242 to 305, `Chosen-By: risk`), `tested-public-api` in `system-tests` (tests for the 20 functions no test
-calls), the eight `single-implemented-type` entries split; then the seams, 75 to 100 commits, in the owner's
+and `system-tests`~~ (done at `15e7d4d`, 64 commits, rows 242 to 305, `Chosen-By: risk`), ~~`tested-public-api` in `system-tests`~~ (done at `c3f0fb8`, 9 commits, rows 306 to
+314, `Chosen-By: risk`), the eight `single-implemented-type` entries split; then the seams, 75 to 100 commits, in the owner's
 order -- ~~execution with `execution-types` dissolved into `types`~~ (done at `c83fba2`, 13 commits, `Chosen-By:
 dependency`), ~~`node`'s own dependencies~~ (done at `a352577`, 1 commit, `Chosen-By: no-scaffolding`), ~~Faction~~
 (done at `a4f3033`, 18 commits, `Chosen-By: owner-order`), ~~Beggar~~ (done at `52bc729`, 19 commits, `Chosen-By:
