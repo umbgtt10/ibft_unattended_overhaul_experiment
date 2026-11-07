@@ -766,7 +766,9 @@ the course the slice took and the run's recommendation; after the run, the owner
   `c983291a4180624d` out, `a17c620ba9f6cd6b` in, 203 kept; the two live in two crates' tests and share nothing they
   could import. Commit 122 -- the pair of `setup_restored_protocol_with_fallback_validators`, in validation's sources
   and node's tests, reshaped alike by `with_active_validators`: `256b6ee250ec7b90` out, `53d1f2df9ed91e42` in; a
-  near pair of test helpers paid beside it, 203 to 202.
+  near pair of test helpers paid beside it, 203 to 202. Commit 127 -- system-tests' `sample_hard_state` and
+  `sample_locked_wal`, the same sample state in two test files, now `with_` chains: `68a95c56852dda33` out,
+  `defbb0eb7230cf71` in, 203 kept.
 
 ### 36. The hard state drops a pending block's transaction data
 

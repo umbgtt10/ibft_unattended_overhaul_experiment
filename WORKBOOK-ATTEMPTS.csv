@@ -129,3 +129,4 @@ commit_n,attempt,kind,stages,start,finish,outcome,refused_by,files_added,files_r
 124,1,refactoring,"1, 2",2026-11-07T03:06:01Z,2026-11-07T03:06:40Z,landed,,0,0,10,43,70
 125,1,refactoring,"1, 2",2026-11-07T03:12:38Z,2026-11-07T03:13:16Z,landed,,0,0,3,72,129
 126,1,refactoring,"1, 2",2026-11-07T03:14:46Z,2026-11-07T03:15:22Z,landed,,0,0,3,92,92
+127,1,rule-offence,"1, 2, 5",2026-11-07T03:17:04Z,2026-11-07T03:18:41Z,landed,,0,0,6,54,66

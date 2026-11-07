@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `8843e5c` Read and build the hard state and the volatile snapshot through their accessors in validation's protocol tests (row 126)
+- **Last commit:** `4612b79` Keep the hard state's and the volatile snapshot's fields private (row 127)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -65,7 +65,7 @@ pushed with the record at every commit.
   Lessons: stern refuses anything but a parameter assigned to a trait-typed field, an injected factory's call
   included -- split build from install; a delegating trait-impl stub can be a dry4rust near duplicate of
   another, so let the impl hold the body; a planned past-threshold commit says so in `Threshold: exceeded --`.
-- **Slice in progress:** Part A slice 8, records and objects, a module at a time -- records-and-objects 7 left
+- **Slice in progress:** Part A slice 8, records and objects, a module at a time -- records-and-objects 5 left
   (`Chosen-By: no-scaffolding`; started 23:51:38Z; full list `overhaul-scratch/records-and-objects.txt`). Three
   kinds. (A) record with private fields -> make them `pub`: all 14 done (`3b243b5`). (B) getter-only -> delete
   the getters and constructor, `pub` fields, built by literal: all 11 done (`EtheramGrpcNodeTimerConfig`,
@@ -116,24 +116,17 @@ pushed with the record at every commit.
   `WorldStateSnapshot` at `3afac18` (two commits: `new`, getters and every production reader at `439551b` -- the
   in-memory storage copies the adopted maps, an `into_parts` tuple having tripped clippy's `type_complexity`; a
   dry4rust pair re-keyed, Q35 -- then the fields private with the remaining tests, split through
-  `git stash --keep-index`); `IbftHardState` and `IbftVolatileSnapshot` in progress together (they share five test
-  files): a getter and a `with_` per field, no constructor (the tests set one to four fields over `Default`), at
-  `1d27ff1` with every production reader and the types crate's tests (`refactoring`, past the threshold, 859
-  lines -- tested-public-api wants the crate's own tests calling all 36 methods in the same commit); node's 11
-  test files at `278fb05` (stages 1, 2 -- tests and a baseline only); ten of validation's at `a7f097b`; persistence,
-  re-execution, malicious-block at `8d4b1cf`; validation's protocol and validation tests at `8843e5c` (a
-  near pair recorded, Q33, 202 to 203); the rest waits in `git stash` ("c127-pending"): commit 127 pops system-tests' `sled_storage_tests` and `restart_tests` (their
-  pair re-keyed, Q35), makes both types' fields private, stern `--write-baseline` (67 to 65), stages 1, 2, 5 --
-  the combined commit was 505 lines and a seventh past the threshold would break the 95%; to list readers
-  (`overhaul-scratch/state-readers.txt`; literals surface after the reads), in batches within the threshold, then
-  the fields private (`rule-offence`, both types, 67 to 65);
-  7 left: `Block`
-  (execution-types), `NodeDiagnostics` (Q37, open: a constructor of 28 -- left in the baseline),
-  `ContextSnapshot`, `IbftProtocol` (Q25) (node),
-  `RecoveryControl` (Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
-  `WorldStateSnapshot` (types) -- the types' three built by literal in some 38 files, `..Default::default()`
-  among them, which private fields forbid outside the crate: getters and constructors first, call sites in
-  `refactoring` batches, fields private last. SETUP's 6-10 for the slice is its commit range, not what is left
+  `git stash --keep-index`); `IbftHardState` and `IbftVolatileSnapshot` together at `4612b79` (six commits, rows
+  122-127, they share five test files): a getter and a `with_` per field, no constructor (the tests set one to
+  four fields over `Default`) -- `1d27ff1` every production reader and the types crate's tests (`refactoring`, past
+  the threshold, 859 lines -- tested-public-api wants the crate's own tests calling all 36 methods in the same
+  commit), node's tests `278fb05`, validation's `a7f097b`, `8d4b1cf`, `8843e5c`, system-tests' with the fields
+  private `4612b79` (the last three split out of one 505-line commit -- a seventh past the threshold would break
+  the 95%); a test-only commit runs stages 1 and 2;
+  5 left: `Block` (execution-types; ~148 importers, tests mutate its fields), `NodeDiagnostics` (Q37, open: a
+  constructor of 28 -- left in the baseline), `ContextSnapshot` (node; 13 fields read across the protocol, 84
+  in-place mutations in 21 test files, 68 of them `ctx.accounts.insert`), `IbftProtocol` (Q25) (node),
+  `RecoveryControl` (Q25) (recovery). SETUP's 6-10 for the slice is its commit range, not what is left
   (read wrongly here until row 114): the stern baseline is to end holding the cluster harness's time reads alone,
   so every object closes, the upper end of the range being the protocol's and control's types (Q25) and
   `Block`/`Transaction`/`Account` ("every reader changes"); decision 1:
@@ -154,11 +147,11 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 126 on the branch; 6 past the threshold (4 planned, + `97225b7` for the dry4rust re-record,
+- **Commits:** 127 on the branch; 6 past the threshold (4 planned, + `97225b7` for the dry4rust re-record,
   `1d27ff1` for the two states' 36 accessors); bug fixes
   2 (`eba863f`, `e1232ca`); the 110th ran all three stages, as every commit has; the 120th next
 - **Tests:** 3,440 at the base, 3,655 now (stage 5 465); removed under constraint 6: 1 (`2e6d484`, Q34)
-- **Offences:** 67 as configured, 278 everything on, shear 0; Grip 709.40 / Braintax 4,620.41 (0.1535;
+- **Offences:** 65 as configured, 276 everything on, shear 0; Grip 709.40 / Braintax 4,620.41 (0.1535;
   types 72.32 / 518.56 and node 300.17 at `1d27ff1`; types 39.26 / 453.13 at `439551b`;
   recovery/control 74.95 / 383.47 at `525d620`;
   types 35.46 / 447.16 at `e1232ca`; execution-types 24.37 / 75.83 and evm 34.29 / 498.07 at `ac456b9`;
@@ -215,7 +208,8 @@ pushed with the record at every commit.
   test readers (`68620c3`), validation's cluster tests (`31dea7c`), its fields private (`a449311`); the transaction's accessors and
   production readers (`ac456b9`), its system-tests and trace-driver readers (`cbbd2f6`), its fields private (`e39ac2c`); the recovery state snapshot (`525d620`); the world state snapshot's accessors and production readers
   (`439551b`), its fields private (`3afac18`); the hard state's and volatile snapshot's accessors, production
-  readers and types tests (`1d27ff1`); bugs found on the way: the hard state's dropped transaction data (`e1232ca`,
+  readers and types tests (`1d27ff1`), their test readers (`278fb05`, `a7f097b`, `8d4b1cf`, `8843e5c`), their
+  fields private (`4612b79`); bugs found on the way: the hard state's dropped transaction data (`e1232ca`,
   Q36).
 
 ## Next in line
