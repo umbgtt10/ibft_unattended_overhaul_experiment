@@ -815,7 +815,8 @@ the course the slice took and the run's recommendation; after the run, the owner
   pair becomes a near one, as commit 120's did: `c225bf6e826907a1` out, `f55ea457dff04545` in. The two scenario
   starts wrapping it reshape alike in validation alone, so the four-member exact group `5bd522c610139462` splits:
   node's two stay under it and validation's two are `066c4a68ee0ff20b`. That is the same duplication in two
-  groups, 193 to 194. Commit 122 -- the pair of `setup_restored_protocol_with_fallback_validators`, in validation's sources
+  groups, 193 to 194. Commit 333 -- validation's `drive_to_commit` alike, its exact pair with node's test copy
+  near: `bf88d45c0c9668dd` out, `cac40dc879b6305e` in; 194 kept. Commit 122 -- the pair of `setup_restored_protocol_with_fallback_validators`, in validation's sources
   and node's tests, reshaped alike by `with_active_validators`: `256b6ee250ec7b90` out, `53d1f2df9ed91e42` in; a
   near pair of test helpers paid beside it, 203 to 202. Commit 127 -- system-tests' `sample_hard_state` and
   `sample_locked_wal`, the same sample state in two test files, now `with_` chains: `68a95c56852dda33` out,
