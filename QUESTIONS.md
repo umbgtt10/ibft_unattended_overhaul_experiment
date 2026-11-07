@@ -782,6 +782,13 @@ the course the slice took and the run's recommendation; after the run, the owner
   each now, under dry4rust's five, pay their pair `3610fac662d3b38a`; its `make_recovery_block` leaves its group
   of three the same way; its `commit_certificate_for`, reading the height through the getter, leaves its group of
   three until node's and validation's copies read it so too, when the three are recorded again; 203 to 202.
+  Commit 138 -- node's and validation's helper twins move together: `commit_certificate_for` recorded again with
+  its three members (`6a3e0cf1de95c744` out, `24c86180ef695fb7` in), `build_block_with_commitments` and
+  `make_pre_prepare` re-keyed (`40298922b91b8ae9` to `410cdf68518b2f17`, `c2117b77ffa96486` to
+  `5f18c4d6efa5aab5`), `make_recovery_block` paid (`bfc9ace60a5bfbb4`, one line each now); the snapshot anchors'
+  exact pair (`5472a4f676429fed`, node's copy and validation's) goes with node's copy, and validation's two copies,
+  differing in the gas limit, are recorded as the near pair they are (`ea21bd393a440c18`) until validation's tests
+  move; 202 to 201.
 
 ### 36. The hard state drops a pending block's transaction data
 
