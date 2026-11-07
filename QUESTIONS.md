@@ -72,6 +72,7 @@ After the run the owner takes each open entry -- implement, discuss, discard, po
 | 52 | commit 267, Part B, the skipped rules | entry 51's sources make the harness calls a scenario's tests made, and `tested-public-api`, stood down in system-tests, matches a call by name and arity: `with_scheduled_validator_update` lost its only direct caller, 17 to 18, and other calls only scenario setups make will follow | answered | the sources stay as entry 51 has them, since every such call is still driven by the same test one call deeper and no visibility changes; each commit names what the rule stops seeing; the `tested-public-api` slice, next, takes them with the 17 |
 | 53 | commit 299, Part B, the skipped rules | removing the peer-message proptests' local copy of the protocol-injection source's start shows `protocol_helpers::setup_protocol_with_signature_scheme` never had a direct test: `tested-public-api` matches by name and arity and had counted the same-named local helper's calls | answered | an unplanned `tests` commit, the 300th, gives the helper a direct test in `protocol_helpers_tests.rs`; then the injection source lands with the proptests on it; nothing is renamed or imported under the old name to keep the collision working |
 | 54 | commit 306, Part B, the skipped rules | with every rule on, `tested-public-api` counts 25 public functions in system-tests no test calls: five pure, six on the gRPC node and its config, two run loops reading stdin, twelve that start node processes | answered | each gets a direct test, none made private: the pure five first; the node's in process, the config read through a new `protocol_config()`; the run loops handed their commands as a parameter; the process starters a smoke test each; the stand-down out at zero |
+| 55 | commit 313, Part B, the skipped rules | an update to the set the protocol already has fires no event, and the cluster scenario named `..._fires_event_and_cluster_continues_committing` schedules exactly that, asserting only progress | answered | the builder's test narrows the set to `[1, 2]` and asserts each node logs the update; the scenario is left as it is, its name claiming more than it checks, listed in the final report |
 
 ## Interventions
 
@@ -1457,3 +1458,21 @@ the course the slice took and the run's recommendation; after the run, the owner
     and starts no process. So its single-node build, its port and its `new` were tested beside the gRPC node's
     constructor and step. The functions that start processes are nine, not twelve.
 - **Commit:** 306 onward.
+
+### 55. A scenario test named for an event it cannot see
+
+- **Raised:** at commit 313, Part B, the skipped rules, testing the cluster builder's validator update.
+- **What:** the protocol applies a scheduled validator update only if the set changes. An update to the set it
+  already has is taken off the schedule with no event (`apply_validator_set_update_if_due`, node's consensus).
+  The cluster scenario `scheduled_validator_set_update_fires_event_and_cluster_continues_committing` schedules
+  `[1, 2, 3]` on a three-node cluster, which is the set it already has. It asserts only that the cluster commits
+  past the height, so it passes, but no event fires. A first draft of the builder's test made the same choice, and
+  waited 20 seconds for an event that never came.
+- **Status:** answered, from CLAUDE.md's test preservation and assertion integrity rules and SETUP's `tests` kind.
+- **Answer:**
+  - **the builder's test narrows the set** to `[1, 2]`, and asserts that each of the three nodes logs the update. It
+    is the first system test to see the event come out of a running cluster;
+  - **the scenario stays as it is**, name and assertions. What it asserts is true, and renaming a test or changing
+    what it schedules is a change to an existing test that this slice does not need. Its name claims more than it
+    checks, and the final report lists it among what the gates could not see.
+- **Commit:** 313.
