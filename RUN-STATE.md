@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `1121282` Keep the fields of the prune plan and the retained counts private (row 104)
+- **Last commit:** `8230a8a` Keep the in-flight slot's fields private; ask it for its request (row 105)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -65,7 +65,7 @@ pushed with the record at every commit.
   Lessons: stern refuses anything but a parameter assigned to a trait-typed field, an injected factory's call
   included -- split build from install; a delegating trait-impl stub can be a dry4rust near duplicate of
   another, so let the impl hold the body; a planned past-threshold commit says so in `Threshold: exceeded --`.
-- **Slice in progress:** Part A slice 8, records and objects, a module at a time -- records-and-objects 19 left
+- **Slice in progress:** Part A slice 8, records and objects, a module at a time -- records-and-objects 18 left
   (`Chosen-By: no-scaffolding`; started 23:51:38Z; full list `overhaul-scratch/records-and-objects.txt`). Three
   kinds. (A) record with private fields -> make them `pub`: all 14 done (`3b243b5`). (B) getter-only -> delete
   the getters and constructor, `pub` fields, built by literal: all 11 done (`EtheramGrpcNodeTimerConfig`,
@@ -94,7 +94,10 @@ pushed with the record at every commit.
   node's `PrunePlan` and `RetainedCounts` at `1121282` -- the counts' one mutation now `with_pending_transactions`,
   a value returned; two `with_` methods and the block's `with_parent_hash` a dry4rust group recorded under Q33
   (210 kept, one paid); node's Grip 285.50 to 295.95, the getters' price; 19 left; next: the smaller node and
-  recovery objects, `InFlightSlot` first (one `request()` can replace the two field-by-field requests); execution-types' `Account`, `Block`, `Transaction` read in
+  recovery objects -- `InFlightSlot` at `8230a8a` (`is_targeted()`, since `targeted` names a constructor; `new`
+  public with a retry count; `request()`; a recorded pair re-keyed, Q35); 18 left; next `RecoveryContext`
+  (three fields, its constructor there); `RecoveryStateSnapshot` has eight fields, past clippy's seven-argument
+  limit for a constructor -- later; execution-types' `Account`, `Block`, `Transaction` read in
   some 70 files -- getters added first, readers moved a directory at a time in `refactoring`s, fields private last):
   `Account`, `Block` (~148 importers), `Transaction`, `TransactionReceipt` (execution-types),
   `IbftProtocolConfig`, `IbftProtocolLimits`,
@@ -102,17 +105,19 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 104 on the branch; 5 past the threshold (4 planned, + `97225b7` for the dry4rust re-record); bug fixes
+- **Commits:** 105 on the branch; 5 past the threshold (4 planned, + `97225b7` for the dry4rust re-record); bug fixes
   1 (`eba863f`); the 100th ran all three stages, as every commit has; the 110th next
-- **Tests:** 3,440 at the base, 3,637 now (stage 5 465); removed under constraint 6: 1 (`2e6d484`, Q34)
-- **Offences:** 79 as configured, 290 everything on, shear 0; Grip 638.54 / Braintax 4,485.44 (0.1424; node
+- **Tests:** 3,440 at the base, 3,638 now (stage 5 465); removed under constraint 6: 1 (`2e6d484`, Q34)
+- **Offences:** 78 as configured, 289 everything on, shear 0; Grip 644.24 / Braintax 4,492.34 (0.1434;
+  recovery/control 66.97 / 370.73 at `8230a8a`, up from 61.27 / 363.83 with seven accessors; node
   295.95 / 2,288.56 at `1121282`, up from 285.50 / 2,268.11 with eleven getters and setters; xtask and system-tests are
   not scored;
   recovery/control 61.27 / 363.83 at `12b0c09`; recovery/ibft 48.77 / 245.23 and node 285.50 / 2,268.11 at `df27ed7`; recovery/control 62.22 / 365.78 at `a247cf2`; node 285.44 / 2,268.11 at `ef5f4d9`, 286.39 / 2,270.20 at `2e6d484`, 290.57 / 2,277.38 at `64f562b`, 292.63 / 2,284.79 at `c72cdf3`; before it 643.14 / 4,502.39, 0.1428;
   execution-types 64.14 to 56.14 at `069fd4c`, evm 503.97 to 500.25 at `1618598`, node 2295.50 to 2299.52 at
-  `cec0c5b` with the factory seam); dry4rust baseline 210 groups, all matching (re-recorded at `cec0c5b`, Q32;
-  one group added at `64f562b`, Q33)
-- **Questions:** 32 answered, 2 open (9, 25). **Interventions:** 0. **Waits:** 0.
+  `cec0c5b` with the factory seam); dry4rust baseline 211 groups, all matching (re-recorded at `cec0c5b`, Q32;
+  one group added at `64f562b`, Q33; one added and one paid at `1121282`; one re-keyed and one added at `8230a8a`,
+  Q35, each copy kept in scratch as `dry-baseline-before-cN.json`)
+- **Questions:** 33 answered, 2 open (9, 25). **Interventions:** 0. **Waits:** 0.
 
 ## The run so far
 
@@ -147,7 +152,7 @@ pushed with the record at every commit.
   (`e4de9df`), and in validation's helpers and single-node tests (`c576a8a`), their `Default` out (`1618598`); the bootstrapper's coordinator factory (`3505d8d`), the bootstrapper handed its coordinator (`cec0c5b`), the
   slice's last; records and objects: fourteen records' fields public (`3b243b5`), two
   system-tests configs by literal (`64b9ab9`), the node's admission, timing and diagnostics configs (`c72cdf3`), the bootstrapping config (`64f562b`), the NewView message's fields (`2e6d484`), the validator set updates (`ef5f4d9`), the recovery requests (`a247cf2`), the recovery facts (`df27ed7`), the peers' recovery statuses (`12b0c09`), the last getter-only one; xtask's report and command outcome
-  (`d09acfa`), the first objects; the cluster config and the fleet's block limits (`6c83656`), the prune plan and the retained counts (`1121282`).
+  (`d09acfa`), the first objects; the cluster config and the fleet's block limits (`6c83656`), the prune plan and the retained counts (`1121282`), the in-flight slot (`8230a8a`).
 
 ## Next in line
 

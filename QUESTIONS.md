@@ -52,6 +52,7 @@ After the run the owner takes each open entry -- implement, discuss, discard, po
 | 32 | commit 92, Part A | the bootstrapper's coordinator is built from what only peer discovery knows, and stern refuses anything but a parameter assigned to it, a factory's call included; the change reshapes seven recorded dry4rust groups | answered | `init` takes the coordinator; the bootstrapper's injected factory builds it, the protocol installs it; the dry4rust baseline re-recorded as entries 7, 13 and 26 did -- seven groups re-keyed, one paid group dropped, none added, 210 to 209 |
 | 33 | commit 96, Part A | `records-and-objects`' correction builds a getter-only config's `Default` by literal, and dry4rust pairs two such `Default`s -- the bootstrapping and the consensus timing configs, three fields each -- as near duplicates: alike in shape, with nothing to share | answered | the pair is recorded in the dry4rust baseline under `c2faba878ab6d286`, named here, every other group as it was -- 209 to 210 -- as the stern baseline takes an added offence named in `QUESTIONS.md`; a later commit can drop it |
 | 34 | commit 97, Part A | `NewViewMessageFields` loses its five getters, and `behaviour-tests` refuses one of the five getter tests, `view_change_proofs_returns_the_proofs_the_new_view_carries`, as a test of the record alone | answered | removed under constraint 6's licence, mapped to `change_senders_collects_one_entry_per_distinct_proof_sender`, which checks that what the validator reads from the proofs is the proofs the fields were built with; the other four, which the gate does not refuse, read the fields |
+| 35 | commit 105, Part A | the in-flight slot's fields go private, and reading them through getters reshapes a recorded dry4rust pair, the recovery state's `fail_request` and `refuse_request`; the slot's new `request()` pairs with `ContextSnapshot::header` | answered | the pair re-keyed as entries 7, 13, 26 and 32 did, `b4e7991104edfc28` out and `0df28f4a7502fa38` in, the same two members; the literal pair recorded under entry 33 as `f280cde3a9b5c133` -- 210 to 211 |
 
 ## Interventions
 
@@ -698,7 +699,9 @@ the course the slice took and the run's recommendation; after the run, the owner
 - **Commit:** 96.
 - **Taken again:** commit 104 -- `RetainedCounts::with_commit_certificates`, `with_pending_transactions` and
   `Block::with_parent_hash`, three one-field struct updates on two types, recorded as the exact group
-  `63532d7dea94bfeb`; the same commit paid `4357ad2b28af5fbc`, so the baseline stays at 210.
+  `63532d7dea94bfeb`; the same commit paid `4357ad2b28af5fbc`, so the baseline stays at 210. Commit 105 --
+  `InFlightSlot::request` and `ContextSnapshot::header`, each a three-field literal of its own fields, recorded as
+  `f280cde3a9b5c133` (entry 35).
 
 ### 34. A getter's test the record-alone rule refuses
 
@@ -725,3 +728,20 @@ the course the slice took and the run's recommendation; after the run, the owner
   assertions the same. Left for whoever owns the rule: the five are built alike, through the same helper, and
   its report does not say what sets the fifth apart.
 - **Commit:** 97.
+
+### 35. The in-flight slot's getters reshape a recorded pair
+
+- **Raised:** commit 105, Part A, records and objects.
+- **What:** `InFlightSlot` -- the node's one outstanding recovery request, with what a reader of the decision needs
+  beside it -- exposed its five fields. With them private, the recovery state reads the slot through getters, and
+  its `fail_request` and `refuse_request`, which the dry4rust baseline records as an exact pair
+  (`b4e7991104edfc28`), stay a pair under a new fingerprint: they differ, as before, only in which list the
+  unanswered peer goes into. The two places that built a `RecoveryRequest` field by field from the slot now ask the
+  slot, `request()`, and dry4rust pairs that literal with `ContextSnapshot::header`, three fields of its own.
+- **Status:** answered.
+- **Answer:** the pair is re-keyed, as entries 7, 13, 26 and 32 re-keyed theirs, checked fingerprint by fingerprint
+  against the copy kept in scratch: `b4e7991104edfc28` out, `0df28f4a7502fa38` in, the same two members. Folding the
+  two into one would hand a method the list it writes, which the house rules refuse (no `&mut` parameter), or make
+  each a three-line wrapper around a helper that is the same shape again. The literal pair is entry 33's case and
+  is recorded as `f280cde3a9b5c133`, named in the commit's message. 210 to 211.
+- **Commit:** 105.
