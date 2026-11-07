@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `5c6e9eb` Take returned-mutations out of evm's stand-down (row 163)
+- **Last commit:** `8afa421` Dissolve execution-types into types (row 164)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -91,7 +91,23 @@ pushed with the record at every commit.
   not paired by test-diff -- a `Maps:` line each; rustfmt wraps a call whose arguments pass 60 columns; a staged
   change past the threshold is split by keeping the finished files in scratch, editing the tree back to the first
   half, and copying them back for the second.
-- **Slice in progress:** none -- choose the next (see `Next in line`).
+- **Slice in progress:** Part B seam 1, execution, with `execution-types` dissolved (SETUP, *Part B*, step 1) --
+  `Chosen-By: dependency` (every file the three skipped-rule slices add -- scenario sources, split-out types,
+  tests -- would import `execution_types::` paths the merge then rewrites; merged first, each is written once),
+  `Over:` paired-test-file, tested-public-api, single-implemented-type; started 06:33:39Z. Steps: (1) the merge --
+  done at `8afa421` (`refactoring`, planned past the threshold: 376 files, 5,128 lines). The former crate is one
+  module, `etheram_ibft_types::execution` (`common_types` nested inside it: beside it `types/src` held six folders,
+  one past `directory-subfolder-count`'s five), its tests under `types/tests/execution`; the 312-file path rewrite
+  by a scratch program, `overhaul-scratch/path-rewriter` (`cargo run --manifest-path .../Cargo.toml -- <root>
+  <old prefix> <new prefix> [<only under>]`), rustfmt resorting imports and four sorted by hand; xtask's three
+  package lists and the justfile's stage-1 lines follow. (2) next, `support`: the documents naming the crate --
+  CLAUDE.md (the "no section" list), `stern4rust.toml`'s comments, README, `docs/OPEN_POINTS.md` (the leaf
+  `types` it asks for is reached), TEST-LADDER, IBFT-SPEC-COVERAGE, RECOVERY-AS-BUILT and the live ADRs; history
+  files stay as written. (3) `ExecutionEngine` into `node/src/traits` (22 importers, the second planned past the
+  threshold); (4) evm a plug-in on `node` for the port and `types` for the data model -- `node` depends on `evm`
+  today, which goes first; `NoOpExecutionEngine` the default in node-infra; (5) the contract suite in a
+  `node-contracts` crate, run by both engines and the no-op; (6) the boundary check beside `cargo xtask
+  recovery-boundary`: evm imports only `types`' execution module.
 - **Slice 1's detail:** `Chosen-By: risk` (the largest of the
   skipped rules' pieces, and the one most likely to surprise), `Over:` the other three skipped-rule slices and the
   execution seam; started 05:33:28Z. 57 offences with the rule on (list:
@@ -243,14 +259,16 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 163 on the branch; 8 past the threshold (4 planned, + `97225b7` for the dry4rust re-record,
-  `1d27ff1` for the two states' 36 accessors, `3cf1ec6` and `3433b15` for the transaction status's 33 importers
-  and the timer key's 100 -- 8 of 163 is 4.9%, so the 95% needs Parts B and C to add commits within it, and Part
+- **Commits:** 164 on the branch; 9 past the threshold (5 planned -- the 5th the merge, `8afa421` --, +
+  `97225b7` for the dry4rust re-record, `1d27ff1` for the two states' 36 accessors, `3cf1ec6` and `3433b15` for
+  the transaction status's 33 importers and the timer key's 100 -- 9 of 164 is 5.5%, the `ExecutionEngine` move
+  planned to make it 10, so the 95% needs Parts B and C to add commits within it, and Part
   B's two planned moves out of `execution-types` past it; keep every other commit within); bug fixes
   2 (`eba863f`, `e1232ca`); the 150th (`7ffb333`) ran all three stages, Part A's end, and the 160th (`6912269`);
   the 170th next
 - **Tests:** 3,440 at the base, 3,680 now (stage 5 465); removed under constraint 6: 1 (`2e6d484`, Q34)
-- **Offences:** 41 as configured, 195 everything on, shear 0; Grip 755.85 / Braintax 4,691.70 (0.1611; evm
+- **Offences:** 41 as configured, 195 everything on, shear 0; Grip 755.85 / Braintax 4,698.99 (0.1609; types
+  110.85 / 628.07 at `8afa421`, execution-types scored inside it, the totals' Grip unchanged; evm
   41.69 / 487.19 at `36c3d9e`; 39.77 / 486.59 at `e444f5b`; 40.01 / 487.75 at `6912269`; 40.16 / 490.52 at `ba4e857`; 39.45 / 492.86 at `89735b7`; 38.06 / 495.55 at `78c9a21`; 36.70 / 495.26 at `60b3373`, the calldata loop in a private helper; 35.64 / 499.52 at `bf1b812`; 36.15 / 508.72 at `a022bd1`; 36.69 / 517.12 at `bc9904f`; 37.41 / 522.15 at `0a38d3c`, the delegation layer's price, 34.29 / 498.16 at `3c21b53`;
   execution-types 38.62 / 102.22 at `618a5d2`; 37.67 / 99.93 and types 72.23 / 518.56 at `23c92f9`, the block's
   accessors;
@@ -329,6 +347,7 @@ pushed with the record at every commit.
   (`60b3373`), SLOAD and SSTORE (`78c9a21`), the memory dispatcher, MSTORE and MLOAD (`89735b7`), the memory
   window and its expansion (`ba4e857`), SHA3 with its expansion and word charge (`6912269`), SHA3's window and the
   word pop (`e444f5b`), the engine's working state (`36c3d9e`), the stand-down out (`5c6e9eb`), the slice's last.
+  The execution seam: `execution-types` dissolved into `types` (`8afa421`).
 
 ## Next in line
 
