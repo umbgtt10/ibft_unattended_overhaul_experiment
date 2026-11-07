@@ -6,8 +6,14 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `7182924` Record why the protocol orchestrates its bookkeepers behind ports (row 337) -- **Part
-  B's last.**
+- **Last commit:** `9bac4a1` List the black-box check's expected failures before it runs (row 338)
+- **Part C now** (Q58, the plan): the report is `docs/history/[IMPLEMENTED] OVERHAUL-2026-11-FINAL-CHECKS.md` in
+  etheram-ibft, a section per check. (1) black-box: expected failures (none) committed at `9bac4a1`; the run --
+  `cargo test --manifest-path overhaul-scratch/blackbox-8a775a2/Cargo.toml -p system-tests --config
+  'env.ETHERAM_NODE_PROCESS_BIN="overhaul-scratch/final-node-7182924"' -- --test-threads=1` into
+  `overhaul-scratch/blackbox.log` (binary sha256 `0ffffeca...725e`, built by stage 5 at `7182924`) -- started 22:19Z;
+  its result goes into the report's section 1. Then (2) the traces, (4) start and end, (3) coverage with a new xtask
+  subcommand, (5) the re-derivation with another, in chunks committed to the record.
 - **Step now:** Part B step 8, the gates -- started 21:03Z, the scope Q56 (answered), the recovery crates' part
   Q57 (open: `node` keeps `recovery-control` and `recovery-ibft`, which the gate names as owed). In order: (a)
   `returned-mutations` paid in node (20, five files), then validation (17, three files, about 240 call sites in
@@ -943,12 +949,12 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 337 on the branch; 14 past the threshold (7 planned -- the 5th the merge, `8afa421`, the 6th the
+- **Commits:** 338 on the branch; 14 past the threshold (7 planned -- the 5th the merge, `8afa421`, the 6th the
   execution port's move, `4cfcce2` --, + `97225b7` for the dry4rust re-record, `1d27ff1` for the two states' 36
   accessors, `3cf1ec6` and `3433b15` for the transaction status's 33 importers and the timer key's 100, `2883602`
   for the slot discovery's 11, `a352577` for the Ed25519 scheme's 14, planned within by SETUP, `d7d2c45` for
   Faction's two implementations and their test files, Q43; the 7th planned, `6fc97b9`, `SledStorageInner`'s 678
-  lines, which `implemented-in-one-file` moves whole) -- 14 of 337 is 4.2%, 323 of 337 within; the 95% reached at the 260th (247 of 260 within), and it holds only while every
+  lines, which `implemented-in-one-file` moves whole) -- 14 of 338 is 4.1%, 324 of 338 within; the 95% reached at the 260th (247 of 260 within), and it holds only while every
   commit from here stays within: count a move's files first, and
   shape the seams so a type is born where it ends; bug fixes
   6 (`eba863f`, `e1232ca`, `5013d0e`, `1e7ac29`, `643bfd5`, `8e1ca00`); the 150th (`7ffb333`) ran all three stages, Part A's end, the 160th (`6912269`) and
@@ -989,7 +995,7 @@ pushed with the record at every commit.
   one group added at `64f562b`, Q33; one added and one paid at `1121282`; one re-keyed and one added at `8230a8a`,
   Q35, each copy kept in scratch as `dry-baseline-before-cN.json`; one re-keyed at `97cd2da`; one grown by a member
   at `0d46800`, Q46; seven re-keyed and one near pair paid at `e04403c`, Q46, 196 to 195)
-- **Questions:** 53 answered, 4 open (9, 25, 37, 57). **Interventions:** 0. **Waits:** 0.
+- **Questions:** 54 answered, 4 open (9, 25, 37, 57). **Interventions:** 0. **Waits:** 0.
 
 ## The run so far
 

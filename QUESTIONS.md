@@ -75,6 +75,7 @@ After the run the owner takes each open entry -- implement, discuss, discard, po
 | 55 | commit 313, Part B, the skipped rules | an update to the set the protocol already has fires no event, and the cluster scenario named `..._fires_event_and_cluster_continues_committing` schedules exactly that, asserting only progress | answered | the builder's test narrows the set to `[1, 2]` and asserts each node logs the update; the scenario is left as it is, its name claiming more than it checks, listed in the final report |
 | 56 | after commit 324, Part B, step 8 | the gates: `node` on `etheram-core` and `types` alone, no plug-in on another, every rule on, nothing baselined but the time reads. Measured: `node` still depends on both recovery crates, `returned-mutations` is stood down in `node` and `validation` (37), and entries 9, 25, 31 and 37 hold 13 baseline entries | answered | `returned-mutations` paid, `node` then `validation`, and the stand-downs out; a dependency gate in stage 1 over `cargo metadata`, with allow-lists for the crates on `node`'s path and for the plug-ins, the recovery crates named as owed (entry 57); the baseline as it is; crap, twin and iceberg keep their scopes |
 | 57 | after commit 324, Part B, step 8 | `node` depends on `recovery-ibft`, which SETUP's count left out, and through it on `recovery-control`. The gate needs either `recovery-ibft` in `node` with the control vocabulary mirrored, or `recovery-ibft` as a plug-in behind a wider port: sixty to ninety commits either way. `types` also brings in `tiny-keccak` | open | `node` keeps both crates, and the gate names them as owed. Recommended: `recovery-ibft` into `node`, the control vocabulary mirrored and translated by a plug-in, `recovery-control` unchanged; the hash stays in `types` |
+| 58 | after commit 337, Part C | how each of the five final checks runs with the commands the harness allows, and how the fifth, three stages at each of 337 commits, some thirty hours, fits "twelve hours without a commit landing" | answered | a report in `etheram-ibft`'s `docs/history/`, a section per check, the tools in `xtask`; the black-box check through `cargo test --config env.ETHERAM_NODE_PROCESS_BIN=<final binary>` on a base export, its expected failures (none) committed first; coverage compared function by function by a new subcommand; the re-derivation by another, in chunks committed to the record, the stop condition read as a commit on either repository |
 
 ## Interventions
 
@@ -1583,3 +1584,46 @@ the course the slice took and the run's recommendation; after the run, the owner
   - **the hash stays in `types`**: it is the identity of the data model that every node and the consumer share.
     SETUP's crypto implementations are the signing schemes, which step 2 and the certifier's seam put behind
     `SignatureScheme`.
+
+### 58. Part C: how each of the five checks is run
+
+- **Raised:** after commit 337, Part C, before its first check.
+- **What:** SETUP's *Part C* names five checks and their commits, but not how each is run with the commands the
+  harness allows. It also does not say how the fifth, every commit re-derived with all three stages, fits the stop
+  condition "twelve hours without a commit landing" when the branch now holds 337 commits. At five to six minutes a
+  commit, the fifth runs some thirty hours.
+- **Status:** answered, from SETUP's *Part C*, *Reporting* and the run's tools.
+- **Answer:**
+  - **where the results go**: one report in `etheram-ibft`, `docs/history/[IMPLEMENTED]
+    OVERHAUL-2026-11-FINAL-CHECKS.md`, a section per check, each landing in a `support` commit. The tools the checks need go into `xtask`,
+    also `support`. `RESULT-SUMMARY.md` in this repository is generated from the report and the re-derivation;
+  - **1, black-box**: the expected failures are listed in the report and committed before the check runs. The six
+    `bug-fix` commits were read for what a process test of the base could observe. The only base tests that read
+    the log fields they changed run in process, on the base's own code. So the list is empty. The node binary is
+    the final `system-tests` binary, built by stage 5 at `7182924` and copied into scratch. The base's
+    `system-tests`, from a fresh `git archive` of `8a775a2`, run against it through `cargo test` with
+    `--config env.ETHERAM_NODE_PROCESS_BIN=<binary>`. The base's own stage 5 builds and names its own binary, so it
+    cannot be pointed at another one. The tests run with `--test-threads=1`, since without slotgate's port ranges
+    serial runs keep the cluster tests' ports apart;
+  - **2, traces**: the final replay against `a1460ca`'s corpus, the same command as at every commit;
+  - **3, coverage**: `cargo llvm-cov --json` over the shipped crates at the base and at the end. A new `xtask`
+    subcommand compares the two function by function: each function covered at the base and present at the end
+    under the same demangled path, or the same name, still covered; each one uncovered at the end listed, with the
+    reason given in the report;
+  - **4, start and end**: the same commands on both: `cargo xtask measure` on an export of each, `test-inventory`
+    of each revision, dry4rust's groups, iceberg4rust, the coverage summary per crate, lines and files by category
+    from `git ls-files`, and the machine and toolchain;
+  - **5, every commit re-derived**: a new `xtask` subcommand. For each commit in order it reads, from the history
+    alone:
+    - its numstat and threshold mark;
+    - its offences both ways and its scores, measured on an export;
+    - its inventory's diff and its `Maps:` lines;
+    - its kind against its paths and counts;
+    - its traces, replayed in a scratch worktree;
+    - its three stages, run there.
+
+    It writes a row per commit beside the workbook's. The six bug fixes' tests are run on their parents by hand.
+    It runs in chunks, each chunk's rows committed to this repository as they come. The stop condition is read as a
+    commit landing on either repository: it is there to catch a stalled run, and a record commit carrying the
+    re-derivation's rows is the run's progress, pushed publicly.
+- **Commit:** 338 onward.
