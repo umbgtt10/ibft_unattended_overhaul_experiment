@@ -55,6 +55,7 @@ After the run the owner takes each open entry -- implement, discuss, discard, po
 | 35 | commit 105, Part A | the in-flight slot's fields go private, and reading them through getters reshapes a recorded dry4rust pair, the recovery state's `fail_request` and `refuse_request`; the slot's new `request()` pairs with `ContextSnapshot::header` | answered | the pair re-keyed as entries 7, 13, 26 and 32 did, `b4e7991104edfc28` out and `0df28f4a7502fa38` in, the same two members; the literal pair recorded under entry 33 as `f280cde3a9b5c133` -- 210 to 211 |
 | 36 | commit 115, Part A | the hard state writes a pending block's transactions without their data, in both its layouts, and reads them back empty -- harmless while the block hash left data out, a block that no longer hashes as its certificate since the hash covers it | answered | a bug, fixed test-first in a `bug-fix` commit of its own: both encoders write the data, the cursor reads it, and the layout bytes move on as the house moved them when blocks gained a parent hash -- state in the old layout refused, not misread |
 | 37 | before commit 120, Part A | `NodeDiagnostics` has one associated `const fn` and 28 public fields, nearly all `u32`, built in one place: its correction wants a constructor, and a positional one of 28 would be past every precedent -- the house's largest allowed constructor takes twelve -- and swaps two counters without a compiler noticing | open | the type stays as it is, its offence in the baseline, and the slice goes on with the others; recommended: group the fields into the records the type's own comments already name -- chain position, chain progress, peers, the recovery slot, recovery counters, the protocol's census -- each a record of a few fields, and give `NodeDiagnostics` a constructor of the sequence and the six records |
+| 38 | commit 151, Part B, the skipped rules | the EVM interpreter's operations "become functions that return what they change" (`SETUP.md`): threaded by value, a dispatcher that declines an opcode consumes the stack it was handed; as the machine's own methods, their tests can preset and read nothing | answered | the machine's changing parts become one object, `TinyEvmMachineState`, and the operations its `&mut self` methods -- the house's own shape, the storage-slot analyzer's -- returning a value where they compute one; the counter stays with the machine, the push returning where it goes next; a `bool` and an out-parameter merged into one returned `Option` take their tests' two assertions into one, each mapped to itself |
 
 ## Interventions
 
@@ -845,3 +846,30 @@ the course the slice took and the run's recommendation; after the run, the owner
   of its named fields, in a file of its own beside the type, and give `NodeDiagnostics` a constructor taking the
   sequence and the six records, its getters handing each record back. The beacon's rendering and its byte budget
   do not change; its readers name the group they read.
+
+### 38. The interpreter's operations: what returning what they change means
+
+- **Raised:** commit 151, Part B, the skipped rules -- `returned-mutations` in evm, where it is stood down.
+- **What:** `SETUP.md` says the interpreter's operations, which take the machine's stack, memory, gas and counter by
+  `&mut`, "become functions that return what they change". Three shapes were weighed:
+  - free functions taking each part by value and handing it back -- a `Vec<Hash>` threaded through every
+    operation. The machine tries each group of opcodes in turn, and a group's dispatcher that declines an opcode
+    would consume the stack it was handed: every dispatcher would need to give it back on both paths;
+  - the operations as the bytecode machine's own `&mut self` methods. Its tests could then preset nothing -- the
+    machine starts with an empty stack and memory -- and read nothing back;
+  - the machine's changing parts -- stack, memory and its active words, gas, the working contract storage and the
+    mutations -- as one object, the operations its `&mut self` methods, returning a value where they compute one.
+  Moving an operation's body into an `impl` re-indents every line of it, so every line counts twice; the move goes
+  a group of operations at a time.
+- **Status:** answered.
+- **Answer:** the third. CLAUDE.md allows `&mut self` in impl blocks, the rule counts parameters alone, and it is
+  the house's own shape for an interpreter: `TinyEvmStorageSlotAnalyzer`, in the same folder, keeps its stack in
+  itself and its arithmetic in `TinyEvmWordAlu`, which the machine's ten copies of the same arithmetic will use too.
+  The object is `TinyEvmMachineState`. The program counter stays with the machine, which owns the program, and the
+  push returns where it goes next (commit 151). The state comes in first, its methods calling today's functions;
+  each group then moves in with its tests.
+- **And:** where an operation answered whether it acted through a `bool` and its result through a `&mut`, it
+  returns the result in an `Option`, and a test that asserted the two apart asserts the one value, which says
+  both. The inventory counts one assertion fewer; each such test is mapped to itself in its commit's message,
+  naming this entry -- `exec_push_n_reads_the_immediate_bytes_and_advances_the_counter` first, at commit 151.
+- **Commit:** 151 onward.

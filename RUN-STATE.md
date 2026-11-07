@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `7ffb333` Retire the three open points the overhaul closed into the history folder (row 150)
+- **Last commit:** `3c21b53` Return the counter's next position from the EVM's push instead of writing it (row 151)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -83,8 +83,22 @@ pushed with the record at every commit.
   and OPEN_POINTS, stern4rust.toml's stale package and rule counts, the justfile's comment; the three open points
   this run closed retired verbatim into `docs/history/[IMPLEMENTED] RESOLVED-OPEN-POINTS-2026-11-07.md`, each with
   a **Closed:** line. **Part A is done.**
-- **Slice in progress:** none -- Part B begins. Read SETUP's *Part B: the restructuring* and *Choosing the next
-  slice*, and pick its first slice (`Next in line` lists them).
+- **Slice in progress:** Part B slice 1, `returned-mutations` in evm -- `Chosen-By: risk` (the largest of the
+  skipped rules' pieces, and the one most likely to surprise), `Over:` the other three skipped-rule slices and the
+  execution seam; started 05:33:28Z. 57 offences with the rule on (list:
+  `overhaul-scratch/returned-mutations-evm.txt`): 52 in `tiny_evm_ops.rs`, 5 in `tiny_evm_engine.rs`. The shape
+  (Q38): the machine's changing parts -- stack, memory, `memory_words`, gas, the working contract storage and the
+  mutations, not the counter -- become `TinyEvmMachineState` (`evm/src/tiny_evm/tiny_evm_machine_state.rs`), the
+  operations its `&mut self` methods; arithmetic through `TinyEvmWordAlu`. A body moved into an `impl` is
+  re-indented, every line counted twice, so the steps are: (0) push returns the next counter, in place -- done at
+  `3c21b53` (252 to 251); (1) `refactoring`: the state with every field, a constructor `new(stack, memory, gas,
+  local_storage)`, getters, `charge_opcode_gas(opcode, contract)` and methods calling today's free functions with
+  `&mut self.<field>`, each tested; the machine holds it; (2..) `rule-offence`s, a group a commit, each with its
+  tests moved from `tiny_evm_ops_tests.rs` to `tiny_evm_machine_state_tests.rs`: dup, swap and push; the arithmetic
+  dispatcher, then the ten `exec_*` (their tests renamed `execute_arithmetic_opcode_*`); the environment; sload and
+  sstore; the memory dispatcher; mstore, mload and the two expansions; sha3 and its three helpers; `pop_word` last
+  (every free operation calls it); then the engine's five; then `returned-mutations` out of evm's skip. A test
+  whose `bool` and out-parameter merge into one `Option` loses one assertion: `Maps:` it to itself, Q38.
 - **Slice 9's detail:** record-home 23 (SETUP: 4-6
   commits; 13 records named in a crate's public API but declared in another type's file, 8 wire types used by
   several files but not `pub`, 2 records with one user in files of their own); listed in
@@ -204,12 +218,14 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 150 on the branch; 8 past the threshold (4 planned, + `97225b7` for the dry4rust re-record,
+- **Commits:** 151 on the branch; 8 past the threshold (4 planned, + `97225b7` for the dry4rust re-record,
   `1d27ff1` for the two states' 36 accessors, `3cf1ec6` and `3433b15` for the transaction status's 33 importers
-  and the timer key's 100 -- 8 of 147 is 5.4%, so the 95% needs Parts B and C to add commits within it); bug fixes
+  and the timer key's 100 -- 8 of 151 is 5.3%, so the 95% needs Parts B and C to add commits within it, and Part
+  B's two planned moves out of `execution-types` past it; keep every other commit within); bug fixes
   2 (`eba863f`, `e1232ca`); the 150th (`7ffb333`) ran all three stages, Part A's end; the 160th next
 - **Tests:** 3,440 at the base, 3,670 now (stage 5 465); removed under constraint 6: 1 (`2e6d484`, Q34)
-- **Offences:** 41 as configured, 252 everything on, shear 0; Grip 748.45 / Braintax 4,702.58 (0.1592;
+- **Offences:** 41 as configured, 251 everything on, shear 0; Grip 748.45 / Braintax 4,702.67 (0.1592; evm
+  34.29 / 498.16 at `3c21b53`;
   execution-types 38.62 / 102.22 at `618a5d2`; 37.67 / 99.93 and types 72.23 / 518.56 at `23c92f9`, the block's
   accessors;
   node 325.06 / 2,354.12 at `b440217`;
@@ -230,7 +246,7 @@ pushed with the record at every commit.
   `2e93617`), all matching (re-recorded at `cec0c5b`, Q32;
   one group added at `64f562b`, Q33; one added and one paid at `1121282`; one re-keyed and one added at `8230a8a`,
   Q35, each copy kept in scratch as `dry-baseline-before-cN.json`; one re-keyed at `97cd2da`)
-- **Questions:** 34 answered, 3 open (9, 25, 37). **Interventions:** 0. **Waits:** 0.
+- **Questions:** 35 answered, 3 open (9, 25, 37). **Interventions:** 0. **Waits:** 0.
 
 ## The run so far
 
@@ -280,6 +296,8 @@ pushed with the record at every commit.
   (`3cf1ec6`), the timer key (`3433b15`), system-tests' configs (`e7da3a4`), the slice's last; living documents:
   the gate documents (`520ee10`), the three resolved open points retired (`7ffb333`), Part A's last; bugs found on
   the way: the hard state's dropped transaction data (`e1232ca`, Q36).
+- **Part B:** from row 151, 2026-11-07T05:33Z. The skipped rules: evm's `returned-mutations` -- the push's
+  counter returned (`3c21b53`).
 
 ## Next in line
 
