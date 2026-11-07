@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `d7d2c45` Move Faction's coordinator and observer bridge into node-faction (row 187)
+- **Last commit:** `d1246b3` Speak node's vocabulary through the bootstrapping port (row 188)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -143,9 +143,11 @@ pushed with the record at every commit.
   the bridge and (h) the coordinator in one commit -- done at `d7d2c45` (past the threshold, 1,125 lines, Q43; the
   coordinator `FactionBootstrappingCoordinator`, a wrapper; the bridge on `Arc<dyn PeerDiscoveryObserver>`;
   node-faction's tests record readiness through a dozen-line `RecordingObserver`, `#[derive(Default)]` so its
-  `new` is no dry4rust twin of `PartitionTable::new`; node keeps faction for the port's and event's types); (h) the coordinator as a wrapper
-  struct -- its tests need a recording `ProtocolObserver` of their own; (i) the port's commands and outcomes in
-  node's vocabulary, then (j) the event's, `faction` out of node's manifest; (k) the fixed-membership default in
+  `new` is no dry4rust twin of `PartitionTable::new`; node keeps faction for the port's and event's types); (i) the
+  port's commands and outcomes in node's vocabulary -- done at `d1246b3` (8 files; the wrapper translates through
+  `FactionTranslation`, the bootstrapper imports no faction; 13 assertions renamed); next (j) the event's --
+  `ReadinessTransitionObserved { command: BootstrappingCommand, transition: &ReadinessTransition }`, the bridge
+  translating, the logging observer's JSON byte-identical -- and `faction` out of node's manifest; (k) the fixed-membership default in
   node-infra, a builder choice; (l) the bootstrapping contract in `node-contracts`, (m) run by both; (n) docs.
 - **Seam 1's detail:** Part B seam 1, execution, with `execution-types` dissolved (SETUP, *Part B*, step 1) --
   `Chosen-By: dependency` (every file the three skipped-rule slices add -- scenario sources, split-out types,
@@ -352,17 +354,18 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 187 on the branch; 13 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
+- **Commits:** 188 on the branch; 13 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
   execution port's move, `4cfcce2` --, + `97225b7` for the dry4rust re-record, `1d27ff1` for the two states' 36
   accessors, `3cf1ec6` and `3433b15` for the transaction status's 33 importers and the timer key's 100, `2883602`
   for the slot discovery's 11, `a352577` for the Ed25519 scheme's 14, planned within by SETUP, `d7d2c45` for
-  Faction's two implementations and their test files, Q43) -- 13 of 187 is 7.0%; the 95% now needs about 260
-  commits, every one from here within it; the 95% needs about 240 commits with every commit from here within it: count a move's files first, and
+  Faction's two implementations and their test files, Q43) -- 13 of 188 is 6.9%; the 95% now needs about 260
+  commits, every one from here within it: count a move's files first, and
   shape the seams so a type is born where it ends; bug fixes
   2 (`eba863f`, `e1232ca`); the 150th (`7ffb333`) ran all three stages, Part A's end, the 160th (`6912269`) and
   the 170th (`2883602`) and the 180th (`b31593c`); the 190th next
 - **Tests:** 3,440 at the base, 3,721 now (stage 5 465); removed under constraint 6: 1 (`2e6d484`, Q34)
-- **Offences:** 41 as configured, 195 everything on, shear 0; Grip 756.25 / Braintax 4,700.53 (0.1609; node-infra
+- **Offences:** 41 as configured, 195 everything on, shear 0; Grip 765.79 / Braintax 4,745.41 (0.1614 at `d1246b3`,
+  node-faction 11.10 / 53.45; node-infra
   152.08 / 598.27 at `d170c7e`; types
   110.85 / 628.07 at `8afa421`, execution-types scored inside it, the totals' Grip unchanged; evm
   41.69 / 487.19 at `36c3d9e`; 39.77 / 486.59 at `e444f5b`; 40.01 / 487.75 at `6912269`; 40.16 / 490.52 at `ba4e857`; 39.45 / 492.86 at `89735b7`; 38.06 / 495.55 at `78c9a21`; 36.70 / 495.26 at `60b3373`, the calldata loop in a private helper; 35.64 / 499.52 at `bf1b812`; 36.15 / 508.72 at `a022bd1`; 36.69 / 517.12 at `bc9904f`; 37.41 / 522.15 at `0a38d3c`, the delegation layer's price, 34.29 / 498.16 at `3c21b53`;
@@ -455,7 +458,7 @@ pushed with the record at every commit.
   (`f2f5e31`), node's vocabulary for the port (`a59c662`), `node-faction` with the command
   translation (`17fd986`), its outcome and transition translations (`4b8a7a1`), the factory into it
   (`c43c0f2`), the peer-discovery facet (`a2f5f0e`), the
-  coordinator and bridge into node-faction (`d7d2c45`).
+  coordinator and bridge into node-faction (`d7d2c45`), the port in node's vocabulary (`d1246b3`).
 
 ## Next in line
 
