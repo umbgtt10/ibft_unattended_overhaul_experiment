@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `6de5afa` Pin that the dependencies hand over the tally factory they were given (row 225)
+- **Last commit:** `c24eaaa` Move eight of the vote tracker's tests onto the tally that wraps it (row 226)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -151,9 +151,15 @@ pushed with the record at every commit.
   the adapter through a private `key_tally` and `exported_votes`; 8 dry4rust pairs re-keyed, 195 both sides; the
   dependencies' new test parked for the next commit, past the threshold together: 391). (f2) the test
   `into_parts_hands_over_the_tally_factory_it_was_given` with its `QuorumOfOneFactory` stub -- done at `6de5afa`
-  (`tests`, 58 lines, stages 1 and 2). Next: (g) `VoteTracker` (`node/src/ibft/vote_tracker.rs`, tested in
-  `node/tests/ibft/vote_tracker_tests.rs`) moved wholly into node-infra's `QuorumTally` -- its dry4rust group
-  `0630c58f045165e4`, "VoteTracker::new / EtheramOutputDispatcher::new", moves with it. The
+  (`tests`, 58 lines, stages 1 and 2). (g) `VoteTracker` moved wholly into node-infra's `QuorumTally`, in two
+  commits since file and tests together pass the threshold: (g1) eight of its eleven tests onto `QuorumTally`
+  through the port -- done at `c24eaaa` (`refactoring`, 8 `Maps:`, 268 lines, stages 1 and 2). Next: (g2) the
+  tracker's state and logic into `QuorumTally` (`quorum`, `votes: BTreeMap<(Height, u64, Hash), BTreeSet<PeerId>>`),
+  `node/src/ibft/vote_tracker.rs` and its `pub mod` out, its three remaining tests
+  (`clear_then_snapshot_returns_empty`, `snapshot_roundtrip_preserves_quorum`,
+  `voters_returns_every_peer_recorded_against_that_block`) onto `QuorumTally` with `Maps:` and
+  `node/tests/ibft/vote_tracker_tests.rs` and its `pub mod` out -- its dry4rust group `0630c58f045165e4`,
+  "VoteTracker::new / EtheramOutputDispatcher::new", re-keyed or paid. The
   plan of (f) was: the dependencies take the factory (30 sites, one line each, the seven dependency-helper pairs re-keyed as
   Q46), the volatile state steps two tallies; (g) `VoteTracker` moved into `QuorumTally`; (h) `VoteTallyContract`;
   (i) the documents and the replayed-proposal open point retired. The plan of (b) was: the two red tests are in
@@ -524,11 +530,11 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 225 on the branch; 13 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
+- **Commits:** 226 on the branch; 13 past the threshold (6 planned -- the 5th the merge, `8afa421`, the 6th the
   execution port's move, `4cfcce2` --, + `97225b7` for the dry4rust re-record, `1d27ff1` for the two states' 36
   accessors, `3cf1ec6` and `3433b15` for the transaction status's 33 importers and the timer key's 100, `2883602`
   for the slot discovery's 11, `a352577` for the Ed25519 scheme's 14, planned within by SETUP, `d7d2c45` for
-  Faction's two implementations and their test files, Q43) -- 13 of 225 is 5.8%; the 95% now needs about 260
+  Faction's two implementations and their test files, Q43) -- 13 of 226 is 5.8%; the 95% now needs about 260
   commits, every one from here within it: count a move's files first, and
   shape the seams so a type is born where it ends; bug fixes
   6 (`eba863f`, `e1232ca`, `5013d0e`, `1e7ac29`, `643bfd5`, `8e1ca00`); the 150th (`7ffb333`) ran all three stages, Part A's end, the 160th (`6912269`) and
@@ -650,7 +656,8 @@ pushed with the record at every commit.
   documents (`b0756e2`), the seam's last. Consensus: a proposal after its NewView pinned (`11bfec3`), a held
   proposal requeued (`8e1ca00`, a bug-fix), the tally port (`e329250`), node-infra's tally behind it (`bd41a48`),
   the port's read (`97441de`, Q49 amended), the volatile state's tests through helpers (`1cd555a`), the wiring
-  (`58844eb`), the dependencies' hand-over pinned (`6de5afa`).
+  (`58844eb`), the dependencies' hand-over pinned (`6de5afa`), eight of the tracker's tests onto the tally
+  (`c24eaaa`).
 
 ## Next in line
 
