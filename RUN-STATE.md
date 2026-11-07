@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `3433b15` Give the timer key a file of its own beside the timer event (row 147)
+- **Last commit:** `e7da3a4` Give system-tests' four configuration records files of their own (row 148)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -72,7 +72,18 @@ pushed with the record at every commit.
   constructor of 28). Lessons, kept below with the slice's detail: list the readers by compiling with the fields
   private, a compile layer at a time; split a commit through `git stash --keep-index`; move a recorded dry4rust
   twin with its pair; dry4rust re-records from the start folder with `--path .`.
-- **Slice in progress:** Part A slice 9, each record in the module of what uses it -- record-home 23 (SETUP: 4-6
+  Part A slice 9, each record in the module of what uses it -- 7 commits, rows 142 to 148 (`72ebb5b` to
+  `e7da3a4`), against SETUP's 4-6; record-home 23 to 1 both ways, the 1 `RecoveryMessageFields`, waiting on Q25
+  (its one user is one of `IbftProtocol`'s implementation files, which `named-subject` then refuses). Two of the
+  seven past the threshold by SETUP's provision (`TransactionStatus`, `TimerKey`). Lessons: `cargo xtask measure`
+  reads the staged tree; a folder of records adds no file to a full directory; cargo fmt leaves over-long imports
+  unsorted; never `--write-baseline` over a reported offence.
+- **Slice in progress:** Part A slice 10, living documents in `etheram-ibft`, any baseline re-recorded (SETUP: 1-2
+  commits) -- the last of Part A; then Part B. Known so far: the "483" baseline count in CLAUDE.md (and
+  stern4rust.toml's comment, if it has one) -- 41 now; stage 2's gates as CLAUDE.md lists them -- cargo-shear and
+  dry4rust joined in Part 0; the docs naming files this run moved or removed (e.g. `episode_state.rs`, the timer
+  key's and the transaction status's homes). Check each against the tree before writing.
+- **Slice 9's detail:** record-home 23 (SETUP: 4-6
   commits; 13 records named in a crate's public API but declared in another type's file, 8 wire types used by
   several files but not `pub`, 2 records with one user in files of their own); listed in
   `overhaul-scratch/record-home.txt` (`cargo stern4rust --rule record-home --baseline <empty> --offence-threshold
@@ -87,12 +98,9 @@ pushed with the record at every commit.
   SETUP's provision, the 7th); `TimerKey` into `types/src/io/timer_key.rs`, beside `TimerEvent`, at `3433b15` (100
   importers, the 8th past the threshold, the 95% now resting on Parts B and C's commits; cargo fmt leaves files
   with over-long import lines unsorted -- stern's `ordered-imports` finds them; never `--write-baseline` over a
-  reported offence: done once here, caught and undone before the commit). Next and last: (148) system-tests'
-  `FleetConfig`, `GenesisAccountConfig`, `NodeConfig` and `EtheramGrpcNodeTimerConfig` (6 files name them) into a
-  new folder `system-tests/src/config/` -- `system-tests/src` holds 20 files, the `directory-file-count` limit,
-  which counts files, not folders; the harness imports `ClusterConfig` alone, so it is untouched and stage 5 runs
-  once. Then record-home holds `RecoveryMessageFields` alone (Q25), and slice 9 closes. A record moves without a
-  re-export shim, each move updating every importer at once.
+  reported offence: done once here, caught and undone before the commit); system-tests' four configuration
+  records into a new folder `system-tests/src/config/` at `e7da3a4` (45 to 41 / 256 to 252) --
+  `system-tests/src` holds 20 files, the `directory-file-count` limit, which counts files, not folders.
 - **Slice 8's detail** (records and objects, a module at a time -- `Chosen-By: no-scaffolding`; started 23:51:38Z;
   full list `overhaul-scratch/records-and-objects.txt`). Three
   kinds. (A) record with private fields -> make them `pub`: all 14 done (`3b243b5`). (B) getter-only -> delete
@@ -194,12 +202,12 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 147 on the branch; 8 past the threshold (4 planned, + `97225b7` for the dry4rust re-record,
+- **Commits:** 148 on the branch; 8 past the threshold (4 planned, + `97225b7` for the dry4rust re-record,
   `1d27ff1` for the two states' 36 accessors, `3cf1ec6` and `3433b15` for the transaction status's 33 importers
   and the timer key's 100 -- 8 of 147 is 5.4%, so the 95% needs Parts B and C to add commits within it); bug fixes
   2 (`eba863f`, `e1232ca`); the 140th (`f18f095`) ran all three stages, as every commit has; the 150th next
 - **Tests:** 3,440 at the base, 3,670 now (stage 5 465); removed under constraint 6: 1 (`2e6d484`, Q34)
-- **Offences:** 45 as configured, 256 everything on, shear 0; Grip 748.45 / Braintax 4,702.58 (0.1592;
+- **Offences:** 41 as configured, 252 everything on, shear 0; Grip 748.45 / Braintax 4,702.58 (0.1592;
   execution-types 38.62 / 102.22 at `618a5d2`; 37.67 / 99.93 and types 72.23 / 518.56 at `23c92f9`, the block's
   accessors;
   node 325.06 / 2,354.12 at `b440217`;
