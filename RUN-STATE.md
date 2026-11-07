@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `6c83656` Keep the fields of the cluster config and the fleet's block limits private (row 103)
+- **Last commit:** `1121282` Keep the fields of the prune plan and the retained counts private (row 104)
 - **Slices done:** Part A slice 1, time behind ports and tests off the clock -- 13 commits (`4d52581` to
   `44db935`). injected-time holds the cluster harness's 20 alone (decision 2); timeless-tests the wake signal's 6
   alone (Q9, open). Ports, all in `system-tests/src/infra` but `Clock`: `Clock` (timer_scheduler.rs,
@@ -65,7 +65,7 @@ pushed with the record at every commit.
   Lessons: stern refuses anything but a parameter assigned to a trait-typed field, an injected factory's call
   included -- split build from install; a delegating trait-impl stub can be a dry4rust near duplicate of
   another, so let the impl hold the body; a planned past-threshold commit says so in `Threshold: exceeded --`.
-- **Slice in progress:** Part A slice 8, records and objects, a module at a time -- records-and-objects 21 left
+- **Slice in progress:** Part A slice 8, records and objects, a module at a time -- records-and-objects 19 left
   (`Chosen-By: no-scaffolding`; started 23:51:38Z; full list `overhaul-scratch/records-and-objects.txt`). Three
   kinds. (A) record with private fields -> make them `pub`: all 14 done (`3b243b5`). (B) getter-only -> delete
   the getters and constructor, `pub` fields, built by literal: all 11 done (`EtheramGrpcNodeTimerConfig`,
@@ -90,9 +90,11 @@ pushed with the record at every commit.
   build each invalid config through `new`; 21 left. Lessons: a getter no test calls raises `tested-public-api`
   with everything on even where it is stood down, and a rule-offence's everything-on total must fall -- test it
   in the same commit; `ordered-impl-functions` wants constructors first, fewest parameters first; a getter can
-  surface a dry4rust duplicate that was always there -- `node_ids`/`honest_node_ids`, one now delegating; next:
-  node's `PrunePlan` and `RetainedCounts` -- the counts' one mutation becomes a method returning the counts;
-  then the smaller node and recovery objects; execution-types' `Account`, `Block`, `Transaction` read in
+  surface a dry4rust duplicate that was always there -- `node_ids`/`honest_node_ids`, one now delegating;
+  node's `PrunePlan` and `RetainedCounts` at `1121282` -- the counts' one mutation now `with_pending_transactions`,
+  a value returned; two `with_` methods and the block's `with_parent_hash` a dry4rust group recorded under Q33
+  (210 kept, one paid); node's Grip 285.50 to 295.95, the getters' price; 19 left; next: the smaller node and
+  recovery objects, `InFlightSlot` first (one `request()` can replace the two field-by-field requests); execution-types' `Account`, `Block`, `Transaction` read in
   some 70 files -- getters added first, readers moved a directory at a time in `refactoring`s, fields private last):
   `Account`, `Block` (~148 importers), `Transaction`, `TransactionReceipt` (execution-types),
   `IbftProtocolConfig`, `IbftProtocolLimits`,
@@ -100,10 +102,11 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 103 on the branch; 5 past the threshold (4 planned, + `97225b7` for the dry4rust re-record); bug fixes
+- **Commits:** 104 on the branch; 5 past the threshold (4 planned, + `97225b7` for the dry4rust re-record); bug fixes
   1 (`eba863f`); the 100th ran all three stages, as every commit has; the 110th next
 - **Tests:** 3,440 at the base, 3,637 now (stage 5 465); removed under constraint 6: 1 (`2e6d484`, Q34)
-- **Offences:** 81 as configured, 292 everything on, shear 0; Grip 628.09 / Braintax 4,464.98 (0.1407 -- xtask is
+- **Offences:** 79 as configured, 290 everything on, shear 0; Grip 638.54 / Braintax 4,485.44 (0.1424; node
+  295.95 / 2,288.56 at `1121282`, up from 285.50 / 2,268.11 with eleven getters and setters; xtask and system-tests are
   not scored;
   recovery/control 61.27 / 363.83 at `12b0c09`; recovery/ibft 48.77 / 245.23 and node 285.50 / 2,268.11 at `df27ed7`; recovery/control 62.22 / 365.78 at `a247cf2`; node 285.44 / 2,268.11 at `ef5f4d9`, 286.39 / 2,270.20 at `2e6d484`, 290.57 / 2,277.38 at `64f562b`, 292.63 / 2,284.79 at `c72cdf3`; before it 643.14 / 4,502.39, 0.1428;
   execution-types 64.14 to 56.14 at `069fd4c`, evm 503.97 to 500.25 at `1618598`, node 2295.50 to 2299.52 at
@@ -144,7 +147,7 @@ pushed with the record at every commit.
   (`e4de9df`), and in validation's helpers and single-node tests (`c576a8a`), their `Default` out (`1618598`); the bootstrapper's coordinator factory (`3505d8d`), the bootstrapper handed its coordinator (`cec0c5b`), the
   slice's last; records and objects: fourteen records' fields public (`3b243b5`), two
   system-tests configs by literal (`64b9ab9`), the node's admission, timing and diagnostics configs (`c72cdf3`), the bootstrapping config (`64f562b`), the NewView message's fields (`2e6d484`), the validator set updates (`ef5f4d9`), the recovery requests (`a247cf2`), the recovery facts (`df27ed7`), the peers' recovery statuses (`12b0c09`), the last getter-only one; xtask's report and command outcome
-  (`d09acfa`), the first objects; the cluster config and the fleet's block limits (`6c83656`).
+  (`d09acfa`), the first objects; the cluster config and the fleet's block limits (`6c83656`), the prune plan and the retained counts (`1121282`).
 
 ## Next in line
 
@@ -193,6 +196,8 @@ Living documents owed: `stern4rust.toml`'s and `CLAUDE.md`'s "483"; stage 2's ne
 - bug-fix check: `git worktree add --detach overhaul-scratch/wt-parent HEAD`, copy the test in, `cargo test
   --manifest-path wt-parent/Cargo.toml --target-dir overhaul-scratch/wt-target ...` compiles and fails; then
   `git worktree remove --force` and `cargo clean --target-dir overhaul-scratch/wt-target`.
+- the trailers' line counts are the sums of the staged numstat, added and removed; check them against `git commit`'s
+  own summary before the push, and amend the unpushed commit if they differ (row 104 did).
 - the harness refuses `git switch -c` (deny `git * -c *`), `cp -r`, `awk`, `slotgate`, and a grep whose pattern
   holds backticks (read the file instead): use `checkout -b`, single-file
   `cp`; only `cargo xtask measure`, `git worktree remove` and `cargo clean` remove directories -- an export made with

@@ -696,6 +696,9 @@ the course the slice took and the run's recommendation; after the run, the owner
   shared instead. Left for whoever owns the tool: a body that is a struct literal alone could be out of the near
   match, as code under five lines is.
 - **Commit:** 96.
+- **Taken again:** commit 104 -- `RetainedCounts::with_commit_certificates`, `with_pending_transactions` and
+  `Block::with_parent_hash`, three one-field struct updates on two types, recorded as the exact group
+  `63532d7dea94bfeb`; the same commit paid `4357ad2b28af5fbc`, so the baseline stays at 210.
 
 ### 34. A getter's test the record-alone rule refuses
 
