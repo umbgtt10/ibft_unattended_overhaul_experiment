@@ -133,7 +133,15 @@ pushed with the record at every commit.
   <attempts> <rows>` -- `901c6e5` (6 files, 209 lines): 344 planned, 19 not; 363 landed, 5 refused (167 s);
   60,841 s implementing, 35,271 validating. **The five tools are in.** The re-derivation run on to `901c6e5`
   (`rederive-chunk10.log`), 13:24Z to 13:34Z: 360-364 every row clean; `REDERIVATION.tsv` 364 rows. Section 5
-  drafted in `overhaul-scratch/section5-draft.md`. Next: the bug fixes' tests on their parents (`overhaul-scratch/bugfix-plan.txt`); then section 5;
+  drafted in `overhaul-scratch/section5-draft.md`. The bug fixes' tests on their parents, 13:35Z to 13:38Z
+  (`overhaul-scratch/bugfix-results.txt`; exports `bugfix-<C>`, targets `bugfix-target[-<C>]`): all six red,
+  with the seventh's 942 of 1,000 from its own commit -- `eba863f` 1 of 1 (`system-tests.exe` on Linux),
+  `e1232ca` 7 of 82 types and 1 node (the data `[]`), `5013d0e` 1 (no round timeout at the snapshot's height),
+  `1e7ac29` 3 of 60 (`PrePrepare` for the status kinds), `643bfd5` 1 (0 blind for 1), `8e1ca00` 2 of 13 (height 0
+  for 1). A target dir per export: `git archive` stamps the commit's time, older than artifacts already built, so
+  a shared target reused bug fix 1's `types` for bug fix 2 (its own untouched tests then failed to compile); bug
+  fix 1 ran on an empty one. Next: section 5 as a `support` commit (stage 2), then its row re-derived, then
+  `RESULT-SUMMARY.md`. Then the bug fixes' tests on their parents (`overhaul-scratch/bugfix-plan.txt`); then section 5;
   then `RESULT-SUMMARY.md` from `result-figures`, `tree-change 8a775a2 <end>` and `transcript-usage`.
   Meanwhile drafted in
   `overhaul-scratch/summary-draft` (scratch only, nothing built while a chunk runs), for SETUP's "generated, not
