@@ -109,7 +109,11 @@ pushed with the record at every commit.
   identical, no breach, mismatch or unmapped test. Chunk 3, commits 81 to 120, 04:28Z to 05:40Z: every row clean.
   Chunk 4, commits 121 to 160, 05:40Z to 06:53Z: every row clean. Chunk 5, commits 161 to 200, 06:53Z to 08:05Z: every row
   clean. Chunk 6, commits 201 to 240, 08:05Z to 09:22Z: every row clean. Chunk 7,
-  commits 241 to 280, started 09:22Z.
+  commits 241 to 280, 09:22Z to 10:36Z: every stage green, every trace identical, no breach, no unmapped test; one
+  trailer mismatch, commit 243 (`857cb80`), `Lines-Removed declared 145, derived 143` -- its trailer, workbook row
+  and attempt row all say 145, while the numstat the session saw then (in the transcript) is 32 + 109 + 2 = 143: a
+  slip in the hand-written sum, left as recorded, for section 5 (findings kept in
+  `overhaul-scratch/rederive-findings.txt`). Chunk 8, commits 281 to 320, started 10:36Z.
   Meanwhile drafted in
   `overhaul-scratch/summary-draft` (scratch only, nothing built while a chunk runs), for SETUP's "generated, not
   copied by hand": `xtask/src/source/summary/` -- `TreeChange::by_category(base, end)` into `FileChanges` by
