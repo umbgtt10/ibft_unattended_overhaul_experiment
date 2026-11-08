@@ -353,3 +353,4 @@ commit_n,attempt,kind,stages,start,finish,outcome,refused_by,files_added,files_r
 347,1,support,"1, 2",2026-11-07T23:08:21Z,2026-11-07T23:09:08Z,landed,,0,0,3,231,74
 348,1,support,2,2026-11-07T23:13:36Z,2026-11-07T23:14:12Z,landed,,0,0,1,99,0
 349,1,bug-fix,"1, 2, 5, 5, 5",2026-11-08T00:41:01Z,2026-11-08T00:44:44Z,landed,,0,0,2,37,6
+350,1,support,"1, 2, 5",2026-11-08T00:50:27Z,2026-11-08T00:52:09Z,landed,,7,0,2,319,0
