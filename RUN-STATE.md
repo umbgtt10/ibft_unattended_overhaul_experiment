@@ -131,9 +131,9 @@ pushed with the record at every commit.
   exceeded rows copy the reason; the verdict agrees in all fourteen) -- the record's own abridgement, reported, not
   corrected -- and 360-362 not yet re-derived. (v) `RecordTally`, `RecordTotals`, `result-figures <workbook>
   <attempts> <rows>` -- `901c6e5` (6 files, 209 lines): 344 planned, 19 not; 363 landed, 5 refused (167 s);
-  60,841 s implementing, 35,271 validating. **The five tools are in.** Next: the re-derivation run on to the new
-  end (`cargo xtask rederive <end> ...`, same places, `rederive-chunk10.log`) in the background, so 360 onward are
-  re-derived too; then the bug fixes' tests on their parents (`overhaul-scratch/bugfix-plan.txt`); then section 5;
+  60,841 s implementing, 35,271 validating. **The five tools are in.** The re-derivation run on to `901c6e5`
+  (`rederive-chunk10.log`), 13:24Z to 13:34Z: 360-364 every row clean; `REDERIVATION.tsv` 364 rows. Section 5
+  drafted in `overhaul-scratch/section5-draft.md`. Next: the bug fixes' tests on their parents (`overhaul-scratch/bugfix-plan.txt`); then section 5;
   then `RESULT-SUMMARY.md` from `result-figures`, `tree-change 8a775a2 <end>` and `transcript-usage`.
   Meanwhile drafted in
   `overhaul-scratch/summary-draft` (scratch only, nothing built while a chunk runs), for SETUP's "generated, not
