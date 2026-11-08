@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `901c6e5` Take the record's own account together: RecordTally (row 364)
+- **Last commit:** `2d969b8` Report the fifth check: every commit re-derived from the history (row 365)
 - **Part C now** (Q58, the plan): the report is `docs/history/[IMPLEMENTED] OVERHAUL-2026-11-FINAL-CHECKS.md` in
   etheram-ibft, a section per check. (1) black-box: expected failures (none) committed at `9bac4a1`; the run --
   `cargo test --manifest-path overhaul-scratch/blackbox-8a775a2/Cargo.toml -p system-tests --config
@@ -140,9 +140,10 @@ pushed with the record at every commit.
   `1e7ac29` 3 of 60 (`PrePrepare` for the status kinds), `643bfd5` 1 (0 blind for 1), `8e1ca00` 2 of 13 (height 0
   for 1). A target dir per export: `git archive` stamps the commit's time, older than artifacts already built, so
   a shared target reused bug fix 1's `types` for bug fix 2 (its own untouched tests then failed to compile); bug
-  fix 1 ran on an empty one. Next: section 5 as a `support` commit (stage 2), then its row re-derived, then
-  `RESULT-SUMMARY.md`. Then the bug fixes' tests on their parents (`overhaul-scratch/bugfix-plan.txt`); then section 5;
-  then `RESULT-SUMMARY.md` from `result-figures`, `tree-change 8a775a2 <end>` and `transcript-usage`.
+  fix 1 ran on an empty one. The report's section 5 -- `2d969b8` (`support`, 79 lines, Part C's last code
+  commit, all three stages), its figures `result-figures`'s at 364 rows. Next: its row re-derived
+  (`rederive-chunk11.log`), then `RESULT-SUMMARY.md` from `result-figures`, `tree-change 8a775a2 2d969b8` and
+  `transcript-usage`, then this file marked complete.
   Meanwhile drafted in
   `overhaul-scratch/summary-draft` (scratch only, nothing built while a chunk runs), for SETUP's "generated, not
   copied by hand": `xtask/src/source/summary/` -- `TreeChange::by_category(base, end)` into `FileChanges` by
