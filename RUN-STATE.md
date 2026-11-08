@@ -141,8 +141,12 @@ pushed with the record at every commit.
   for 1). A target dir per export: `git archive` stamps the commit's time, older than artifacts already built, so
   a shared target reused bug fix 1's `types` for bug fix 2 (its own untouched tests then failed to compile); bug
   fix 1 ran on an empty one. The report's section 5 -- `2d969b8` (`support`, 79 lines, Part C's last code
-  commit, all three stages), its figures `result-figures`'s at 364 rows. Next: its row re-derived
-  (`rederive-chunk11.log`), then `RESULT-SUMMARY.md` from `result-figures`, `tree-change 8a775a2 2d969b8` and
+  commit, all three stages), its figures `result-figures`'s at 364 rows. Its row re-derived
+  (`rederive-chunk11.log`), 13:42Z to 13:44Z, clean: **365 rows, the branch whole**. At the end, by the tools:
+  `tree-change 8a775a2 2d969b8` 437 added, 60 removed, 635 changed; `size 2d969b8` 464/27,739 productive,
+  689/121,111 test, 176/13,847 tooling, 1,448/162,697; `test-inventory` 3,974. Prediction 13's cost cannot be
+  priced: the list is not readable under the run's permissions (the API reference skill refused) -- entry 59, open.
+  Next: `RESULT-SUMMARY.md` from `result-figures`, `tree-change 8a775a2 2d969b8` and
   `transcript-usage`, then this file marked complete.
   Meanwhile drafted in
   `overhaul-scratch/summary-draft` (scratch only, nothing built while a chunk runs), for SETUP's "generated, not
