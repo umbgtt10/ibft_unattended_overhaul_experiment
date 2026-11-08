@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `f47d4c4` Re-derive one commit from the history alone: Rederivation (row 357)
+- **Last commit:** `a6b109f` Re-derive the branch in resumable chunks: cargo xtask rederive (row 358)
 - **Part C now** (Q58, the plan): the report is `docs/history/[IMPLEMENTED] OVERHAUL-2026-11-FINAL-CHECKS.md` in
   etheram-ibft, a section per check. (1) black-box: expected failures (none) committed at `9bac4a1`; the run --
   `cargo test --manifest-path overhaul-scratch/blackbox-8a775a2/Cargo.toml -p system-tests --config
@@ -89,9 +89,14 @@ pushed with the record at every commit.
   lines; `c354-split` can go); (c3) `CommitComparison` (trailers beside the diff, the threshold mark) and
   `CommitInventory` into `TestDelta` -- `8bf822d` (7 files, 284 lines), split out of the orchestrator, which with its
   tests and the subcommand came to 496 lines; (c4) `Rederivation` (`row`, `measures_at`) with `RederivationPlaces`
-  and its two tests, over the two pieces -- `f47d4c4` (5 files, 329 lines); then (c5) `cargo xtask rederive <end> <worktree> <export> <corpus> <rows.tsv> <logs> [<n>]` in
-  `main` -- both written and smoke-run, waiting in `overhaul-scratch/c356-split` (`rederivation.rs` to be rewritten
-  over the two pieces; `main.rs` whole). The smoke run on commit 1 (worktree `overhaul-scratch/rederive-wt`, made
+  and its two tests, over the two pieces -- `f47d4c4` (5 files, 329 lines); (c5) `cargo xtask rederive <end>
+  <worktree> <export> <corpus> <rows.tsv> <logs> [<n>]` in `main` -- `a6b109f` (84 lines; smoke-run again on commits 1
+  and 2 first, `rederive-smoke2.tsv`, both clean, about 97 s a commit warm; `c356-split` can go). **(5)'s tooling is
+  done; it is the last code commit.** Next: (4) at the end again, at `a6b109f` -- every measure as before, the
+  durations and stage 5 thirty times included, the coverage standing from `b939d2f` (nothing since touches its
+  packages); then the report's section 4; then (5) in background chunks into `overhaul-scratch/rederive.tsv` (end
+  `a6b109f`, worktree `rederive-wt`, export `rederive-export`, logs `rederive-logs`), each chunk's rows committed to the
+  record as `REDERIVATION.tsv`; then the bug-fixes' tests on their parents; then section 5. The smoke run on commit 1 (worktree `overhaul-scratch/rederive-wt`, made
   with `git worktree add --detach`, at `8a775a2`): 162 s cold, three stages green, traces `no driver`, no breach, no
   mismatch, 483/696, 642.59/4,510.09, 3,440 to 3,451 -- the record's figures. `rederive-smoke.tsv` can go; (c) the per-commit run over a scratch worktree -- the
   measure on an export, the inventory's diff with the message's `Maps:`, the traces, the three stages -- one CSV row a
@@ -1034,12 +1039,12 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 357 on the branch; 14 past the threshold (7 planned -- the 5th the merge, `8afa421`, the 6th the
+- **Commits:** 358 on the branch; 14 past the threshold (7 planned -- the 5th the merge, `8afa421`, the 6th the
   execution port's move, `4cfcce2` --, + `97225b7` for the dry4rust re-record, `1d27ff1` for the two states' 36
   accessors, `3cf1ec6` and `3433b15` for the transaction status's 33 importers and the timer key's 100, `2883602`
   for the slot discovery's 11, `a352577` for the Ed25519 scheme's 14, planned within by SETUP, `d7d2c45` for
   Faction's two implementations and their test files, Q43; the 7th planned, `6fc97b9`, `SledStorageInner`'s 678
-  lines, which `implemented-in-one-file` moves whole) -- 14 of 357 is 3.9%, 343 of 357 within; the 95% reached at the 260th (247 of 260 within), and it holds only while every
+  lines, which `implemented-in-one-file` moves whole) -- 14 of 358 is 3.9%, 344 of 358 within; the 95% reached at the 260th (247 of 260 within), and it holds only while every
   commit from here stays within: count a move's files first, and
   shape the seams so a type is born where it ends; bug fixes
   7 (`eba863f`, `e1232ca`, `5013d0e`, `1e7ac29`, `643bfd5`, `8e1ca00`, `b9d0bdf`); the 150th (`7ffb333`) ran all three stages, Part A's end, the 160th (`6912269`) and
