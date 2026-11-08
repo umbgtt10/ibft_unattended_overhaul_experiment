@@ -106,16 +106,20 @@ pushed with the record at every commit.
   record has them; three breaches at commit 13 (`1663af1`), the kind check's own -- the rules it names are
   cargo-shear's, which the check does not read, and shear's count fell there 13 to 0 (to be said in section 5, the
   tool left as it ran). Chunk 2, commits 41 to 80, 03:18Z to 04:28Z: every row clean -- stages green, traces
-  identical, no breach, mismatch or unmapped test. Chunk 3, commits 81 to 120, started 04:28Z. Meanwhile drafted in
+  identical, no breach, mismatch or unmapped test. Chunk 3, commits 81 to 120, 04:28Z to 05:40Z: every row clean.
+  Chunk 4, commits 121 to 160, started 05:40Z. Meanwhile drafted in
   `overhaul-scratch/summary-draft` (scratch only, nothing built while a chunk runs), for SETUP's "generated, not
   copied by hand": `xtask/src/source/summary/` -- `TreeChange::by_category(base, end)` into `FileChanges` by
   `PathCategory` (needs `CommitHistory::read` made `pub`, with a test), `TranscriptUsage::of` into `SessionUsage`
   (a model call is a message id, its last entry's usage; a compaction an `isCompactSummary` entry -- 17 so far),
   `ColumnTable` (the workbook's quoted CSV, the rows' TSV), `RecordComparison::differences` (each workbook row against
-  its re-derived row), `RederivationTally::totals` into `RederivationTotals`; `main-additions.rs` holds the three
-  subcommands and the edits to existing files. To land after the last chunk as four `support` commits (stages 1
-  and 2; the first is the 360th, all three): TreeChange, TranscriptUsage, ColumnTable with RecordComparison, the
-  tally with `result-figures`; then the re-derivation run on to the new end. Then the bug-fixes' tests on their
+  its re-derived row), `RederivationTally::totals` into `RederivationTotals`, `RecordTally::totals` into
+  `RecordTotals` (the workbook's planned and chosen-by counts, implementation and validation seconds from its UTC
+  stamps, the attempts by outcome with each one not landed); `main-additions.rs` holds the three subcommands and the
+  edits to existing files. To land after the last chunk as five `support` commits, planned by entry 58 ("the tools
+  the checks need go into `xtask`"; stages 1 and 2, the first the 360th, all three): TreeChange, TranscriptUsage,
+  ColumnTable with RecordComparison, the re-derivation's tally with `result-figures`, the record's tally into it;
+  then the re-derivation run on to the new end. Then the bug-fixes' tests on their
   parents; then section 5. The smoke run on commit 1 (worktree `overhaul-scratch/rederive-wt`, made
   with `git worktree add --detach`, at `8a775a2`): 162 s cold, three stages green, traces `no driver`, no breach, no
   mismatch, 483/696, 642.59/4,510.09, 3,440 to 3,451 -- the record's figures. `rederive-smoke.tsv` can go; (c) the per-commit run over a scratch worktree -- the
