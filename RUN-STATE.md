@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `2f7a771` Record coverage function by function: none covered at the base is lost (row 348)
+- **Last commit:** `b9d0bdf` Never hand out a port twice when the system picks it (row 349)
 - **Part C now** (Q58, the plan): the report is `docs/history/[IMPLEMENTED] OVERHAUL-2026-11-FINAL-CHECKS.md` in
   etheram-ibft, a section per check. (1) black-box: expected failures (none) committed at `9bac4a1`; the run --
   `cargo test --manifest-path overhaul-scratch/blackbox-8a775a2/Cargo.toml -p system-tests --config
@@ -51,7 +51,29 @@ pushed with the record at every commit.
   the inventory base to end (`cargo xtask test-diff 8a775a2 d5ff011 --message overhaul-scratch/all-messages.txt`,
   every message of the branch: 3,440 to 3,920, 508 added, 28 removed, 225 moved, 468 changed, 2 fewer; the one
   reported unmapped is `85986a6`'s Maps line under the path it had then, the test moved at `1fef15d`). **(3) is
-  done.** Next after (3): the rest of (4),
+  done.** (4) measured, 23:15Z to 00:33Z, base `8a775a2` and end `2f7a771` on exports
+  (`overhaul-scratch/item4-base`, `item4-end`), every figure of *Starting state* and item 4's list: `cargo xtask
+  test-inventory` (3,440 / 3,920), `cargo xtask size` (406/25,648 productive, 491/109,966 test, 60/4,961 tooling,
+  1,071/140,575 / 464/27,739, 689/121,080, 132/10,676, 1,404/159,495), `cargo xtask measure <dir> <rev>`
+  (`measure-base.log`, `measure-end.log`: 483 / 696 / shear 13 / 642.59 over 4,510.09, 0.1425 -- 33 / 33 / 0 / 791.40
+  over 4,865.29, 0.1627), dry4rust with no baseline (`item4-dry-*.log`: 178 exact + 39 near -- 158 + 36), iceberg
+  `--threshold 0 --top 10` (`item4-iceberg-*.log`: 299.27 over 62 files, top 19.73 -- 285.09 over 60, top 18.06),
+  coverage from (3), the environment (Ryzen 7 7735HS 16 threads, 87 GiB, Linux 7.0.0-38, Ubuntu 26.04.1, 545 GB
+  free; Rust and cargo 1.99.1, just 1.58.0, llvm-cov 0.9.1, shear 1.14.0, stern 0.20.1, dry 0.5.0, twin 0.7.0,
+  iceberg 0.4.0, grip 0.10.0, braintax 0.14.0 -- crap4rust and slotgate print no version the harness allows, the
+  registry cache's newest 0.9.0 and 0.7.0; Claude Code 2.1.314 from the transcript at both ends; CLAUDE.md
+  `4288deff...` at the base, `bccc202f...` at the end, changed by 14 commits; the memory directory empty), and the
+  stage durations, three rounds twice each (`item4-*-r*.log`; base 3.7-3.8 / 27.2-27.5 / 47.7-52.7 s, end 8.4-12.9 /
+  34.9-35.6 / 44.3-52.8 s; the bottom crate `execution-types` at the base, `types` at the end), and stage 5 thirty
+  times (`item4-*-s5x*.log`): base 11,940 executions, none failed, 40.8-55.5 s, median 48.9, slowest test 35.27 s
+  (retention); end 15,330, one failed -- run 20, `allocate_port_does_not_hand_out_the_same_port_twice_in_a_row`,
+  43.3-59.4 s, median about 49.4 (run 30's `time` printed garbled, 51 s between its log and the one before), slowest
+  35.26 s. The failure has a cause: outside a slot, `allocate_port` lets the system pick at random and can hand a
+  port out twice -- the base's function, the test back since `43ead853`. Fixed, unplanned -- `b9d0bdf` (`bug-fix`,
+  2 files, 43 lines; red on an export of the parent, 942 of 1,000; stage 5 three times, 512 each). Its row's
+  implementation start is the record's last commit, so it holds the measuring too. The end moves with it and with (5)'s
+  tooling: (4)'s end is measured again at the last code commit, before section 4 is written. Next: (5)'s tooling,
+  then (4) at the end again, then section 4, then (5). Next after (3): the rest of (4),
   (5) the re-derivation with another subcommand, in chunks committed to the record. Scratch: `blackbox-8a775a2` (with a target dir)
   and `blackbox-8a775a2.tar` can go when Part C ends.
 - **Step now:** Part B step 8, the gates -- started 21:03Z, the scope Q56 (answered), the recovery crates' part
@@ -989,18 +1011,18 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 348 on the branch; 14 past the threshold (7 planned -- the 5th the merge, `8afa421`, the 6th the
+- **Commits:** 349 on the branch; 14 past the threshold (7 planned -- the 5th the merge, `8afa421`, the 6th the
   execution port's move, `4cfcce2` --, + `97225b7` for the dry4rust re-record, `1d27ff1` for the two states' 36
   accessors, `3cf1ec6` and `3433b15` for the transaction status's 33 importers and the timer key's 100, `2883602`
   for the slot discovery's 11, `a352577` for the Ed25519 scheme's 14, planned within by SETUP, `d7d2c45` for
   Faction's two implementations and their test files, Q43; the 7th planned, `6fc97b9`, `SledStorageInner`'s 678
-  lines, which `implemented-in-one-file` moves whole) -- 14 of 348 is 4.0%, 334 of 348 within; the 95% reached at the 260th (247 of 260 within), and it holds only while every
+  lines, which `implemented-in-one-file` moves whole) -- 14 of 349 is 4.0%, 335 of 349 within; the 95% reached at the 260th (247 of 260 within), and it holds only while every
   commit from here stays within: count a move's files first, and
   shape the seams so a type is born where it ends; bug fixes
-  6 (`eba863f`, `e1232ca`, `5013d0e`, `1e7ac29`, `643bfd5`, `8e1ca00`); the 150th (`7ffb333`) ran all three stages, Part A's end, the 160th (`6912269`) and
+  7 (`eba863f`, `e1232ca`, `5013d0e`, `1e7ac29`, `643bfd5`, `8e1ca00`, `b9d0bdf`); the 150th (`7ffb333`) ran all three stages, Part A's end, the 160th (`6912269`) and
   the 170th (`2883602`), the 180th (`b31593c`), the 190th (`c885cf9`), the 200th (`7508819`), the 210th
   (`e04403c`), the 220th (`e329250`), the 230th (`5ebe5f1`), the 240th (`18baf35`), the 250th (`8bdb859`), the 260th (`1fef15d`), the 270th (`fdd825e`), the 280th (`00c5f1b`), the 290th (`0b135b2`), the 300th (`2a7c601`), the 310th (`44b91f4`), the 320th (`694fb62`), the 330th (`729dae4`) and the 340th (`8af3cb2`); the 350th next
-- **Tests:** 3,440 at the base, 3,920 now (stage 5 511); removed under constraint 6: 1 (`2e6d484`, Q34)
+- **Tests:** 3,440 at the base, 3,921 now (stage 5 512); removed under constraint 6: 1 (`2e6d484`, Q34)
 - **Offences:** 33 as configured (single-implemented-type 0), 33 everything on (returned-mutations 0, from 37 at `6fc97b9`; paired-test-file 0, from 100 at `4a976c2`; tested-public-api 0,
   from 25 at `15e7d4d` and 17 at `ca72bf4`, Q52, Q54), shear 0; Grip 791.40 / Braintax 4,865.29 (0.1627 at `d517272`, node 331.86 / 2,338.42; 787.08 /
   4,869.10, 0.1616 at `508fa94`, node 327.54 / 2,342.23, the WAL encoder returning its bytes; 780.18 / 4,868.87, 0.1602 at `1f5213f`, the tracker into the tally, node-infra
