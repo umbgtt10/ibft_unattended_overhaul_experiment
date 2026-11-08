@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `a505fc2` Record the start and the end measured alike (row 359)
+- **Last commit:** `0c4c95e` Count the files from the base to the end by category: TreeChange (row 360)
 - **Part C now** (Q58, the plan): the report is `docs/history/[IMPLEMENTED] OVERHAUL-2026-11-FINAL-CHECKS.md` in
   etheram-ibft, a section per check. (1) black-box: expected failures (none) committed at `9bac4a1`; the run --
   `cargo test --manifest-path overhaul-scratch/blackbox-8a775a2/Cargo.toml -p system-tests --config
@@ -116,7 +116,10 @@ pushed with the record at every commit.
   `overhaul-scratch/rederive-findings.txt`). Chunk 8, commits 281 to 320, 10:36Z to 11:51Z: every row clean.
   Chunk 9, commits 321 to 359, the last, 11:51Z to 13:06Z: every row clean. **The re-derivation of the 359
   is done**: every stage green at every commit, traces identical from 25 (`no driver` before), no unmapped test;
-  the commit-13 breaches and the commit-243 mismatch are its only findings. Next, the five drafted tools.
+  the commit-13 breaches and the commit-243 mismatch are its only findings. Next, the five drafted tools:
+  (i) `TreeChange`, `FileChanges`, `CommitHistory::read` public with a test, `cargo xtask tree-change <base> <end>`
+  -- `0c4c95e`, the 360th, all three stages (10 files, 250 lines; `8a775a2` to `a505fc2`: 419 added, 60 removed,
+  635 changed, the end's measured counts by category exactly); (ii) `TranscriptUsage` next.
   Meanwhile drafted in
   `overhaul-scratch/summary-draft` (scratch only, nothing built while a chunk runs), for SETUP's "generated, not
   copied by hand": `xtask/src/source/summary/` -- `TreeChange::by_category(base, end)` into `FileChanges` by
