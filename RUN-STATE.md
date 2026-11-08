@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `265d7b6` Read a commit from the history alone: CommitHistory and CommitTrailers (row 350)
+- **Last commit:** `5c06b99` Check a commit's declared kind against what it changed: KindCheck (row 351)
 - **Part C now** (Q58, the plan): the report is `docs/history/[IMPLEMENTED] OVERHAUL-2026-11-FINAL-CHECKS.md` in
   etheram-ibft, a section per check. (1) black-box: expected failures (none) committed at `9bac4a1`; the run --
   `cargo test --manifest-path overhaul-scratch/blackbox-8a775a2/Cargo.toml -p system-tests --config
@@ -76,9 +76,11 @@ pushed with the record at every commit.
   then (4) at the end again, then section 4, then (5). (5)'s tooling, in `xtask/src/source/rederive/` (under
   `source`, since `src` may hold five folders): (a) `CommitHistory` (commits after the base oldest first, a message,
   the diff against the parent with renames off), `CommitChange`, `CommitTrailers` -- `265d7b6`, the 350th, all three
-  stages (9 files, 319 lines). Next: (b) the kind check, from the trailers, the paths, the offence maps of parent and
+  stages (9 files, 319 lines). (b) the kind check, from the trailers, the paths, the offence maps of parent and
   commit both ways and the inventory's diff (`rule-offence` read as Q5 answered: each named rule and the total fall
-  with everything on, the as-configured total never rises); (c) the per-commit run over a scratch worktree -- the
+  with everything on, the as-configured total never rises): `KindEvidence`, `KindCheck::breaches` and four tests --
+  `5c06b99` (5 files, 291 lines); its other four tests, waiting in `overhaul-scratch/c351-split/kind_check_tests.rs`
+  (the whole file), next as a `tests` commit, together past the threshold; (c) the per-commit run over a scratch worktree -- the
   measure on an export, the inventory's diff with the message's `Maps:`, the traces, the three stages -- one CSV row a
   commit, resuming from the rows written, `main` stamping each commit's start and finish (stern's `injected-time`
   keeps clock reads out of the library); (d) `cargo xtask rederive`. Next after (3): the rest of (4),
@@ -1019,18 +1021,18 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 350 on the branch; 14 past the threshold (7 planned -- the 5th the merge, `8afa421`, the 6th the
+- **Commits:** 351 on the branch; 14 past the threshold (7 planned -- the 5th the merge, `8afa421`, the 6th the
   execution port's move, `4cfcce2` --, + `97225b7` for the dry4rust re-record, `1d27ff1` for the two states' 36
   accessors, `3cf1ec6` and `3433b15` for the transaction status's 33 importers and the timer key's 100, `2883602`
   for the slot discovery's 11, `a352577` for the Ed25519 scheme's 14, planned within by SETUP, `d7d2c45` for
   Faction's two implementations and their test files, Q43; the 7th planned, `6fc97b9`, `SledStorageInner`'s 678
-  lines, which `implemented-in-one-file` moves whole) -- 14 of 350 is 4.0%, 336 of 350 within; the 95% reached at the 260th (247 of 260 within), and it holds only while every
+  lines, which `implemented-in-one-file` moves whole) -- 14 of 351 is 4.0%, 337 of 351 within; the 95% reached at the 260th (247 of 260 within), and it holds only while every
   commit from here stays within: count a move's files first, and
   shape the seams so a type is born where it ends; bug fixes
   7 (`eba863f`, `e1232ca`, `5013d0e`, `1e7ac29`, `643bfd5`, `8e1ca00`, `b9d0bdf`); the 150th (`7ffb333`) ran all three stages, Part A's end, the 160th (`6912269`) and
   the 170th (`2883602`), the 180th (`b31593c`), the 190th (`c885cf9`), the 200th (`7508819`), the 210th
   (`e04403c`), the 220th (`e329250`), the 230th (`5ebe5f1`), the 240th (`18baf35`), the 250th (`8bdb859`), the 260th (`1fef15d`), the 270th (`fdd825e`), the 280th (`00c5f1b`), the 290th (`0b135b2`), the 300th (`2a7c601`), the 310th (`44b91f4`), the 320th (`694fb62`), the 330th (`729dae4`), the 340th (`8af3cb2`) and the 350th (`265d7b6`); the 360th next
-- **Tests:** 3,440 at the base, 3,927 now (stage 5 512); removed under constraint 6: 1 (`2e6d484`, Q34)
+- **Tests:** 3,440 at the base, 3,931 now (stage 5 512); removed under constraint 6: 1 (`2e6d484`, Q34)
 - **Offences:** 33 as configured (single-implemented-type 0), 33 everything on (returned-mutations 0, from 37 at `6fc97b9`; paired-test-file 0, from 100 at `4a976c2`; tested-public-api 0,
   from 25 at `15e7d4d` and 17 at `ca72bf4`, Q52, Q54), shear 0; Grip 791.40 / Braintax 4,865.29 (0.1627 at `d517272`, node 331.86 / 2,338.42; 787.08 /
   4,869.10, 0.1616 at `508fa94`, node 327.54 / 2,342.23, the WAL encoder returning its bytes; 780.18 / 4,868.87, 0.1602 at `1f5213f`, the tracker into the tally, node-infra
