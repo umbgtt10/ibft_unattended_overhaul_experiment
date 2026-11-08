@@ -365,3 +365,4 @@ commit_n,attempt,kind,stages,start,finish,outcome,refused_by,files_added,files_r
 359,1,support,2,2026-11-08T02:10:25Z,2026-11-08T02:11:01Z,landed,,0,0,1,141,0
 360,1,support,"1, 2, 5",2026-11-08T13:10:02Z,2026-11-08T13:11:58Z,landed,,5,0,5,248,2
 361,1,support,"1, 2",2026-11-08T13:14:28Z,2026-11-08T13:15:17Z,landed,,3,0,3,171,1
+362,1,support,"1, 2",2026-11-08T13:17:36Z,2026-11-08T13:18:24Z,landed,,4,0,2,304,0
