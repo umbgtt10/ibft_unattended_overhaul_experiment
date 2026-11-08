@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `a6b109f` Re-derive the branch in resumable chunks: cargo xtask rederive (row 358)
+- **Last commit:** `a505fc2` Record the start and the end measured alike (row 359)
 - **Part C now** (Q58, the plan): the report is `docs/history/[IMPLEMENTED] OVERHAUL-2026-11-FINAL-CHECKS.md` in
   etheram-ibft, a section per check. (1) black-box: expected failures (none) committed at `9bac4a1`; the run --
   `cargo test --manifest-path overhaul-scratch/blackbox-8a775a2/Cargo.toml -p system-tests --config
@@ -92,9 +92,13 @@ pushed with the record at every commit.
   and its two tests, over the two pieces -- `f47d4c4` (5 files, 329 lines); (c5) `cargo xtask rederive <end>
   <worktree> <export> <corpus> <rows.tsv> <logs> [<n>]` in `main` -- `a6b109f` (84 lines; smoke-run again on commits 1
   and 2 first, `rederive-smoke2.tsv`, both clean, about 97 s a commit warm; `c356-split` can go). **(5)'s tooling is
-  done; it is the last code commit.** Next: (4) at the end again, at `a6b109f` -- every measure as before, the
-  durations and stage 5 thirty times included, the coverage standing from `b939d2f` (nothing since touches its
-  packages); then the report's section 4; then (5) in background chunks into `overhaul-scratch/rederive.tsv` (end
+  done; it is the last code commit.** (4) at the end again, at `a6b109f`, 01:29Z to 02:09Z (export
+  `overhaul-scratch/item4-final`, logs `item4-final-*`, `item4-dry-final.log`, `item4-iceberg-final.log`,
+  `measure-final.log`): 3,955 tests; 464/27,739 productive, 689/121,111 test, 158/12,713 tooling, 1,430/161,563;
+  33/33/0, 791.40 over 4,865.29; dry4rust and iceberg as at `2f7a771`; stages 8.8-13.1 / 35.5-36.1 / 51.4-55.3 s; stage
+  5 thirty times, 15,360 executions, none failed, 44.0-56.4 s, median 51.1, slowest 35.32 s. The report's section 4
+  -- `a505fc2` (`support`, stage 2, 141 lines; its row's implementation start, the record's last commit, holds the
+  measuring). **(4) is done.** Next: (5) in background chunks into `overhaul-scratch/rederive.tsv` (end
   `a6b109f`, worktree `rederive-wt`, export `rederive-export`, logs `rederive-logs`), each chunk's rows committed to the
   record as `REDERIVATION.tsv`; then the bug-fixes' tests on their parents; then section 5. The smoke run on commit 1 (worktree `overhaul-scratch/rederive-wt`, made
   with `git worktree add --detach`, at `8a775a2`): 162 s cold, three stages green, traces `no driver`, no breach, no
@@ -1039,12 +1043,12 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 358 on the branch; 14 past the threshold (7 planned -- the 5th the merge, `8afa421`, the 6th the
+- **Commits:** 359 on the branch; 14 past the threshold (7 planned -- the 5th the merge, `8afa421`, the 6th the
   execution port's move, `4cfcce2` --, + `97225b7` for the dry4rust re-record, `1d27ff1` for the two states' 36
   accessors, `3cf1ec6` and `3433b15` for the transaction status's 33 importers and the timer key's 100, `2883602`
   for the slot discovery's 11, `a352577` for the Ed25519 scheme's 14, planned within by SETUP, `d7d2c45` for
   Faction's two implementations and their test files, Q43; the 7th planned, `6fc97b9`, `SledStorageInner`'s 678
-  lines, which `implemented-in-one-file` moves whole) -- 14 of 358 is 3.9%, 344 of 358 within; the 95% reached at the 260th (247 of 260 within), and it holds only while every
+  lines, which `implemented-in-one-file` moves whole) -- 14 of 359 is 3.9%, 345 of 359 within; the 95% reached at the 260th (247 of 260 within), and it holds only while every
   commit from here stays within: count a move's files first, and
   shape the seams so a type is born where it ends; bug fixes
   7 (`eba863f`, `e1232ca`, `5013d0e`, `1e7ac29`, `643bfd5`, `8e1ca00`, `b9d0bdf`); the 150th (`7ffb333`) ran all three stages, Part A's end, the 160th (`6912269`) and
