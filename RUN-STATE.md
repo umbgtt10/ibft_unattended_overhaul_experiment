@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `92bd80b` Take the re-derivation together beside the record: cargo xtask result-figures (row 363)
+- **Last commit:** `901c6e5` Take the record's own account together: RecordTally (row 364)
 - **Part C now** (Q58, the plan): the report is `docs/history/[IMPLEMENTED] OVERHAUL-2026-11-FINAL-CHECKS.md` in
   etheram-ibft, a section per check. (1) black-box: expected failures (none) committed at `9bac4a1`; the run --
   `cargo test --manifest-path overhaul-scratch/blackbox-8a775a2/Cargo.toml -p system-tests --config
@@ -129,7 +129,12 @@ pushed with the record at every commit.
   driver; notes 13 (breaches) and 243 (mismatch); ten differences: 243's lines removed, six rows (122, 164, 169,
   170, 177, 187) whose workbook threshold reads bare `exceeded` where the trailer adds its reason (eight other
   exceeded rows copy the reason; the verdict agrees in all fourteen) -- the record's own abridgement, reported, not
-  corrected -- and 360-362 not yet re-derived. (v) `RecordTally` into it next.
+  corrected -- and 360-362 not yet re-derived. (v) `RecordTally`, `RecordTotals`, `result-figures <workbook>
+  <attempts> <rows>` -- `901c6e5` (6 files, 209 lines): 344 planned, 19 not; 363 landed, 5 refused (167 s);
+  60,841 s implementing, 35,271 validating. **The five tools are in.** Next: the re-derivation run on to the new
+  end (`cargo xtask rederive <end> ...`, same places, `rederive-chunk10.log`) in the background, so 360 onward are
+  re-derived too; then the bug fixes' tests on their parents (`overhaul-scratch/bugfix-plan.txt`); then section 5;
+  then `RESULT-SUMMARY.md` from `result-figures`, `tree-change 8a775a2 <end>` and `transcript-usage`.
   Meanwhile drafted in
   `overhaul-scratch/summary-draft` (scratch only, nothing built while a chunk runs), for SETUP's "generated, not
   copied by hand": `xtask/src/source/summary/` -- `TreeChange::by_category(base, end)` into `FileChanges` by
