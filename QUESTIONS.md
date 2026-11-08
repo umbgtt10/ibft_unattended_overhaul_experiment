@@ -76,6 +76,7 @@ After the run the owner takes each open entry -- implement, discuss, discard, po
 | 56 | after commit 324, Part B, step 8 | the gates: `node` on `etheram-core` and `types` alone, no plug-in on another, every rule on, nothing baselined but the time reads. Measured: `node` still depends on both recovery crates, `returned-mutations` is stood down in `node` and `validation` (37), and entries 9, 25, 31 and 37 hold 13 baseline entries | answered | `returned-mutations` paid, `node` then `validation`, and the stand-downs out; a dependency gate in stage 1 over `cargo metadata`, with allow-lists for the crates on `node`'s path and for the plug-ins, the recovery crates named as owed (entry 57); the baseline as it is; crap, twin and iceberg keep their scopes |
 | 57 | after commit 324, Part B, step 8 | `node` depends on `recovery-ibft`, which SETUP's count left out, and through it on `recovery-control`. The gate needs either `recovery-ibft` in `node` with the control vocabulary mirrored, or `recovery-ibft` as a plug-in behind a wider port: sixty to ninety commits either way. `types` also brings in `tiny-keccak` | open | `node` keeps both crates, and the gate names them as owed. Recommended: `recovery-ibft` into `node`, the control vocabulary mirrored and translated by a plug-in, `recovery-control` unchanged; the hash stays in `types` |
 | 58 | after commit 337, Part C | how each of the five final checks runs with the commands the harness allows, and how the fifth, three stages at each of 337 commits, some thirty hours, fits "twelve hours without a commit landing" | answered | a report in `etheram-ibft`'s `docs/history/`, a section per check, the tools in `xtask`; the black-box check through `cargo test --config env.ETHERAM_NODE_PROCESS_BIN=<final binary>` on a base export, its expected failures (none) committed first; coverage compared function by function by a new subcommand; the re-derivation by another, in chunks committed to the record, the stop condition read as a commit on either repository |
+| 59 | after commit 365, Part C | prediction 13's cost, priced at the list in force at the end: the run has the transcript's counts but cannot read the list | open | the counts given by kind, the cost left unpriced; recommended: priced at the list of 2026-11-08 in a dated addendum to the result summary |
 
 ## Interventions
 
@@ -1627,3 +1628,17 @@ the course the slice took and the run's recommendation; after the run, the owner
     commit landing on either repository: it is there to catch a stalled run, and a record commit carrying the
     re-derivation's rows is the run's progress, pushed publicly.
 - **Commit:** 338 onward.
+
+### 59. Prediction 13's cost, priced at the list in force at the end
+
+- **Raised:** after commit 365, Part C, writing the result summary.
+- **What:** prediction 13 measures the agent's resource use from the session transcripts, "the cost priced at the
+  end at the list then in force". The run has the counts -- `cargo xtask transcript-usage` reads the model calls,
+  the input tokens, the tokens written to and read from the cache, the output tokens and the compactions -- but not
+  the list. No repository holds it, and the one reference the harness offers, the Claude API reference, was refused
+  under the run's permissions, as a read of the web would be.
+- **Status:** open: the figure needs what the run may not reach.
+- **Course taken:** the result summary gives the counts by kind, each a product with one of the list's rates for
+  `claude-opus-5-5`, and leaves the cost unpriced rather than priced from memory.
+- **Recommendation:** price the counts at the list in force on 2026-11-08 -- input, cache write, cache read, output
+  -- and add the figure to `RESULT-SUMMARY.md` in a dated addendum.

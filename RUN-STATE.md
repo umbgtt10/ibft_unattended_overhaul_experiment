@@ -6,6 +6,12 @@ pushed with the record at every commit.
 
 ## Now
 
+- **The run is complete.** Part C's last commit, `2d969b8`, is pushed; every commit of the branch, 365, is
+  re-derived in `REDERIVATION.tsv`; `RESULT-SUMMARY.md` is written from `result-figures`, `tree-change`, `size`,
+  `test-inventory`, `transcript-usage` and the final checks report. The bet is won. Nothing is left to do but the
+  owner's: the five open entries (9, 25, 37, 57, 59) and any answered one to overturn. Scratch
+  (`/home/umberto/Projects/overhaul-scratch`) holds the exports, worktrees and logs the checks used; the
+  re-derivation's worktree is `rederive-wt`, registered with `etheram-ibft`'s git.
 - **Last commit:** `2d969b8` Report the fifth check: every commit re-derived from the history (row 365)
 - **Part C now** (Q58, the plan): the report is `docs/history/[IMPLEMENTED] OVERHAUL-2026-11-FINAL-CHECKS.md` in
   etheram-ibft, a section per check. (1) black-box: expected failures (none) committed at `9bac4a1`; the run --
