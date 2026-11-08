@@ -113,7 +113,8 @@ pushed with the record at every commit.
   trailer mismatch, commit 243 (`857cb80`), `Lines-Removed declared 145, derived 143` -- its trailer, workbook row
   and attempt row all say 145, while the numstat the session saw then (in the transcript) is 32 + 109 + 2 = 143: a
   slip in the hand-written sum, left as recorded, for section 5 (findings kept in
-  `overhaul-scratch/rederive-findings.txt`). Chunk 8, commits 281 to 320, started 10:36Z.
+  `overhaul-scratch/rederive-findings.txt`). Chunk 8, commits 281 to 320, 10:36Z to 11:51Z: every row clean.
+  Chunk 9, commits 321 to 359, the last, started 11:51Z.
   Meanwhile drafted in
   `overhaul-scratch/summary-draft` (scratch only, nothing built while a chunk runs), for SETUP's "generated, not
   copied by hand": `xtask/src/source/summary/` -- `TreeChange::by_category(base, end)` into `FileChanges` by
