@@ -105,8 +105,18 @@ pushed with the record at every commit.
   green, no trailer mismatch, no unmapped test; traces `no driver` to commit 24 and identical from 25, as the
   record has them; three breaches at commit 13 (`1663af1`), the kind check's own -- the rules it names are
   cargo-shear's, which the check does not read, and shear's count fell there 13 to 0 (to be said in section 5, the
-  tool left as it ran). Chunk 2, commits 41 to 80, started 03:18Z. Then the bug-fixes' tests on their parents; then
-  section 5. The smoke run on commit 1 (worktree `overhaul-scratch/rederive-wt`, made
+  tool left as it ran). Chunk 2, commits 41 to 80, 03:18Z to 04:28Z: every row clean -- stages green, traces
+  identical, no breach, mismatch or unmapped test. Chunk 3, commits 81 to 120, started 04:28Z. Meanwhile drafted in
+  `overhaul-scratch/summary-draft` (scratch only, nothing built while a chunk runs), for SETUP's "generated, not
+  copied by hand": `xtask/src/source/summary/` -- `TreeChange::by_category(base, end)` into `FileChanges` by
+  `PathCategory` (needs `CommitHistory::read` made `pub`, with a test), `TranscriptUsage::of` into `SessionUsage`
+  (a model call is a message id, its last entry's usage; a compaction an `isCompactSummary` entry -- 17 so far),
+  `ColumnTable` (the workbook's quoted CSV, the rows' TSV), `RecordComparison::differences` (each workbook row against
+  its re-derived row), `RederivationTally::totals` into `RederivationTotals`; `main-additions.rs` holds the three
+  subcommands and the edits to existing files. To land after the last chunk as four `support` commits (stages 1
+  and 2; the first is the 360th, all three): TreeChange, TranscriptUsage, ColumnTable with RecordComparison, the
+  tally with `result-figures`; then the re-derivation run on to the new end. Then the bug-fixes' tests on their
+  parents; then section 5. The smoke run on commit 1 (worktree `overhaul-scratch/rederive-wt`, made
   with `git worktree add --detach`, at `8a775a2`): 162 s cold, three stages green, traces `no driver`, no breach, no
   mismatch, 483/696, 642.59/4,510.09, 3,440 to 3,451 -- the record's figures. `rederive-smoke.tsv` can go; (c) the per-commit run over a scratch worktree -- the
   measure on an export, the inventory's diff with the message's `Maps:`, the traces, the three stages -- one CSV row a
