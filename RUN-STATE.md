@@ -6,7 +6,7 @@ pushed with the record at every commit.
 
 ## Now
 
-- **Last commit:** `282c66c` Keep the re-derivation's rows in a file it can resume from: RederivationTsv (row 355)
+- **Last commit:** `8bf822d` Set a commit's trailers beside its diff and its inventory beside its parent's (row 356)
 - **Part C now** (Q58, the plan): the report is `docs/history/[IMPLEMENTED] OVERHAUL-2026-11-FINAL-CHECKS.md` in
   etheram-ibft, a section per check. (1) black-box: expected failures (none) committed at `9bac4a1`; the run --
   `cargo test --manifest-path overhaul-scratch/blackbox-8a775a2/Cargo.toml -p system-tests --config
@@ -86,7 +86,14 @@ pushed with the record at every commit.
   dry4rust copy of `ToolReports::json`); (c1) `WorktreeRun` (forced detached checkout, a stage through the commit's own
   justfile, the traces in release against the corpus) -- `302f459` (4 files, 203 lines); (c2) `RederivedRow` and
   `RederivationTsv` (tab-separated, the counts by rule read from a line's end to resume) -- `282c66c` (5 files, 273
-  lines; `c354-split` can go); (c) the per-commit run over a scratch worktree -- the
+  lines; `c354-split` can go); (c3) `CommitComparison` (trailers beside the diff, the threshold mark) and
+  `CommitInventory` into `TestDelta` -- `8bf822d` (7 files, 284 lines), split out of the orchestrator, which with its
+  tests and the subcommand came to 496 lines; (c4) `Rederivation` (`row`, `measures_at`) with `RederivationPlaces`
+  and its two tests, then (c5) `cargo xtask rederive <end> <worktree> <export> <corpus> <rows.tsv> <logs> [<n>]` in
+  `main` -- both written and smoke-run, waiting in `overhaul-scratch/c356-split` (`rederivation.rs` to be rewritten
+  over the two pieces; `main.rs` whole). The smoke run on commit 1 (worktree `overhaul-scratch/rederive-wt`, made
+  with `git worktree add --detach`, at `8a775a2`): 162 s cold, three stages green, traces `no driver`, no breach, no
+  mismatch, 483/696, 642.59/4,510.09, 3,440 to 3,451 -- the record's figures. `rederive-smoke.tsv` can go; (c) the per-commit run over a scratch worktree -- the
   measure on an export, the inventory's diff with the message's `Maps:`, the traces, the three stages -- one CSV row a
   commit, resuming from the rows written, `main` stamping each commit's start and finish (stern's `injected-time`
   keeps clock reads out of the library); (d) `cargo xtask rederive`. Next after (3): the rest of (4),
@@ -1027,18 +1034,18 @@ pushed with the record at every commit.
   `InMemory{ClientInterface,Timer,Transport}State` (node-infra), `InFlightSlot`, `RecoveryContext`,
   `RecoveryStateSnapshot`, `RecoveryControl` (with Q25) (recovery), `IbftHardState`, `IbftVolatileSnapshot`,
   `WorldStateSnapshot` (types). The `c75-pending` scratch folder can go.
-- **Commits:** 355 on the branch; 14 past the threshold (7 planned -- the 5th the merge, `8afa421`, the 6th the
+- **Commits:** 356 on the branch; 14 past the threshold (7 planned -- the 5th the merge, `8afa421`, the 6th the
   execution port's move, `4cfcce2` --, + `97225b7` for the dry4rust re-record, `1d27ff1` for the two states' 36
   accessors, `3cf1ec6` and `3433b15` for the transaction status's 33 importers and the timer key's 100, `2883602`
   for the slot discovery's 11, `a352577` for the Ed25519 scheme's 14, planned within by SETUP, `d7d2c45` for
   Faction's two implementations and their test files, Q43; the 7th planned, `6fc97b9`, `SledStorageInner`'s 678
-  lines, which `implemented-in-one-file` moves whole) -- 14 of 355 is 3.9%, 341 of 355 within; the 95% reached at the 260th (247 of 260 within), and it holds only while every
+  lines, which `implemented-in-one-file` moves whole) -- 14 of 356 is 3.9%, 342 of 356 within; the 95% reached at the 260th (247 of 260 within), and it holds only while every
   commit from here stays within: count a move's files first, and
   shape the seams so a type is born where it ends; bug fixes
   7 (`eba863f`, `e1232ca`, `5013d0e`, `1e7ac29`, `643bfd5`, `8e1ca00`, `b9d0bdf`); the 150th (`7ffb333`) ran all three stages, Part A's end, the 160th (`6912269`) and
   the 170th (`2883602`), the 180th (`b31593c`), the 190th (`c885cf9`), the 200th (`7508819`), the 210th
   (`e04403c`), the 220th (`e329250`), the 230th (`5ebe5f1`), the 240th (`18baf35`), the 250th (`8bdb859`), the 260th (`1fef15d`), the 270th (`fdd825e`), the 280th (`00c5f1b`), the 290th (`0b135b2`), the 300th (`2a7c601`), the 310th (`44b91f4`), the 320th (`694fb62`), the 330th (`729dae4`), the 340th (`8af3cb2`) and the 350th (`265d7b6`); the 360th next
-- **Tests:** 3,440 at the base, 3,948 now (stage 5 512); removed under constraint 6: 1 (`2e6d484`, Q34)
+- **Tests:** 3,440 at the base, 3,953 now (stage 5 512); removed under constraint 6: 1 (`2e6d484`, Q34)
 - **Offences:** 33 as configured (single-implemented-type 0), 33 everything on (returned-mutations 0, from 37 at `6fc97b9`; paired-test-file 0, from 100 at `4a976c2`; tested-public-api 0,
   from 25 at `15e7d4d` and 17 at `ca72bf4`, Q52, Q54), shear 0; Grip 791.40 / Braintax 4,865.29 (0.1627 at `d517272`, node 331.86 / 2,338.42; 787.08 /
   4,869.10, 0.1616 at `508fa94`, node 327.54 / 2,342.23, the WAL encoder returning its bytes; 780.18 / 4,868.87, 0.1602 at `1f5213f`, the tracker into the tally, node-infra
