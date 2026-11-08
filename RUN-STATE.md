@@ -98,9 +98,15 @@ pushed with the record at every commit.
   33/33/0, 791.40 over 4,865.29; dry4rust and iceberg as at `2f7a771`; stages 8.8-13.1 / 35.5-36.1 / 51.4-55.3 s; stage
   5 thirty times, 15,360 executions, none failed, 44.0-56.4 s, median 51.1, slowest 35.32 s. The report's section 4
   -- `a505fc2` (`support`, stage 2, 141 lines; its row's implementation start, the record's last commit, holds the
-  measuring). **(4) is done.** Next: (5) in background chunks into `overhaul-scratch/rederive.tsv` (end
-  `a6b109f`, worktree `rederive-wt`, export `rederive-export`, logs `rederive-logs`), each chunk's rows committed to the
-  record as `REDERIVATION.tsv`; then the bug-fixes' tests on their parents; then section 5. The smoke run on commit 1 (worktree `overhaul-scratch/rederive-wt`, made
+  measuring). **(4) is done.** (5) in background chunks of forty into `overhaul-scratch/rederive.tsv` (`cargo
+  xtask rederive a505fc2 ...`, the end the report's last commit, so 359 rows; worktree `rederive-wt`, export
+  `rederive-export`, logs `rederive-logs`, each chunk's output `rederive-chunkNN.log`), each chunk's rows committed
+  to the record as `REDERIVATION.tsv`. Chunk 1, commits 1 to 40, 02:11Z to 03:18Z, about 100 s a commit: every stage
+  green, no trailer mismatch, no unmapped test; traces `no driver` to commit 24 and identical from 25, as the
+  record has them; three breaches at commit 13 (`1663af1`), the kind check's own -- the rules it names are
+  cargo-shear's, which the check does not read, and shear's count fell there 13 to 0 (to be said in section 5, the
+  tool left as it ran). Chunk 2, commits 41 to 80, started 03:18Z. Then the bug-fixes' tests on their parents; then
+  section 5. The smoke run on commit 1 (worktree `overhaul-scratch/rederive-wt`, made
   with `git worktree add --detach`, at `8a775a2`): 162 s cold, three stages green, traces `no driver`, no breach, no
   mismatch, 483/696, 642.59/4,510.09, 3,440 to 3,451 -- the record's figures. `rederive-smoke.tsv` can go; (c) the per-commit run over a scratch worktree -- the
   measure on an export, the inventory's diff with the message's `Maps:`, the traces, the three stages -- one CSV row a
