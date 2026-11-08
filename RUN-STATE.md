@@ -114,7 +114,9 @@ pushed with the record at every commit.
   and attempt row all say 145, while the numstat the session saw then (in the transcript) is 32 + 109 + 2 = 143: a
   slip in the hand-written sum, left as recorded, for section 5 (findings kept in
   `overhaul-scratch/rederive-findings.txt`). Chunk 8, commits 281 to 320, 10:36Z to 11:51Z: every row clean.
-  Chunk 9, commits 321 to 359, the last, started 11:51Z.
+  Chunk 9, commits 321 to 359, the last, 11:51Z to 13:06Z: every row clean. **The re-derivation of the 359
+  is done**: every stage green at every commit, traces identical from 25 (`no driver` before), no unmapped test;
+  the commit-13 breaches and the commit-243 mismatch are its only findings. Next, the five drafted tools.
   Meanwhile drafted in
   `overhaul-scratch/summary-draft` (scratch only, nothing built while a chunk runs), for SETUP's "generated, not
   copied by hand": `xtask/src/source/summary/` -- `TreeChange::by_category(base, end)` into `FileChanges` by
