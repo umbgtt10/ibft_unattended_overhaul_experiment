@@ -107,7 +107,8 @@ pushed with the record at every commit.
   cargo-shear's, which the check does not read, and shear's count fell there 13 to 0 (to be said in section 5, the
   tool left as it ran). Chunk 2, commits 41 to 80, 03:18Z to 04:28Z: every row clean -- stages green, traces
   identical, no breach, mismatch or unmapped test. Chunk 3, commits 81 to 120, 04:28Z to 05:40Z: every row clean.
-  Chunk 4, commits 121 to 160, 05:40Z to 06:53Z: every row clean. Chunk 5, commits 161 to 200, started 06:53Z.
+  Chunk 4, commits 121 to 160, 05:40Z to 06:53Z: every row clean. Chunk 5, commits 161 to 200, 06:53Z to 08:05Z: every row
+  clean. Chunk 6, commits 201 to 240, started 08:05Z.
   Meanwhile drafted in
   `overhaul-scratch/summary-draft` (scratch only, nothing built while a chunk runs), for SETUP's "generated, not
   copied by hand": `xtask/src/source/summary/` -- `TreeChange::by_category(base, end)` into `FileChanges` by
